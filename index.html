@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Fit Photo Studio V43 Combine Fix</title>
+<title>Fit Photo Studio V44 Combine Editor</title>
 <style>
 :root{
   --bg:#f3f5f7;--panel:#ffffff;--ink:#15171a;--muted:#707782;--line:#dce1e6;
@@ -237,6 +237,17 @@ body.mobile-mode .mobileCaptureScreen{display:block}
 .combineToolGrid .tool{min-width:0;padding:8px 5px}
 #modeCombine,#modeAnnotate{pointer-events:auto!important;position:relative;z-index:50}
 
+
+.combineEditorPanel{border:1px solid #dbe3ee!important;background:#f8fafc!important;border-radius:12px!important;padding:12px!important;margin-bottom:10px!important}
+.combineEditorPanel h2{color:#111827!important;font-size:12px!important;letter-spacing:.08em!important;margin-bottom:9px!important}
+.combineToolGrid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important;margin-bottom:10px!important}
+.combineToolGrid .tool{display:block!important;min-width:0!important;padding:8px 4px!important}
+.combineHint{font-size:9px;color:#64748b;line-height:1.4;margin-top:6px}
+body.combine-mode #collageControls{display:block!important}
+body.combine-mode #annotateControls{display:none!important}
+body:not(.combine-mode) #collageControls{display:none!important}
+body:not(.combine-mode) #annotateControls{display:block!important}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -244,7 +255,7 @@ body.mobile-mode .mobileCaptureScreen{display:block}
 <header>
   <div class="brand">
     <div class="logo">F</div>
-    <div><h1>Fit Photo Studio</h1><small>Simple browser AI · Build 43 Combine Fix</small></div>
+    <div><h1>Fit Photo Studio</h1><small>Simple browser AI · Build 44 Combine Editor</small></div>
   </div>
   <div class="topActions">
     <button id="newBtn" class="btn">New</button>
@@ -449,19 +460,20 @@ body.mobile-mode .mobileCaptureScreen{display:block}
     </div>
 
     <div id="collageControls" style="display:none">
-      <div class="section" id="combineDrawingTools">
-        <h2>Drawing tools</h2>
-        <div class="combineToolGrid">
-          <button class="tool active" data-ctool="select">↖ Select</button>
-          <button class="tool" data-ctool="arrow">↗ Arrow</button>
-          <button class="tool" data-ctool="line">╱ Line</button>
-          <button class="tool" data-ctool="dash">┄ Dashed</button>
-          <button class="tool" data-ctool="circle">○ Circle</button>
-          <button class="tool" data-ctool="rect">□ Rectangle</button>
-        </div>
-        <div class="prop"><label>Annotation color</label><input id="cAnnoColor" type="color" value="#e11d48"></div>
-        <div class="prop"><label>Line width <small><span id="cLineWidthVal">6</span> px</small></label><input id="cLineWidth" type="range" min="1" max="20" value="6"></div>
-      </div>
+<div class="section combineEditorPanel">
+  <h2>COMBINE EDITOR</h2>
+  <div class="combineToolGrid">
+    <button class="tool active" data-ctool="select">↖ Select</button>
+    <button class="tool" data-ctool="arrow">↗ Arrow</button>
+    <button class="tool" data-ctool="line">╱ Line</button>
+    <button class="tool" data-ctool="dash">┄ Dashed</button>
+    <button class="tool" data-ctool="circle">○ Circle</button>
+    <button class="tool" data-ctool="rect">□ Rectangle</button>
+  </div>
+  <div class="prop"><label>Annotation color</label><input id="cAnnoColor" type="color" value="#e11d48"></div>
+  <div class="prop"><label>Line width <small><span id="cLineWidthVal">6</span> px</small></label><input id="cLineWidth" type="range" min="1" max="20" value="6"></div>
+  <div class="combineHint">Select = move/resize photos. Drawing tools work directly on the combined canvas.</div>
+</div>
 
       <div class="section">
         <h2>Canvas & Layout</h2>
@@ -963,7 +975,7 @@ async function startSpeech(context){
       "service-not-allowed":"Speech recognition is blocked by browser or company policy.",
       "audio-capture":"No working microphone was found.",
       "language-not-supported":"This language is not available for local speech recognition.",
-      "phrases-not-supported":"This browser rejected contextual phrase hints. The compatibility mode will work after refreshing this Build 43 Combine Fix page."
+      "phrases-not-supported":"This browser rejected contextual phrase hints. The compatibility mode will work after refreshing this Build 44 Combine Editor page."
     };
     setVoiceStatus(status,messages[e.error]||("Speech error: "+e.error),"statusBad");
   };
@@ -1341,7 +1353,7 @@ document.querySelectorAll("[data-ctool]").forEach(b=>b.onclick=()=>{
  document.querySelectorAll("[data-ctool]").forEach(x=>x.classList.toggle("active",x===b));
 });
 $("#cLineWidth").oninput=e=>$("#cLineWidthVal").textContent=e.target.value;
-function mode(m){
+function mode(m){document.body.classList.toggle("combine-mode",m==="collage");
   const a=m==="annotate";
   $("#annotateTab").classList.toggle("active",a);$("#combineTab").classList.toggle("active",!a);
   $("#annotateLeft").style.display=a?"block":"none";$("#collageLeft").style.display=a?"none":"block";
@@ -1428,7 +1440,7 @@ window.FitEditor={
 };
 
 window.addEventListener("resize",()=>{if(loaded)fitPreviewToStage();cRender()});
-cRender();setTool("select");debug("JavaScript active · Build 43 Combine Fix");
+cRender();setTool("select");debug("JavaScript active · Build 44 Combine Editor");
 })();
 </script>
 
@@ -1528,6 +1540,13 @@ q("#livePhotosStatus").textContent="Connected — waiting for phone photos…";q
 q("#refreshLivePhotosBtn").onclick=async()=>{q("#livePhotosStatus").textContent="Checking secure session…";await refreshPhotos()};
 q("#endSessionBtn").onclick=async()=>{if(!cs)return;let r=await sb.from(S).update({active:false,ended_at:new Date().toISOString()}).eq("session_id",cs);if(r.error)return q("#syncStatus").textContent=r.error.message;if(ch)sb.removeChannel(ch);if(pollTimer){clearInterval(pollTimer);pollTimer=null}q("#syncStatus").textContent="Session ended — QR invalid";q("#endSessionBtn").style.display="none"};
 })();
+
+document.addEventListener("click",e=>{
+ const b=e.target.closest("[data-ctool]");
+ if(!b)return;
+ cTool=b.dataset.ctool;
+ document.querySelectorAll("[data-ctool]").forEach(x=>x.classList.toggle("active",x===b));
+});
 </script>
 
 </body>
