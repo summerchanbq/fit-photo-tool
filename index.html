@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Fit Photo Studio V44 Combine Editor</title>
+<title>Fit Photo Studio V45 Full Combine Editor</title>
 <style>
 :root{
   --bg:#f3f5f7;--panel:#ffffff;--ink:#15171a;--muted:#707782;--line:#dce1e6;
@@ -233,20 +233,31 @@ body.mobile-mode .mobileCaptureScreen{display:block}
 @media(max-width:1150px){.app{grid-template-columns:200px 150px minmax(0,1fr) 270px}}
 
 
-.combineToolGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-bottom:9px}
-.combineToolGrid .tool{min-width:0;padding:8px 5px}
-#modeCombine,#modeAnnotate{pointer-events:auto!important;position:relative;z-index:50}
-
-
-.combineEditorPanel{border:1px solid #dbe3ee!important;background:#f8fafc!important;border-radius:12px!important;padding:12px!important;margin-bottom:10px!important}
-.combineEditorPanel h2{color:#111827!important;font-size:12px!important;letter-spacing:.08em!important;margin-bottom:9px!important}
-.combineToolGrid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important;margin-bottom:10px!important}
-.combineToolGrid .tool{display:block!important;min-width:0!important;padding:8px 4px!important}
-.combineHint{font-size:9px;color:#64748b;line-height:1.4;margin-top:6px}
-body.combine-mode #collageControls{display:block!important}
-body.combine-mode #annotateControls{display:none!important}
-body:not(.combine-mode) #collageControls{display:none!important}
-body:not(.combine-mode) #annotateControls{display:block!important}
+/* Version V45 full workspace */
+.rightVersion{font-size:10px;font-weight:800;letter-spacing:.08em;color:#2563eb;background:#eff6ff;border-radius:999px;padding:4px 8px;align-self:flex-start;margin-bottom:10px}
+.right{display:block!important;overflow-y:auto!important;overflow-x:hidden!important;min-width:0!important;padding:14px 14px 110px!important}
+#annotateControls,#collageControls{display:block;min-width:0;max-width:100%;overflow:visible}
+.right .section,.right .row,.right input,.right select,.right textarea{min-width:0;max-width:100%;box-sizing:border-box}
+.right input[type=range],.right textarea,.right select{width:100%}
+.combineEditorTitle{display:flex;align-items:center;justify-content:space-between;border:1px solid #bfdbfe;background:#eff6ff;border-radius:11px;padding:9px 10px;margin-bottom:10px;color:#1d4ed8;font-size:11px;letter-spacing:.08em}
+.combineEditorTitle span{background:#2563eb;color:#fff;border-radius:999px;padding:3px 7px;font-size:9px}
+.combineToolGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-bottom:10px}
+.ctool{border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px 6px;font-size:11px;min-width:0;cursor:pointer}
+.ctool.active{background:var(--dark);color:#fff;border-color:var(--dark);box-shadow:0 0 0 2px rgba(37,99,235,.15)}
+.combineCanvasToolbar{height:64px;overflow-x:auto;flex-wrap:nowrap;justify-content:center}
+.combineCanvasToolbar .ctool{white-space:nowrap;flex:0 0 auto}
+.combineHint{font-size:9px;color:#64748b;line-height:1.45;margin-top:7px}
+.saveSection{background:#fff}
+.combineSaveTop{border:1px solid #e2e8f0;border-radius:11px;padding:10px!important;margin-bottom:12px!important}
+.photoLibrary{overflow-y:auto!important;overflow-x:hidden!important}
+.photoLibrary #thumbList{max-height:350px;overflow-y:auto}
+.libraryEmpty{border:1px dashed #d5dbe2;border-radius:8px;padding:10px 6px;text-align:center;color:#98a0aa;font-size:9px;margin-top:6px}
+#combineLibrarySection{margin-top:10px}
+#collageCanvasWrap{position:relative;display:inline-block;max-width:100%;max-height:100%}
+#collageCanvas{display:block;touch-action:none}
+#canvasResizeHandle{z-index:30}
+.cInlineText{position:absolute;z-index:50;border:2px solid #2563eb;border-radius:6px;padding:5px 7px;min-width:120px;max-width:360px;background:rgba(255,255,255,.97);outline:none;font-weight:600}
+@media(max-width:1150px){.app{grid-template-columns:195px 145px minmax(0,1fr) 265px!important}}
 
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -255,7 +266,7 @@ body:not(.combine-mode) #annotateControls{display:block!important}
 <header>
   <div class="brand">
     <div class="logo">F</div>
-    <div><h1>Fit Photo Studio</h1><small>Simple browser AI · Build 44 Combine Editor</small></div>
+    <div><h1>Fit Photo Studio</h1><small><strong>Version V45</strong> · Secure Sync · Full Combine Editor</small></div>
   </div>
   <div class="topActions">
     <button id="newBtn" class="btn">New</button>
@@ -293,10 +304,6 @@ body:not(.combine-mode) #annotateControls{display:block!important}
           <strong>Add Photos</strong>
           <span>Select photos</span>
         </label>
-      </div>
-      <div class="section">
-        <h2>Photo order</h2>
-        <div id="thumbList" class="thumbList"></div>
       </div>
     </div>
 
@@ -343,7 +350,13 @@ body:not(.combine-mode) #annotateControls{display:block!important}
 <button id="refreshLivePhotosBtn" class="btn" style="width:100%;margin-top:7px">Refresh Photos</button>
     </div>
 
-  </aside>
+  
+    <div class="section" id="combineLibrarySection">
+      <h2>Combine Photos</h2>
+      <div id="thumbList" class="thumbList"></div>
+      <div id="combineLibraryEmpty" class="libraryEmpty">Add photos or click Live Photos to add them to Combine.</div>
+    </div>
+</aside>
 
 <main class="panel center">
     <div id="annotatePanel" style="display:flex;flex-direction:column;height:100%">
@@ -385,163 +398,93 @@ body:not(.combine-mode) #annotateControls{display:block!important}
           <canvas id="collageCanvas" width="1400" height="900"></canvas>
           <div id="guideV" class="guideLine v" style="display:none"></div>
           <div id="guideH" class="guideLine h" style="display:none"></div>
-          <div id="canvasResizeHandle" class="resizeHandle" style="right:-9px;bottom:-9px;cursor:nwse-resize"></div>
+          <div id="canvasResizeHandle" class="resizeHandle" title="Drag to resize canvas" style="right:-9px;bottom:-9px;cursor:nwse-resize"></div>
         </div>
+      </div>
+      <div class="toolbar combineCanvasToolbar" aria-label="Combine drawing tools">
+        <button class="ctool active" data-ctool="select">↖ Select</button>
+        <button class="ctool" data-ctool="arrow">↗ Arrow</button>
+        <button class="ctool" data-ctool="line">╱ Line</button>
+        <button class="ctool" data-ctool="dash">┄ Dashed</button>
+        <button class="ctool" data-ctool="circle">○ Circle</button>
+        <button class="ctool" data-ctool="rect">□ Rectangle</button>
+        <button class="ctool" data-ctool="text">T Text</button>
       </div>
     </div>
   </main>
 
   <aside class="panel right">
+    <div class="rightVersion">Version V45</div>
+
     <div id="annotateControls">
       <div class="section">
         <h2>Annotation Style</h2>
-        <div class="prop">
-          <label>Color <small id="colorText">#E11D48</small></label>
-          <input id="color" type="color" value="#e11d48">
-        </div>
-        <div class="prop">
-          <label>Line width <small><span id="lineVal">6</span> px</small></label>
-          <input id="lineWidth" type="range" min="1" max="20" value="6">
-        </div>
-        <div class="prop">
-          <label>Text size <small><span id="fontVal">34</span> px</small></label>
-          <input id="fontSize" type="range" min="14" max="50" value="34">
-        </div>
-        <div class="row">
-          <button id="undo" class="btn">Undo</button>
-          <button id="delete" class="btn">Delete</button>
-        </div>
+        <div class="prop"><label>Color <small id="colorText">#E11D48</small></label><input id="color" type="color" value="#e11d48"></div>
+        <div class="prop"><label>Line width <small><span id="lineVal">6</span> px</small></label><input id="lineWidth" type="range" min="1" max="20" value="6"></div>
+        <div class="prop"><label>Text size <small><span id="fontVal">34</span> px</small></label><input id="fontSize" type="range" min="14" max="50" value="34"></div>
+        <div class="row"><button id="undo" class="btn">Undo</button><button id="delete" class="btn">Delete</button></div>
       </div>
-
       <div class="section">
         <h2>Voice → English <span class="simpleAiBadge">No API key</span></h2>
         <div class="voiceBox">
-          <div class="prop">
-            <label>Spoken language</label>
+          <div class="prop"><label>Spoken language</label>
             <select id="lang">
-              <option value="en-AU">English (Australia)</option>
-              <option value="zh-CN">中文普通话</option>
-              <option value="zh-HK">中文粤语</option>
-              <option value="id-ID">Bahasa Indonesia</option>
-              <option value="vi-VN">Tiếng Việt</option>
-              <option value="hi-IN">Hindi</option>
-              <option value="ja-JP">Japanese</option>
-              <option value="ko-KR">Korean</option>
-              <option value="th-TH">Thai</option>
-              <option value="es-ES">Spanish</option>
-              <option value="fr-FR">French</option>
-              <option value="de-DE">German</option>
-              <option value="it-IT">Italian</option>
+              <option value="en-AU">English (Australia)</option><option value="zh-CN">中文普通话</option><option value="zh-HK">中文粤语</option><option value="id-ID">Bahasa Indonesia</option><option value="vi-VN">Tiếng Việt</option><option value="hi-IN">Hindi</option><option value="ja-JP">Japanese</option><option value="ko-KR">Korean</option><option value="th-TH">Thai</option><option value="es-ES">Spanish</option><option value="fr-FR">French</option><option value="de-DE">German</option><option value="it-IT">Italian</option>
             </select>
           </div>
           <button id="mic" class="btn primary" style="width:100%">🎙 Start speaking</button>
-          <div class="prop" style="margin-top:8px">
-            <textarea id="voice" rows="4" placeholder="Speech appears here. Click Translate to English if needed."></textarea>
-          </div>
-          <div class="voiceActions">
-            <button id="translateVoice" class="btn">Translate to English</button>
-            <button id="addVoice" class="btn primary">Add to photo</button>
-          </div>
-          <div id="voiceStatus" class="note" style="margin-top:6px">Ready.</div>
-          <div id="voiceProgress" class="downloadProgress"><span></span></div>
-          <div class="browserNote">Uses browser speech recognition in compatibility mode and Chrome's built-in on-device Translator when available. Apparel terms are cleaned after recognition.</div>
+          <div class="prop" style="margin-top:8px"><textarea id="voice" rows="4" placeholder="Speech appears here. Click Translate to English if needed."></textarea></div>
+          <div class="voiceActions"><button id="translateVoice" class="btn">Translate to English</button><button id="addVoice" class="btn primary">Add to photo</button></div>
+          <div id="voiceStatus" class="note" style="margin-top:6px">Ready.</div><div id="voiceProgress" class="downloadProgress"><span></span></div>
+          <div class="browserNote">Uses browser speech recognition and Chrome on-device Translator when available. Apparel terms are cleaned after recognition.</div>
         </div>
       </div>
-      </div>
-
-      <div class="section">
+      <div class="section saveSection">
         <h2>Save & Share</h2>
-        <div class="row">
-          <select id="format"><option value="png">PNG</option><option value="jpeg">JPG</option></select>
-          <button id="saveBtn" class="btn primary">Save</button>
-        </div>
+        <div class="row"><select id="format"><option value="png">PNG</option><option value="jpeg">JPG</option></select><button id="saveBtn" class="btn primary">Save</button></div>
         <button id="shareBtn" class="btn" style="width:100%;margin-top:7px">Share</button>
       </div>
     </div>
 
     <div id="collageControls" style="display:none">
-<div class="section combineEditorPanel">
-  <h2>COMBINE EDITOR</h2>
-  <div class="combineToolGrid">
-    <button class="tool active" data-ctool="select">↖ Select</button>
-    <button class="tool" data-ctool="arrow">↗ Arrow</button>
-    <button class="tool" data-ctool="line">╱ Line</button>
-    <button class="tool" data-ctool="dash">┄ Dashed</button>
-    <button class="tool" data-ctool="circle">○ Circle</button>
-    <button class="tool" data-ctool="rect">□ Rectangle</button>
-  </div>
-  <div class="prop"><label>Annotation color</label><input id="cAnnoColor" type="color" value="#e11d48"></div>
-  <div class="prop"><label>Line width <small><span id="cLineWidthVal">6</span> px</small></label><input id="cLineWidth" type="range" min="1" max="20" value="6"></div>
-  <div class="combineHint">Select = move/resize photos. Drawing tools work directly on the combined canvas.</div>
-</div>
-
+      <div class="combineEditorTitle"><b>COMBINE EDITOR</b><span>V45</span></div>
+      <div class="section saveSection combineSaveTop">
+        <h2>Save & Share</h2>
+        <div class="row"><select id="collageFormat"><option value="png">PNG</option><option value="jpeg">JPG</option></select><button id="saveCollage" class="btn primary">Save</button></div>
+        <button id="shareCollage" class="btn" style="width:100%;margin-top:7px">Share</button>
+      </div>
+      <div class="section">
+        <h2>Drawing Tools</h2>
+        <div class="combineToolGrid">
+          <button class="ctool active" data-ctool="select">↖ Select</button><button class="ctool" data-ctool="arrow">↗ Arrow</button><button class="ctool" data-ctool="line">╱ Line</button><button class="ctool" data-ctool="dash">┄ Dashed</button><button class="ctool" data-ctool="circle">○ Circle</button><button class="ctool" data-ctool="rect">□ Rectangle</button><button class="ctool" data-ctool="text">T Text</button>
+        </div>
+        <div class="prop"><label>Annotation color <small id="cAnnoColorText">#E11D48</small></label><input id="cAnnoColor" type="color" value="#e11d48"></div>
+        <div class="prop"><label>Line width <small><span id="cLineWidthVal">6</span> px</small></label><input id="cLineWidth" type="range" min="1" max="20" value="6"></div>
+        <div class="row"><button id="cUndo" class="btn">Undo</button><button id="deleteCollageObject" class="btn">Delete</button></div>
+        <div class="combineHint">Select images, text or shapes to move/resize. Drawing tools work directly on the white canvas.</div>
+      </div>
       <div class="section">
         <h2>Canvas & Layout</h2>
-        <div class="note" style="margin-bottom:9px">
-          Resize the white canvas directly by dragging its bottom-right corner.
-        </div>
-        <div class="prop" style="margin-top:9px">
-          <label>Layout</label>
-          <select id="layoutMode">
-            <option value="row" selected>Horizontal</option>
-            <option value="column">Vertical</option>
-          </select>
-        </div>
+        <div class="prop"><label>Layout</label><select id="layoutMode"><option value="row" selected>Horizontal</option><option value="column">Vertical</option></select></div>
         <button id="autoLayout" class="btn" style="width:100%">Auto Arrange</button>
+        <div class="note" style="margin-top:6px">Drag the blue handle at the canvas bottom-right to resize. Images and annotations scale with it.</div>
       </div>
-
       <div class="section">
-        <h2>Text on Canvas <span class="simpleAiBadge">No API key</span></h2>
-        <div class="prop">
-          <label>Spoken language</label>
+        <h2>Text & Voice <span class="simpleAiBadge">No API key</span></h2>
+        <div class="prop"><label>Spoken language</label>
           <select id="collageLang">
-            <option value="en-AU">English (Australia)</option>
-            <option value="zh-CN">中文普通话</option>
-            <option value="zh-HK">中文粤语</option>
-            <option value="id-ID">Bahasa Indonesia</option>
-            <option value="vi-VN">Tiếng Việt</option>
-            <option value="hi-IN">Hindi</option>
-            <option value="ja-JP">Japanese</option>
-            <option value="ko-KR">Korean</option>
-            <option value="th-TH">Thai</option>
-            <option value="es-ES">Spanish</option>
-            <option value="fr-FR">French</option>
-            <option value="de-DE">German</option>
-            <option value="it-IT">Italian</option>
+            <option value="en-AU">English (Australia)</option><option value="zh-CN">中文普通话</option><option value="zh-HK">中文粤语</option><option value="id-ID">Bahasa Indonesia</option><option value="vi-VN">Tiếng Việt</option><option value="hi-IN">Hindi</option><option value="ja-JP">Japanese</option><option value="ko-KR">Korean</option><option value="th-TH">Thai</option><option value="es-ES">Spanish</option><option value="fr-FR">French</option><option value="de-DE">German</option><option value="it-IT">Italian</option>
           </select>
         </div>
         <button id="collageMic" class="btn primary" style="width:100%">🎙 Start speaking</button>
-        <div id="collageVoiceStatus" class="note" style="margin-top:5px">Ready.</div>
-        <div id="collageProgress" class="downloadProgress"><span></span></div>
-        <div class="prop" style="margin-top:8px">
-          <textarea id="collageText" rows="4" placeholder="Speech or typed text…"></textarea>
-        </div>
+        <div id="collageVoiceStatus" class="note" style="margin-top:5px">Ready.</div><div id="collageProgress" class="downloadProgress"><span></span></div>
+        <div class="prop" style="margin-top:8px"><textarea id="collageText" rows="4" placeholder="Speech or typed text…"></textarea></div>
         <button id="translateCollageText" class="btn" style="width:100%">Translate to English</button>
         <div class="row" style="margin-top:8px">
-          <div class="prop" style="margin:0">
-            <label>Text size <small><span id="cTextSizeVal">34</span> px</small></label>
-            <input id="cTextSize" type="range" min="14" max="50" value="34">
-          </div>
-          <div style="max-width:62px">
-            <span class="compactLabel">Color</span>
-            <input id="cTextColor" type="color" value="#111827">
-          </div>
+          <div class="prop" style="margin:0"><label>Text size <small><span id="cTextSizeVal">34</span> px</small></label><input id="cTextSize" type="range" min="14" max="50" value="34"></div>
+          <div style="max-width:62px"><span class="compactLabel">Color</span><input id="cTextColor" type="color" value="#111827"></div>
         </div>
         <button id="addCollageText" class="btn primary" style="width:100%;margin-top:7px">Add text to canvas</button>
-      </div>
-
-      <div class="section">
-        <h2>Selected Object</h2>
-        <div class="note">Image: drag to move; drag blue corner to scale proportionally.<br>Text: drag to move; adjust size/color above.</div>
-        <button id="deleteCollageObject" class="btn" style="width:100%;margin-top:7px">Delete selected</button>
-      </div>
-
-      <div class="section">
-        <h2>Save Combined Sheet</h2>
-        <div class="row">
-          <select id="collageFormat"><option value="png">PNG</option><option value="jpeg">JPG</option></select>
-          <button id="saveCollage" class="btn primary">Save</button>
-        </div>
       </div>
     </div>
   </aside>
@@ -601,19 +544,16 @@ function drawArrow(o){
   const a=Math.atan2(o.y2-o.y1,o.x2-o.x1),L=24+o.width*2;
   ctx.beginPath();ctx.moveTo(o.x2,o.y2);ctx.lineTo(o.x2-L*Math.cos(a-Math.PI/6),o.y2-L*Math.sin(a-Math.PI/6));ctx.lineTo(o.x2-L*Math.cos(a+Math.PI/6),o.y2-L*Math.sin(a+Math.PI/6));ctx.closePath();ctx.fill();ctx.restore()
 }
+function adaptiveDash(w){const sw=Math.max(1,+w||1);return[Math.max(8,sw*3.4),Math.max(8,sw*2.4)]}
 function draw(o,sel=false){
   ctx.save();ctx.strokeStyle=o.color;ctx.fillStyle=o.color;ctx.lineWidth=o.width||6;ctx.lineCap="round";ctx.lineJoin="round";
   if(o.type==="arrow")drawArrow(o);
-  else if(o.type==="line"||o.type==="dash"){ctx.setLineDash(o.type==="dash"?[22,14]:[]);ctx.beginPath();ctx.moveTo(o.x1,o.y1);ctx.lineTo(o.x2,o.y2);ctx.stroke()}
+  else if(o.type==="line"||o.type==="dash"){ctx.setLineDash(o.type==="dash"?adaptiveDash(o.width||lineW()):[]);ctx.beginPath();ctx.moveTo(o.x1,o.y1);ctx.lineTo(o.x2,o.y2);ctx.stroke()}
   else if(o.type==="circle"){ctx.beginPath();ctx.ellipse((o.x1+o.x2)/2,(o.y1+o.y2)/2,Math.abs(o.x2-o.x1)/2,Math.abs(o.y2-o.y1)/2,0,0,Math.PI*2);ctx.stroke()}
   else if(o.type==="rect")ctx.strokeRect(o.x1,o.y1,o.x2-o.x1,o.y2-o.y1);
   else if(o.type==="text"){ctx.font=`700 ${o.size}px Arial`;ctx.textBaseline="top";o.text.split("\n").forEach((t,i)=>ctx.fillText(t,o.x1,o.y1+i*o.size*1.2))}
   ctx.restore();
   if(sel){const b=bounds(o);ctx.save();ctx.strokeStyle="#2563eb";ctx.lineWidth=3;ctx.setLineDash([9,6]);ctx.strokeRect(b.x-10,b.y-10,b.w+20,b.h+20);ctx.setLineDash([]);ctx.fillStyle="#fff";ctx.strokeStyle="#2563eb";ctx.lineWidth=3;[[b.x-10,b.y-10],[b.x+b.w+10,b.y+b.h+10]].forEach(([x,y])=>{ctx.beginPath();ctx.arc(x,y,11,0,Math.PI*2);ctx.fill();ctx.stroke()});ctx.restore()}
-}
-function adaptiveDash(w){
- const sw=Math.max(1,+w||1);
- return [Math.max(8,sw*3.2),Math.max(7,sw*2.2)];
 }
 function render(){ctx.clearRect(0,0,cvs.width,cvs.height);objects.forEach(o=>draw(o,o.id===selected));if(temp)draw(temp)}
 function hit(p){for(let i=objects.length-1;i>=0;i--){const o=objects[i],b=bounds(o),pad=26;if(p.x>b.x-pad&&p.x<b.x+b.w+pad&&p.y>b.y-pad&&p.y<b.y+b.h+pad)return o}return null}
@@ -975,7 +915,7 @@ async function startSpeech(context){
       "service-not-allowed":"Speech recognition is blocked by browser or company policy.",
       "audio-capture":"No working microphone was found.",
       "language-not-supported":"This language is not available for local speech recognition.",
-      "phrases-not-supported":"This browser rejected contextual phrase hints. The compatibility mode will work after refreshing this Build 44 Combine Editor page."
+      "phrases-not-supported":"This browser rejected contextual phrase hints. The compatibility mode will work after refreshing this Build 41 Stable Workspace page."
     };
     setVoiceStatus(status,messages[e.error]||("Speech error: "+e.error),"statusBad");
   };
@@ -1044,321 +984,71 @@ $("#addVoice").onclick=()=>{
 
 // ---------- collage ----------
 const cc=$("#collageCanvas"),cx=cc.getContext("2d");
-let items=[],textItems=[],cSel=null,cDrag=null,cSpeech=null,cListening=false;
-let cTool="select",cTemp=null,cObjects=[];let snapLockX=null,snapLockY=null;
+let items=[],textItems=[],cObjects=[],cSel=null,cDrag=null,cTool="select",cTemp=null,cHistory=[],resizingCanvas=null;
+let snapLockX=null,snapLockY=null;
 
 function cPoint(e){const r=cc.getBoundingClientRect();return{x:(e.clientX-r.left)*cc.width/r.width,y:(e.clientY-r.top)*cc.height/r.height}}
-function textBounds(t){
-  cx.save();cx.font=`600 ${t.size}px Arial`;
-  const lines=t.text.split("\n");
-  const w=Math.max(40,...lines.map(x=>cx.measureText(x).width));
-  cx.restore();
-  return{x:t.x,y:t.y,w,h:lines.length*t.size*1.25};
-}
-function wrapText(c,text,x,y,max,lineH){
-  let line="";
-  for(const w of text.split(/\s+/)){
-    const t=line?line+" "+w:w;
-    if(c.measureText(t).width>max&&line){c.fillText(line,x,y);line=w;y+=lineH}else line=t
-  }
-  if(line)c.fillText(line,x,y)
-}
+function cDash(w){const sw=Math.max(1,+w||1);return[Math.max(8,sw*3.4),Math.max(8,sw*2.4)]}
+function cShapeBounds(o){return{x:Math.min(o.x1,o.x2),y:Math.min(o.y1,o.y2),w:Math.max(2,Math.abs(o.x2-o.x1)),h:Math.max(2,Math.abs(o.y2-o.y1))}}
+function cTextBounds(t){cx.save();cx.font=`600 ${t.size}px Arial`;const ls=t.text.split("\\n"),w=Math.max(40,...ls.map(x=>cx.measureText(x).width));cx.restore();return{x:t.x,y:t.y,w,h:ls.length*t.size*1.25}}
+function distanceToSegment(p,a,b){const vx=b.x-a.x,vy=b.y-a.y,wx=p.x-a.x,wy=p.y-a.y,c1=vx*wx+vy*wy;if(c1<=0)return Math.hypot(p.x-a.x,p.y-a.y);const c2=vx*vx+vy*vy;if(c2<=c1)return Math.hypot(p.x-b.x,p.y-b.y);const t=c1/c2,px=a.x+t*vx,py=a.y+t*vy;return Math.hypot(p.x-px,p.y-py)}
+function saveCState(){cHistory.push({items:items.map(x=>({...x})),textItems:textItems.map(x=>({...x})),cObjects:cObjects.map(x=>({...x}))});if(cHistory.length>50)cHistory.shift()}
+function undoC(){const s=cHistory.pop();if(!s)return;items=s.items.map(x=>({...x}));textItems=s.textItems.map(x=>({...x}));cObjects=s.cObjects.map(x=>({...x}));cSel=null;renderThumbs();cRender()}
+function setCTool(t){cTool=t;document.querySelectorAll("[data-ctool]").forEach(b=>b.classList.toggle("active",b.dataset.ctool===t));$("#collageCanvas").style.cursor=t==="select"?"default":t==="text"?"text":"crosshair"}
 
-function cDash(w){const sw=Math.max(1,+w||1);return[Math.max(8,sw*3.2),Math.max(7,sw*2.2)]}
-function drawCAnno(o){
+function drawCShape(o,selectedShape=false){
  cx.save();cx.strokeStyle=o.color;cx.fillStyle=o.color;cx.lineWidth=o.width;cx.lineCap="round";cx.lineJoin="round";cx.setLineDash(o.type==="dash"?cDash(o.width):[]);
  if(o.type==="line"||o.type==="dash"){cx.beginPath();cx.moveTo(o.x1,o.y1);cx.lineTo(o.x2,o.y2);cx.stroke()}
- else if(o.type==="arrow"){cx.beginPath();cx.moveTo(o.x1,o.y1);cx.lineTo(o.x2,o.y2);cx.stroke();const a=Math.atan2(o.y2-o.y1,o.x2-o.x1),h=Math.max(16,o.width*4);cx.beginPath();cx.moveTo(o.x2,o.y2);cx.lineTo(o.x2-h*Math.cos(a-Math.PI/6),o.y2-h*Math.sin(a-Math.PI/6));cx.lineTo(o.x2-h*Math.cos(a+Math.PI/6),o.y2-h*Math.sin(a+Math.PI/6));cx.closePath();cx.fill()}
- else if(o.type==="circle"){const x=Math.min(o.x1,o.x2),y=Math.min(o.y1,o.y2),w=Math.abs(o.x2-o.x1),h=Math.abs(o.y2-o.y1);cx.beginPath();cx.ellipse(x+w/2,y+h/2,w/2,h/2,0,0,Math.PI*2);cx.stroke()}
- else if(o.type==="rect"){cx.strokeRect(Math.min(o.x1,o.x2),Math.min(o.y1,o.y2),Math.abs(o.x2-o.x1),Math.abs(o.y2-o.y1))}
+ else if(o.type==="arrow"){cx.beginPath();cx.moveTo(o.x1,o.y1);cx.lineTo(o.x2,o.y2);cx.stroke();const a=Math.atan2(o.y2-o.y1,o.x2-o.x1),h=Math.max(18,o.width*4);cx.beginPath();cx.moveTo(o.x2,o.y2);cx.lineTo(o.x2-h*Math.cos(a-Math.PI/6),o.y2-h*Math.sin(a-Math.PI/6));cx.lineTo(o.x2-h*Math.cos(a+Math.PI/6),o.y2-h*Math.sin(a+Math.PI/6));cx.closePath();cx.fill()}
+ else if(o.type==="circle"){const b=cShapeBounds(o);cx.beginPath();cx.ellipse(b.x+b.w/2,b.y+b.h/2,b.w/2,b.h/2,0,0,Math.PI*2);cx.stroke()}
+ else if(o.type==="rect"){const b=cShapeBounds(o);cx.strokeRect(b.x,b.y,b.w,b.h)}
  cx.restore();
+ if(selectedShape){const b=cShapeBounds(o);cx.save();cx.strokeStyle="#2563eb";cx.lineWidth=2;cx.setLineDash([8,6]);cx.strokeRect(b.x-8,b.y-8,b.w+16,b.h+16);cx.setLineDash([]);cx.fillStyle="#fff";cx.strokeStyle="#2563eb";cx.lineWidth=3;cx.beginPath();cx.arc(b.x+b.w+8,b.y+b.h+8,10,0,Math.PI*2);cx.fill();cx.stroke();cx.restore()}
 }
 function cRender(){
-  cx.fillStyle="#fff";cx.fillRect(0,0,cc.width,cc.height);
-  items.forEach(it=>{
-    cx.drawImage(it.img,it.x,it.y,it.w,it.h);
-    if(cSel?.kind==="image"&&it.id===cSel.id){
-      cx.strokeStyle="#2563eb";cx.lineWidth=4;cx.strokeRect(it.x,it.y,it.w,it.h);
-      cx.fillStyle="#fff";cx.strokeStyle="#2563eb";cx.lineWidth=4;
-      cx.beginPath();cx.arc(it.x+it.w,it.y+it.h,14,0,Math.PI*2);cx.fill();cx.stroke()
-    }
-  });
-  cObjects.forEach(drawCAnno);if(cTemp)drawCAnno(cTemp);
-  textItems.forEach(t=>{
-    cx.fillStyle=t.color;cx.font=`600 ${t.size}px Arial`;cx.textBaseline="top";
-    t.text.split("\n").forEach((line,i)=>cx.fillText(line,t.x,t.y+i*t.size*1.25));
-    if(cSel?.kind==="text"&&t.id===cSel.id){
-      const b=textBounds(t);cx.strokeStyle="#2563eb";cx.lineWidth=3;cx.setLineDash([8,6]);cx.strokeRect(b.x-8,b.y-8,b.w+16,b.h+16);cx.setLineDash([])
-    }
-  })
+ cx.fillStyle="#fff";cx.fillRect(0,0,cc.width,cc.height);
+ items.forEach(it=>{cx.drawImage(it.img,it.x,it.y,it.w,it.h);if(cSel?.kind==="image"&&it.id===cSel.id){cx.save();cx.strokeStyle="#2563eb";cx.lineWidth=4;cx.setLineDash([]);cx.strokeRect(it.x,it.y,it.w,it.h);cx.fillStyle="#fff";cx.beginPath();cx.arc(it.x+it.w,it.y+it.h,14,0,Math.PI*2);cx.fill();cx.stroke();cx.restore()}});
+ cObjects.forEach(o=>drawCShape(o,cSel?.kind==="shape"&&o.id===cSel.id));if(cTemp)drawCShape(cTemp,false);
+ textItems.forEach(t=>{cx.fillStyle=t.color;cx.font=`600 ${t.size}px Arial`;cx.textBaseline="top";t.text.split("\\n").forEach((l,i)=>cx.fillText(l,t.x,t.y+i*t.size*1.25));if(cSel?.kind==="text"&&t.id===cSel.id){const b=cTextBounds(t);cx.save();cx.strokeStyle="#2563eb";cx.lineWidth=2;cx.setLineDash([8,6]);cx.strokeRect(b.x-8,b.y-8,b.w+16,b.h+16);cx.setLineDash([]);cx.fillStyle="#fff";cx.beginPath();cx.arc(b.x+b.w+8,b.y+b.h+8,10,0,Math.PI*2);cx.fill();cx.stroke();cx.restore()}})
 }
+function fitCollageCanvas(){const stage=$("#collagePanel .stage"),wrap=$("#collageCanvasWrap");if(!stage||!wrap)return;const r=stage.getBoundingClientRect(),sc=Math.min((r.width-20)/cc.width,(r.height-20)/cc.height,1),dw=Math.max(1,Math.round(cc.width*sc)),dh=Math.max(1,Math.round(cc.height*sc));cc.style.width=dw+"px";cc.style.height=dh+"px";wrap.style.width=dw+"px";wrap.style.height=dh+"px";cRender()}
+function centerCollageContent(){const bs=[];items.forEach(x=>bs.push({x:x.x,y:x.y,r:x.x+x.w,b:x.y+x.h}));textItems.forEach(t=>{const b=cTextBounds(t);bs.push({x:b.x,y:b.y,r:b.x+b.w,b:b.y+b.h})});cObjects.forEach(o=>{const b=cShapeBounds(o);bs.push({x:b.x,y:b.y,r:b.x+b.w,b:b.y+b.h})});if(!bs.length)return;const minX=Math.min(...bs.map(x=>x.x)),maxX=Math.max(...bs.map(x=>x.r)),minY=Math.min(...bs.map(x=>x.y)),maxY=Math.max(...bs.map(x=>x.b)),dx=cc.width/2-(minX+maxX)/2,dy=cc.height/2-(minY+maxY)/2;items.forEach(x=>{x.x+=dx;x.y+=dy});textItems.forEach(x=>{x.x+=dx;x.y+=dy});cObjects.forEach(x=>{x.x1+=dx;x.x2+=dx;x.y1+=dy;x.y2+=dy})}
+function autoLayout(){const n=items.length;if(!n){fitCollageCanvas();return}saveCState();const mode=$("#layoutMode").value,pad=Math.max(24,cc.width*.025),gap=Math.max(14,cc.width*.015),cols=mode==="column"?1:n,rows=mode==="column"?n:1,cw=(cc.width-pad*2-gap*(cols-1))/cols,ch=(cc.height-pad*2-gap*(rows-1))/rows;items.forEach((it,i)=>{let w,h;if(it.ratio>cw/ch){w=cw;h=w/it.ratio}else{h=ch;w=h*it.ratio}it.x=pad+(i%cols)*(cw+gap)+(cw-w)/2;it.y=pad+Math.floor(i/cols)*(ch+gap)+(ch-h)/2;it.w=w;it.h=h});centerCollageContent();renderThumbs();fitCollageCanvas()}
+function renderThumbs(){const box=$("#thumbList"),empty=$("#combineLibraryEmpty");if(!box)return;box.innerHTML="";if(empty)empty.style.display=items.length?"none":"block";items.forEach((it,i)=>{const d=document.createElement("div");d.className="thumb";d.innerHTML=`<img src="${it.img.src}"><div style="font-size:10px;overflow:hidden;text-overflow:ellipsis">${i+1}. ${it.name}</div><div class="thumbActions"><button data-up="${it.id}">↑</button><button data-down="${it.id}">↓</button><button class="deleteThumb" data-del="${it.id}">×</button></div>`;box.appendChild(d)});box.querySelectorAll("[data-up]").forEach(b=>b.onclick=()=>reorder(b.dataset.up,-1));box.querySelectorAll("[data-down]").forEach(b=>b.onclick=()=>reorder(b.dataset.down,1));box.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{saveCState();items=items.filter(x=>x.id!==b.dataset.del);renderThumbs();fitCollageCanvas()})}
+function reorder(id,d){const i=items.findIndex(x=>x.id===id),j=i+d;if(j<0||j>=items.length)return;saveCState();[items[i],items[j]]=[items[j],items[i]];autoLayout()}
+function cHit(p){for(let i=textItems.length-1;i>=0;i--){const t=textItems[i],b=cTextBounds(t);if(p.x>b.x-12&&p.x<b.x+b.w+12&&p.y>b.y-12&&p.y<b.y+b.h+12)return{kind:"text",obj:t,bounds:b}}for(let i=cObjects.length-1;i>=0;i--){const o=cObjects[i],b=cShapeBounds(o),tol=Math.max(10,o.width*1.5);if((o.type==="line"||o.type==="dash"||o.type==="arrow")?distanceToSegment(p,{x:o.x1,y:o.y1},{x:o.x2,y:o.y2})<=tol:(p.x>b.x-tol&&p.x<b.x+b.w+tol&&p.y>b.y-tol&&p.y<b.y+b.h+tol))return{kind:"shape",obj:o,bounds:b}}for(let i=items.length-1;i>=0;i--){const o=items[i];if(p.x>o.x&&p.x<o.x+o.w&&p.y>o.y&&p.y<o.y+o.h)return{kind:"image",obj:o,bounds:{x:o.x,y:o.y,w:o.w,h:o.h}}}return null}
+function createCInlineText(p){const wrap=$("#collageCanvasWrap"),r=cc.getBoundingClientRect(),wr=wrap.getBoundingClientRect(),input=document.createElement("input");input.className="cInlineText";input.placeholder="Type comment…";input.style.left=((p.x/cc.width)*r.width+r.left-wr.left)+"px";input.style.top=((p.y/cc.height)*r.height+r.top-wr.top)+"px";input.style.fontSize="14px";wrap.appendChild(input);let done=false;const commit=()=>{if(done)return;done=true;const tx=input.value.trim();if(tx){saveCState();textItems.push({id:uid(),text:tx,x:p.x,y:p.y,size:+$("#cTextSize").value,color:$("#cTextColor").value});cRender()}input.remove();setCTool("select")};input.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();commit()}else if(e.key==="Escape"){done=true;input.remove();setCTool("select")}};setTimeout(()=>{if(!done){input.focus();input.onblur=()=>setTimeout(commit,100)}},60)}
+function deleteCSelected(){if(!cSel)return;saveCState();if(cSel.kind==="image")items=items.filter(x=>x.id!==cSel.id);else if(cSel.kind==="text")textItems=textItems.filter(x=>x.id!==cSel.id);else cObjects=cObjects.filter(x=>x.id!==cSel.id);cSel=null;renderThumbs();cRender()}
 
-function centerCollageContent(){
-  const boxes=[];
-  items.forEach(it=>boxes.push({x:it.x,y:it.y,r:it.x+it.w,b:it.y+it.h}));
-  textItems.forEach(t=>{
-    const b=textBounds(t);
-    boxes.push({x:b.x,y:b.y,r:b.x+b.w,b:b.y+b.h});
-  });
-  if(!boxes.length)return;
-  const minX=Math.min(...boxes.map(v=>v.x)),maxX=Math.max(...boxes.map(v=>v.r));
-  const minY=Math.min(...boxes.map(v=>v.y)),maxY=Math.max(...boxes.map(v=>v.b));
-  const dx=cc.width/2-(minX+maxX)/2,dy=cc.height/2-(minY+maxY)/2;
-  items.forEach(it=>{it.x+=dx;it.y+=dy});
-  textItems.forEach(t=>{t.x+=dx;t.y+=dy});
-}
+$("#collageInput").onchange=async e=>{for(const f of [...e.target.files])await new Promise(ok=>{const im=new Image();im.onload=()=>{saveCState();items.push({id:uid(),img:im,name:f.name,x:0,y:0,w:200,h:200,ratio:im.width/im.height});ok()};im.src=URL.createObjectURL(f)});autoLayout()};
+document.querySelectorAll("[data-ctool]").forEach(b=>b.onclick=()=>setCTool(b.dataset.ctool));
+cc.onmousedown=e=>{const p=cPoint(e);snapLockX=null;snapLockY=null;if(["arrow","line","dash","circle","rect"].includes(cTool)){cTemp={id:uid(),type:cTool,x1:p.x,y1:p.y,x2:p.x,y2:p.y,color:$("#cAnnoColor").value,width:+$("#cLineWidth").value};return}if(cTool==="text"){createCInlineText(p);return}const hit=cHit(p);cSel=hit?{kind:hit.kind,id:hit.obj.id}:null;if(!hit){cRender();return}saveCState();const b=hit.bounds,resize=Math.hypot(p.x-(b.x+b.w+8),p.y-(b.y+b.h+8))<35;cDrag={kind:hit.kind,id:hit.obj.id,start:p,orig:{...hit.obj},resize};if(hit.kind==="shape"){$("#cAnnoColor").value=hit.obj.color;$("#cAnnoColorText").textContent=hit.obj.color.toUpperCase();$("#cLineWidth").value=hit.obj.width;$("#cLineWidthVal").textContent=Math.round(hit.obj.width)}if(hit.kind==="text"){$("#collageText").value=hit.obj.text;$("#cTextSize").value=hit.obj.size;$("#cTextSizeVal").textContent=Math.round(hit.obj.size);$("#cTextColor").value=hit.obj.color}cRender()};
+cc.onmousemove=e=>{const p=cPoint(e);if(cTemp){cTemp.x2=p.x;cTemp.y2=p.y;cRender();return}if(!cDrag)return;const dx=p.x-cDrag.start.x,dy=p.y-cDrag.start.y;if(cDrag.kind==="image"){const o=items.find(x=>x.id===cDrag.id),s=cDrag.orig;if(cDrag.resize){const sc=Math.max(.12,Math.max((s.w+dx)/s.w,(s.h+dy)/s.h));o.w=Math.max(70,s.w*sc);o.h=o.w/o.ratio}else{o.x=s.x+dx;o.y=s.y+dy}}else if(cDrag.kind==="text"){const o=textItems.find(x=>x.id===cDrag.id),s=cDrag.orig;if(cDrag.resize)o.size=Math.max(10,s.size+dx/4);else{o.x=s.x+dx;o.y=s.y+dy}}else{const o=cObjects.find(x=>x.id===cDrag.id),s=cDrag.orig;if(cDrag.resize){o.x2=s.x2+dx;o.y2=s.y2+dy}else{o.x1=s.x1+dx;o.x2=s.x2+dx;o.y1=s.y1+dy;o.y2=s.y2+dy}}cRender()};
+cc.onmouseup=e=>{if(cTemp){const p=cPoint(e);cTemp.x2=p.x;cTemp.y2=p.y;if(Math.hypot(cTemp.x2-cTemp.x1,cTemp.y2-cTemp.y1)>3){saveCState();cObjects.push(cTemp)}cTemp=null;setCTool("select");cRender()}cDrag=null};
+cc.onmouseleave=()=>{cDrag=null};
+$("#cAnnoColor").oninput=e=>{const o=cSel?.kind==="shape"?cObjects.find(x=>x.id===cSel.id):null;$("#cAnnoColorText").textContent=e.target.value.toUpperCase();if(o){o.color=e.target.value;cRender()}};
+$("#cLineWidth").oninput=e=>{const o=cSel?.kind==="shape"?cObjects.find(x=>x.id===cSel.id):null;$("#cLineWidthVal").textContent=e.target.value;if(o){o.width=+e.target.value;cRender()}};
+$("#cUndo").onclick=undoC;$("#deleteCollageObject").onclick=deleteCSelected;
+$("#autoLayout").onclick=autoLayout;$("#layoutMode").onchange=autoLayout;
+$("#addCollageText").onclick=()=>{const tx=$("#collageText").value.trim();if(!tx)return;saveCState();const t={id:uid(),text:tx,x:cc.width*.08,y:cc.height*.08,size:+$("#cTextSize").value,color:$("#cTextColor").value};textItems.push(t);cSel={kind:"text",id:t.id};cRender()};
+$("#cTextSize").oninput=e=>{$("#cTextSizeVal").textContent=e.target.value;const t=cSel?.kind==="text"?textItems.find(x=>x.id===cSel.id):null;if(t){t.size=+e.target.value;cRender()}};
+$("#cTextColor").oninput=e=>{const t=cSel?.kind==="text"?textItems.find(x=>x.id===cSel.id):null;if(t){t.color=e.target.value;cRender()}};
+$("#collageText").oninput=e=>{const t=cSel?.kind==="text"?textItems.find(x=>x.id===cSel.id):null;if(t){t.text=e.target.value;cRender()}};
+$("#translateCollageText").onclick=async()=>{$("#collageText").value=await translateBrowserText($("#collageText").value,$("#collageLang").value,$("#collageVoiceStatus"),"#collageProgress");const t=cSel?.kind==="text"?textItems.find(x=>x.id===cSel.id):null;if(t){t.text=$("#collageText").value;cRender()}};
+$("#saveCollage").onclick=()=>{const fmt=$("#collageFormat").value,mime=fmt==="jpeg"?"image/jpeg":"image/png",ext=fmt==="jpeg"?"jpg":"png";cRender();cc.toBlob(b=>{const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=`fit-photo-combined.${ext}`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)},mime,.94)};
+$("#shareCollage").onclick=()=>{const fmt=$("#collageFormat").value,mime=fmt==="jpeg"?"image/jpeg":"image/png",ext=fmt==="jpeg"?"jpg":"png";cRender();cc.toBlob(async b=>{const f=new File([b],`fit-photo-combined.${ext}`,{type:mime});if(navigator.share&&(!navigator.canShare||navigator.canShare({files:[f]}))){try{await navigator.share({files:[f],title:"Combined Fit Photos"})}catch(e){}}else $("#saveCollage").click()},mime,.94)};
 
-function autoLayout(){
-  const n=items.length;
-  if(!n){cRender();return}
-  const mode=$("#layoutMode").value,pad=Math.max(24,cc.width*.025),gap=Math.max(14,cc.width*.015);
-  const areaH=cc.height-pad*2;
-  let cols,rows;
-  if(mode==="column"){cols=1;rows=n}
-  else{cols=n;rows=1}
-  const cw=(cc.width-pad*2-gap*(cols-1))/cols,ch=(areaH-gap*(rows-1))/rows;
-  items.forEach((it,i)=>{
-    const ir=it.ratio;
-    let w,h;
-    if(ir>cw/ch){w=cw;h=w/ir}else{h=ch;w=h*ir}
-    it.x=pad+(i%cols)*(cw+gap)+(cw-w)/2;
-    it.y=pad+Math.floor(i/cols)*(ch+gap)+(ch-h)/2;
-    it.w=w;it.h=h;
-  });
-  centerCollageContent();
-  cRender()
-}
-$("#collageInput").onchange=async e=>{
-  items=[];
-  for(const f of [...e.target.files]){
-    await new Promise(res=>{
-      const im=new Image();
-      im.onload=()=>{
-        items.push({id:uid(),img:im,name:f.name,x:0,y:0,w:200,h:200,ratio:im.width/im.height});
-        res()
-      };
-      im.src=URL.createObjectURL(f)
-    })
-  }
-  renderThumbs();autoLayout()
-};
-function renderThumbs(){
-  const box=$("#thumbList");box.innerHTML="";
-  items.forEach((it,i)=>{
-    const d=document.createElement("div");d.className="thumb";
-    d.innerHTML=`<img src="${it.img.src}"><div style="font-size:10px;overflow:hidden;text-overflow:ellipsis">${i+1}. ${it.name}</div><div class="thumbActions"><button data-up="${it.id}">↑</button><button data-down="${it.id}">↓</button><button class="deleteThumb" data-del="${it.id}">×</button></div>`;
-    box.appendChild(d)
-  });
-  box.querySelectorAll("[data-up]").forEach(b=>b.onclick=()=>reorder(b.dataset.up,-1));
-  box.querySelectorAll("[data-down]").forEach(b=>b.onclick=()=>reorder(b.dataset.down,1));box.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{items=items.filter(x=>x.id!==b.dataset.del);renderThumbs();autoLayout()})
-}
-function reorder(id,d){
-  const i=items.findIndex(x=>x.id===id),j=i+d;if(j<0||j>=items.length)return;
-  [items[i],items[j]]=[items[j],items[i]];renderThumbs();autoLayout()
-}
-function cHit(p){
-  for(let i=textItems.length-1;i>=0;i--){const t=textItems[i],b=textBounds(t);if(p.x>b.x-10&&p.x<b.x+b.w+10&&p.y>b.y-10&&p.y<b.y+b.h+10)return{kind:"text",obj:t}}
-  for(let i=items.length-1;i>=0;i--){const o=items[i];if(p.x>o.x&&p.x<o.x+o.w&&p.y>o.y&&p.y<o.y+o.h)return{kind:"image",obj:o}}
-  return null
-}
-cc.onmousedown=e=>{
-  const pp=cPoint(e);
-  if(["arrow","line","dash","circle","rect"].includes(cTool)){
-    cTemp={id:uid(),type:cTool,x1:pp.x,y1:pp.y,x2:pp.x,y2:pp.y,color:$("#cAnnoColor").value,width:+$("#cLineWidth").value};
-    return;
-  }snapLockX=null;snapLockY=null;
-  const p=cPoint(e),hit=cHit(p);
-  cSel=hit?{kind:hit.kind,id:hit.obj.id}:null;
-  if(hit?.kind==="image"){
-    const o=hit.obj;
-    const rz=Math.hypot(p.x-(o.x+o.w),p.y-(o.y+o.h))<55;
-    cDrag={kind:"image",id:o.id,start:p,orig:{x:o.x,y:o.y,w:o.w,h:o.h},resize:rz,ratio:o.ratio}
-  }else if(hit?.kind==="text"){
-    const t=hit.obj;
-    cDrag={kind:"text",id:t.id,start:p,orig:{x:t.x,y:t.y}};
-    $("#collageText").value=t.text;$("#cTextSize").value=t.size;$("#cTextSizeVal").textContent=Math.round(t.size);$("#cTextColor").value=t.color
-  }
-  cRender()
-};
-cc.onmousemove=e=>{
-  if(cTemp){const pp=cPoint(e);cTemp.x2=pp.x;cTemp.y2=pp.y;cRender();return;}
-  if(!cDrag)return;
-  const p=cPoint(e),dx=p.x-cDrag.start.x,dy=p.y-cDrag.start.y;
-  if(cDrag.kind==="image"){
-    const o=items.find(x=>x.id===cDrag.id),s=cDrag.orig;
-    if(cDrag.resize){
-      const scale=Math.max(.12,Math.max((s.w+dx)/s.w,(s.h+dy)/s.h));
-      o.w=Math.max(70,s.w*scale);o.h=o.w/cDrag.ratio
-    }else{
-      let desiredX=s.x+dx, desiredY=s.y+dy;
-      const enterTol=7, releaseTol=16;
-
-      const candidatesX=[];
-      const candidatesY=[];
-      for(const other of items){
-        if(other.id===o.id)continue;
-        candidatesX.push(other.x,other.x+other.w/2,other.x+other.w);
-        candidatesY.push(other.y,other.y+other.h/2,other.y+other.h);
-      }
-
-      const myXOffsets=[0,o.w/2,o.w];
-      const myYOffsets=[0,o.h/2,o.h];
-
-      function nearestSnap(desired,offsets,candidates,tol){
-        let best=null;
-        for(const off of offsets){
-          const p=desired+off;
-          for(const target of candidates){
-            const d=target-p;
-            if(Math.abs(d)<=tol && (!best || Math.abs(d)<Math.abs(best.d))){
-              best={d,target,off};
-            }
-          }
-        }
-        return best;
-      }
-
-      if(snapLockX!==null){
-        const currentPoints=myXOffsets.map(off=>desiredX+off);
-        const minDist=Math.min(...currentPoints.map(p=>Math.abs(p-snapLockX)));
-        if(minDist<=releaseTol){
-          const nearestOff=myXOffsets.reduce((a,b)=>Math.abs(desiredX+a-snapLockX)<Math.abs(desiredX+b-snapLockX)?a:b);
-          desiredX=snapLockX-nearestOff;
-        }else snapLockX=null;
-      }
-      if(snapLockY!==null){
-        const currentPoints=myYOffsets.map(off=>desiredY+off);
-        const minDist=Math.min(...currentPoints.map(p=>Math.abs(p-snapLockY)));
-        if(minDist<=releaseTol){
-          const nearestOff=myYOffsets.reduce((a,b)=>Math.abs(desiredY+a-snapLockY)<Math.abs(desiredY+b-snapLockY)?a:b);
-          desiredY=snapLockY-nearestOff;
-        }else snapLockY=null;
-      }
-
-      if(snapLockX===null){
-        const sx=nearestSnap(desiredX,myXOffsets,candidatesX,enterTol);
-        if(sx){desiredX+=sx.d;snapLockX=sx.target}
-      }
-      if(snapLockY===null){
-        const sy=nearestSnap(desiredY,myYOffsets,candidatesY,enterTol);
-        if(sy){desiredY+=sy.d;snapLockY=sy.target}
-      }
-
-      o.x=desiredX;o.y=desiredY;
-
-      const vr=$("#guideV"),hr=$("#guideH"),r=cc.getBoundingClientRect();
-      if(snapLockX!==null){
-        vr.style.display="block";
-        vr.style.left=(snapLockX/cc.width*r.width)+"px";
-      }else vr.style.display="none";
-      if(snapLockY!==null){
-        hr.style.display="block";
-        hr.style.top=(snapLockY/cc.height*r.height)+"px";
-      }else hr.style.display="none";
-    }
-  }else{
-    const t=textItems.find(x=>x.id===cDrag.id),s=cDrag.orig;t.x=s.x+dx;t.y=s.y+dy
-  }
-  cRender()
-};
-cc.addEventListener("mouseup",e=>{
-  if(cTemp){const pp=cPoint(e);cTemp.x2=pp.x;cTemp.y2=pp.y;cObjects.push(cTemp);cTemp=null;cRender();}
-});
-["mouseup","mouseleave"].forEach(n=>cc.addEventListener(n,()=>{cDrag=null;snapLockX=null;snapLockY=null;$("#guideV").style.display="none";$("#guideH").style.display="none"}));
-
-
-let resizingCanvas=null;
-$("#canvasResizeHandle").addEventListener("mousedown",e=>{
-  e.preventDefault();
-  const rect=cc.getBoundingClientRect();
-  resizingCanvas={
-    x:e.clientX,y:e.clientY,
-    w:cc.width,h:cc.height,
-    screenW:rect.width,screenH:rect.height
-  };
-});
-
-window.addEventListener("mousemove",e=>{
-  if(!resizingCanvas)return;
-
-  const dx=e.clientX-resizingCanvas.x;
-  const dy=e.clientY-resizingCanvas.y;
-
-  const scaleX=Math.max(.35,(resizingCanvas.screenW+dx)/resizingCanvas.screenW);
-  const scaleY=Math.max(.35,(resizingCanvas.screenH+dy)/resizingCanvas.screenH);
-
-  cc.width=Math.round(Math.max(600,Math.min(4000,resizingCanvas.w*scaleX)));
-  cc.height=Math.round(Math.max(400,Math.min(3000,resizingCanvas.h*scaleY)));
-
-  // Immediately recalculate image sizes and positions from the CURRENT canvas size.
-  // This makes images visibly grow/shrink with the white canvas.
-  if(items.length){
-    autoLayout();
-  }else{
-    centerCollageContent();
-    cRender();
-  }
-});
-
-window.addEventListener("mouseup",()=>{resizingCanvas=null;});
-
-$("#autoLayout").onclick=autoLayout;
-$("#layoutMode").onchange=autoLayout;
-
-$("#addCollageText").onclick=()=>{
-  const text=$("#collageText").value.trim();if(!text)return;
-  const t={id:uid(),text,x:cc.width*.08,y:cc.height*.08,size:+$("#cTextSize").value,color:$("#cTextColor").value};
-  textItems.push(t);cSel={kind:"text",id:t.id};cRender()
-};
-$("#cTextSize").oninput=e=>{
-  $("#cTextSizeVal").textContent=e.target.value;
-  if(cSel?.kind==="text"){const t=textItems.find(x=>x.id===cSel.id);if(t){t.size=+e.target.value;cRender()}}
-};
-$("#cTextColor").oninput=e=>{
-  if(cSel?.kind==="text"){const t=textItems.find(x=>x.id===cSel.id);if(t){t.color=e.target.value;cRender()}}
-};
-$("#collageText").oninput=e=>{
-  if(cSel?.kind==="text"){const t=textItems.find(x=>x.id===cSel.id);if(t){t.text=e.target.value;cRender()}}
-};
-$("#deleteCollageObject").onclick=()=>{
-  if(!cSel)return;
-  if(cSel.kind==="image"){items=items.filter(x=>x.id!==cSel.id);renderThumbs()}
-  else textItems=textItems.filter(x=>x.id!==cSel.id);
-  cSel=null;cRender()
-};
-
-
-$("#translateCollageText").onclick=async()=>{
-  $("#collageText").value=await translateBrowserText(
-    $("#collageText").value,
-    $("#collageLang").value,
-    $("#collageVoiceStatus"),
-    "#collageProgress"
-  );
-  if(cSel?.kind==="text"){
-    const t=textItems.find(x=>x.id===cSel.id);
-    if(t){t.text=$("#collageText").value;cRender();}
-  }
-};
-
-$("#saveCollage").onclick=()=>{
-  const fmt=$("#collageFormat").value,mime=fmt==="jpeg"?"image/jpeg":"image/png",ext=fmt==="jpeg"?"jpg":"png";
-  cRender();
-  cc.toBlob(b=>{const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=`fit-photo-combined.${ext}`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)},mime,.94)
-};
-
-
-document.querySelectorAll("[data-ctool]").forEach(b=>b.onclick=()=>{
- cTool=b.dataset.ctool;
- document.querySelectorAll("[data-ctool]").forEach(x=>x.classList.toggle("active",x===b));
-});
-$("#cLineWidth").oninput=e=>$("#cLineWidthVal").textContent=e.target.value;
-function mode(m){document.body.classList.toggle("combine-mode",m==="collage");
+$("#canvasResizeHandle").onmousedown=e=>{e.preventDefault();const r=cc.getBoundingClientRect();saveCState();resizingCanvas={x:e.clientX,y:e.clientY,w:cc.width,h:cc.height,screenW:r.width,screenH:r.height,items:items.map(x=>({...x})),texts:textItems.map(x=>({...x})),shapes:cObjects.map(x=>({...x}))}};
+window.addEventListener("mousemove",e=>{if(!resizingCanvas)return;const sx=Math.max(.4,(resizingCanvas.screenW+(e.clientX-resizingCanvas.x))/resizingCanvas.screenW),sy=Math.max(.4,(resizingCanvas.screenH+(e.clientY-resizingCanvas.y))/resizingCanvas.screenH),nw=Math.round(Math.max(600,Math.min(4000,resizingCanvas.w*sx))),nh=Math.round(Math.max(400,Math.min(3000,resizingCanvas.h*sy))),scale=Math.min(nw/resizingCanvas.w,nh/resizingCanvas.h);cc.width=nw;cc.height=nh;resizingCanvas.items.forEach(s=>{const o=items.find(x=>x.id===s.id);if(o){o.x=s.x*scale;o.y=s.y*scale;o.w=s.w*scale;o.h=s.h*scale}});resizingCanvas.texts.forEach(s=>{const o=textItems.find(x=>x.id===s.id);if(o){o.x=s.x*scale;o.y=s.y*scale;o.size=s.size*scale}});resizingCanvas.shapes.forEach(s=>{const o=cObjects.find(x=>x.id===s.id);if(o){o.x1=s.x1*scale;o.x2=s.x2*scale;o.y1=s.y1*scale;o.y2=s.y2*scale;o.width=Math.max(1,s.width*scale)}});centerCollageContent();fitCollageCanvas()});
+window.addEventListener("mouseup",()=>{resizingCanvas=null});
+function mode(m){
   const a=m==="annotate";
   $("#annotateTab").classList.toggle("active",a);$("#combineTab").classList.toggle("active",!a);
   $("#annotateLeft").style.display=a?"block":"none";$("#collageLeft").style.display=a?"none":"block";
   $("#annotatePanel").style.display=a?"flex":"none";$("#collagePanel").style.display=a?"none":"flex";
   $("#annotateControls").style.display=a?"block":"none";$("#collageControls").style.display=a?"none":"block";
+  const right=document.querySelector("aside.right");if(right)right.scrollTop=0;
+  if(!a){requestAnimationFrame(()=>{fitCollageCanvas();cRender()})}
 }
 $("#annotateTab").onclick=()=>mode("annotate");$("#combineTab").onclick=()=>mode("combine");
 $("#newBtn").onclick=()=>{if(confirm("Start a new project?"))location.reload()};
@@ -1377,14 +1067,7 @@ window.addEventListener("keydown",e=>{
       render();
       handled=true;
     }else if($("#collagePanel").style.display!=="none" && cSel){
-      if(cSel.kind==="image"){
-        items=items.filter(x=>x.id!==cSel.id);
-        renderThumbs();
-      }else if(cSel.kind==="text"){
-        textItems=textItems.filter(x=>x.id!==cSel.id);
-      }
-      cSel=null;
-      cRender();
+      deleteCSelected();
       handled=true;
     }
     if(handled)e.preventDefault();
@@ -1436,11 +1119,14 @@ window.FitEditor={
   addCombineBlob:addSecureBlobToCombine,
   annotationCount:()=>objects.length,
   collageCount:()=>items.length,
+  combineAnnotationCount:()=>cObjects.length,
+  combineTextCount:()=>textItems.length,
+  combineState:()=>({items:items.length,shapes:cObjects.length,texts:textItems.length,tool:cTool,mode:window.getComputedStyle($("#collagePanel")).display}),
   refit:fitPreviewToStage
 };
 
-window.addEventListener("resize",()=>{if(loaded)fitPreviewToStage();cRender()});
-cRender();setTool("select");debug("JavaScript active · Build 44 Combine Editor");
+window.addEventListener("resize",()=>{if(loaded)fitPreviewToStage();fitCollageCanvas()});
+mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active · Version V45");
 })();
 </script>
 
@@ -1540,13 +1226,6 @@ q("#livePhotosStatus").textContent="Connected — waiting for phone photos…";q
 q("#refreshLivePhotosBtn").onclick=async()=>{q("#livePhotosStatus").textContent="Checking secure session…";await refreshPhotos()};
 q("#endSessionBtn").onclick=async()=>{if(!cs)return;let r=await sb.from(S).update({active:false,ended_at:new Date().toISOString()}).eq("session_id",cs);if(r.error)return q("#syncStatus").textContent=r.error.message;if(ch)sb.removeChannel(ch);if(pollTimer){clearInterval(pollTimer);pollTimer=null}q("#syncStatus").textContent="Session ended — QR invalid";q("#endSessionBtn").style.display="none"};
 })();
-
-document.addEventListener("click",e=>{
- const b=e.target.closest("[data-ctool]");
- if(!b)return;
- cTool=b.dataset.ctool;
- document.querySelectorAll("[data-ctool]").forEach(x=>x.classList.toggle("active",x===b));
-});
 </script>
 
 </body>
