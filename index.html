@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Fit Photo Studio V48 Unified Sidebar</title>
+<title>Fit Photo Studio V49 Unified Black Default</title>
 <style>
 :root{
   --bg:#f3f5f7;--panel:#ffffff;--ink:#15171a;--muted:#707782;--line:#dce1e6;
@@ -233,7 +233,7 @@ body.mobile-mode .mobileCaptureScreen{display:block}
 @media(max-width:1150px){.app{grid-template-columns:200px 150px minmax(0,1fr) 270px}}
 
 
-/* Version V48 full workspace */
+/* Version V49 full workspace */
 .rightVersion{font-size:10px;font-weight:800;letter-spacing:.08em;color:#2563eb;background:#eff6ff;border-radius:999px;padding:4px 8px;align-self:flex-start;margin-bottom:10px}
 .right{display:block!important;overflow-y:auto!important;overflow-x:hidden!important;min-width:0!important;padding:14px 14px 110px!important}
 #annotateControls,#collageControls{display:block;min-width:0;max-width:100%;overflow:visible}
@@ -296,6 +296,17 @@ body.mobile-mode .mobileCaptureScreen{display:block}
 .combineLayoutStrip select{width:auto;min-width:105px;height:32px;font-size:10px}
 .combineLayoutStrip .btn{min-height:32px;padding:5px 8px;font-size:10px}
 
+
+/* V49 unified typography + black defaults */
+body,button,input,select,textarea{font-size:10px!important}
+.panel,.section,.prop,.note,.syncStatus,.debug,.thumb,.librarySub,.libraryEmpty{font-size:10px!important}
+h1,h2,h3,p,label,small,span{font-size:10px}
+header .brand b{font-size:14px!important}
+.canvasHead b,.libraryTitle{font-size:11px!important}
+.workspaceTitle{font-size:10px!important}
+.tool,.btn{font-size:10px!important}
+input[type="color"]{width:42px!important;height:32px!important}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -303,7 +314,7 @@ body.mobile-mode .mobileCaptureScreen{display:block}
 <header>
   <div class="brand">
     <div class="logo">F</div>
-    <div><h1>Fit Photo Studio</h1><small><strong>Version V48</strong> · Secure Sync · Full Combine Editor</small></div>
+    <div><h1>Fit Photo Studio</h1><small><strong>Version V49</strong> · Secure Sync · Full Combine Editor</small></div>
   </div>
   <div class="topActions">
     <button id="newBtn" class="btn">New</button>
@@ -469,8 +480,8 @@ body.mobile-mode .mobileCaptureScreen{display:block}
         <span class="versionPill">V48</span>
       </div>
       <div class="prop">
-        <label>Color <small><span id="colorText">#E11D48</span></small></label>
-        <input id="color" type="color" value="#e11d48">
+        <label>Color <small><span id="colorText">#000000</span></small></label>
+        <input id="color" type="color" value="#000000">
       </div>
       <div class="prop">
         <label>Line width <small><span id="lineVal">6</span> px</small></label>
@@ -534,8 +545,8 @@ body.mobile-mode .mobileCaptureScreen{display:block}
         <span class="versionPill">V48</span>
       </div>
       <div class="prop">
-        <label>Color <small><span id="cAnnoColorText">#E11D48</span></small></label>
-        <input id="cAnnoColor" type="color" value="#e11d48">
+        <label>Color <small><span id="cAnnoColorText">#000000</span></small></label>
+        <input id="cAnnoColor" type="color" value="#000000">
       </div>
       <div class="prop">
         <label>Line width <small><span id="cLineWidthVal">6</span> px</small></label>
@@ -545,7 +556,7 @@ body.mobile-mode .mobileCaptureScreen{display:block}
         <label>Text size <small><span id="cTextSizeVal">34</span> px</small></label>
         <input id="cTextSize" type="range" min="14" max="50" value="34">
       </div>
-      <input id="cTextColor" type="color" value="#111827" style="display:none">
+      <input id="cTextColor" type="color" value="#000000" style="display:none">
       <div class="compactPair">
         <button id="cUndo" class="btn">Undo</button>
         <button id="deleteCollageObject" class="btn">Delete</button>
@@ -1122,7 +1133,7 @@ function autoLayout(){const n=items.length;if(!n){fitCollageCanvas();return}save
 function renderThumbs(){const box=$("#thumbList"),empty=$("#combineLibraryEmpty");if(!box)return;box.innerHTML="";if(empty)empty.style.display=items.length?"none":"block";items.forEach((it,i)=>{const d=document.createElement("div");d.className="thumb";d.innerHTML=`<img src="${it.img.src}"><div style="font-size:10px;overflow:hidden;text-overflow:ellipsis">${i+1}. ${it.name}</div><div class="thumbActions"><button data-up="${it.id}">↑</button><button data-down="${it.id}">↓</button><button class="deleteThumb" data-del="${it.id}">×</button></div>`;box.appendChild(d)});box.querySelectorAll("[data-up]").forEach(b=>b.onclick=()=>reorder(b.dataset.up,-1));box.querySelectorAll("[data-down]").forEach(b=>b.onclick=()=>reorder(b.dataset.down,1));box.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{saveCState();items=items.filter(x=>x.id!==b.dataset.del);renderThumbs();fitCollageCanvas()})}
 function reorder(id,d){const i=items.findIndex(x=>x.id===id),j=i+d;if(j<0||j>=items.length)return;saveCState();[items[i],items[j]]=[items[j],items[i]];autoLayout()}
 function cHit(p){for(let i=textItems.length-1;i>=0;i--){const t=textItems[i],b=cTextBounds(t);if(p.x>b.x-12&&p.x<b.x+b.w+12&&p.y>b.y-12&&p.y<b.y+b.h+12)return{kind:"text",obj:t,bounds:b}}for(let i=cObjects.length-1;i>=0;i--){const o=cObjects[i],b=cShapeBounds(o),tol=Math.max(10,o.width*1.5);if((o.type==="line"||o.type==="dash"||o.type==="arrow")?distanceToSegment(p,{x:o.x1,y:o.y1},{x:o.x2,y:o.y2})<=tol:(p.x>b.x-tol&&p.x<b.x+b.w+tol&&p.y>b.y-tol&&p.y<b.y+b.h+tol))return{kind:"shape",obj:o,bounds:b}}for(let i=items.length-1;i>=0;i--){const o=items[i];if(p.x>o.x&&p.x<o.x+o.w&&p.y>o.y&&p.y<o.y+o.h)return{kind:"image",obj:o,bounds:{x:o.x,y:o.y,w:o.w,h:o.h}}}return null}
-function createCInlineText(p){const wrap=$("#collageCanvasWrap"),r=cc.getBoundingClientRect(),wr=wrap.getBoundingClientRect(),input=document.createElement("input");input.className="cInlineText";input.placeholder="Type comment…";input.style.left=((p.x/cc.width)*r.width+r.left-wr.left)+"px";input.style.top=((p.y/cc.height)*r.height+r.top-wr.top)+"px";input.style.fontSize="14px";wrap.appendChild(input);let done=false;const commit=()=>{if(done)return;done=true;const tx=input.value.trim();if(tx){saveCState();textItems.push({id:uid(),text:tx,x:p.x,y:p.y,size:+$("#cTextSize").value,color:$("#cTextColor").value});cRender()}input.remove();setCTool("select")};input.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();commit()}else if(e.key==="Escape"){done=true;input.remove();setCTool("select")}};setTimeout(()=>{if(!done){input.focus();input.onblur=()=>setTimeout(commit,100)}},60)}
+function createCInlineText(p){const wrap=$("#collageCanvasWrap"),r=cc.getBoundingClientRect(),wr=wrap.getBoundingClientRect(),input=document.createElement("input");input.className="cInlineText";input.placeholder="Type comment…";input.style.left=((p.x/cc.width)*r.width+r.left-wr.left)+"px";input.style.top=((p.y/cc.height)*r.height+r.top-wr.top)+"px";input.style.fontSize="14px";wrap.appendChild(input);let done=false;const commit=()=>{if(done)return;done=true;const tx=input.value.trim();if(tx){saveCState();textItems.push({id:uid(),text:tx,x:p.x,y:p.y,size:+$("#cTextSize").value,color:$("#cAnnoColor").value});cRender()}input.remove();setCTool("select")};input.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();commit()}else if(e.key==="Escape"){done=true;input.remove();setCTool("select")}};setTimeout(()=>{if(!done){input.focus();input.onblur=()=>setTimeout(commit,100)}},60)}
 function deleteCSelected(){if(!cSel)return;saveCState();if(cSel.kind==="image")items=items.filter(x=>x.id!==cSel.id);else if(cSel.kind==="text")textItems=textItems.filter(x=>x.id!==cSel.id);else cObjects=cObjects.filter(x=>x.id!==cSel.id);cSel=null;renderThumbs();cRender()}
 
 $("#collageInput").onchange=async e=>{for(const f of [...e.target.files])await new Promise(ok=>{const im=new Image();im.onload=()=>{saveCState();items.push({id:uid(),img:im,name:f.name,x:0,y:0,w:200,h:200,ratio:im.width/im.height});ok()};im.src=URL.createObjectURL(f)});autoLayout()};
@@ -1135,7 +1146,7 @@ $("#cAnnoColor").oninput=e=>{const o=cSel?.kind==="shape"?cObjects.find(x=>x.id=
 $("#cLineWidth").oninput=e=>{const o=cSel?.kind==="shape"?cObjects.find(x=>x.id===cSel.id):null;$("#cLineWidthVal").textContent=e.target.value;if(o){o.width=+e.target.value;cRender()}};
 $("#cUndo").onclick=undoC;$("#deleteCollageObject").onclick=deleteCSelected;
 $("#autoLayout").onclick=autoLayout;$("#layoutMode").onchange=autoLayout;
-$("#addCollageText").onclick=()=>{const tx=$("#collageText").value.trim();if(!tx)return;saveCState();const t={id:uid(),text:tx,x:cc.width*.08,y:cc.height*.08,size:+$("#cTextSize").value,color:$("#cTextColor").value};textItems.push(t);cSel={kind:"text",id:t.id};cRender()};
+$("#addCollageText").onclick=()=>{const tx=$("#collageText").value.trim();if(!tx)return;saveCState();const t={id:uid(),text:tx,x:cc.width*.08,y:cc.height*.08,size:+$("#cTextSize").value,color:$("#cAnnoColor").value};textItems.push(t);cSel={kind:"text",id:t.id};cRender()};
 $("#cTextSize").oninput=e=>{$("#cTextSizeVal").textContent=e.target.value;const t=cSel?.kind==="text"?textItems.find(x=>x.id===cSel.id):null;if(t){t.size=+e.target.value;cRender()}};
 $("#cTextColor").oninput=e=>{const t=cSel?.kind==="text"?textItems.find(x=>x.id===cSel.id):null;if(t){t.color=e.target.value;cRender()}};
 $("#collageText").oninput=e=>{const t=cSel?.kind==="text"?textItems.find(x=>x.id===cSel.id):null;if(t){t.text=e.target.value;cRender()}};
@@ -1231,7 +1242,7 @@ window.FitEditor={
 };
 
 window.addEventListener("resize",()=>{if(loaded)fitPreviewToStage();fitCollageCanvas()});
-mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active · Version V48");
+mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active · Version V49");
 })();
 </script>
 
@@ -1352,6 +1363,26 @@ document.addEventListener("DOMContentLoaded",()=>{
   const ct=document.querySelector("#cTextSize");
   const ctv=document.querySelector("#cTextSizeVal");
   if(ct && ctv) ct.addEventListener("input",e=>ctv.textContent=e.target.value);
+});
+
+document.addEventListener("DOMContentLoaded",()=>{
+  const ac=document.querySelector("#cAnnoColor");
+  const tc=document.querySelector("#cTextColor");
+  if(ac){
+    ac.value="#000000";
+    if(tc)tc.value="#000000";
+    ac.addEventListener("input",e=>{
+      if(tc)tc.value=e.target.value;
+      try{
+        if(typeof cSel!=="undefined" && cSel?.kind==="text"){
+          const t=textItems.find(x=>x.id===cSel.id);
+          if(t){t.color=e.target.value;cRender();}
+        }
+      }catch(_){}
+    });
+  }
+  const nc=document.querySelector("#color");
+  if(nc)nc.value="#000000";
 });
 </script>
 
