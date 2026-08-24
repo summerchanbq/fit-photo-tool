@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Fit Photo Studio V46 Unified Editor</title>
+<title>Fit Photo Studio V48 Unified Sidebar</title>
 <style>
 :root{
   --bg:#f3f5f7;--panel:#ffffff;--ink:#15171a;--muted:#707782;--line:#dce1e6;
@@ -233,7 +233,7 @@ body.mobile-mode .mobileCaptureScreen{display:block}
 @media(max-width:1150px){.app{grid-template-columns:200px 150px minmax(0,1fr) 270px}}
 
 
-/* Version V46 full workspace */
+/* Version V48 full workspace */
 .rightVersion{font-size:10px;font-weight:800;letter-spacing:.08em;color:#2563eb;background:#eff6ff;border-radius:999px;padding:4px 8px;align-self:flex-start;margin-bottom:10px}
 .right{display:block!important;overflow-y:auto!important;overflow-x:hidden!important;min-width:0!important;padding:14px 14px 110px!important}
 #annotateControls,#collageControls{display:block;min-width:0;max-width:100%;overflow:visible}
@@ -277,6 +277,25 @@ body.mobile-mode .mobileCaptureScreen{display:block}
 .versionPill{font-size:8px;font-weight:700;color:#2563eb;background:#eff6ff;border-radius:999px;padding:2px 6px}
 .voiceBadge{font-size:8px;font-weight:700;color:#067647;background:#ecfdf3;border-radius:999px;padding:2px 6px}
 
+
+/* V48: Annotate and Combine use the same right-sidebar structure */
+.right{overflow-y:auto!important;overflow-x:hidden!important;padding:8px 9px 72px!important}
+.right .section{padding:8px!important;margin-bottom:6px!important;border-bottom:1px solid var(--line)!important}
+.right h2{font-size:10px!important;margin:0 0 7px!important;letter-spacing:.07em!important}
+.right .prop{margin-bottom:7px!important}
+.right label{font-size:9px!important;margin-bottom:3px!important}
+.right .btn{min-height:32px!important;padding:5px 7px!important;font-size:10px!important}
+.right select,.right textarea{font-size:10px!important}
+.right textarea{min-height:62px!important;max-height:74px!important}
+.right input[type="range"]{height:18px!important}
+.compactPair{display:grid!important;grid-template-columns:1fr 1fr!important;gap:5px!important}
+.sectionTitleRow{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:5px!important}
+.versionPill{font-size:8px!important;padding:2px 6px!important}
+.voiceBadge{font-size:8px!important;padding:2px 6px!important}
+.combineLayoutStrip{display:flex;gap:5px;align-items:center;justify-content:center;padding:6px 8px;border-top:1px solid var(--line);background:#fff}
+.combineLayoutStrip select{width:auto;min-width:105px;height:32px;font-size:10px}
+.combineLayoutStrip .btn{min-height:32px;padding:5px 8px;font-size:10px}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -284,7 +303,7 @@ body.mobile-mode .mobileCaptureScreen{display:block}
 <header>
   <div class="brand">
     <div class="logo">F</div>
-    <div><h1>Fit Photo Studio</h1><small><strong>Version V46</strong> · Secure Sync · Full Combine Editor</small></div>
+    <div><h1>Fit Photo Studio</h1><small><strong>Version V48</strong> · Secure Sync · Full Combine Editor</small></div>
   </div>
   <div class="topActions">
     <button id="newBtn" class="btn">New</button>
@@ -428,75 +447,148 @@ body.mobile-mode .mobileCaptureScreen{display:block}
         <button class="ctool" data-ctool="rect">□ Rectangle</button>
         <button class="ctool" data-ctool="text">T Text</button>
       </div>
+<div class="combineLayoutStrip">
+  <select id="layoutMode" title="Layout">
+    <option value="row" selected>Horizontal</option>
+    <option value="column">Vertical</option>
+  </select>
+  <button id="autoLayout" class="btn">Auto Arrange</button>
+  <button id="fitCanvasContent" class="btn">Fit to Canvas</button>
+</div>
+
     </div>
   </main>
 
   
+
 <aside class="panel right">
   <div id="annotateControls">
     <div class="section">
-      <div class="sectionTitleRow"><h2>ANNOTATION STYLE</h2><span class="versionPill">V46</span></div>
-      <div class="prop"><label>Color <small><span id="colorHex">#E11D48</span></small></label><input id="color" type="color" value="#e11d48"></div>
-      <div class="prop"><label>Line width <small><span id="lineWidthVal">6</span> px</small></label><input id="lineWidth" type="range" min="1" max="20" value="6"></div>
-      <div class="prop"><label>Text size <small><span id="fontSizeVal">34</span> px</small></label><input id="fontSize" type="range" min="14" max="50" value="34"></div>
-      <div class="compactPair"><button id="undo" class="btn">Undo</button><button id="delete" class="btn">Delete</button></div>
+      <div class="sectionTitleRow">
+        <h2>ANNOTATION STYLE</h2>
+        <span class="versionPill">V48</span>
+      </div>
+      <div class="prop">
+        <label>Color <small><span id="colorText">#E11D48</span></small></label>
+        <input id="color" type="color" value="#e11d48">
+      </div>
+      <div class="prop">
+        <label>Line width <small><span id="lineVal">6</span> px</small></label>
+        <input id="lineWidth" type="range" min="1" max="20" value="6">
+      </div>
+      <div class="prop">
+        <label>Text size <small><span id="fontVal">34</span> px</small></label>
+        <input id="fontSize" type="range" min="14" max="50" value="34">
+      </div>
+      <div class="compactPair">
+        <button id="undo" class="btn">Undo</button>
+        <button id="delete" class="btn">Delete</button>
+      </div>
     </div>
 
     <div class="section">
-      <div class="sectionTitleRow"><h2>VOICE → ENGLISH</h2><span class="voiceBadge">NO API KEY</span></div>
-      <div class="prop"><label>Spoken language</label><select id="lang">
-        <option value="en-AU">English (Australia)</option><option value="zh-CN">Chinese / Mandarin</option><option value="zh-HK">Cantonese</option><option value="id-ID">Bahasa Indonesia</option><option value="vi-VN">Vietnamese</option>
-      </select></div>
+      <div class="sectionTitleRow">
+        <h2>VOICE → ENGLISH</h2>
+        <span class="voiceBadge">NO API KEY</span>
+      </div>
+      <div class="prop">
+        <label>Spoken language</label>
+        <select id="lang">
+          <option value="en-AU">English (Australia)</option>
+          <option value="zh-CN">Chinese / Mandarin</option>
+          <option value="zh-HK">Cantonese</option>
+          <option value="id-ID">Bahasa Indonesia</option>
+          <option value="vi-VN">Vietnamese</option>
+          <option value="hi-IN">Hindi</option>
+          <option value="ja-JP">Japanese</option>
+          <option value="ko-KR">Korean</option>
+        </select>
+      </div>
       <button id="mic" class="btn primary" style="width:100%">🎙 Start speaking</button>
       <textarea id="voice" rows="3" placeholder="Speech appears here. Click Translate to English if needed." style="margin-top:6px"></textarea>
-      <div class="compactPair" style="margin-top:6px"><button id="translateVoice" class="btn">Translate to English</button><button id="addVoice" class="btn primary">Add to photo</button></div>
+      <div class="compactPair" style="margin-top:6px">
+        <button id="translateVoice" class="btn">Translate to English</button>
+        <button id="addVoice" class="btn primary">Add to photo</button>
+      </div>
       <div id="voiceStatus" class="note" style="margin-top:5px">Ready.</div>
       <div id="voiceProgress" class="downloadProgress"><span></span></div>
     </div>
 
     <div class="section">
       <h2>SAVE & SHARE</h2>
-      <div class="compactPair"><select id="format"><option value="png">PNG</option><option value="jpeg">JPG</option></select><button id="saveBtn" class="btn primary">Save</button></div>
+      <div class="compactPair">
+        <select id="format">
+          <option value="png">PNG</option>
+          <option value="jpeg">JPG</option>
+        </select>
+        <button id="saveBtn" class="btn primary">Save</button>
+      </div>
       <button id="shareBtn" class="btn" style="width:100%;margin-top:5px">Share</button>
     </div>
   </div>
 
   <div id="collageControls" style="display:none">
     <div class="section">
-      <div class="sectionTitleRow"><h2>ANNOTATION STYLE</h2><span class="versionPill">V46</span></div>
-      <div class="unifiedTools">
-        <button class="tool active" data-ctool="select">↖ Select</button><button class="tool" data-ctool="arrow">↗ Arrow</button>
-        <button class="tool" data-ctool="line">╱ Line</button><button class="tool" data-ctool="dash">┄ Dashed</button>
-        <button class="tool" data-ctool="circle">○ Circle</button><button class="tool" data-ctool="rect">□ Rectangle</button>
-        <button class="tool" data-ctool="text">T Text</button>
+      <div class="sectionTitleRow">
+        <h2>ANNOTATION STYLE</h2>
+        <span class="versionPill">V48</span>
       </div>
-      <div class="prop"><label>Color <small><span id="cAnnoHex">#E11D48</span></small></label><input id="cAnnoColor" type="color" value="#e11d48"></div>
-      <div class="prop"><label>Line width <small><span id="cLineWidthVal">6</span> px</small></label><input id="cLineWidth" type="range" min="1" max="20" value="6"></div>
-      <div class="prop"><label>Text size <small><span id="cTextSizeVal">34</span> px</small></label><input id="cTextSize" type="range" min="14" max="50" value="34"></div>
-      <div class="compactPair"><button id="cUndo" class="btn">Undo</button><button id="deleteCollageObject" class="btn">Delete</button></div>
+      <div class="prop">
+        <label>Color <small><span id="cAnnoColorText">#E11D48</span></small></label>
+        <input id="cAnnoColor" type="color" value="#e11d48">
+      </div>
+      <div class="prop">
+        <label>Line width <small><span id="cLineWidthVal">6</span> px</small></label>
+        <input id="cLineWidth" type="range" min="1" max="20" value="6">
+      </div>
+      <div class="prop">
+        <label>Text size <small><span id="cTextSizeVal">34</span> px</small></label>
+        <input id="cTextSize" type="range" min="14" max="50" value="34">
+      </div>
+      <input id="cTextColor" type="color" value="#111827" style="display:none">
+      <div class="compactPair">
+        <button id="cUndo" class="btn">Undo</button>
+        <button id="deleteCollageObject" class="btn">Delete</button>
+      </div>
     </div>
 
     <div class="section">
-      <div class="sectionTitleRow"><h2>VOICE → ENGLISH</h2><span class="voiceBadge">NO API KEY</span></div>
-      <div class="prop"><label>Spoken language</label><select id="collageLang">
-        <option value="en-AU">English (Australia)</option><option value="zh-CN">Chinese / Mandarin</option><option value="zh-HK">Cantonese</option><option value="id-ID">Bahasa Indonesia</option><option value="vi-VN">Vietnamese</option>
-      </select></div>
+      <div class="sectionTitleRow">
+        <h2>VOICE → ENGLISH</h2>
+        <span class="voiceBadge">NO API KEY</span>
+      </div>
+      <div class="prop">
+        <label>Spoken language</label>
+        <select id="collageLang">
+          <option value="en-AU">English (Australia)</option>
+          <option value="zh-CN">Chinese / Mandarin</option>
+          <option value="zh-HK">Cantonese</option>
+          <option value="id-ID">Bahasa Indonesia</option>
+          <option value="vi-VN">Vietnamese</option>
+          <option value="hi-IN">Hindi</option>
+          <option value="ja-JP">Japanese</option>
+          <option value="ko-KR">Korean</option>
+        </select>
+      </div>
       <button id="collageMic" class="btn primary" style="width:100%">🎙 Start speaking</button>
-      <textarea id="collageText" rows="3" placeholder="Speech appears here, or type directly…" style="margin-top:6px"></textarea>
-      <div class="compactPair" style="margin-top:6px"><button id="translateCollageText" class="btn">Translate to English</button><button id="addCollageText" class="btn primary">Add to canvas</button></div>
+      <textarea id="collageText" rows="3" placeholder="Speech appears here. Click Translate to English if needed." style="margin-top:6px"></textarea>
+      <div class="compactPair" style="margin-top:6px">
+        <button id="translateCollageText" class="btn">Translate to English</button>
+        <button id="addCollageText" class="btn primary">Add to canvas</button>
+      </div>
       <div id="collageVoiceStatus" class="note" style="margin-top:5px">Ready.</div>
       <div id="collageProgress" class="downloadProgress"><span></span></div>
     </div>
 
     <div class="section">
-      <h2>CANVAS & LAYOUT</h2>
-      <div class="prop"><label>Layout</label><select id="layoutMode"><option value="row" selected>Horizontal</option><option value="column">Vertical</option></select></div>
-      <div class="compactPair"><button id="autoLayout" class="btn">Auto Arrange</button><button id="fitCanvasContent" class="btn">Fit to Canvas</button></div>
-    </div>
-
-    <div class="section">
       <h2>SAVE & SHARE</h2>
-      <div class="compactPair"><select id="collageFormat"><option value="png">PNG</option><option value="jpeg">JPG</option></select><button id="saveCollage" class="btn primary">Save</button></div>
+      <div class="compactPair">
+        <select id="collageFormat">
+          <option value="png">PNG</option>
+          <option value="jpeg">JPG</option>
+        </select>
+        <button id="saveCollage" class="btn primary">Save</button>
+      </div>
       <button id="shareCollage" class="btn" style="width:100%;margin-top:5px">Share</button>
     </div>
   </div>
@@ -1139,7 +1231,7 @@ window.FitEditor={
 };
 
 window.addEventListener("resize",()=>{if(loaded)fitPreviewToStage();fitCollageCanvas()});
-mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active · Version V46");
+mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active · Version V48");
 })();
 </script>
 
@@ -1240,14 +1332,26 @@ q("#refreshLivePhotosBtn").onclick=async()=>{q("#livePhotosStatus").textContent=
 q("#endSessionBtn").onclick=async()=>{if(!cs)return;let r=await sb.from(S).update({active:false,ended_at:new Date().toISOString()}).eq("session_id",cs);if(r.error)return q("#syncStatus").textContent=r.error.message;if(ch)sb.removeChannel(ch);if(pollTimer){clearInterval(pollTimer);pollTimer=null}q("#syncStatus").textContent="Session ended — QR invalid";q("#endSessionBtn").style.display="none"};
 })();
 
+
 document.addEventListener("DOMContentLoaded",()=>{
-  const bindHex=(inp,out)=>{const a=document.querySelector(inp),b=document.querySelector(out);if(a&&b)a.addEventListener("input",e=>b.textContent=e.target.value.toUpperCase())};
-  bindHex("#color","#colorHex"); bindHex("#cAnnoColor","#cAnnoHex");
-  const cl=document.querySelector("#cLineWidth"),clv=document.querySelector("#cLineWidthVal");
-  if(cl&&clv)cl.addEventListener("input",e=>clv.textContent=e.target.value);
-  const ct=document.querySelector("#cTextSize"),ctv=document.querySelector("#cTextSizeVal");
-  if(ct&&ctv)ct.addEventListener("input",e=>ctv.textContent=e.target.value);
-  const fc=document.querySelector("#fitCanvasContent"); if(fc&&typeof autoLayout==="function")fc.onclick=autoLayout;
+  const fc=document.querySelector("#fitCanvasContent");
+  if(fc && typeof autoLayout==="function") fc.onclick=autoLayout;
+});
+
+document.addEventListener("DOMContentLoaded",()=>{
+  const fc=document.querySelector("#fitCanvasContent");
+  if(fc && typeof autoLayout==="function") fc.onclick=autoLayout;
+
+  const lc=document.querySelector("#layoutMode");
+  if(lc && typeof autoLayout==="function") lc.onchange=autoLayout;
+
+  const cc=document.querySelector("#cAnnoColor");
+  const tc=document.querySelector("#cTextColor");
+  if(cc && tc) cc.addEventListener("input",()=>{tc.value=cc.value});
+
+  const ct=document.querySelector("#cTextSize");
+  const ctv=document.querySelector("#cTextSizeVal");
+  if(ct && ctv) ct.addEventListener("input",e=>ctv.textContent=e.target.value);
 });
 </script>
 
