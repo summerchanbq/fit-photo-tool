@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Fit Photo Studio V49 Unified Black Default</title>
+<title>Fit Photo Studio V57 Working Zoom Resize</title>
 <style>
 :root{
   --bg:#f3f5f7;--panel:#ffffff;--ink:#15171a;--muted:#707782;--line:#dce1e6;
@@ -100,7 +100,7 @@ textarea{resize:vertical}
 .thumb{grid-template-columns:42px 1fr auto!important}
 .thumbActions{display:flex;gap:4px;align-items:center}
 .thumbActions button.deleteThumb{background:#fff1f2;color:#b42318}
-.inlineTextEditor{
+.inlineTextEditor{z-index:100!important;
   position:absolute;z-index:20;min-width:120px;max-width:420px;
   border:2px solid #2563eb;border-radius:6px;padding:5px 7px;
   background:rgba(255,255,255,.96);outline:none;font-weight:700;
@@ -233,7 +233,7 @@ body.mobile-mode .mobileCaptureScreen{display:block}
 @media(max-width:1150px){.app{grid-template-columns:200px 150px minmax(0,1fr) 270px}}
 
 
-/* Version V49 full workspace */
+/* Version V57 full workspace */
 .rightVersion{font-size:10px;font-weight:800;letter-spacing:.08em;color:#2563eb;background:#eff6ff;border-radius:999px;padding:4px 8px;align-self:flex-start;margin-bottom:10px}
 .right{display:block!important;overflow-y:auto!important;overflow-x:hidden!important;min-width:0!important;padding:14px 14px 110px!important}
 #annotateControls,#collageControls{display:block;min-width:0;max-width:100%;overflow:visible}
@@ -307,6 +307,108 @@ header .brand b{font-size:14px!important}
 .tool,.btn{font-size:10px!important}
 input[type="color"]{width:42px!important;height:32px!important}
 
+
+.leftMenuGap{height:18px}
+#annotateLeft h2,#collageLeft h2,#connectPhoneSection h2{font-size:10px!important;letter-spacing:.08em!important;margin-bottom:7px!important}
+#annotateLeft .upload,#collageLeft .upload{min-height:64px!important}
+#annotateLeft .upload strong,#collageLeft .upload strong{font-size:10px!important}
+#annotateLeft .upload span,#collageLeft .upload span{font-size:9px!important}
+#connectPhoneSection{padding-top:12px!important;border-top:1px solid var(--line)!important}
+.liveTextEditor{position:absolute;z-index:150!important;min-width:120px;min-height:30px;padding:3px 5px;border:1.5px dashed #2563eb;border-radius:4px;background:rgba(255,255,255,.92);outline:none;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.2}
+
+
+/* V53 unified controls */
+.btn,.tool,#annotateTab,#combineTab,#newBtn,#topExport{
+  height:34px!important;
+  min-height:34px!important;
+  max-height:34px!important;
+  line-height:1!important;
+  padding:0 10px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  box-sizing:border-box!important;
+}
+.upload{min-height:64px!important}
+.right .section{padding:8px!important;margin-bottom:6px!important}
+.right .prop{margin-bottom:7px!important}
+.right h2{margin-bottom:7px!important}
+.right textarea{min-height:62px!important;max-height:62px!important}
+.compactPair{gap:5px!important}
+
+
+/* V54 annotate zoom */
+#annotatePanel .stage{overflow:auto!important;align-items:flex-start!important;justify-content:flex-start!important}
+#annotatePanel .photoWrap{flex:0 0 auto!important;margin:auto!important}
+.zoomBar{display:flex;align-items:center;justify-content:center;gap:5px;padding:6px 8px;background:#fff;border-top:1px solid var(--line)}
+.zoomBar .btn{height:34px!important;min-height:34px!important;min-width:42px!important;padding:0 10px!important}
+.zoomBar .zoomReadout{min-width:62px!important;font-weight:700}
+
+
+/* V55 selectable/resizable annotate photo */
+#photoWrap.photo-selected{outline:2px solid #2563eb;outline-offset:3px}
+#photoResizeHandle{
+  position:absolute;right:-10px;bottom:-10px;width:18px;height:18px;border-radius:50%;
+  background:#fff;border:3px solid #2563eb;z-index:40;cursor:nwse-resize;display:none;
+}
+#photoWrap.photo-selected #photoResizeHandle{display:block}
+#photoWrap{cursor:default}
+#photoWrap.photo-dragging{cursor:grabbing}
+#annotatePanel .stage{position:relative!important}
+
+
+/* V56 stable annotate fit/zoom/drag */
+#annotatePanel .stage{
+  overflow:auto!important;
+  position:relative!important;
+  display:flex!important;
+  align-items:flex-start!important;
+  justify-content:flex-start!important;
+  padding:12px!important;
+}
+#photoWrap{
+  position:relative!important;
+  flex:0 0 auto!important;
+  margin:auto!important;
+  left:0;
+  top:0;
+}
+#previewImg{
+  display:block;
+  object-fit:contain!important;
+  user-select:none!important;
+  -webkit-user-drag:none!important;
+}
+#overlay{
+  position:absolute!important;
+  left:0!important;
+  top:0!important;
+}
+#photoWrap.photo-selected{outline:2px solid #2563eb;outline-offset:3px}
+#photoResizeHandle{
+  position:absolute;right:-10px;bottom:-10px;width:18px;height:18px;border-radius:50%;
+  background:#fff;border:3px solid #2563eb;z-index:50;cursor:nwse-resize;display:none;
+}
+#photoWrap.photo-selected #photoResizeHandle{display:block}
+
+
+/* V57 final annotate sizing authority */
+#photoWrap{
+  max-width:none!important;
+  max-height:none!important;
+  flex:0 0 auto!important;
+  position:relative!important;
+}
+#previewImg{
+  max-width:none!important;
+  max-height:none!important;
+}
+#annotatePanel .stage{
+  overflow:auto!important;
+  min-width:0!important;
+  min-height:0!important;
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -314,7 +416,7 @@ input[type="color"]{width:42px!important;height:32px!important}
 <header>
   <div class="brand">
     <div class="logo">F</div>
-    <div><h1>Fit Photo Studio</h1><small><strong>Version V49</strong> · Secure Sync · Full Combine Editor</small></div>
+    <div><h1>Fit Photo Studio</h1><small><strong>Version V57</strong> · Secure Sync · Full Combine Editor</small></div>
   </div>
   <div class="topActions">
     <button id="newBtn" class="btn">New</button>
@@ -334,11 +436,11 @@ input[type="color"]{width:42px!important;height:32px!important}
 
     <div id="annotateLeft">
       <div class="section">
-        <h2>Photo</h2>
+        <h2>SELECT PHOTO</h2>
         <label class="upload">
           <input id="photoInput" type="file" accept="image/*">
-          <strong>Take / Choose Photo</strong>
-          <span>One button for camera or file selection</span>
+          <strong>Select Photo</strong>
+          <span>Take or choose a photo</span>
         </label>
         <div id="photoMeta" class="meta">No photo selected</div>
       </div>
@@ -346,16 +448,17 @@ input[type="color"]{width:42px!important;height:32px!important}
 
     <div id="collageLeft">
       <div class="section">
-        <h2>Photos</h2>
+        <h2>SELECT PHOTO</h2>
         <label class="upload">
           <input id="collageInput" type="file" accept="image/*" multiple>
-          <strong>Add Photos</strong>
-          <span>Select photos</span>
+          <strong>Select Photo</strong>
+          <span>Take or choose photos</span>
         </label>
       </div>
     </div>
 
-    
+    <div class="leftMenuGap"></div>
+
     <div class="section" id="connectPhoneSection">
       <h2>Connect Phone</h2>
       <div class="connectCard">
@@ -422,7 +525,7 @@ input[type="color"]{width:42px!important;height:32px!important}
             </div>
           </div>
           <img id="previewImg" alt="Selected fit photo">
-          <canvas id="overlay"></canvas>
+          <canvas id="overlay"></canvas><div id="photoResizeHandle" title="Drag to resize photo proportionally"></div>
         </div>
       </div>
       <div class="toolbar">
@@ -433,6 +536,12 @@ input[type="color"]{width:42px!important;height:32px!important}
         <button class="tool" data-tool="circle">○ Circle</button>
         <button class="tool" data-tool="rect">□ Rectangle</button>
         <button class="tool" data-tool="text">T Text</button>
+      </div>
+      <div class="zoomBar" id="annotateZoomBar">
+        <button id="zoomOut" class="btn" title="Zoom out">−</button>
+        <button id="zoomLevel" class="btn zoomReadout" title="Reset to 100%">100%</button>
+        <button id="zoomIn" class="btn" title="Zoom in">+</button>
+        <button id="zoomFit" class="btn" title="Fit photo to screen">Fit</button>
       </div>
     </div>
 
@@ -585,7 +694,7 @@ input[type="color"]{width:42px!important;height:32px!important}
       <textarea id="collageText" rows="3" placeholder="Speech appears here. Click Translate to English if needed." style="margin-top:6px"></textarea>
       <div class="compactPair" style="margin-top:6px">
         <button id="translateCollageText" class="btn">Translate to English</button>
-        <button id="addCollageText" class="btn primary">Add to canvas</button>
+        <button id="addCollageText" class="btn primary">Add to photo</button>
       </div>
       <div id="collageVoiceStatus" class="note" style="margin-top:5px">Ready.</div>
       <div id="collageProgress" class="downloadProgress"><span></span></div>
@@ -613,7 +722,7 @@ const debug=t=>$("#debug").textContent="Debug: "+t;
 
 // ---------- annotation ----------
 const img=$("#previewImg"), cvs=$("#overlay"), ctx=cvs.getContext("2d");
-let loaded=false,objects=[],selected=null,tool="select",temp=null,drag=null,history=[];
+let loaded=false,objects=[],selected=null,tool="select",temp=null,drag=null,history=[];let annotateTextEditing=false;let annotateZoom=1;let annotateBaseW=0;let annotateBaseH=0;let photoSelected=false;let photoMove=null;let photoResize=null;
 
 function uid(){return Math.random().toString(36).slice(2)+Date.now().toString(36)}
 function color(){return $("#color").value}
@@ -625,22 +734,64 @@ function point(e,c=cvs){const r=c.getBoundingClientRect();return{x:(e.clientX-r.
 function fitPreviewToStage(){
   const stage=$("#annotatePanel .stage"),wrap=$("#photoWrap");
   if(!loaded||!stage||!img.naturalWidth||!img.naturalHeight)return;
-  const sr=stage.getBoundingClientRect();
-  const maxW=Math.max(200,sr.width-20),maxH=Math.max(200,sr.height-20);
+  const maxW=Math.max(180,stage.clientWidth-28);
+  const maxH=Math.max(180,stage.clientHeight-28);
   const scale=Math.min(maxW/img.naturalWidth,maxH/img.naturalHeight,1);
-  const dw=Math.max(1,Math.round(img.naturalWidth*scale));
-  const dh=Math.max(1,Math.round(img.naturalHeight*scale));
+  annotateBaseW=Math.max(1,Math.floor(img.naturalWidth*scale));
+  annotateBaseH=Math.max(1,Math.floor(img.naturalHeight*scale));
+  annotateZoom=1;
+  applyAnnotateZoom();
+  requestAnimationFrame(()=>{
+    stage.scrollLeft=0;
+    stage.scrollTop=0;
+  });
+}
+
+
+function applyAnnotateZoom(){
+  if(!loaded||!annotateBaseW||!annotateBaseH)return;
+  annotateZoom=Math.max(.4,Math.min(4,annotateZoom));
+  const dw=Math.max(60,Math.round(annotateBaseW*annotateZoom));
+  const dh=Math.max(60,Math.round(annotateBaseH*annotateZoom));
+  const wrap=$("#photoWrap");
+
   img.style.setProperty("width",dw+"px","important");
   img.style.setProperty("height",dh+"px","important");
   img.style.setProperty("max-width","none","important");
   img.style.setProperty("max-height","none","important");
-  wrap.style.width=dw+"px";wrap.style.height=dh+"px";
-  cvs.width=img.naturalWidth;cvs.height=img.naturalHeight;
+
+  wrap.style.setProperty("width",dw+"px","important");
+  wrap.style.setProperty("height",dh+"px","important");
+  wrap.style.setProperty("max-width","none","important");
+  wrap.style.setProperty("max-height","none","important");
+
+  if(cvs.width!==img.naturalWidth)cvs.width=img.naturalWidth;
+  if(cvs.height!==img.naturalHeight)cvs.height=img.naturalHeight;
+  cvs.style.setProperty("width",dw+"px","important");
+  cvs.style.setProperty("height",dh+"px","important");
   cvs.style.left="0px";cvs.style.top="0px";
-  cvs.style.width=dw+"px";cvs.style.height=dh+"px";
+
+  const z=$("#zoomLevel");
+  if(z)z.textContent=Math.round(annotateZoom*100)+"%";
   render();
 }
-
+function setAnnotateZoom(z,keepCenter=true){
+  if(!loaded)return;
+  const stage=$("#annotatePanel .stage"),wrap=$("#photoWrap");
+  let centerX=0,centerY=0;
+  if(keepCenter&&stage){
+    centerX=(stage.scrollLeft+stage.clientWidth/2)/Math.max(1,wrap.offsetWidth);
+    centerY=(stage.scrollTop+stage.clientHeight/2)/Math.max(1,wrap.offsetHeight);
+  }
+  annotateZoom=z;
+  applyAnnotateZoom();
+  if(keepCenter&&stage){
+    requestAnimationFrame(()=>{
+      stage.scrollLeft=Math.max(0,centerX*wrap.offsetWidth-stage.clientWidth/2);
+      stage.scrollTop=Math.max(0,centerY*wrap.offsetHeight-stage.clientHeight/2);
+    });
+  }
+}
 function syncOverlay(){
   cvs.width=img.naturalWidth;cvs.height=img.naturalHeight;
   requestAnimationFrame(()=>{
@@ -673,7 +824,7 @@ function draw(o,sel=false){
 }
 function render(){ctx.clearRect(0,0,cvs.width,cvs.height);objects.forEach(o=>draw(o,o.id===selected));if(temp)draw(temp)}
 function hit(p){for(let i=objects.length-1;i>=0;i--){const o=objects[i],b=bounds(o),pad=26;if(p.x>b.x-pad&&p.x<b.x+b.w+pad&&p.y>b.y-pad&&p.y<b.y+b.h+pad)return o}return null}
-function setTool(t){tool=t;$$(".tool").forEach(b=>b.classList.toggle("active",b.dataset.tool===t));$("#hint").textContent=t==="select"?"Select an annotation to move or resize":"Draw "+t+" directly on the photo"}
+function setTool(t){tool=t;if(t!=="select")selectPhotoFrame(false);$$(".tool").forEach(b=>b.classList.toggle("active",b.dataset.tool===t));$("#hint").textContent=t==="select"?"Select photo or annotation to move / resize":"Draw "+t+" directly on the photo"}
 
 $("#photoInput").addEventListener("change",e=>{
   const f=e.target.files?.[0];if(!f)return;
@@ -686,7 +837,7 @@ $("#photoInput").addEventListener("change",e=>{
     img.style.display="block";
     $("#photoMeta").textContent=`${f.name} · ${img.naturalWidth}×${img.naturalHeight}`;
     objects=[];selected=null;temp=null;drag=null;history=[];
-    fitPreviewToStage();
+    fitPreviewToStage();requestAnimationFrame(()=>fitPreviewToStage());
     $("#hint").textContent="Photo ready";
     debug("photo loaded");
     setTimeout(()=>URL.revokeObjectURL(url),1500);
@@ -700,33 +851,79 @@ $("#photoInput").addEventListener("change",e=>{
 });
 
 
+
+function selectPhotoFrame(on=true){
+  photoSelected=!!on;
+  const w=$("#photoWrap");
+  if(w)w.classList.toggle("photo-selected",photoSelected);
+}
+function deselectAnnotations(){
+  selected=null;
+  render();
+}
 function createInlineTextEditor(p){
-  const wrap=$("#photoWrap"), rect=cvs.getBoundingClientRect(), wrect=wrap.getBoundingClientRect();
+  if(!loaded || annotateTextEditing)return;
+  annotateTextEditing=true;
+  saveHistory();
+
+  const o={id:uid(),type:"text",x1:p.x,y1:p.y,text:"",color:color(),size:fontS()};
+  objects.push(o);selected=o.id;render();
+
+  const wrap=$("#photoWrap"),rect=cvs.getBoundingClientRect(),wrect=wrap.getBoundingClientRect();
   const input=document.createElement("input");
-  input.type="text";input.className="inlineTextEditor";input.placeholder="Type comment…";
-  input.style.left=((p.x/cvs.width)*rect.width + rect.left-wrect.left)+"px";
-  input.style.top=((p.y/cvs.height)*rect.height + rect.top-wrect.top)+"px";
-  input.style.fontSize=Math.max(14,Math.min(28,fontS()*.6))+"px";
+  input.type="text";
+  input.className="liveTextEditor";
+  input.placeholder="Type comment and press Enter";
+  input.style.left=((p.x/cvs.width)*rect.width+rect.left-wrect.left)+"px";
+  input.style.top=((p.y/cvs.height)*rect.height+rect.top-wrect.top)+"px";
+  input.style.fontSize=Math.max(14,Math.min(34,fontS()*.7))+"px";
   input.style.color=color();
   wrap.appendChild(input);
-  input.focus();
-  const commit=()=>{
-    const t=input.value.trim();
-    if(t){
-      saveHistory();
-      const o={id:uid(),type:"text",x1:p.x,y1:p.y,text:t,color:color(),size:fontS()};
-      objects.push(o);selected=o.id;render()
-    }
-    input.remove();setTool("select")
+
+  let finished=false;
+  const sync=()=>{
+    o.text=input.value;
+    o.color=color();
+    o.size=fontS();
+    render();
   };
-  input.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();commit()}if(e.key==="Escape"){input.remove();setTool("select")}});
-  input.addEventListener("blur",()=>setTimeout(()=>{if(document.body.contains(input))commit()},80));
+  const finish=(keep=true)=>{
+    if(finished)return;
+    finished=true;
+    sync();
+    if(!keep || !o.text.trim()){
+      objects=objects.filter(x=>x.id!==o.id);
+      selected=null;
+      render();
+    }
+    input.remove();
+    annotateTextEditing=false;
+    setTool("select");
+  };
+
+  input.addEventListener("input",sync);
+  input.addEventListener("keydown",e=>{
+    if(e.key==="Enter"){
+      e.preventDefault();
+      finish(true);
+    }else if(e.key==="Escape"){
+      e.preventDefault();
+      finish(false);
+    }
+  });
+  input.addEventListener("blur",()=>{
+    // Clicking elsewhere ends editing but never starts another textbox.
+    setTimeout(()=>finish(true),0);
+  });
+  setTimeout(()=>input.focus(),0);
 }
 
-cvs.addEventListener("mousedown",e=>{
+cvs.addEventListener("mousedown",e=>{if(annotateTextEditing)return;
   if(!loaded)return;e.preventDefault();const p=point(e);
   if(tool==="select"){
     const o=hit(p);selected=o?.id||null;
+    if(!o){selectPhotoFrame(true);render();return;}
+    selectPhotoFrame(false);
     if(o){saveHistory();const b=bounds(o),resize=Math.abs(p.x-(b.x+b.w))<40&&Math.abs(p.y-(b.y+b.h))<40;drag={id:o.id,start:p,orig:JSON.parse(JSON.stringify(o)),resize};
       if(o.color){$("#color").value=o.color;$("#colorText").textContent=o.color.toUpperCase()}
       if(o.type==="text"){$("#fontSize").value=o.size;$("#fontVal").textContent=Math.round(o.size)}
@@ -749,7 +946,14 @@ cvs.addEventListener("mousemove",e=>{
   render()
 });
 ["mouseup","mouseleave"].forEach(n=>cvs.addEventListener(n,()=>{if(temp){objects.push(temp);selected=temp.id;temp=null;setTool("select");render()}drag=null}));
-$$(".tool").forEach(b=>b.onclick=()=>setTool(b.dataset.tool));
+$$(".tool").forEach(b=>b.onclick=()=>{
+  if(!b.dataset.tool)return;
+  setTool(b.dataset.tool);
+  if(b.dataset.tool==="text"){
+    if(!loaded){$("#hint").textContent="Choose a photo first";return;}
+    createInlineTextEditor({x:cvs.width/2,y:cvs.height/2});
+  }
+});
 $("#color").oninput=e=>{const o=objects.find(x=>x.id===selected);$("#colorText").textContent=e.target.value.toUpperCase();if(o){o.color=e.target.value;render()}};
 $("#lineWidth").oninput=e=>{const o=objects.find(x=>x.id===selected);$("#lineVal").textContent=e.target.value;if(o&&o.type!=="text"){o.width=+e.target.value;render()}};
 $("#fontSize").oninput=e=>{const o=objects.find(x=>x.id===selected);$("#fontVal").textContent=e.target.value;if(o&&o.type==="text"){o.size=+e.target.value;render()}};
@@ -1100,7 +1304,7 @@ $("#addVoice").onclick=()=>{
 
 // ---------- collage ----------
 const cc=$("#collageCanvas"),cx=cc.getContext("2d");
-let items=[],textItems=[],cObjects=[],cSel=null,cDrag=null,cTool="select",cTemp=null,cHistory=[],resizingCanvas=null;
+let items=[],textItems=[],cObjects=[],cSel=null,cDrag=null,cTool="select",cTemp=null,cHistory=[],resizingCanvas=null;let combineTextEditing=false;
 let snapLockX=null,snapLockY=null;
 
 function cPoint(e){const r=cc.getBoundingClientRect();return{x:(e.clientX-r.left)*cc.width/r.width,y:(e.clientY-r.top)*cc.height/r.height}}
@@ -1133,12 +1337,71 @@ function autoLayout(){const n=items.length;if(!n){fitCollageCanvas();return}save
 function renderThumbs(){const box=$("#thumbList"),empty=$("#combineLibraryEmpty");if(!box)return;box.innerHTML="";if(empty)empty.style.display=items.length?"none":"block";items.forEach((it,i)=>{const d=document.createElement("div");d.className="thumb";d.innerHTML=`<img src="${it.img.src}"><div style="font-size:10px;overflow:hidden;text-overflow:ellipsis">${i+1}. ${it.name}</div><div class="thumbActions"><button data-up="${it.id}">↑</button><button data-down="${it.id}">↓</button><button class="deleteThumb" data-del="${it.id}">×</button></div>`;box.appendChild(d)});box.querySelectorAll("[data-up]").forEach(b=>b.onclick=()=>reorder(b.dataset.up,-1));box.querySelectorAll("[data-down]").forEach(b=>b.onclick=()=>reorder(b.dataset.down,1));box.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{saveCState();items=items.filter(x=>x.id!==b.dataset.del);renderThumbs();fitCollageCanvas()})}
 function reorder(id,d){const i=items.findIndex(x=>x.id===id),j=i+d;if(j<0||j>=items.length)return;saveCState();[items[i],items[j]]=[items[j],items[i]];autoLayout()}
 function cHit(p){for(let i=textItems.length-1;i>=0;i--){const t=textItems[i],b=cTextBounds(t);if(p.x>b.x-12&&p.x<b.x+b.w+12&&p.y>b.y-12&&p.y<b.y+b.h+12)return{kind:"text",obj:t,bounds:b}}for(let i=cObjects.length-1;i>=0;i--){const o=cObjects[i],b=cShapeBounds(o),tol=Math.max(10,o.width*1.5);if((o.type==="line"||o.type==="dash"||o.type==="arrow")?distanceToSegment(p,{x:o.x1,y:o.y1},{x:o.x2,y:o.y2})<=tol:(p.x>b.x-tol&&p.x<b.x+b.w+tol&&p.y>b.y-tol&&p.y<b.y+b.h+tol))return{kind:"shape",obj:o,bounds:b}}for(let i=items.length-1;i>=0;i--){const o=items[i];if(p.x>o.x&&p.x<o.x+o.w&&p.y>o.y&&p.y<o.y+o.h)return{kind:"image",obj:o,bounds:{x:o.x,y:o.y,w:o.w,h:o.h}}}return null}
-function createCInlineText(p){const wrap=$("#collageCanvasWrap"),r=cc.getBoundingClientRect(),wr=wrap.getBoundingClientRect(),input=document.createElement("input");input.className="cInlineText";input.placeholder="Type comment…";input.style.left=((p.x/cc.width)*r.width+r.left-wr.left)+"px";input.style.top=((p.y/cc.height)*r.height+r.top-wr.top)+"px";input.style.fontSize="14px";wrap.appendChild(input);let done=false;const commit=()=>{if(done)return;done=true;const tx=input.value.trim();if(tx){saveCState();textItems.push({id:uid(),text:tx,x:p.x,y:p.y,size:+$("#cTextSize").value,color:$("#cAnnoColor").value});cRender()}input.remove();setCTool("select")};input.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();commit()}else if(e.key==="Escape"){done=true;input.remove();setCTool("select")}};setTimeout(()=>{if(!done){input.focus();input.onblur=()=>setTimeout(commit,100)}},60)}
+function createCInlineText(p){
+  if(combineTextEditing)return;
+  combineTextEditing=true;
+  saveCState();
+
+  const t={id:uid(),text:"",x:p.x,y:p.y,size:+$("#cTextSize").value,color:$("#cAnnoColor").value};
+  textItems.push(t);cSel={kind:"text",id:t.id};cRender();
+
+  const wrap=$("#collageCanvasWrap"),rect=cc.getBoundingClientRect(),wrect=wrap.getBoundingClientRect();
+  const input=document.createElement("input");
+  input.type="text";
+  input.className="liveTextEditor";
+  input.placeholder="Type comment and press Enter";
+  input.style.left=((p.x/cc.width)*rect.width+rect.left-wrect.left)+"px";
+  input.style.top=((p.y/cc.height)*rect.height+rect.top-wrect.top)+"px";
+  input.style.fontSize=Math.max(14,Math.min(34,(+$("#cTextSize").value)*.7))+"px";
+  input.style.color=$("#cAnnoColor").value;
+  wrap.appendChild(input);
+
+  let finished=false;
+  const sync=()=>{
+    t.text=input.value;
+    t.size=+$("#cTextSize").value;
+    t.color=$("#cAnnoColor").value;
+    cRender();
+  };
+  const finish=(keep=true)=>{
+    if(finished)return;
+    finished=true;
+    sync();
+    if(!keep || !t.text.trim()){
+      textItems=textItems.filter(x=>x.id!==t.id);
+      cSel=null;
+      cRender();
+    }
+    input.remove();
+    combineTextEditing=false;
+    setCTool("select");
+  };
+
+  input.addEventListener("input",sync);
+  input.addEventListener("keydown",e=>{
+    if(e.key==="Enter"){
+      e.preventDefault();
+      finish(true);
+    }else if(e.key==="Escape"){
+      e.preventDefault();
+      finish(false);
+    }
+  });
+  input.addEventListener("blur",()=>{
+    setTimeout(()=>finish(true),0);
+  });
+  setTimeout(()=>input.focus(),0);
+}
 function deleteCSelected(){if(!cSel)return;saveCState();if(cSel.kind==="image")items=items.filter(x=>x.id!==cSel.id);else if(cSel.kind==="text")textItems=textItems.filter(x=>x.id!==cSel.id);else cObjects=cObjects.filter(x=>x.id!==cSel.id);cSel=null;renderThumbs();cRender()}
 
 $("#collageInput").onchange=async e=>{for(const f of [...e.target.files])await new Promise(ok=>{const im=new Image();im.onload=()=>{saveCState();items.push({id:uid(),img:im,name:f.name,x:0,y:0,w:200,h:200,ratio:im.width/im.height});ok()};im.src=URL.createObjectURL(f)});autoLayout()};
-document.querySelectorAll("[data-ctool]").forEach(b=>b.onclick=()=>setCTool(b.dataset.ctool));
-cc.onmousedown=e=>{const p=cPoint(e);snapLockX=null;snapLockY=null;if(["arrow","line","dash","circle","rect"].includes(cTool)){cTemp={id:uid(),type:cTool,x1:p.x,y1:p.y,x2:p.x,y2:p.y,color:$("#cAnnoColor").value,width:+$("#cLineWidth").value};return}if(cTool==="text"){createCInlineText(p);return}const hit=cHit(p);cSel=hit?{kind:hit.kind,id:hit.obj.id}:null;if(!hit){cRender();return}saveCState();const b=hit.bounds,resize=Math.hypot(p.x-(b.x+b.w+8),p.y-(b.y+b.h+8))<35;cDrag={kind:hit.kind,id:hit.obj.id,start:p,orig:{...hit.obj},resize};if(hit.kind==="shape"){$("#cAnnoColor").value=hit.obj.color;$("#cAnnoColorText").textContent=hit.obj.color.toUpperCase();$("#cLineWidth").value=hit.obj.width;$("#cLineWidthVal").textContent=Math.round(hit.obj.width)}if(hit.kind==="text"){$("#collageText").value=hit.obj.text;$("#cTextSize").value=hit.obj.size;$("#cTextSizeVal").textContent=Math.round(hit.obj.size);$("#cTextColor").value=hit.obj.color}cRender()};
+document.querySelectorAll("[data-ctool]").forEach(b=>b.onclick=()=>{
+  setCTool(b.dataset.ctool);
+  if(b.dataset.ctool==="text"){
+    createCInlineText({x:cc.width/2,y:cc.height/2});
+  }
+});
+cc.onmousedown=e=>{if(combineTextEditing)return;const p=cPoint(e);snapLockX=null;snapLockY=null;if(["arrow","line","dash","circle","rect"].includes(cTool)){cTemp={id:uid(),type:cTool,x1:p.x,y1:p.y,x2:p.x,y2:p.y,color:$("#cAnnoColor").value,width:+$("#cLineWidth").value};return}if(cTool==="text"){createCInlineText(p);return}const hit=cHit(p);cSel=hit?{kind:hit.kind,id:hit.obj.id}:null;if(!hit){cRender();return}saveCState();const b=hit.bounds,resize=Math.hypot(p.x-(b.x+b.w+8),p.y-(b.y+b.h+8))<35;cDrag={kind:hit.kind,id:hit.obj.id,start:p,orig:{...hit.obj},resize};if(hit.kind==="shape"){$("#cAnnoColor").value=hit.obj.color;$("#cAnnoColorText").textContent=hit.obj.color.toUpperCase();$("#cLineWidth").value=hit.obj.width;$("#cLineWidthVal").textContent=Math.round(hit.obj.width)}if(hit.kind==="text"){$("#collageText").value=hit.obj.text;$("#cTextSize").value=hit.obj.size;$("#cTextSizeVal").textContent=Math.round(hit.obj.size);$("#cTextColor").value=hit.obj.color}cRender()};
 cc.onmousemove=e=>{const p=cPoint(e);if(cTemp){cTemp.x2=p.x;cTemp.y2=p.y;cRender();return}if(!cDrag)return;const dx=p.x-cDrag.start.x,dy=p.y-cDrag.start.y;if(cDrag.kind==="image"){const o=items.find(x=>x.id===cDrag.id),s=cDrag.orig;if(cDrag.resize){const sc=Math.max(.12,Math.max((s.w+dx)/s.w,(s.h+dy)/s.h));o.w=Math.max(70,s.w*sc);o.h=o.w/o.ratio}else{o.x=s.x+dx;o.y=s.y+dy}}else if(cDrag.kind==="text"){const o=textItems.find(x=>x.id===cDrag.id),s=cDrag.orig;if(cDrag.resize)o.size=Math.max(10,s.size+dx/4);else{o.x=s.x+dx;o.y=s.y+dy}}else{const o=cObjects.find(x=>x.id===cDrag.id),s=cDrag.orig;if(cDrag.resize){o.x2=s.x2+dx;o.y2=s.y2+dy}else{o.x1=s.x1+dx;o.x2=s.x2+dx;o.y1=s.y1+dy;o.y2=s.y2+dy}}cRender()};
 cc.onmouseup=e=>{if(cTemp){const p=cPoint(e);cTemp.x2=p.x;cTemp.y2=p.y;if(Math.hypot(cTemp.x2-cTemp.x1,cTemp.y2-cTemp.y1)>3){saveCState();cObjects.push(cTemp)}cTemp=null;setCTool("select");cRender()}cDrag=null};
 cc.onmouseleave=()=>{cDrag=null};
@@ -1151,8 +1414,6 @@ $("#cTextSize").oninput=e=>{$("#cTextSizeVal").textContent=e.target.value;const 
 $("#cTextColor").oninput=e=>{const t=cSel?.kind==="text"?textItems.find(x=>x.id===cSel.id):null;if(t){t.color=e.target.value;cRender()}};
 $("#collageText").oninput=e=>{const t=cSel?.kind==="text"?textItems.find(x=>x.id===cSel.id):null;if(t){t.text=e.target.value;cRender()}};
 $("#translateCollageText").onclick=async()=>{$("#collageText").value=await translateBrowserText($("#collageText").value,$("#collageLang").value,$("#collageVoiceStatus"),"#collageProgress");const t=cSel?.kind==="text"?textItems.find(x=>x.id===cSel.id):null;if(t){t.text=$("#collageText").value;cRender()}};
-$("#saveCollage").onclick=()=>{const fmt=$("#collageFormat").value,mime=fmt==="jpeg"?"image/jpeg":"image/png",ext=fmt==="jpeg"?"jpg":"png";cRender();cc.toBlob(b=>{const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=`fit-photo-combined.${ext}`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)},mime,.94)};
-$("#shareCollage").onclick=()=>{const fmt=$("#collageFormat").value,mime=fmt==="jpeg"?"image/jpeg":"image/png",ext=fmt==="jpeg"?"jpg":"png";cRender();cc.toBlob(async b=>{const f=new File([b],`fit-photo-combined.${ext}`,{type:mime});if(navigator.share&&(!navigator.canShare||navigator.canShare({files:[f]}))){try{await navigator.share({files:[f],title:"Combined Fit Photos"})}catch(e){}}else $("#saveCollage").click()},mime,.94)};
 
 $("#canvasResizeHandle").onmousedown=e=>{e.preventDefault();const r=cc.getBoundingClientRect();saveCState();resizingCanvas={x:e.clientX,y:e.clientY,w:cc.width,h:cc.height,screenW:r.width,screenH:r.height,items:items.map(x=>({...x})),texts:textItems.map(x=>({...x})),shapes:cObjects.map(x=>({...x}))}};
 window.addEventListener("mousemove",e=>{if(!resizingCanvas)return;const sx=Math.max(.4,(resizingCanvas.screenW+(e.clientX-resizingCanvas.x))/resizingCanvas.screenW),sy=Math.max(.4,(resizingCanvas.screenH+(e.clientY-resizingCanvas.y))/resizingCanvas.screenH),nw=Math.round(Math.max(600,Math.min(4000,resizingCanvas.w*sx))),nh=Math.round(Math.max(400,Math.min(3000,resizingCanvas.h*sy))),scale=Math.min(nw/resizingCanvas.w,nh/resizingCanvas.h);cc.width=nw;cc.height=nh;resizingCanvas.items.forEach(s=>{const o=items.find(x=>x.id===s.id);if(o){o.x=s.x*scale;o.y=s.y*scale;o.w=s.w*scale;o.h=s.h*scale}});resizingCanvas.texts.forEach(s=>{const o=textItems.find(x=>x.id===s.id);if(o){o.x=s.x*scale;o.y=s.y*scale;o.size=s.size*scale}});resizingCanvas.shapes.forEach(s=>{const o=cObjects.find(x=>x.id===s.id);if(o){o.x1=s.x1*scale;o.x2=s.x2*scale;o.y1=s.y1*scale;o.y2=s.y2*scale;o.width=Math.max(1,s.width*scale)}});centerCollageContent();fitCollageCanvas()});
@@ -1205,7 +1466,7 @@ async function loadSecureBlobIntoAnnotate(blob,label="Secure live photo"){
       const meta=$("#photoMeta");
       if(meta)meta.textContent=`${label} · ${img.naturalWidth}×${img.naturalHeight}`;
       $("#hint").textContent="Secure live photo ready — choose a tool";
-      requestAnimationFrame(()=>{fitPreviewToStage();render()});
+      requestAnimationFrame(()=>{fitPreviewToStage();requestAnimationFrame(()=>fitPreviewToStage());render()});
       resolve(true);
     };
     img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error("Could not decode secure photo"))};
@@ -1241,8 +1502,105 @@ window.FitEditor={
   refit:fitPreviewToStage
 };
 
+
+function initAnnotatePhotoInteractions(){
+  const wrap=$("#photoWrap");
+  const stage=$("#annotatePanel .stage");
+  const handle=$("#photoResizeHandle");
+  if(!wrap||!stage||!handle)return;
+
+  let moving=false,resizing=false;
+  let startX=0,startY=0,startOffsetX=0,startOffsetY=0,startW=0,startH=0;
+  let offsetX=0,offsetY=0;
+
+  function selectPhoto(on=true){
+    photoSelected=!!on;
+    wrap.classList.toggle("photo-selected",photoSelected);
+  }
+
+  function applyOffset(){
+    wrap.style.transform=`translate(${offsetX}px,${offsetY}px)`;
+  }
+
+  // Capture blank-image clicks before the normal annotation handler.
+  cvs.addEventListener("mousedown",e=>{
+    if(!loaded||tool!=="select"||annotateTextEditing)return;
+    const p=point(e);
+    const obj=hit(p);
+    if(obj)return; // annotations retain priority
+    e.preventDefault();
+    e.stopPropagation();
+    selected=null;render();
+    selectPhoto(true);
+    moving=true;
+    startX=e.clientX;startY=e.clientY;
+    startOffsetX=offsetX;startOffsetY=offsetY;
+  },true);
+
+  handle.addEventListener("mousedown",e=>{
+    if(!loaded)return;
+    e.preventDefault();e.stopPropagation();
+    selectPhoto(true);
+    resizing=true;
+    startX=e.clientX;startY=e.clientY;
+    const wr=wrap.getBoundingClientRect();
+    startW=wr.width;startH=wr.height;
+  });
+
+  window.addEventListener("mousemove",e=>{
+    if(moving){
+      offsetX=startOffsetX+(e.clientX-startX);
+      offsetY=startOffsetY+(e.clientY-startY);
+      applyOffset();
+    }
+    if(resizing){
+      const dx=e.clientX-startX;
+      const dy=e.clientY-startY;
+      const sx=(startW+dx)/Math.max(1,startW);
+      const sy=(startH+dy)/Math.max(1,startH);
+      const scale=Math.max(.2,Math.max(sx,sy));
+      const newW=Math.max(100,startW*scale);
+      annotateBaseW=newW/annotateZoom;
+      annotateBaseH=annotateBaseW*(img.naturalHeight/img.naturalWidth);
+      applyAnnotateZoom();
+    }
+  });
+
+  window.addEventListener("mouseup",()=>{
+    moving=false;
+    resizing=false;
+  });
+
+  stage.addEventListener("mousedown",e=>{
+    if(e.target===stage)selectPhoto(false);
+  });
+
+  const zin=$("#zoomIn"),zout=$("#zoomOut"),zfit=$("#zoomFit"),zlevel=$("#zoomLevel");
+  if(zin)zin.onclick=()=>setAnnotateZoom(annotateZoom*1.2,true);
+  if(zout)zout.onclick=()=>setAnnotateZoom(annotateZoom/1.2,true);
+  if(zlevel)zlevel.onclick=()=>setAnnotateZoom(1,true);
+  if(zfit)zfit.onclick=()=>{
+    offsetX=0;offsetY=0;applyOffset();
+    selectPhoto(false);
+    fitPreviewToStage();
+  };
+
+  stage.addEventListener("wheel",e=>{
+    if(!loaded||!(e.ctrlKey||e.metaKey))return;
+    e.preventDefault();
+    setAnnotateZoom(annotateZoom*(e.deltaY<0?1.12:1/1.12),true);
+  },{passive:false});
+
+  // Expose diagnostics / controls for future debugging.
+  window.FitEditor.zoomIn=()=>setAnnotateZoom(annotateZoom*1.2,true);
+  window.FitEditor.zoomOut=()=>setAnnotateZoom(annotateZoom/1.2,true);
+  window.FitEditor.zoomFit=()=>fitPreviewToStage();
+  window.FitEditor.zoomLevel=()=>annotateZoom;
+}
+
 window.addEventListener("resize",()=>{if(loaded)fitPreviewToStage();fitCollageCanvas()});
-mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active · Version V49");
+initAnnotatePhotoInteractions();
+mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active · Version V57");
 })();
 </script>
 
@@ -1384,6 +1742,105 @@ document.addEventListener("DOMContentLoaded",()=>{
   const nc=document.querySelector("#color");
   if(nc)nc.value="#000000";
 });
+
+function askFileName(defaultName,ext){
+  let name=prompt("File name:",defaultName);
+  if(name===null)return null;
+  name=(name||defaultName).trim();
+  if(!name)name=defaultName;
+  name=name.replace(/[\\/:*?"<>|]+/g,"-");
+  const lower=name.toLowerCase();
+  if(!lower.endsWith("."+ext.toLowerCase()))name+="."+ext;
+  return name;
+}
+function downloadBlob(blob, filename){
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;a.download=filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+function canvasToBlob(canvas,mime,quality=.94){
+  return new Promise((resolve,reject)=>{
+    try{
+      canvas.toBlob(b=>b?resolve(b):reject(new Error("Could not create image file")),mime,quality);
+    }catch(e){reject(e)}
+  });
+}
+async function exportAnnotatedBlob(){
+  if(typeof loaded!=="undefined" && !loaded) throw new Error("Choose a photo first.");
+  if(typeof render==="function") render();
+  const base=document.querySelector("#previewImg");
+  const overlay=document.querySelector("#overlay");
+  if(!base || !base.naturalWidth) throw new Error("No photo loaded.");
+  const out=document.createElement("canvas");
+  out.width=base.naturalWidth;out.height=base.naturalHeight;
+  const ox=out.getContext("2d");
+  ox.drawImage(base,0,0,out.width,out.height);
+  ox.drawImage(overlay,0,0,out.width,out.height);
+  const fmt=document.querySelector("#format")?.value||"png";
+  const mime=fmt==="jpeg"?"image/jpeg":"image/png";
+  const ext=fmt==="jpeg"?"jpg":"png";
+  return {blob:await canvasToBlob(out,mime,.94),ext,mime};
+}
+async function exportCombineBlob(){
+  if(typeof cRender==="function") cRender();
+  const canvas=document.querySelector("#collageCanvas");
+  if(!canvas) throw new Error("Combine canvas is not ready.");
+  const fmt=document.querySelector("#collageFormat")?.value||"png";
+  const mime=fmt==="jpeg"?"image/jpeg":"image/png";
+  const ext=fmt==="jpeg"?"jpg":"png";
+  return {blob:await canvasToBlob(canvas,mime,.94),ext,mime};
+}
+async function shareOrDownload(makeFile,baseName){
+  const {blob,ext,mime}=await makeFile();
+  const file=new File([blob],`${baseName}.${ext}`,{type:mime});
+  if(navigator.share && (!navigator.canShare || navigator.canShare({files:[file]}))){
+    try{
+      await navigator.share({files:[file],title:baseName});
+      return;
+    }catch(e){
+      if(e && e.name==="AbortError") return;
+      console.warn("Share failed, falling back to download",e);
+    }
+  }
+  downloadBlob(blob,`${baseName}.${ext}`);
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+  const saveA=document.querySelector("#saveBtn");
+  const shareA=document.querySelector("#shareBtn");
+  const saveC=document.querySelector("#saveCollage");
+  const shareC=document.querySelector("#shareCollage");
+
+  if(saveA) saveA.onclick=async()=>{
+    try{
+      const {blob,ext}=await exportAnnotatedBlob();
+      const filename=askFileName("fit-photo-annotated",ext);
+      if(!filename)return;
+      downloadBlob(blob,filename);
+    }catch(e){alert("Save failed: "+(e.message||e))}
+  };
+  if(shareA) shareA.onclick=async()=>{
+    try{await shareOrDownload(exportAnnotatedBlob,"fit-photo-annotated")}
+    catch(e){alert("Share failed: "+(e.message||e))}
+  };
+  if(saveC) saveC.onclick=async()=>{
+    try{
+      const {blob,ext}=await exportCombineBlob();
+      const filename=askFileName("fit-photo-combined",ext);
+      if(!filename)return;
+      downloadBlob(blob,filename);
+    }catch(e){alert("Save failed: "+(e.message||e))}
+  };
+  if(shareC) shareC.onclick=async()=>{
+    try{await shareOrDownload(exportCombineBlob,"fit-photo-combined")}
+    catch(e){alert("Share failed: "+(e.message||e))}
+  };
+});
+
 </script>
 
 </body>
