@@ -1,0 +1,1484 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fit Photo Studio V41 Stable Workspace</title>
+<style>
+:root{
+  --bg:#f3f5f7;--panel:#ffffff;--ink:#15171a;--muted:#707782;--line:#dce1e6;
+  --dark:#111827;--blue:#2563eb;--soft:#f7f8fa;--danger:#b42318;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);overflow:hidden}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+header{
+  height:66px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;
+  justify-content:space-between;padding:0 22px;
+}
+.brand{display:flex;align-items:center;gap:11px}
+.logo{width:34px;height:34px;border-radius:10px;background:var(--dark);color:#fff;display:grid;place-items:center;font-weight:800}
+.brand h1{font-size:18px;margin:0}.brand small{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+.topActions{display:flex;gap:8px}
+.btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 12px;color:var(--ink)}
+.btn:hover{background:#fafafa}.btn.primary{background:var(--dark);border-color:var(--dark);color:#fff}
+.app{height:calc(100vh - 66px);display:grid;grid-template-columns:225px 170px minmax(0,1fr) 300px;gap:12px;padding:12px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:15px;min-height:0}
+.left,.right{padding:14px}
+.left{display:flex;flex-direction:column}
+.right{display:flex;flex-direction:column}
+.section{padding-bottom:13px;margin-bottom:13px;border-bottom:1px solid var(--line)}
+.section:last-child{border-bottom:0;margin-bottom:0;padding-bottom:0}
+.section h2{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#5d6570;margin:0 0 9px}
+.modeTabs{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.modeTabs button{border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px}
+.modeTabs button.active{background:var(--dark);color:#fff;border-color:var(--dark)}
+.upload{
+  display:block;border:1.5px dashed #c7cdd4;border-radius:12px;background:#fafbfc;padding:18px 12px;text-align:center
+}
+.upload input{display:none}
+.upload strong{display:block;font-size:13px}.upload span{display:block;font-size:11px;color:var(--muted);margin-top:4px}
+.meta{font-size:11px;color:var(--muted);margin-top:8px;word-break:break-word}
+.center{display:flex;flex-direction:column;overflow:hidden}
+.canvasHead{height:44px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 13px}
+.canvasHead b{font-size:13px}.canvasHead span{font-size:11px;color:var(--muted)}
+.stage{
+  position:relative;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;overflow:auto;padding:18px;
+  background:
+  linear-gradient(45deg,#edf0f3 25%,transparent 25%),linear-gradient(-45deg,#edf0f3 25%,transparent 25%),
+  linear-gradient(45deg,transparent 75%,#edf0f3 75%),linear-gradient(-45deg,transparent 75%,#edf0f3 75%);
+  background-size:24px 24px;background-position:0 0,0 12px,12px -12px,-12px 0;
+}
+.photoWrap{position:relative;display:inline-block;max-width:100%;background:#fff;box-shadow:0 14px 34px rgba(15,23,42,.14)}
+#previewImg{display:none;max-width:100%;max-height:calc(100vh - 190px);width:auto;height:auto}
+#overlay{position:absolute;left:0;top:0;touch-action:none}
+.empty{
+  width:min(720px,80%);height:430px;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:30px
+}
+.empty h3{margin:8px 0 6px}.empty p{margin:0;color:var(--muted);font-size:12px;line-height:1.5}
+.toolbar{height:64px;border-top:1px solid var(--line);display:flex;gap:7px;align-items:center;justify-content:center;padding:8px;background:#fff;flex-wrap:wrap}
+.tool{border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px 10px;font-size:12px}
+.tool.active{background:var(--dark);color:#fff;border-color:var(--dark);box-shadow:0 0 0 2px rgba(37,99,235,.15)}
+.prop{margin-bottom:11px}
+.prop label{display:flex;justify-content:space-between;font-size:11px;font-weight:700;margin-bottom:6px}
+.prop small{font-weight:500;color:var(--muted)}
+input[type=color]{width:46px;height:36px;border:1px solid var(--line);border-radius:8px;padding:3px;background:#fff}
+input[type=range]{width:100%}
+select,textarea,input[type=text]{width:100%;border:1px solid var(--line);border-radius:9px;padding:8px 9px;background:#fff;color:var(--ink)}
+textarea{resize:vertical}
+.row{display:flex;gap:7px}.row>*{flex:1}
+.voiceBox{background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:10px}
+.note{font-size:10px;color:var(--muted);line-height:1.4}
+.howto{font-size:10px;color:#98a0aa;line-height:1.45;margin-top:auto;padding-top:10px}
+.debug{font-size:10px;color:#8b939d;background:#f7f8fa;border-radius:8px;padding:8px;margin-top:8px}
+#collageLeft{display:none}
+#collagePanel{display:none;flex-direction:column;height:100%}
+.thumbList{display:flex;flex-direction:column;gap:6px;max-height:300px;overflow:auto}
+.thumb{display:grid;grid-template-columns:42px 1fr auto;gap:7px;align-items:center;border:1px solid var(--line);border-radius:9px;padding:6px}
+.thumb img{width:42px;height:42px;object-fit:cover;border-radius:7px}
+.thumbActions{display:flex;gap:3px}.thumbActions button{border:0;background:#eef1f4;border-radius:6px;padding:4px 6px}
+.collageCanvasWrap{background:#fff;box-shadow:0 14px 34px rgba(15,23,42,.14)}
+#collageCanvas{display:block;max-width:100%;max-height:calc(100vh - 175px);height:auto}
+@media(max-width:1050px){
+  .app{grid-template-columns:210px minmax(0,1fr) 270px}
+}
+
+.canvasSizeGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.canvasSizeGrid input{width:100%;border:1px solid var(--line);border-radius:9px;padding:8px 9px;background:#fff}
+.compactLabel{font-size:10px;color:var(--muted);margin-bottom:4px;display:block}
+.textList{display:flex;flex-direction:column;gap:5px;margin-top:8px}
+.textChip{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid var(--line);border-radius:8px;padding:6px 8px;font-size:10px;background:#fafbfc}
+.textChip button{border:0;background:#eef1f4;border-radius:6px;padding:3px 6px}
+.statusGood{color:#067647}.statusBad{color:#b42318}
+
+
+/* V16 interaction refinements */
+.thumbList{max-height:520px!important;overflow:auto}
+.thumb{grid-template-columns:42px 1fr auto!important}
+.thumbActions{display:flex;gap:4px;align-items:center}
+.thumbActions button.deleteThumb{background:#fff1f2;color:#b42318}
+.inlineTextEditor{
+  position:absolute;z-index:20;min-width:120px;max-width:420px;
+  border:2px solid #2563eb;border-radius:6px;padding:5px 7px;
+  background:rgba(255,255,255,.96);outline:none;font-weight:700;
+}
+.resizeHandle{
+  position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;border:3px solid #2563eb;z-index:10
+}
+.guideLine{position:absolute;pointer-events:none;z-index:8;background:#22c55e}
+.guideLine.v{width:1px;top:0;bottom:0}
+.guideLine.h{height:1px;left:0;right:0}
+
+
+/* V20 preview fit + collage refinements */
+.stage{
+  overflow:hidden!important;
+}
+.photoWrap{
+  max-width:100%;
+  max-height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+#previewImg{
+  max-width:100%!important;
+  max-height:100%!important;
+  width:auto!important;
+  height:auto!important;
+  object-fit:contain!important;
+}
+#annotatePanel .stage{
+  min-height:0!important;
+}
+#collagePanel .stage{
+  overflow:hidden!important;
+}
+.collageCanvasWrap{
+  max-width:100%;
+  max-height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+#collageCanvas{
+  max-width:100%!important;
+  max-height:100%!important;
+  object-fit:contain;
+}
+.translateRow{display:flex;gap:7px;margin-top:7px}
+.translateRow>*{flex:1}
+.translationHint{font-size:10px;color:var(--muted);line-height:1.4;margin-top:5px}
+
+
+.simpleAiBadge{display:inline-flex;align-items:center;gap:5px;font-size:10px;color:#067647;background:#ecfdf3;border-radius:999px;padding:3px 7px;margin-left:5px}
+.voiceActions{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.voiceActions .btn{width:100%}
+.browserNote{font-size:10px;color:var(--muted);line-height:1.45;margin-top:6px}
+.downloadProgress{height:4px;background:#e8ecf1;border-radius:999px;overflow:hidden;margin-top:6px;display:none}
+.downloadProgress>span{display:block;height:100%;width:0;background:#2563eb;transition:width .15s}
+
+
+.connectCard{border:1px solid var(--line);border-radius:12px;padding:10px;background:#f8fafc}
+.sessionCode{font:700 16px ui-monospace,monospace;letter-spacing:.08em}
+#qrImage{display:block;margin:8px auto;max-width:125px;width:125px;height:125px;background:#fff;border-radius:8px;padding:6px;border:1px solid #dfe3e8;object-fit:contain}
+.livePhotos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;max-height:300px;overflow:auto}
+.livePhoto{position:relative;border:2px solid transparent;border-radius:10px;overflow:hidden;background:#f3f4f6;aspect-ratio:1;padding:0}
+.livePhoto:hover{border-color:#2563eb}.livePhoto.active{border-color:#2563eb;box-shadow:0 0 0 2px rgba(37,99,235,.15)}
+.livePhoto img{width:100%;height:100%;object-fit:cover;display:block}
+.livePhoto .badge{position:absolute;left:5px;bottom:5px;background:rgba(17,24,39,.78);color:#fff;font-size:9px;padding:3px 5px;border-radius:6px}
+.syncStatus{font-size:10px;color:var(--muted);line-height:1.4;margin-top:6px}
+.mobileCaptureScreen{display:none;min-height:100vh;background:#f5f6f8;padding:18px;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+.mobileCaptureCard{max-width:520px;margin:0 auto;background:#fff;border:1px solid #dfe3e8;border-radius:18px;padding:18px}
+.mobileCaptureCard h1{font-size:22px;margin:0 0 4px}.mobileCaptureCard p{color:#6b7280;font-size:13px}
+.mobileCaptureBtn{display:block;width:100%;border:0;border-radius:14px;background:#111827;color:#fff;padding:16px;font-size:17px;font-weight:700;text-align:center}
+.mobileCaptureBtn input{display:none}
+.mobilePreview{margin-top:14px;border:1px solid #dfe3e8;border-radius:14px;overflow:hidden;background:#fafafa;min-height:220px;display:flex;align-items:center;justify-content:center}
+.mobilePreview img{max-width:100%;max-height:55vh;display:none}
+.uploadState{margin-top:10px;font-size:13px;color:#6b7280;text-align:center}
+.mobileDone{background:#ecfdf3;color:#067647;padding:10px;border-radius:10px;margin-top:10px;display:none;text-align:center}
+body.mobile-mode header,body.mobile-mode .app{display:none!important}
+body.mobile-mode .mobileCaptureScreen{display:block}
+
+
+.uploadQueue{margin-top:12px;display:flex;flex-direction:column;gap:7px}
+.queueItem{display:grid;grid-template-columns:42px 1fr auto;gap:8px;align-items:center;border:1px solid #e2e8f0;border-radius:10px;padding:7px;background:#fff}
+.queueItem img{width:42px;height:42px;object-fit:cover;border-radius:7px}
+.queueMeta{font-size:11px;color:#64748b;line-height:1.35}
+.queueStatus{font-size:11px;font-weight:700}
+.queueStatus.ok{color:#067647}.queueStatus.busy{color:#2563eb}.queueStatus.err{color:#b42318}
+
+
+#livePhotosSection{padding-bottom:10px!important;margin-bottom:10px!important}
+#livePhotos{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:5px!important;max-height:155px!important;overflow-y:auto!important}
+#livePhotos .livePhoto{aspect-ratio:1!important;min-width:0}
+#livePhotos .badge{font-size:7px!important;padding:2px 3px!important}
+#connectPhoneSection{padding-bottom:8px!important;margin-bottom:8px!important}
+#connectPhoneSection .connectCard{padding:8px!important}
+#sessionArea .note{font-size:9px}
+#sessionCode{font-size:13px!important}
+#refreshLivePhotosBtn{padding:6px 8px!important;font-size:10px!important}
+
+
+/* V36 secure editor geometry */
+#annotatePanel .stage{overflow:hidden!important;padding:10px!important}
+#photoWrap{position:relative!important;display:inline-block!important;width:auto;height:auto;max-width:100%;max-height:100%}
+#previewImg{display:none;object-fit:contain!important;pointer-events:none!important;max-width:none!important;max-height:none!important}
+#overlay{position:absolute!important;z-index:10!important;pointer-events:auto!important;touch-action:none!important}
+#collagePanel .stage{overflow:hidden!important;padding:10px!important}
+#collageCanvasWrap{max-width:100%!important;max-height:100%!important}
+#collageCanvas{max-width:100%!important;max-height:calc(100vh - 215px)!important;width:auto!important;height:auto!important}
+
+
+/* V41 stable layout */
+.photoLibrary{padding:12px;overflow-y:auto;overflow-x:hidden;min-width:0}
+.libraryHeader{padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid var(--line)}
+.libraryHeader b{display:block;font-size:11px;letter-spacing:.08em;color:#4b5563}
+.libraryHeader span{font-size:9px;color:#98a0aa}
+.photoLibrary #livePhotos{grid-template-columns:repeat(2,minmax(0,1fr))!important;max-height:none!important;overflow:visible!important}
+.right{overflow-y:auto!important;overflow-x:hidden!important;min-width:0!important;padding-bottom:90px!important}
+.right *{box-sizing:border-box}
+.right .section{min-width:0!important;max-width:100%!important}
+.right .row{min-width:0!important;max-width:100%!important}
+.right input[type="range"]{width:100%!important;max-width:100%!important}
+.right textarea,.right select,.right input[type="text"]{width:100%!important;max-width:100%!important}
+#annotateControls,#collageControls{height:auto!important;overflow:visible!important;min-width:0!important;max-width:100%!important;padding:0!important}
+#annotateControls .section:last-child,#collageControls .section:last-child{
+ position:relative!important;bottom:auto!important;box-shadow:none!important;background:#fff!important;z-index:auto!important;
+}
+#saveBtn,#saveCollage{min-height:42px!important}
+@media(max-width:1150px){.app{grid-template-columns:200px 150px minmax(0,1fr) 270px}}
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="logo">F</div>
+    <div><h1>Fit Photo Studio</h1><small>Simple browser AI · Build 41 Stable Workspace</small></div>
+  </div>
+  <div class="topActions">
+    <button id="newBtn" class="btn">New</button>
+    <button id="topExport" class="btn primary">Export</button>
+  </div>
+</header>
+
+<div class="app">
+  <aside class="panel left">
+    <div class="section">
+      <h2>Workspace</h2>
+      <div class="modeTabs">
+        <button id="annotateTab" class="active">Annotate</button>
+        <button id="combineTab">Combine</button>
+      </div>
+    </div>
+
+    <div id="annotateLeft">
+      <div class="section">
+        <h2>Photo</h2>
+        <label class="upload">
+          <input id="photoInput" type="file" accept="image/*">
+          <strong>Take / Choose Photo</strong>
+          <span>One button for camera or file selection</span>
+        </label>
+        <div id="photoMeta" class="meta">No photo selected</div>
+      </div>
+    </div>
+
+    <div id="collageLeft">
+      <div class="section">
+        <h2>Photos</h2>
+        <label class="upload">
+          <input id="collageInput" type="file" accept="image/*" multiple>
+          <strong>Add Photos</strong>
+          <span>Select photos</span>
+        </label>
+      </div>
+      <div class="section">
+        <h2>Photo order</h2>
+        <div id="thumbList" class="thumbList"></div>
+      </div>
+    </div>
+
+    
+    <div class="section" id="connectPhoneSection">
+      <h2>Connect Phone</h2>
+      <div class="connectCard">
+        <button id="createSessionBtn" class="btn primary" style="width:100%">Create Secure Session</button>
+<div id="createSessionStatus" class="syncStatus" style="margin-top:7px"></div>
+<button id="endSessionBtn" class="btn" style="width:100%;margin-top:7px;display:none;color:#b42318">End Session</button>
+        <div id="sessionArea" style="display:none;margin-top:9px">
+          <div class="note">Session code</div>
+          <div id="sessionCode" class="sessionCode">—</div>
+          <img id="qrImage" alt="Session QR code" style="display:none">
+          <div class="row" style="margin-top:5px">
+            <button id="openMobileLinkBtn" class="btn" style="display:none;padding:6px 7px;font-size:10px">Open mobile</button>
+            <button id="copyMobileLinkBtn" class="btn" style="display:none;padding:6px 7px;font-size:10px">Copy link</button>
+          </div>
+          <div class="syncStatus" id="syncStatus">Waiting for phone…</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="howto">
+      How to use: choose a photo, pick a tool, draw directly on the preview, then select an item to move or resize it.
+      <div id="debug" class="debug">Debug: JavaScript active</div>
+    </div>
+  </aside>
+
+  
+  <aside class="panel photoLibrary">
+    <div class="libraryHeader">
+      <b>PHOTO LIBRARY</b>
+      <span>Session photos</span>
+    </div>
+    <div class="section" id="livePhotosSection">
+      <h2>Live Photos</h2>
+      <div id="livePhotosPlaceholder" style="border:1.5px dashed #cbd5e1;border-radius:10px;padding:18px 8px;text-align:center;color:#64748b;font-size:10px;margin-bottom:7px;background:#f8fafc">
+  <div style="font-size:22px;margin-bottom:4px">📱→💻</div>
+  Phone photos will appear here automatically
+</div>
+<div id="livePhotos" class="livePhotos"></div>
+      <div class="syncStatus" id="livePhotosStatus">Create a session to receive phone photos. Click any received photo to edit it.</div>
+<button id="refreshLivePhotosBtn" class="btn" style="width:100%;margin-top:7px">Refresh Photos</button>
+    </div>
+
+  </aside>
+
+<main class="panel center">
+    <div id="annotatePanel" style="display:flex;flex-direction:column;height:100%">
+      <div class="canvasHead">
+        <b>Photo Preview</b>
+        <span id="hint">Choose a photo to start</span>
+      </div>
+      <div class="stage">
+        <div class="photoWrap" id="photoWrap">
+          <div id="empty" class="empty">
+            <div>
+              <div style="font-size:38px">🖼️</div>
+              <h3>Your photo will appear here</h3>
+              <p>Choose a fit photo, then annotate directly on top of it.</p>
+            </div>
+          </div>
+          <img id="previewImg" alt="Selected fit photo">
+          <canvas id="overlay"></canvas>
+        </div>
+      </div>
+      <div class="toolbar">
+        <button class="tool active" data-tool="select">↖ Select</button>
+        <button class="tool" data-tool="arrow">↗ Arrow</button>
+        <button class="tool" data-tool="line">╱ Line</button>
+        <button class="tool" data-tool="dash">┄ Dashed</button>
+        <button class="tool" data-tool="circle">○ Circle</button>
+        <button class="tool" data-tool="rect">□ Rectangle</button>
+        <button class="tool" data-tool="text">T Text</button>
+      </div>
+    </div>
+
+    <div id="collagePanel">
+      <div class="canvasHead">
+        <b>Combined Photo Sheet</b>
+        <span>Click a photo in Photo Library to add · drag to move · drag corner to resize</span>
+      </div>
+      <div class="stage">
+        <div class="collageCanvasWrap" id="collageCanvasWrap" style="position:relative">
+          <canvas id="collageCanvas" width="1400" height="900"></canvas>
+          <div id="guideV" class="guideLine v" style="display:none"></div>
+          <div id="guideH" class="guideLine h" style="display:none"></div>
+          <div id="canvasResizeHandle" class="resizeHandle" style="right:-9px;bottom:-9px;cursor:nwse-resize"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <aside class="panel right">
+    <div id="annotateControls">
+      <div class="section">
+        <h2>Annotation Style</h2>
+        <div class="prop">
+          <label>Color <small id="colorText">#E11D48</small></label>
+          <input id="color" type="color" value="#e11d48">
+        </div>
+        <div class="prop">
+          <label>Line width <small><span id="lineVal">6</span> px</small></label>
+          <input id="lineWidth" type="range" min="1" max="20" value="6">
+        </div>
+        <div class="prop">
+          <label>Text size <small><span id="fontVal">34</span> px</small></label>
+          <input id="fontSize" type="range" min="14" max="50" value="34">
+        </div>
+        <div class="row">
+          <button id="undo" class="btn">Undo</button>
+          <button id="delete" class="btn">Delete</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Voice → English <span class="simpleAiBadge">No API key</span></h2>
+        <div class="voiceBox">
+          <div class="prop">
+            <label>Spoken language</label>
+            <select id="lang">
+              <option value="en-AU">English (Australia)</option>
+              <option value="zh-CN">中文普通话</option>
+              <option value="zh-HK">中文粤语</option>
+              <option value="id-ID">Bahasa Indonesia</option>
+              <option value="vi-VN">Tiếng Việt</option>
+              <option value="hi-IN">Hindi</option>
+              <option value="ja-JP">Japanese</option>
+              <option value="ko-KR">Korean</option>
+              <option value="th-TH">Thai</option>
+              <option value="es-ES">Spanish</option>
+              <option value="fr-FR">French</option>
+              <option value="de-DE">German</option>
+              <option value="it-IT">Italian</option>
+            </select>
+          </div>
+          <button id="mic" class="btn primary" style="width:100%">🎙 Start speaking</button>
+          <div class="prop" style="margin-top:8px">
+            <textarea id="voice" rows="4" placeholder="Speech appears here. Click Translate to English if needed."></textarea>
+          </div>
+          <div class="voiceActions">
+            <button id="translateVoice" class="btn">Translate to English</button>
+            <button id="addVoice" class="btn primary">Add to photo</button>
+          </div>
+          <div id="voiceStatus" class="note" style="margin-top:6px">Ready.</div>
+          <div id="voiceProgress" class="downloadProgress"><span></span></div>
+          <div class="browserNote">Uses browser speech recognition in compatibility mode and Chrome's built-in on-device Translator when available. Apparel terms are cleaned after recognition.</div>
+        </div>
+      </div>
+      </div>
+
+      <div class="section">
+        <h2>Save & Share</h2>
+        <div class="row">
+          <select id="format"><option value="png">PNG</option><option value="jpeg">JPG</option></select>
+          <button id="saveBtn" class="btn primary">Save</button>
+        </div>
+        <button id="shareBtn" class="btn" style="width:100%;margin-top:7px">Share</button>
+      </div>
+    </div>
+
+    <div id="collageControls" style="display:none">
+      <div class="section">
+        <h2>Canvas & Layout</h2>
+        <div class="note" style="margin-bottom:9px">
+          Resize the white canvas directly by dragging its bottom-right corner.
+        </div>
+        <div class="prop" style="margin-top:9px">
+          <label>Layout</label>
+          <select id="layoutMode">
+            <option value="row" selected>Horizontal</option>
+            <option value="column">Vertical</option>
+          </select>
+        </div>
+        <button id="autoLayout" class="btn" style="width:100%">Auto Arrange</button>
+      </div>
+
+      <div class="section">
+        <h2>Text on Canvas <span class="simpleAiBadge">No API key</span></h2>
+        <div class="prop">
+          <label>Spoken language</label>
+          <select id="collageLang">
+            <option value="en-AU">English (Australia)</option>
+            <option value="zh-CN">中文普通话</option>
+            <option value="zh-HK">中文粤语</option>
+            <option value="id-ID">Bahasa Indonesia</option>
+            <option value="vi-VN">Tiếng Việt</option>
+            <option value="hi-IN">Hindi</option>
+            <option value="ja-JP">Japanese</option>
+            <option value="ko-KR">Korean</option>
+            <option value="th-TH">Thai</option>
+            <option value="es-ES">Spanish</option>
+            <option value="fr-FR">French</option>
+            <option value="de-DE">German</option>
+            <option value="it-IT">Italian</option>
+          </select>
+        </div>
+        <button id="collageMic" class="btn primary" style="width:100%">🎙 Start speaking</button>
+        <div id="collageVoiceStatus" class="note" style="margin-top:5px">Ready.</div>
+        <div id="collageProgress" class="downloadProgress"><span></span></div>
+        <div class="prop" style="margin-top:8px">
+          <textarea id="collageText" rows="4" placeholder="Speech or typed text…"></textarea>
+        </div>
+        <button id="translateCollageText" class="btn" style="width:100%">Translate to English</button>
+        <div class="row" style="margin-top:8px">
+          <div class="prop" style="margin:0">
+            <label>Text size <small><span id="cTextSizeVal">34</span> px</small></label>
+            <input id="cTextSize" type="range" min="14" max="50" value="34">
+          </div>
+          <div style="max-width:62px">
+            <span class="compactLabel">Color</span>
+            <input id="cTextColor" type="color" value="#111827">
+          </div>
+        </div>
+        <button id="addCollageText" class="btn primary" style="width:100%;margin-top:7px">Add text to canvas</button>
+      </div>
+
+      <div class="section">
+        <h2>Selected Object</h2>
+        <div class="note">Image: drag to move; drag blue corner to scale proportionally.<br>Text: drag to move; adjust size/color above.</div>
+        <button id="deleteCollageObject" class="btn" style="width:100%;margin-top:7px">Delete selected</button>
+      </div>
+
+      <div class="section">
+        <h2>Save Combined Sheet</h2>
+        <div class="row">
+          <select id="collageFormat"><option value="png">PNG</option><option value="jpeg">JPG</option></select>
+          <button id="saveCollage" class="btn primary">Save</button>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const debug=t=>$("#debug").textContent="Debug: "+t;
+
+// ---------- annotation ----------
+const img=$("#previewImg"), cvs=$("#overlay"), ctx=cvs.getContext("2d");
+let loaded=false,objects=[],selected=null,tool="select",temp=null,drag=null,history=[];
+
+function uid(){return Math.random().toString(36).slice(2)+Date.now().toString(36)}
+function color(){return $("#color").value}
+function lineW(){return +$("#lineWidth").value}
+function fontS(){return +$("#fontSize").value}
+function saveHistory(){history.push(JSON.stringify(objects));if(history.length>50)history.shift()}
+function point(e,c=cvs){const r=c.getBoundingClientRect();return{x:(e.clientX-r.left)*c.width/r.width,y:(e.clientY-r.top)*c.height/r.height}}
+
+function fitPreviewToStage(){
+  const stage=$("#annotatePanel .stage"),wrap=$("#photoWrap");
+  if(!loaded||!stage||!img.naturalWidth||!img.naturalHeight)return;
+  const sr=stage.getBoundingClientRect();
+  const maxW=Math.max(200,sr.width-20),maxH=Math.max(200,sr.height-20);
+  const scale=Math.min(maxW/img.naturalWidth,maxH/img.naturalHeight,1);
+  const dw=Math.max(1,Math.round(img.naturalWidth*scale));
+  const dh=Math.max(1,Math.round(img.naturalHeight*scale));
+  img.style.setProperty("width",dw+"px","important");
+  img.style.setProperty("height",dh+"px","important");
+  img.style.setProperty("max-width","none","important");
+  img.style.setProperty("max-height","none","important");
+  wrap.style.width=dw+"px";wrap.style.height=dh+"px";
+  cvs.width=img.naturalWidth;cvs.height=img.naturalHeight;
+  cvs.style.left="0px";cvs.style.top="0px";
+  cvs.style.width=dw+"px";cvs.style.height=dh+"px";
+  render();
+}
+
+function syncOverlay(){
+  cvs.width=img.naturalWidth;cvs.height=img.naturalHeight;
+  requestAnimationFrame(()=>{
+    const ir=img.getBoundingClientRect(),wr=$("#photoWrap").getBoundingClientRect();
+    cvs.style.left=(ir.left-wr.left)+"px";cvs.style.top=(ir.top-wr.top)+"px";
+    cvs.style.width=ir.width+"px";cvs.style.height=ir.height+"px";
+    render();
+  });
+}
+function bounds(o){
+  if(o.type==="text"){ctx.save();ctx.font=`700 ${o.size}px Arial`;const ls=o.text.split("\n"),w=Math.max(30,...ls.map(x=>ctx.measureText(x).width));ctx.restore();return{x:o.x1,y:o.y1,w,h:ls.length*o.size*1.2}}
+  return{x:Math.min(o.x1,o.x2),y:Math.min(o.y1,o.y2),w:Math.max(4,Math.abs(o.x2-o.x1)),h:Math.max(4,Math.abs(o.y2-o.y1))}
+}
+function drawArrow(o){
+  ctx.save();ctx.strokeStyle=o.color;ctx.fillStyle=o.color;ctx.lineWidth=o.width;ctx.lineCap="round";
+  ctx.beginPath();ctx.moveTo(o.x1,o.y1);ctx.lineTo(o.x2,o.y2);ctx.stroke();
+  const a=Math.atan2(o.y2-o.y1,o.x2-o.x1),L=24+o.width*2;
+  ctx.beginPath();ctx.moveTo(o.x2,o.y2);ctx.lineTo(o.x2-L*Math.cos(a-Math.PI/6),o.y2-L*Math.sin(a-Math.PI/6));ctx.lineTo(o.x2-L*Math.cos(a+Math.PI/6),o.y2-L*Math.sin(a+Math.PI/6));ctx.closePath();ctx.fill();ctx.restore()
+}
+function draw(o,sel=false){
+  ctx.save();ctx.strokeStyle=o.color;ctx.fillStyle=o.color;ctx.lineWidth=o.width||6;ctx.lineCap="round";ctx.lineJoin="round";
+  if(o.type==="arrow")drawArrow(o);
+  else if(o.type==="line"||o.type==="dash"){ctx.setLineDash(o.type==="dash"?[22,14]:[]);ctx.beginPath();ctx.moveTo(o.x1,o.y1);ctx.lineTo(o.x2,o.y2);ctx.stroke()}
+  else if(o.type==="circle"){ctx.beginPath();ctx.ellipse((o.x1+o.x2)/2,(o.y1+o.y2)/2,Math.abs(o.x2-o.x1)/2,Math.abs(o.y2-o.y1)/2,0,0,Math.PI*2);ctx.stroke()}
+  else if(o.type==="rect")ctx.strokeRect(o.x1,o.y1,o.x2-o.x1,o.y2-o.y1);
+  else if(o.type==="text"){ctx.font=`700 ${o.size}px Arial`;ctx.textBaseline="top";o.text.split("\n").forEach((t,i)=>ctx.fillText(t,o.x1,o.y1+i*o.size*1.2))}
+  ctx.restore();
+  if(sel){const b=bounds(o);ctx.save();ctx.strokeStyle="#2563eb";ctx.lineWidth=3;ctx.setLineDash([9,6]);ctx.strokeRect(b.x-10,b.y-10,b.w+20,b.h+20);ctx.setLineDash([]);ctx.fillStyle="#fff";ctx.strokeStyle="#2563eb";ctx.lineWidth=3;[[b.x-10,b.y-10],[b.x+b.w+10,b.y+b.h+10]].forEach(([x,y])=>{ctx.beginPath();ctx.arc(x,y,11,0,Math.PI*2);ctx.fill();ctx.stroke()});ctx.restore()}
+}
+function render(){ctx.clearRect(0,0,cvs.width,cvs.height);objects.forEach(o=>draw(o,o.id===selected));if(temp)draw(temp)}
+function hit(p){for(let i=objects.length-1;i>=0;i--){const o=objects[i],b=bounds(o),pad=26;if(p.x>b.x-pad&&p.x<b.x+b.w+pad&&p.y>b.y-pad&&p.y<b.y+b.h+pad)return o}return null}
+function setTool(t){tool=t;$$(".tool").forEach(b=>b.classList.toggle("active",b.dataset.tool===t));$("#hint").textContent=t==="select"?"Select an annotation to move or resize":"Draw "+t+" directly on the photo"}
+
+$("#photoInput").addEventListener("change",e=>{
+  const f=e.target.files?.[0];if(!f)return;
+  $("#hint").textContent="Loading photo…";
+  debug(`loading ${f.name} (${Math.round(f.size/1024)} KB)`);
+  const url=URL.createObjectURL(f);
+  img.onload=()=>{
+    loaded=true;
+    $("#empty").style.display="none";
+    img.style.display="block";
+    $("#photoMeta").textContent=`${f.name} · ${img.naturalWidth}×${img.naturalHeight}`;
+    objects=[];selected=null;temp=null;drag=null;history=[];
+    fitPreviewToStage();
+    $("#hint").textContent="Photo ready";
+    debug("photo loaded");
+    setTimeout(()=>URL.revokeObjectURL(url),1500);
+  };
+  img.onerror=()=>{
+    $("#hint").textContent="Could not preview photo";
+    debug("image decode failed");
+    URL.revokeObjectURL(url);
+  };
+  img.src=url;
+});
+
+
+function createInlineTextEditor(p){
+  const wrap=$("#photoWrap"), rect=cvs.getBoundingClientRect(), wrect=wrap.getBoundingClientRect();
+  const input=document.createElement("input");
+  input.type="text";input.className="inlineTextEditor";input.placeholder="Type comment…";
+  input.style.left=((p.x/cvs.width)*rect.width + rect.left-wrect.left)+"px";
+  input.style.top=((p.y/cvs.height)*rect.height + rect.top-wrect.top)+"px";
+  input.style.fontSize=Math.max(14,Math.min(28,fontS()*.6))+"px";
+  input.style.color=color();
+  wrap.appendChild(input);
+  input.focus();
+  const commit=()=>{
+    const t=input.value.trim();
+    if(t){
+      saveHistory();
+      const o={id:uid(),type:"text",x1:p.x,y1:p.y,text:t,color:color(),size:fontS()};
+      objects.push(o);selected=o.id;render()
+    }
+    input.remove();setTool("select")
+  };
+  input.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();commit()}if(e.key==="Escape"){input.remove();setTool("select")}});
+  input.addEventListener("blur",()=>setTimeout(()=>{if(document.body.contains(input))commit()},80));
+}
+
+cvs.addEventListener("mousedown",e=>{
+  if(!loaded)return;e.preventDefault();const p=point(e);
+  if(tool==="select"){
+    const o=hit(p);selected=o?.id||null;
+    if(o){saveHistory();const b=bounds(o),resize=Math.abs(p.x-(b.x+b.w))<40&&Math.abs(p.y-(b.y+b.h))<40;drag={id:o.id,start:p,orig:JSON.parse(JSON.stringify(o)),resize};
+      if(o.color){$("#color").value=o.color;$("#colorText").textContent=o.color.toUpperCase()}
+      if(o.type==="text"){$("#fontSize").value=o.size;$("#fontVal").textContent=Math.round(o.size)}
+      else{$("#lineWidth").value=o.width;$("#lineVal").textContent=Math.round(o.width)}
+    }render();return;
+  }
+  if(tool==="text"){
+    createInlineTextEditor(p);
+    return;
+  }
+  saveHistory();temp={id:uid(),type:tool,x1:p.x,y1:p.y,x2:p.x,y2:p.y,color:color(),width:lineW()}
+});
+cvs.addEventListener("mousemove",e=>{
+  if(!temp&&!drag)return;const p=point(e);
+  if(temp){temp.x2=p.x;temp.y2=p.y;render();return}
+  const o=objects.find(x=>x.id===drag.id),s=drag.orig,dx=p.x-drag.start.x,dy=p.y-drag.start.y;
+  if(drag.resize){if(o.type==="text")o.size=Math.max(10,s.size+dx/4);else{o.x2=s.x2+dx;o.y2=s.y2+dy}}
+  else if(o.type==="text"){o.x1=s.x1+dx;o.y1=s.y1+dy}
+  else{o.x1=s.x1+dx;o.y1=s.y1+dy;o.x2=s.x2+dx;o.y2=s.y2+dy}
+  render()
+});
+["mouseup","mouseleave"].forEach(n=>cvs.addEventListener(n,()=>{if(temp){objects.push(temp);selected=temp.id;temp=null;setTool("select");render()}drag=null}));
+$$(".tool").forEach(b=>b.onclick=()=>setTool(b.dataset.tool));
+$("#color").oninput=e=>{const o=objects.find(x=>x.id===selected);$("#colorText").textContent=e.target.value.toUpperCase();if(o){o.color=e.target.value;render()}};
+$("#lineWidth").oninput=e=>{const o=objects.find(x=>x.id===selected);$("#lineVal").textContent=e.target.value;if(o&&o.type!=="text"){o.width=+e.target.value;render()}};
+$("#fontSize").oninput=e=>{const o=objects.find(x=>x.id===selected);$("#fontVal").textContent=e.target.value;if(o&&o.type==="text"){o.size=+e.target.value;render()}};
+$("#undo").onclick=()=>{if(!history.length)return;objects=JSON.parse(history.pop());selected=null;render()};
+$("#delete").onclick=()=>{if(!selected)return;saveHistory();objects=objects.filter(o=>o.id!==selected);selected=null;render()};
+
+
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let activeRecognition=null;
+let keepListening=false;
+let activeSpeechContext=null;
+const translatorCache=new Map();
+
+const APPAREL_PHRASES=[
+  "CB","CF","center back","center front","side seam","shoulder seam",
+  "armhole","neckline","back rise","front rise","crotch","gusset",
+  "inseam","outseam","waistband","sleeve opening","hem opening",
+  "seam allowance","ease","balance","reshape","reduce","increase",
+  "workmanship","fit sample","PP sample","QA sample","POM",
+  "point of measure","underarm","bust","chest","hip","thigh",
+  "neck drop","shoulder breadth","topstitch","bartack","binding",
+  "facing","placket","dart","yoke","elastic","rib"
+];
+
+function speechLangToTranslationLang(lang){
+  const l=(lang||"en").toLowerCase();
+  if(l.startsWith("zh-hk")||l.startsWith("yue"))return "zh-Hant";
+  if(l.startsWith("zh"))return "zh";
+  return l.split("-")[0];
+}
+
+function setVoiceStatus(el,message,kind=""){
+  el.textContent=message;
+  el.className="note"+(kind?(" "+kind):"");
+}
+
+function showProgress(containerId,percent){
+  const box=$(containerId);
+  if(!box)return;
+  const bar=box.querySelector("span");
+  box.style.display=percent===null?"none":"block";
+  if(percent!==null)bar.style.width=Math.max(0,Math.min(100,percent))+"%";
+}
+
+function normalizeApparelEnglish(text){
+  let t=(text||"").trim();
+  if(!t)return t;
+
+  const replacements=[
+    [/\bcentre back\b/gi,"CB"],
+    [/\bcenter back\b/gi,"CB"],
+    [/\bcentre front\b/gi,"CF"],
+    [/\bcenter front\b/gi,"CF"],
+    [/\bside seem\b/gi,"side seam"],
+    [/\bseem allowance\b/gi,"seam allowance"],
+    [/\bseam alowance\b/gi,"seam allowance"],
+    [/\bgusset seem\b/gi,"gusset seam"],
+    [/\bback rice\b/gi,"back rise"],
+    [/\bfront rice\b/gi,"front rise"],
+    [/\barm hole\b/gi,"armhole"],
+    [/\bneck line\b/gi,"neckline"],
+    [/\bwaist band\b/gi,"waistband"],
+    [/\bworkman ship\b/gi,"workmanship"],
+    [/\bone centimet(?:er|re)s?\b/gi,"1 cm"],
+    [/\btwo centimet(?:er|re)s?\b/gi,"2 cm"],
+    [/\bthree centimet(?:er|re)s?\b/gi,"3 cm"],
+    [/\bfour centimet(?:er|re)s?\b/gi,"4 cm"],
+    [/\bfive centimet(?:er|re)s?\b/gi,"5 cm"],
+    [/\b(\d+(?:\.\d+)?)\s*centimet(?:er|re)s?\b/gi,"$1 cm"],
+    [/\b(\d+(?:\.\d+)?)\s*millimet(?:er|re)s?\b/gi,"$1 mm"],
+    [/\bdo not move the side seam\b/gi,"maintain the side seam position"],
+    [/\bkeep the side seam unchanged\b/gi,"maintain the side seam position"],
+    [/\bthe side seam remains unchanged\b/gi,"maintain the side seam position"]
+  ];
+  replacements.forEach(([re,val])=>t=t.replace(re,val));
+  t=t.replace(/\s+/g," ").replace(/\s+([,.])/g,"$1").trim();
+  if(t)t=t[0].toUpperCase()+t.slice(1);
+  return t;
+}
+
+function fallbackChineseApparelTranslation(text){
+  let t=(text||"").trim();
+  const terms=[
+    [/后中腰/g,"CB waist"],[/后中/g,"CB"],[/前中/g,"CF"],
+    [/后腰/g,"back waist"],[/前腰/g,"front waist"],
+    [/侧缝|侧骨/g,"side seam"],[/肩缝/g,"shoulder seam"],
+    [/后浪/g,"back rise"],[/前浪/g,"front rise"],[/裆部|裆/g,"crotch"],
+    [/袖窿/g,"armhole"],[/领口/g,"neckline"],[/袖口/g,"sleeve opening"],
+    [/下摆/g,"hem"],[/缝份/g,"seam allowance"],[/松量/g,"ease"],
+    [/工艺/g,"workmanship"],[/样衣/g,"sample"],
+    [/保持不变|不要动|不要移动/g,"maintain position"],
+    [/减少|减小|收小|收/g,"reduce"],[/增加|加大|放大|加/g,"increase"],
+    [/重塑|调整形状/g,"reshape"],[/平衡/g,"balance"],
+    [/太松/g,"too loose"],[/太紧/g,"too tight"],[/起皱/g,"wrinkling"],
+    [/一厘米/g,"1 cm"],[/两厘米|二厘米/g,"2 cm"],[/三厘米/g,"3 cm"],
+    [/四厘米/g,"4 cm"],[/五厘米/g,"5 cm"],[/厘米/g,"cm"],
+    [/毫米/g,"mm"]
+  ];
+  terms.forEach(([re,val])=>t=t.replace(re,val));
+  t=t.replace(/(\d+(?:\.\d+)?)\s*cm/g,"$1 cm");
+  t=t.replace(/[，、；]/g,", ").replace(/[。]/g,".");
+  t=t.replace(/\s+/g," ").trim();
+
+  // Common fit-comment patterns.
+  t=t.replace(/(.+?)\s*reduce\s*(\d+(?:\.\d+)?\s*(?:cm|mm))/i,
+              (_,part,amount)=>`Reduce ${part.trim()} by ${amount}`);
+  t=t.replace(/(.+?)\s*increase\s*(\d+(?:\.\d+)?\s*(?:cm|mm))/i,
+              (_,part,amount)=>`Increase ${part.trim()} by ${amount}`);
+  t=t.replace(/side seam\s*maintain position/gi,"maintain the side seam position");
+  return normalizeApparelEnglish(t);
+}
+
+function limitedFallbackTranslation(text,lang){
+  const source=speechLangToTranslationLang(lang);
+  if(source==="zh"||source==="zh-Hant")return fallbackChineseApparelTranslation(text);
+  return normalizeApparelEnglish(text);
+}
+
+async function getTranslator(sourceLang,statusEl,progressSelector){
+  if(sourceLang==="en")return null;
+  if(translatorCache.has(sourceLang))return translatorCache.get(sourceLang);
+
+  if(!("Translator" in self)){
+    throw new Error("Chrome built-in Translator is not available in this browser.");
+  }
+
+  const options={sourceLanguage:sourceLang,targetLanguage:"en"};
+  let availability="unknown";
+  if(typeof Translator.availability==="function"){
+    availability=await Translator.availability(options);
+    if(availability==="unavailable")throw new Error(`Translation ${sourceLang} → English is unavailable.`);
+  }
+
+  setVoiceStatus(
+    statusEl,
+    availability==="downloadable"||availability==="downloading"
+      ?"Downloading the browser language pack…"
+      :"Preparing browser translation…",
+    "statusGood"
+  );
+  showProgress(progressSelector,availability==="available"?100:3);
+
+  const translator=await Translator.create({
+    ...options,
+    monitor(monitor){
+      monitor.addEventListener("downloadprogress",e=>{
+        const loaded=typeof e.loaded==="number"?e.loaded:0;
+        showProgress(progressSelector,Math.round(loaded*100));
+        setVoiceStatus(statusEl,`Downloading language pack… ${Math.round(loaded*100)}%`,"statusGood");
+      });
+    }
+  });
+  translatorCache.set(sourceLang,translator);
+  showProgress(progressSelector,null);
+  return translator;
+}
+
+async function translateBrowserText(text,lang,statusEl,progressSelector){
+  const clean=(text||"").trim();
+  if(!clean)return "";
+  const source=speechLangToTranslationLang(lang);
+  if(source==="en"){
+    setVoiceStatus(statusEl,"English text cleaned with apparel terminology.","statusGood");
+    return normalizeApparelEnglish(clean);
+  }
+
+  try{
+    const translator=await getTranslator(source,statusEl,progressSelector);
+    const translated=await translator.translate(clean);
+    setVoiceStatus(statusEl,"Translated to English. Review and edit if needed.","statusGood");
+    return normalizeApparelEnglish(translated);
+  }catch(err){
+    const fallback=limitedFallbackTranslation(clean,lang);
+    if(source==="zh"||source==="zh-Hant"){
+      setVoiceStatus(statusEl,"Built-in Translator unavailable; used the limited Chinese apparel fallback.","statusBad");
+      return fallback;
+    }
+    setVoiceStatus(statusEl,`${err.message} Use latest Chrome desktop, or keep the original text.`,"statusBad");
+    return fallback;
+  }finally{
+    showProgress(progressSelector,null);
+  }
+}
+
+async function tryEnableLocalSpeech(lang,statusEl){
+  if(!SR || typeof SR.available!=="function" || typeof SR.install!=="function")return false;
+  try{
+    let state=await SR.available({langs:[lang],processLocally:true});
+    if(state==="downloadable"){
+      setVoiceStatus(statusEl,"Downloading local speech language pack…","statusGood");
+      const ok=await SR.install({langs:[lang]});
+      if(!ok)return false;
+      state=await SR.available({langs:[lang],processLocally:true});
+    }
+    if(state==="downloading"){
+      setVoiceStatus(statusEl,"Local speech language pack is still downloading. Using browser speech service for now.","");
+      return false;
+    }
+    return state==="available";
+  }catch(err){
+    return false;
+  }
+}
+
+// Contextual phrase bias is intentionally disabled here.
+// Some Chrome/Edge builds expose recognition.phrases but reject it at runtime
+// with the error "phrases-not-supported". Apparel terminology is corrected
+// after transcription instead, which is more broadly compatible.
+
+async function startSpeech(context){
+  const isCollage=context==="collage";
+  const button=isCollage?$("#collageMic"):$("#mic");
+  const target=isCollage?$("#collageText"):$("#voice");
+  const status=isCollage?$("#collageVoiceStatus"):$("#voiceStatus");
+  const lang=isCollage?$("#collageLang").value:$("#lang").value;
+
+  if(!window.isSecureContext){
+    setVoiceStatus(status,"Microphone requires an HTTPS webpage.","statusBad");
+    return;
+  }
+  if(!SR){
+    setVoiceStatus(status,"Speech recognition is not supported. Use latest Chrome or Edge desktop.","statusBad");
+    return;
+  }
+
+  // One active recorder at a time.
+  if(activeRecognition){
+    keepListening=false;
+    try{activeRecognition.stop()}catch(err){}
+    activeRecognition=null;
+  }
+
+  const local=await tryEnableLocalSpeech(lang,status);
+  const r=new SR();
+  r.lang=lang;
+  r.interimResults=true;
+  r.continuous=true;
+  r.maxAlternatives=3;
+  if(local && "processLocally" in r)r.processLocally=true;
+
+  let committed="";
+  let fatal=false;
+  activeRecognition=r;
+  activeSpeechContext=context;
+  keepListening=true;
+  target.value="";
+
+  r.onstart=()=>{
+    button.textContent="■ Stop speaking";
+    setVoiceStatus(
+      status,
+      local
+        ?"Listening with local speech recognition…"
+        :"Listening… click Stop when finished.",
+      "statusGood"
+    );
+  };
+
+  r.onresult=e=>{
+    let interim="";
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      const value=e.results[i][0].transcript;
+      if(e.results[i].isFinal){
+        committed+=(committed?" ":"")+value.trim();
+      }else{
+        interim+=value;
+      }
+    }
+    target.value=(committed+(interim?((committed?" ":"")+interim):"")).trim();
+  };
+
+  r.onerror=e=>{
+    if(e.error==="no-speech"||e.error==="aborted")return;
+    fatal=true;
+    keepListening=false;
+    const messages={
+      "network":"The browser speech service could not connect. Try latest Chrome; local speech will be used when its language pack is available.",
+      "not-allowed":"Microphone permission was denied. Allow microphone access in the browser.",
+      "service-not-allowed":"Speech recognition is blocked by browser or company policy.",
+      "audio-capture":"No working microphone was found.",
+      "language-not-supported":"This language is not available for local speech recognition.",
+      "phrases-not-supported":"This browser rejected contextual phrase hints. The compatibility mode will work after refreshing this Build 41 Stable Workspace page."
+    };
+    setVoiceStatus(status,messages[e.error]||("Speech error: "+e.error),"statusBad");
+  };
+
+  r.onend=()=>{
+    if(keepListening&&!fatal){
+      setTimeout(()=>{
+        try{r.start()}catch(err){
+          keepListening=false;
+          button.textContent="🎙 Start speaking";
+        }
+      },250);
+      return;
+    }
+    button.textContent="🎙 Start speaking";
+    activeRecognition=null;
+    activeSpeechContext=null;
+    if(target.value.trim()&&!fatal){
+      target.value=normalizeApparelEnglish(target.value);
+      setVoiceStatus(status,"Speech captured. Apparel terminology was cleaned up. Translate to English if needed.","statusGood");
+    }else if(!fatal){
+      setVoiceStatus(status,"Stopped. No speech was captured.","");
+    }
+  };
+
+  try{
+    r.start();
+  }catch(err){
+    activeRecognition=null;
+    keepListening=false;
+    button.textContent="🎙 Start speaking";
+    setVoiceStatus(status,"Could not start speech recognition: "+err.message,"statusBad");
+  }
+}
+
+function stopSpeech(context){
+  if(!activeRecognition || activeSpeechContext!==context)return false;
+  keepListening=false;
+  try{activeRecognition.stop()}catch(err){}
+  return true;
+}
+
+$("#mic").onclick=()=>{
+  if(!stopSpeech("annotate"))startSpeech("annotate");
+};
+$("#collageMic").onclick=()=>{
+  if(!stopSpeech("collage"))startSpeech("collage");
+};
+
+$("#translateVoice").onclick=async()=>{
+  $("#voice").value=await translateBrowserText(
+    $("#voice").value,
+    $("#lang").value,
+    $("#voiceStatus"),
+    "#voiceProgress"
+  );
+};
+
+$("#addVoice").onclick=()=>{
+  const t=$("#voice").value.trim();
+  if(!t||!loaded)return;
+  saveHistory();
+  const o={id:uid(),type:"text",x1:cvs.width*.07,y1:cvs.height*.07,text:t,color:color(),size:fontS()};
+  objects.push(o);selected=o.id;render();
+};
+
+// ---------- collage ----------
+const cc=$("#collageCanvas"),cx=cc.getContext("2d");
+let items=[],textItems=[],cSel=null,cDrag=null,cSpeech=null,cListening=false;let snapLockX=null,snapLockY=null;
+
+function cPoint(e){const r=cc.getBoundingClientRect();return{x:(e.clientX-r.left)*cc.width/r.width,y:(e.clientY-r.top)*cc.height/r.height}}
+function textBounds(t){
+  cx.save();cx.font=`600 ${t.size}px Arial`;
+  const lines=t.text.split("\n");
+  const w=Math.max(40,...lines.map(x=>cx.measureText(x).width));
+  cx.restore();
+  return{x:t.x,y:t.y,w,h:lines.length*t.size*1.25};
+}
+function wrapText(c,text,x,y,max,lineH){
+  let line="";
+  for(const w of text.split(/\s+/)){
+    const t=line?line+" "+w:w;
+    if(c.measureText(t).width>max&&line){c.fillText(line,x,y);line=w;y+=lineH}else line=t
+  }
+  if(line)c.fillText(line,x,y)
+}
+function cRender(){
+  cx.fillStyle="#fff";cx.fillRect(0,0,cc.width,cc.height);
+  items.forEach(it=>{
+    cx.drawImage(it.img,it.x,it.y,it.w,it.h);
+    if(cSel?.kind==="image"&&it.id===cSel.id){
+      cx.strokeStyle="#2563eb";cx.lineWidth=4;cx.strokeRect(it.x,it.y,it.w,it.h);
+      cx.fillStyle="#fff";cx.strokeStyle="#2563eb";cx.lineWidth=4;
+      cx.beginPath();cx.arc(it.x+it.w,it.y+it.h,14,0,Math.PI*2);cx.fill();cx.stroke()
+    }
+  });
+  textItems.forEach(t=>{
+    cx.fillStyle=t.color;cx.font=`600 ${t.size}px Arial`;cx.textBaseline="top";
+    t.text.split("\n").forEach((line,i)=>cx.fillText(line,t.x,t.y+i*t.size*1.25));
+    if(cSel?.kind==="text"&&t.id===cSel.id){
+      const b=textBounds(t);cx.strokeStyle="#2563eb";cx.lineWidth=3;cx.setLineDash([8,6]);cx.strokeRect(b.x-8,b.y-8,b.w+16,b.h+16);cx.setLineDash([])
+    }
+  })
+}
+
+function centerCollageContent(){
+  const boxes=[];
+  items.forEach(it=>boxes.push({x:it.x,y:it.y,r:it.x+it.w,b:it.y+it.h}));
+  textItems.forEach(t=>{
+    const b=textBounds(t);
+    boxes.push({x:b.x,y:b.y,r:b.x+b.w,b:b.y+b.h});
+  });
+  if(!boxes.length)return;
+  const minX=Math.min(...boxes.map(v=>v.x)),maxX=Math.max(...boxes.map(v=>v.r));
+  const minY=Math.min(...boxes.map(v=>v.y)),maxY=Math.max(...boxes.map(v=>v.b));
+  const dx=cc.width/2-(minX+maxX)/2,dy=cc.height/2-(minY+maxY)/2;
+  items.forEach(it=>{it.x+=dx;it.y+=dy});
+  textItems.forEach(t=>{t.x+=dx;t.y+=dy});
+}
+
+function autoLayout(){
+  const n=items.length;
+  if(!n){cRender();return}
+  const mode=$("#layoutMode").value,pad=Math.max(24,cc.width*.025),gap=Math.max(14,cc.width*.015);
+  const areaH=cc.height-pad*2;
+  let cols,rows;
+  if(mode==="column"){cols=1;rows=n}
+  else{cols=n;rows=1}
+  const cw=(cc.width-pad*2-gap*(cols-1))/cols,ch=(areaH-gap*(rows-1))/rows;
+  items.forEach((it,i)=>{
+    const ir=it.ratio;
+    let w,h;
+    if(ir>cw/ch){w=cw;h=w/ir}else{h=ch;w=h*ir}
+    it.x=pad+(i%cols)*(cw+gap)+(cw-w)/2;
+    it.y=pad+Math.floor(i/cols)*(ch+gap)+(ch-h)/2;
+    it.w=w;it.h=h;
+  });
+  centerCollageContent();
+  cRender()
+}
+$("#collageInput").onchange=async e=>{
+  items=[];
+  for(const f of [...e.target.files]){
+    await new Promise(res=>{
+      const im=new Image();
+      im.onload=()=>{
+        items.push({id:uid(),img:im,name:f.name,x:0,y:0,w:200,h:200,ratio:im.width/im.height});
+        res()
+      };
+      im.src=URL.createObjectURL(f)
+    })
+  }
+  renderThumbs();autoLayout()
+};
+function renderThumbs(){
+  const box=$("#thumbList");box.innerHTML="";
+  items.forEach((it,i)=>{
+    const d=document.createElement("div");d.className="thumb";
+    d.innerHTML=`<img src="${it.img.src}"><div style="font-size:10px;overflow:hidden;text-overflow:ellipsis">${i+1}. ${it.name}</div><div class="thumbActions"><button data-up="${it.id}">↑</button><button data-down="${it.id}">↓</button><button class="deleteThumb" data-del="${it.id}">×</button></div>`;
+    box.appendChild(d)
+  });
+  box.querySelectorAll("[data-up]").forEach(b=>b.onclick=()=>reorder(b.dataset.up,-1));
+  box.querySelectorAll("[data-down]").forEach(b=>b.onclick=()=>reorder(b.dataset.down,1));box.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{items=items.filter(x=>x.id!==b.dataset.del);renderThumbs();autoLayout()})
+}
+function reorder(id,d){
+  const i=items.findIndex(x=>x.id===id),j=i+d;if(j<0||j>=items.length)return;
+  [items[i],items[j]]=[items[j],items[i]];renderThumbs();autoLayout()
+}
+function cHit(p){
+  for(let i=textItems.length-1;i>=0;i--){const t=textItems[i],b=textBounds(t);if(p.x>b.x-10&&p.x<b.x+b.w+10&&p.y>b.y-10&&p.y<b.y+b.h+10)return{kind:"text",obj:t}}
+  for(let i=items.length-1;i>=0;i--){const o=items[i];if(p.x>o.x&&p.x<o.x+o.w&&p.y>o.y&&p.y<o.y+o.h)return{kind:"image",obj:o}}
+  return null
+}
+cc.onmousedown=e=>{snapLockX=null;snapLockY=null;
+  const p=cPoint(e),hit=cHit(p);
+  cSel=hit?{kind:hit.kind,id:hit.obj.id}:null;
+  if(hit?.kind==="image"){
+    const o=hit.obj;
+    const rz=Math.hypot(p.x-(o.x+o.w),p.y-(o.y+o.h))<55;
+    cDrag={kind:"image",id:o.id,start:p,orig:{x:o.x,y:o.y,w:o.w,h:o.h},resize:rz,ratio:o.ratio}
+  }else if(hit?.kind==="text"){
+    const t=hit.obj;
+    cDrag={kind:"text",id:t.id,start:p,orig:{x:t.x,y:t.y}};
+    $("#collageText").value=t.text;$("#cTextSize").value=t.size;$("#cTextSizeVal").textContent=Math.round(t.size);$("#cTextColor").value=t.color
+  }
+  cRender()
+};
+cc.onmousemove=e=>{
+  if(!cDrag)return;
+  const p=cPoint(e),dx=p.x-cDrag.start.x,dy=p.y-cDrag.start.y;
+  if(cDrag.kind==="image"){
+    const o=items.find(x=>x.id===cDrag.id),s=cDrag.orig;
+    if(cDrag.resize){
+      const scale=Math.max(.12,Math.max((s.w+dx)/s.w,(s.h+dy)/s.h));
+      o.w=Math.max(70,s.w*scale);o.h=o.w/cDrag.ratio
+    }else{
+      let desiredX=s.x+dx, desiredY=s.y+dy;
+      const enterTol=7, releaseTol=16;
+
+      const candidatesX=[];
+      const candidatesY=[];
+      for(const other of items){
+        if(other.id===o.id)continue;
+        candidatesX.push(other.x,other.x+other.w/2,other.x+other.w);
+        candidatesY.push(other.y,other.y+other.h/2,other.y+other.h);
+      }
+
+      const myXOffsets=[0,o.w/2,o.w];
+      const myYOffsets=[0,o.h/2,o.h];
+
+      function nearestSnap(desired,offsets,candidates,tol){
+        let best=null;
+        for(const off of offsets){
+          const p=desired+off;
+          for(const target of candidates){
+            const d=target-p;
+            if(Math.abs(d)<=tol && (!best || Math.abs(d)<Math.abs(best.d))){
+              best={d,target,off};
+            }
+          }
+        }
+        return best;
+      }
+
+      if(snapLockX!==null){
+        const currentPoints=myXOffsets.map(off=>desiredX+off);
+        const minDist=Math.min(...currentPoints.map(p=>Math.abs(p-snapLockX)));
+        if(minDist<=releaseTol){
+          const nearestOff=myXOffsets.reduce((a,b)=>Math.abs(desiredX+a-snapLockX)<Math.abs(desiredX+b-snapLockX)?a:b);
+          desiredX=snapLockX-nearestOff;
+        }else snapLockX=null;
+      }
+      if(snapLockY!==null){
+        const currentPoints=myYOffsets.map(off=>desiredY+off);
+        const minDist=Math.min(...currentPoints.map(p=>Math.abs(p-snapLockY)));
+        if(minDist<=releaseTol){
+          const nearestOff=myYOffsets.reduce((a,b)=>Math.abs(desiredY+a-snapLockY)<Math.abs(desiredY+b-snapLockY)?a:b);
+          desiredY=snapLockY-nearestOff;
+        }else snapLockY=null;
+      }
+
+      if(snapLockX===null){
+        const sx=nearestSnap(desiredX,myXOffsets,candidatesX,enterTol);
+        if(sx){desiredX+=sx.d;snapLockX=sx.target}
+      }
+      if(snapLockY===null){
+        const sy=nearestSnap(desiredY,myYOffsets,candidatesY,enterTol);
+        if(sy){desiredY+=sy.d;snapLockY=sy.target}
+      }
+
+      o.x=desiredX;o.y=desiredY;
+
+      const vr=$("#guideV"),hr=$("#guideH"),r=cc.getBoundingClientRect();
+      if(snapLockX!==null){
+        vr.style.display="block";
+        vr.style.left=(snapLockX/cc.width*r.width)+"px";
+      }else vr.style.display="none";
+      if(snapLockY!==null){
+        hr.style.display="block";
+        hr.style.top=(snapLockY/cc.height*r.height)+"px";
+      }else hr.style.display="none";
+    }
+  }else{
+    const t=textItems.find(x=>x.id===cDrag.id),s=cDrag.orig;t.x=s.x+dx;t.y=s.y+dy
+  }
+  cRender()
+};
+["mouseup","mouseleave"].forEach(n=>cc.addEventListener(n,()=>{cDrag=null;snapLockX=null;snapLockY=null;$("#guideV").style.display="none";$("#guideH").style.display="none"}));
+
+
+let resizingCanvas=null;
+$("#canvasResizeHandle").addEventListener("mousedown",e=>{
+  e.preventDefault();
+  const rect=cc.getBoundingClientRect();
+  resizingCanvas={
+    x:e.clientX,y:e.clientY,
+    w:cc.width,h:cc.height,
+    screenW:rect.width,screenH:rect.height
+  };
+});
+
+window.addEventListener("mousemove",e=>{
+  if(!resizingCanvas)return;
+
+  const dx=e.clientX-resizingCanvas.x;
+  const dy=e.clientY-resizingCanvas.y;
+
+  const scaleX=Math.max(.35,(resizingCanvas.screenW+dx)/resizingCanvas.screenW);
+  const scaleY=Math.max(.35,(resizingCanvas.screenH+dy)/resizingCanvas.screenH);
+
+  cc.width=Math.round(Math.max(600,Math.min(4000,resizingCanvas.w*scaleX)));
+  cc.height=Math.round(Math.max(400,Math.min(3000,resizingCanvas.h*scaleY)));
+
+  // Immediately recalculate image sizes and positions from the CURRENT canvas size.
+  // This makes images visibly grow/shrink with the white canvas.
+  if(items.length){
+    autoLayout();
+  }else{
+    centerCollageContent();
+    cRender();
+  }
+});
+
+window.addEventListener("mouseup",()=>{resizingCanvas=null;});
+
+$("#autoLayout").onclick=autoLayout;
+$("#layoutMode").onchange=autoLayout;
+
+$("#addCollageText").onclick=()=>{
+  const text=$("#collageText").value.trim();if(!text)return;
+  const t={id:uid(),text,x:cc.width*.08,y:cc.height*.08,size:+$("#cTextSize").value,color:$("#cTextColor").value};
+  textItems.push(t);cSel={kind:"text",id:t.id};cRender()
+};
+$("#cTextSize").oninput=e=>{
+  $("#cTextSizeVal").textContent=e.target.value;
+  if(cSel?.kind==="text"){const t=textItems.find(x=>x.id===cSel.id);if(t){t.size=+e.target.value;cRender()}}
+};
+$("#cTextColor").oninput=e=>{
+  if(cSel?.kind==="text"){const t=textItems.find(x=>x.id===cSel.id);if(t){t.color=e.target.value;cRender()}}
+};
+$("#collageText").oninput=e=>{
+  if(cSel?.kind==="text"){const t=textItems.find(x=>x.id===cSel.id);if(t){t.text=e.target.value;cRender()}}
+};
+$("#deleteCollageObject").onclick=()=>{
+  if(!cSel)return;
+  if(cSel.kind==="image"){items=items.filter(x=>x.id!==cSel.id);renderThumbs()}
+  else textItems=textItems.filter(x=>x.id!==cSel.id);
+  cSel=null;cRender()
+};
+
+
+$("#translateCollageText").onclick=async()=>{
+  $("#collageText").value=await translateBrowserText(
+    $("#collageText").value,
+    $("#collageLang").value,
+    $("#collageVoiceStatus"),
+    "#collageProgress"
+  );
+  if(cSel?.kind==="text"){
+    const t=textItems.find(x=>x.id===cSel.id);
+    if(t){t.text=$("#collageText").value;cRender();}
+  }
+};
+
+$("#saveCollage").onclick=()=>{
+  const fmt=$("#collageFormat").value,mime=fmt==="jpeg"?"image/jpeg":"image/png",ext=fmt==="jpeg"?"jpg":"png";
+  cRender();
+  cc.toBlob(b=>{const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=`fit-photo-combined.${ext}`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)},mime,.94)
+};
+
+function mode(m){
+  const a=m==="annotate";
+  $("#annotateTab").classList.toggle("active",a);$("#combineTab").classList.toggle("active",!a);
+  $("#annotateLeft").style.display=a?"block":"none";$("#collageLeft").style.display=a?"none":"block";
+  $("#annotatePanel").style.display=a?"flex":"none";$("#collagePanel").style.display=a?"none":"flex";
+  $("#annotateControls").style.display=a?"block":"none";$("#collageControls").style.display=a?"none":"block";
+}
+$("#annotateTab").onclick=()=>mode("annotate");$("#combineTab").onclick=()=>mode("combine");
+$("#newBtn").onclick=()=>{if(confirm("Start a new project?"))location.reload()};
+$("#topExport").onclick=()=>$("#annotatePanel").style.display!=="none"?saveAnnotated():$("#saveCollage").click();
+
+window.addEventListener("keydown",e=>{
+  const tag=(document.activeElement?.tagName||"").toLowerCase();
+  const editing = tag==="input" || tag==="textarea" || document.activeElement?.isContentEditable;
+  if(editing) return;
+  if(e.key==="Delete" || e.key==="Backspace"){
+    let handled=false;
+    if($("#annotatePanel").style.display!=="none" && selected){
+      saveHistory();
+      objects=objects.filter(o=>o.id!==selected);
+      selected=null;
+      render();
+      handled=true;
+    }else if($("#collagePanel").style.display!=="none" && cSel){
+      if(cSel.kind==="image"){
+        items=items.filter(x=>x.id!==cSel.id);
+        renderThumbs();
+      }else if(cSel.kind==="text"){
+        textItems=textItems.filter(x=>x.id!==cSel.id);
+      }
+      cSel=null;
+      cRender();
+      handled=true;
+    }
+    if(handled)e.preventDefault();
+  }
+});
+
+
+
+async function loadSecureBlobIntoAnnotate(blob,label="Secure live photo"){
+  return new Promise((resolve,reject)=>{
+    const url=URL.createObjectURL(blob);
+    img.onload=()=>{
+      loaded=true;
+      $("#empty").style.display="none";
+      img.style.display="block";
+      objects=[];selected=null;temp=null;drag=null;history=[];
+      fitPreviewToStage();
+      setTool("select");
+      const meta=$("#photoMeta");
+      if(meta)meta.textContent=`${label} · ${img.naturalWidth}×${img.naturalHeight}`;
+      $("#hint").textContent="Secure live photo ready — choose a tool";
+      requestAnimationFrame(()=>{fitPreviewToStage();render()});
+      resolve(true);
+    };
+    img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error("Could not decode secure photo"))};
+    img.src=url;
+  });
+}
+
+async function addSecureBlobToCombine(blob,label="Secure live photo",sourcePath=""){
+  return new Promise((resolve,reject)=>{
+    if(sourcePath && items.some(x=>x.sourcePath===sourcePath)){resolve(false);return}
+    const url=URL.createObjectURL(blob),im=new Image();
+    im.onload=()=>{
+      items.push({id:uid(),img:im,name:label,x:0,y:0,w:200,h:200,ratio:im.width/im.height,sourcePath});
+      renderThumbs();
+      autoLayout();
+      cRender();
+      resolve(true);
+    };
+    im.onerror=()=>{URL.revokeObjectURL(url);reject(new Error("Could not decode secure photo"))};
+    im.src=url;
+  });
+}
+
+window.FitEditor={
+  isCombineMode:()=>window.getComputedStyle($("#collagePanel")).display!=="none",
+  loadAnnotateBlob:loadSecureBlobIntoAnnotate,
+  addCombineBlob:addSecureBlobToCombine,
+  annotationCount:()=>objects.length,
+  collageCount:()=>items.length,
+  refit:fitPreviewToStage
+};
+
+window.addEventListener("resize",()=>{if(loaded)fitPreviewToStage();cRender()});
+cRender();setTool("select");debug("JavaScript active · Build 41 Stable Workspace");
+})();
+</script>
+
+<div class="mobileCaptureScreen" id="mobileCaptureScreen">
+  <div class="mobileCaptureCard">
+    <h1>Fit Photo Capture</h1>
+    <p>Session <strong id="mobileSessionCode">—</strong></p>
+    <p style="font-size:12px;color:#64748b;margin-top:-2px">Photos are automatically optimised and uploaded in the background.</p>
+    <label class="mobileCaptureBtn">
+      📷 Take / Choose Photo
+      <input id="mobilePhotoInput" type="file" accept="image/*" capture="environment">
+    </label>
+    <div class="mobilePreview">
+      <span id="mobilePreviewPlaceholder">Photo preview</span>
+      <img id="mobilePreviewImg" alt="Selected fit photo">
+    </div>
+    <div class="uploadState" id="mobileUploadState">Ready</div>
+    <div class="uploadState" id="mobileOptimiseStats" style="font-size:11px"></div>
+    <div class="mobileDone" id="mobileDone">✓ Uploaded to desktop session</div>
+    <div id="uploadQueue" class="uploadQueue"></div>
+  </div>
+</div>
+
+
+<script>
+(() => {
+const U="https://qrtfvatqrtliluwtkkxg.supabase.co",K="sb_publishable_tSBEuKB56T01zCJZxIadtw_MD7t6S6N",sb=window.supabase.createClient(U,K,{auth:{persistSession:true,autoRefreshToken:true}});
+const q=s=>document.querySelector(s), B="fit-photos", T="fit_photos", S="fit_sessions";
+const p=new URLSearchParams(location.search), mobile=p.get("mode")==="mobile", sid=p.get("session"), tok=p.get("token");
+function hex(n=24){const a=new Uint8Array(n);crypto.getRandomValues(a);return [...a].map(x=>x.toString(16).padStart(2,"0")).join("")}
+function code(){const c="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";return Array.from({length:6},()=>c[Math.floor(Math.random()*c.length)]).join("")}
+async function user(){let x=await sb.auth.getSession();if(x.data.session?.user)return x.data.session.user;let r=await sb.auth.signInAnonymously();if(r.error)throw r.error;return r.data.user}
+async function signed(path){let r=await sb.storage.from(B).createSignedUrl(path,300);if(r.error)throw r.error;return r.data.signedUrl}
+function murl(s,t){let u=new URL(location.href);u.search="";u.searchParams.set("mode","mobile");u.searchParams.set("session",s);u.searchParams.set("token",t);return u.toString()}
+
+if(mobile){
+ document.body.classList.add("mobile-mode");q("#mobileSessionCode").textContent=sid||"Invalid";
+ const inp=q("#mobilePhotoInput"),img=q("#mobilePreviewImg"),ph=q("#mobilePreviewPlaceholder"),st=q("#mobileUploadState"),done=q("#mobileDone");
+ let ready=false;
+ (async()=>{try{await user();let r=await sb.rpc("join_fit_session",{p_session_id:sid,p_token:tok});if(r.error||!r.data)throw r.error||new Error("Session invalid or ended");ready=true;st.textContent="Secure session connected";st.style.color="#067647"}catch(e){st.textContent="Connection failed: "+e.message;st.style.color="#b42318";inp.disabled=true}})();
+ async function opt(f){let b=await createImageBitmap(f),sc=Math.min(1,1800/Math.max(b.width,b.height)),w=Math.round(b.width*sc),h=Math.round(b.height*sc),c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(b,0,0,w,h);return await new Promise((ok,no)=>c.toBlob(x=>x?ok(x):no(new Error("Compression failed")),"image/jpeg",.82))}
+ inp.addEventListener("change",async e=>{let f=e.target.files?.[0];if(!f||!ready)return;img.src=URL.createObjectURL(f);img.style.display="block";ph.style.display="none";done.style.display="none";try{st.textContent="Optimising…";let blob=await opt(f),path=`${sid}/${Date.now()}_${hex(8)}.jpg`;st.textContent="Uploading securely…";let a=await sb.storage.from(B).upload(path,blob,{contentType:"image/jpeg"});if(a.error)throw a.error;let b=await sb.from(T).insert({session_id:sid,photo_path:path});if(b.error)throw b.error;st.textContent="Uploaded securely ✓";st.style.color="#067647";done.style.display="block";inp.value=""}catch(e){st.textContent="Upload failed: "+e.message;st.style.color="#b42318"}});
+ return;
+}
+
+let cs=null,ct=null,ch=null,seen=new Set();
+async function add(row,pre=true){if(!row?.photo_path||seen.has(row.photo_path))return;seen.add(row.photo_path);let ph=q("#livePhotosPlaceholder");if(ph)ph.style.display="none";let u=await signed(row.photo_path),h=q("#livePhotos"),b=document.createElement("button");b.className="livePhoto";b.type="button";b.innerHTML=`<img src="${u}"><span class="badge">Click to edit</span>`;b.onclick=async()=>{
+  document.querySelectorAll(".livePhoto").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");
+  try{
+    const fu=await signed(row.photo_path),resp=await fetch(fu,{cache:"no-store"});
+    if(!resp.ok)throw new Error("Could not download secure photo ("+resp.status+")");
+    const blob=await resp.blob();
+    if(!window.FitEditor)throw new Error("Editor is not ready");
+    if(window.FitEditor.isCombineMode()){
+      await window.FitEditor.addCombineBlob(blob,row.photo_path.split("/").pop(),row.photo_path);
+      q("#livePhotosStatus").textContent=`${seen.size} secure photo(s) · selected photo added to Combine`;
+    }else{
+      await window.FitEditor.loadAnnotateBlob(blob,"Secure live photo");
+    }
+  }catch(e){
+    console.error(e);
+    alert("Could not open secure photo: "+(e.message||e));
+  }
+};pre&&h.firstChild?h.insertBefore(b,h.firstChild):h.appendChild(b);q("#livePhotosStatus").textContent=`${seen.size} secure photo(s) received`}
+async function load(){let r=await sb.rpc("get_fit_session_photos",{p_session_id:cs});if(r.error)throw r.error;for(let x of r.data||[])await add(x,false)}
+let pollTimer=null;
+async function refreshPhotos(){
+ if(!cs)return;
+ let r=await sb.rpc("get_fit_session_photos",{p_session_id:cs});
+ if(r.error){
+   console.warn("Photo refresh:",r.error.message);
+   q("#livePhotosStatus").textContent="Sync check failed: "+r.error.message;
+   return;
+ }
+ for(let x of r.data||[])await add(x,true);
+ if((r.data||[]).length===0){
+   q("#livePhotosStatus").textContent="Connected — waiting for phone photos…";
+ } else {
+   q("#livePhotosStatus").textContent=(r.data||[]).length+" photo(s) found in this secure session";
+ }
+}
+function sub(){
+ if(ch)sb.removeChannel(ch);
+ ch=sb.channel("fit-"+cs)
+   .on("postgres_changes",{event:"INSERT",schema:"public",table:T,filter:"session_id=eq."+cs},x=>add(x.new,true))
+   .subscribe(x=>{
+      if(x==="SUBSCRIBED")q("#syncStatus").textContent="Secure sync ready — scan QR";
+   });
+ if(pollTimer)clearInterval(pollTimer);
+ // Polling is a fallback for RLS/realtime delivery differences; seen[] prevents duplicates.
+ pollTimer=setInterval(refreshPhotos,1500);
+}
+q("#createSessionBtn").onclick=async()=>{let s=q("#createSessionStatus"),b=q("#createSessionBtn");b.disabled=true;b.textContent="Creating…";s.textContent="Step 1/3: signing in securely…";s.style.color="#2563eb";try{let u=await user();if(!u?.id)throw new Error("Anonymous sign-in returned no user");s.textContent="Step 2/3: creating database session…";cs=code();ct=hex();let r=await sb.from(S).insert({session_id:cs,token_hash:ct,owner_id:u.id});if(r.error)throw new Error("Database: "+r.error.message);s.textContent="Step 3/3: preparing QR…";q("#sessionArea").style.display="block";q("#sessionCode").textContent=cs;
+let lph=q("#livePhotosPlaceholder");if(lph)lph.style.display="block";
+q("#livePhotosStatus").textContent="Connected — waiting for phone photos…";q("#endSessionBtn").style.display="block";let mu=murl(cs,ct),qr=q("#qrImage");qr.src="https://quickchart.io/qr?size=150&text="+encodeURIComponent(mu);qr.style.display="block";q("#openMobileLinkBtn").style.display=q("#copyMobileLinkBtn").style.display="block";q("#openMobileLinkBtn").onclick=()=>window.open(mu,"_blank");q("#copyMobileLinkBtn").onclick=()=>navigator.clipboard.writeText(mu);await load();sub();await refreshPhotos();s.textContent="Secure session created ✓";s.style.color="#067647"}catch(e){console.error(e);s.textContent="Create failed: "+(e.message||e);s.style.color="#b42318"}finally{b.disabled=false;b.textContent="Create Secure Session"}};
+q("#refreshLivePhotosBtn").onclick=async()=>{q("#livePhotosStatus").textContent="Checking secure session…";await refreshPhotos()};
+q("#endSessionBtn").onclick=async()=>{if(!cs)return;let r=await sb.from(S).update({active:false,ended_at:new Date().toISOString()}).eq("session_id",cs);if(r.error)return q("#syncStatus").textContent=r.error.message;if(ch)sb.removeChannel(ch);if(pollTimer){clearInterval(pollTimer);pollTimer=null}q("#syncStatus").textContent="Session ended — QR invalid";q("#endSessionBtn").style.display="none"};
+})();
+</script>
+
+</body>
+</html>
