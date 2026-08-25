@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Fit Photo Studio V58 Mobile Camera + Library</title>
+<title>Fit Photo Studio V59 Single Mobile Picker</title>
 <style>
 :root{
   --bg:#f3f5f7;--panel:#ffffff;--ink:#15171a;--muted:#707782;--line:#dce1e6;
@@ -233,7 +233,7 @@ body.mobile-mode .mobileCaptureScreen{display:block}
 @media(max-width:1150px){.app{grid-template-columns:200px 150px minmax(0,1fr) 270px}}
 
 
-/* Version V58 full workspace */
+/* Version V59 full workspace */
 .rightVersion{font-size:10px;font-weight:800;letter-spacing:.08em;color:#2563eb;background:#eff6ff;border-radius:999px;padding:4px 8px;align-self:flex-start;margin-bottom:10px}
 .right{display:block!important;overflow-y:auto!important;overflow-x:hidden!important;min-width:0!important;padding:14px 14px 110px!important}
 #annotateControls,#collageControls{display:block;min-width:0;max-width:100%;overflow:visible}
@@ -410,17 +410,28 @@ input[type="color"]{width:42px!important;height:32px!important}
 }
 
 
-/* V58 mobile capture choices */
-.mobilePhotoActions{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px}
-.mobileCaptureBtn,.mobileLibraryBtn{
-  min-height:58px!important;border-radius:16px!important;display:flex!important;
-  align-items:center!important;justify-content:center!important;text-align:center!important;
-  font-size:18px!important;font-weight:700!important;padding:0 18px!important;box-sizing:border-box!important;
+/* V59 single native mobile picker */
+.mobilePhotoActions{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+  margin-top:12px;
 }
-.mobileCaptureBtn{background:#111827!important;color:#fff!important}
-.mobileLibraryBtn{background:#fff!important;color:#111827!important;border:1px solid #d7dde5!important}
-.mobileCaptureBtn input,.mobileLibraryBtn input{display:none!important}
-
+.mobileCaptureBtn{
+  min-height:58px!important;
+  border-radius:16px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+  font-size:18px!important;
+  font-weight:700!important;
+  padding:0 18px!important;
+  box-sizing:border-box!important;
+  background:#111827!important;
+  color:#fff!important;
+}
+.mobileCaptureBtn input{display:none!important}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -428,7 +439,7 @@ input[type="color"]{width:42px!important;height:32px!important}
 <header>
   <div class="brand">
     <div class="logo">F</div>
-    <div><h1>Fit Photo Studio</h1><small><strong>Version V58</strong> · Secure Sync · Full Combine Editor</small></div>
+    <div><h1>Fit Photo Studio</h1><small><strong>Version V59</strong> · Secure Sync · Full Combine Editor</small></div>
   </div>
   <div class="topActions">
     <button id="newBtn" class="btn">New</button>
@@ -1612,7 +1623,7 @@ function initAnnotatePhotoInteractions(){
 
 window.addEventListener("resize",()=>{if(loaded)fitPreviewToStage();fitCollageCanvas()});
 initAnnotatePhotoInteractions();
-mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active · Version V58");
+mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active · Version V59");
 })();
 </script>
 
@@ -1623,12 +1634,8 @@ mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScrip
     <p style="font-size:12px;color:#64748b;margin-top:-2px">Photos are automatically optimised and uploaded in the background.</p>
     <div class="mobilePhotoActions">
       <label class="mobileCaptureBtn">
-        📷 Take Photo
-        <input id="mobileCameraInput" type="file" accept="image/*" capture="environment">
-      </label>
-      <label class="mobileLibraryBtn">
-        🖼️ Choose from Library
-        <input id="mobileLibraryInput" type="file" accept="image/*">
+        📷 Add / Take Photo
+        <input id="mobilePhotoInput" type="file" accept="image/*">
       </label>
     </div>
     <div class="mobilePreview">
@@ -1656,12 +1663,12 @@ function murl(s,t){let u=new URL(location.href);u.search="";u.searchParams.set("
 
 if(mobile){
  document.body.classList.add("mobile-mode");q("#mobileSessionCode").textContent=sid||"Invalid";
- const cameraInp=q("#mobileCameraInput"),libraryInp=q("#mobileLibraryInput"),img=q("#mobilePreviewImg"),ph=q("#mobilePreviewPlaceholder"),st=q("#mobileUploadState"),done=q("#mobileDone");
+ const inp=q("#mobilePhotoInput"),img=q("#mobilePreviewImg"),ph=q("#mobilePreviewPlaceholder"),st=q("#mobileUploadState"),done=q("#mobileDone");
  let ready=false;
- (async()=>{try{await user();let r=await sb.rpc("join_fit_session",{p_session_id:sid,p_token:tok});if(r.error||!r.data)throw r.error||new Error("Session invalid or ended");ready=true;st.textContent="Secure session connected";st.style.color="#067647"}catch(e){st.textContent="Connection failed: "+e.message;st.style.color="#b42318";cameraInp.disabled=true;libraryInp.disabled=true}})();
+ (async()=>{try{await user();let r=await sb.rpc("join_fit_session",{p_session_id:sid,p_token:tok});if(r.error||!r.data)throw r.error||new Error("Session invalid or ended");ready=true;st.textContent="Secure session connected";st.style.color="#067647"}catch(e){st.textContent="Connection failed: "+e.message;st.style.color="#b42318";inp.disabled=true}})();
  async function opt(f){let b=await createImageBitmap(f),sc=Math.min(1,1800/Math.max(b.width,b.height)),w=Math.round(b.width*sc),h=Math.round(b.height*sc),c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(b,0,0,w,h);return await new Promise((ok,no)=>c.toBlob(x=>x?ok(x):no(new Error("Compression failed")),"image/jpeg",.82))}
- async function handleMobilePhoto(e){
-   let input=e.currentTarget,f=input.files?.[0];
+ inp.addEventListener("change",async e=>{
+   let f=e.target.files?.[0];
    if(!f||!ready)return;
    img.src=URL.createObjectURL(f);img.style.display="block";ph.style.display="none";done.style.display="none";
    try{
@@ -1670,11 +1677,9 @@ if(mobile){
      st.textContent="Uploading securely…";
      let a=await sb.storage.from(B).upload(path,blob,{contentType:"image/jpeg"});if(a.error)throw a.error;
      let b=await sb.from(T).insert({session_id:sid,photo_path:path});if(b.error)throw b.error;
-     st.textContent="Uploaded securely ✓";st.style.color="#067647";done.style.display="block";input.value="";
+     st.textContent="Uploaded securely ✓";st.style.color="#067647";done.style.display="block";inp.value="";
    }catch(e){st.textContent="Upload failed: "+e.message;st.style.color="#b42318"}
- }
- cameraInp.addEventListener("change",handleMobilePhoto);
- libraryInp.addEventListener("change",handleMobilePhoto);
+ });
  return;
 }
 
