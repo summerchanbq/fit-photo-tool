@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Fit Photo Studio V59 Single Mobile Picker</title>
+<title>Fit Photo Studio V61 Curve Rotation</title>
 <style>
 :root{
   --bg:#f3f5f7;--panel:#ffffff;--ink:#15171a;--muted:#707782;--line:#dce1e6;
@@ -233,7 +233,7 @@ body.mobile-mode .mobileCaptureScreen{display:block}
 @media(max-width:1150px){.app{grid-template-columns:200px 150px minmax(0,1fr) 270px}}
 
 
-/* Version V59 full workspace */
+/* Version V61 full workspace */
 .rightVersion{font-size:10px;font-weight:800;letter-spacing:.08em;color:#2563eb;background:#eff6ff;border-radius:999px;padding:4px 8px;align-self:flex-start;margin-bottom:10px}
 .right{display:block!important;overflow-y:auto!important;overflow-x:hidden!important;min-width:0!important;padding:14px 14px 110px!important}
 #annotateControls,#collageControls{display:block;min-width:0;max-width:100%;overflow:visible}
@@ -432,6 +432,12 @@ input[type="color"]{width:42px!important;height:32px!important}
   color:#fff!important;
 }
 .mobileCaptureBtn input{display:none!important}
+
+/* V60 fill + curve */
+.shapeFillRow label{display:flex!important;align-items:center!important;gap:7px!important}
+.shapeFillRow input[type="checkbox"]{width:16px!important;height:16px!important;min-width:16px!important}
+.curveHelp{font-size:9px;color:#64748b}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -439,7 +445,7 @@ input[type="color"]{width:42px!important;height:32px!important}
 <header>
   <div class="brand">
     <div class="logo">F</div>
-    <div><h1>Fit Photo Studio</h1><small><strong>Version V59</strong> · Secure Sync · Full Combine Editor</small></div>
+    <div><h1>Fit Photo Studio</h1><small><strong>Version V61</strong> · Secure Sync · Full Combine Editor</small></div>
   </div>
   <div class="topActions">
     <button id="newBtn" class="btn">New</button>
@@ -558,6 +564,7 @@ input[type="color"]{width:42px!important;height:32px!important}
         <button class="tool" data-tool="dash">┄ Dashed</button>
         <button class="tool" data-tool="circle">○ Circle</button>
         <button class="tool" data-tool="rect">□ Rectangle</button>
+        <button class="tool" data-tool="curve">⌒ Curve</button>
         <button class="tool" data-tool="text">T Text</button>
       </div>
       <div class="zoomBar" id="annotateZoomBar">
@@ -588,6 +595,7 @@ input[type="color"]{width:42px!important;height:32px!important}
         <button class="ctool" data-ctool="dash">┄ Dashed</button>
         <button class="ctool" data-ctool="circle">○ Circle</button>
         <button class="ctool" data-ctool="rect">□ Rectangle</button>
+        <button class="ctool" data-ctool="curve">⌒ Curve</button>
         <button class="ctool" data-ctool="text">T Text</button>
       </div>
 <div class="combineLayoutStrip">
@@ -609,7 +617,7 @@ input[type="color"]{width:42px!important;height:32px!important}
     <div class="section">
       <div class="sectionTitleRow">
         <h2>ANNOTATION STYLE</h2>
-        <span class="versionPill">V48</span>
+        <span class="versionPill">V61</span>
       </div>
       <div class="prop">
         <label>Color <small><span id="colorText">#000000</span></small></label>
@@ -622,6 +630,9 @@ input[type="color"]{width:42px!important;height:32px!important}
       <div class="prop">
         <label>Text size <small><span id="fontVal">34</span> px</small></label>
         <input id="fontSize" type="range" min="14" max="50" value="34">
+      </div>
+      <div class="prop shapeFillRow">
+        <label><input id="shapeFill" type="checkbox"> Fill Circle / Rectangle</label>
       </div>
       <div class="compactPair">
         <button id="undo" class="btn">Undo</button>
@@ -674,7 +685,7 @@ input[type="color"]{width:42px!important;height:32px!important}
     <div class="section">
       <div class="sectionTitleRow">
         <h2>ANNOTATION STYLE</h2>
-        <span class="versionPill">V48</span>
+        <span class="versionPill">V61</span>
       </div>
       <div class="prop">
         <label>Color <small><span id="cAnnoColorText">#000000</span></small></label>
@@ -687,6 +698,9 @@ input[type="color"]{width:42px!important;height:32px!important}
       <div class="prop">
         <label>Text size <small><span id="cTextSizeVal">34</span> px</small></label>
         <input id="cTextSize" type="range" min="14" max="50" value="34">
+      </div>
+      <div class="prop shapeFillRow">
+        <label><input id="cShapeFill" type="checkbox"> Fill Circle / Rectangle</label>
       </div>
       <input id="cTextColor" type="color" value="#000000" style="display:none">
       <div class="compactPair">
@@ -826,6 +840,10 @@ function syncOverlay(){
 }
 function bounds(o){
   if(o.type==="text"){ctx.save();ctx.font=`700 ${o.size}px Arial`;const ls=o.text.split("\n"),w=Math.max(30,...ls.map(x=>ctx.measureText(x).width));ctx.restore();return{x:o.x1,y:o.y1,w,h:ls.length*o.size*1.2}}
+  if(o.type==="curve"){
+    const xs=[o.x1,o.x2,o.cx],ys=[o.y1,o.y2,o.cy],x=Math.min(...xs),y=Math.min(...ys);
+    return{x,y,w:Math.max(4,Math.max(...xs)-x),h:Math.max(4,Math.max(...ys)-y)}
+  }
   return{x:Math.min(o.x1,o.x2),y:Math.min(o.y1,o.y2),w:Math.max(4,Math.abs(o.x2-o.x1)),h:Math.max(4,Math.abs(o.y2-o.y1))}
 }
 function drawArrow(o){
@@ -839,11 +857,12 @@ function draw(o,sel=false){
   ctx.save();ctx.strokeStyle=o.color;ctx.fillStyle=o.color;ctx.lineWidth=o.width||6;ctx.lineCap="round";ctx.lineJoin="round";
   if(o.type==="arrow")drawArrow(o);
   else if(o.type==="line"||o.type==="dash"){ctx.setLineDash(o.type==="dash"?adaptiveDash(o.width||lineW()):[]);ctx.beginPath();ctx.moveTo(o.x1,o.y1);ctx.lineTo(o.x2,o.y2);ctx.stroke()}
-  else if(o.type==="circle"){ctx.beginPath();ctx.ellipse((o.x1+o.x2)/2,(o.y1+o.y2)/2,Math.abs(o.x2-o.x1)/2,Math.abs(o.y2-o.y1)/2,0,0,Math.PI*2);ctx.stroke()}
-  else if(o.type==="rect")ctx.strokeRect(o.x1,o.y1,o.x2-o.x1,o.y2-o.y1);
+  else if(o.type==="circle"){ctx.beginPath();ctx.ellipse((o.x1+o.x2)/2,(o.y1+o.y2)/2,Math.abs(o.x2-o.x1)/2,Math.abs(o.y2-o.y1)/2,0,0,Math.PI*2);o.fill?ctx.fill():ctx.stroke()}
+  else if(o.type==="rect"){if(o.fill)ctx.fillRect(o.x1,o.y1,o.x2-o.x1,o.y2-o.y1);else ctx.strokeRect(o.x1,o.y1,o.x2-o.x1,o.y2-o.y1)}
+  else if(o.type==="curve"){ctx.beginPath();ctx.moveTo(o.x1,o.y1);ctx.quadraticCurveTo(o.cx,o.cy,o.x2,o.y2);ctx.stroke()}
   else if(o.type==="text"){ctx.font=`700 ${o.size}px Arial`;ctx.textBaseline="top";o.text.split("\n").forEach((t,i)=>ctx.fillText(t,o.x1,o.y1+i*o.size*1.2))}
   ctx.restore();
-  if(sel){const b=bounds(o);ctx.save();ctx.strokeStyle="#2563eb";ctx.lineWidth=3;ctx.setLineDash([9,6]);ctx.strokeRect(b.x-10,b.y-10,b.w+20,b.h+20);ctx.setLineDash([]);ctx.fillStyle="#fff";ctx.strokeStyle="#2563eb";ctx.lineWidth=3;[[b.x-10,b.y-10],[b.x+b.w+10,b.y+b.h+10]].forEach(([x,y])=>{ctx.beginPath();ctx.arc(x,y,11,0,Math.PI*2);ctx.fill();ctx.stroke()});ctx.restore()}
+  if(sel){const b=bounds(o);ctx.save();ctx.strokeStyle="#2563eb";ctx.lineWidth=3;ctx.setLineDash([9,6]);ctx.strokeRect(b.x-10,b.y-10,b.w+20,b.h+20);ctx.setLineDash([]);ctx.fillStyle="#fff";ctx.strokeStyle="#2563eb";ctx.lineWidth=3;[[b.x-10,b.y-10],[b.x+b.w+10,b.y+b.h+10]].forEach(([x,y])=>{ctx.beginPath();ctx.arc(x,y,11,0,Math.PI*2);ctx.fill();ctx.stroke()});ctx.restore()}if(sel&&o.type==="curve"){ctx.save();ctx.strokeStyle="#2563eb";ctx.lineWidth=2;ctx.setLineDash([5,5]);ctx.beginPath();ctx.moveTo(o.x1,o.y1);ctx.lineTo(o.cx,o.cy);ctx.lineTo(o.x2,o.y2);ctx.stroke();ctx.setLineDash([]);[[o.x1,o.y1],[o.cx,o.cy],[o.x2,o.y2]].forEach(([x,y],i)=>{ctx.beginPath();ctx.fillStyle=i===1?"#2563eb":"#fff";ctx.strokeStyle="#2563eb";ctx.arc(x,y,i===1?10:8,0,Math.PI*2);ctx.fill();ctx.stroke()});const mx=(o.x1+o.x2)/2,my=(o.y1+o.y2)/2,ang=Math.atan2(o.y2-o.y1,o.x2-o.x1),rx=mx-Math.sin(ang)*48,ry=my+Math.cos(ang)*48;ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(mx,my);ctx.lineTo(rx,ry);ctx.stroke();ctx.setLineDash([]);ctx.beginPath();ctx.fillStyle="#fff";ctx.arc(rx,ry,10,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.restore()}
 }
 function render(){ctx.clearRect(0,0,cvs.width,cvs.height);objects.forEach(o=>draw(o,o.id===selected));if(temp)draw(temp)}
 function hit(p){for(let i=objects.length-1;i>=0;i--){const o=objects[i],b=bounds(o),pad=26;if(p.x>b.x-pad&&p.x<b.x+b.w+pad&&p.y>b.y-pad&&p.y<b.y+b.h+pad)return o}return null}
@@ -947,23 +966,32 @@ cvs.addEventListener("mousedown",e=>{if(annotateTextEditing)return;
     const o=hit(p);selected=o?.id||null;
     if(!o){selectPhotoFrame(true);render();return;}
     selectPhotoFrame(false);
-    if(o){saveHistory();const b=bounds(o),resize=Math.abs(p.x-(b.x+b.w))<40&&Math.abs(p.y-(b.y+b.h))<40;drag={id:o.id,start:p,orig:JSON.parse(JSON.stringify(o)),resize};
+    if(o){saveHistory();const b=bounds(o);let resize=Math.abs(p.x-(b.x+b.w))<40&&Math.abs(p.y-(b.y+b.h))<40,curvePart=null;
+      if(o.type==="curve"){const near=(x,y)=>Math.hypot(p.x-x,p.y-y)<28,mx=(o.x1+o.x2)/2,my=(o.y1+o.y2)/2,ang=Math.atan2(o.y2-o.y1,o.x2-o.x1),rx=mx-Math.sin(ang)*48,ry=my+Math.cos(ang)*48;if(near(rx,ry))curvePart="rotate";else if(near(o.cx,o.cy))curvePart="control";else if(near(o.x1,o.y1))curvePart="start";else if(near(o.x2,o.y2))curvePart="end";resize=false}
+      drag={id:o.id,start:p,orig:JSON.parse(JSON.stringify(o)),resize,curvePart};
       if(o.color){$("#color").value=o.color;$("#colorText").textContent=o.color.toUpperCase()}
       if(o.type==="text"){$("#fontSize").value=o.size;$("#fontVal").textContent=Math.round(o.size)}
       else{$("#lineWidth").value=o.width;$("#lineVal").textContent=Math.round(o.width)}
+      if($("#shapeFill"))$("#shapeFill").checked=!!o.fill
     }render();return;
   }
   if(tool==="text"){
     createInlineTextEditor(p);
     return;
   }
-  saveHistory();temp={id:uid(),type:tool,x1:p.x,y1:p.y,x2:p.x,y2:p.y,color:color(),width:lineW()}
+  saveHistory();temp={id:uid(),type:tool,x1:p.x,y1:p.y,x2:p.x,y2:p.y,color:color(),width:lineW(),fill:$("#shapeFill")?.checked||false};
+  if(tool==="curve"){temp.cx=p.x;temp.cy=p.y}
 });
 cvs.addEventListener("mousemove",e=>{
   if(!temp&&!drag)return;const p=point(e);
-  if(temp){temp.x2=p.x;temp.y2=p.y;render();return}
+  if(temp){temp.x2=p.x;temp.y2=p.y;if(temp.type==="curve"){const mx=(temp.x1+p.x)/2,my=(temp.y1+p.y)/2,dx=p.x-temp.x1,dy=p.y-temp.y1,L=Math.max(1,Math.hypot(dx,dy));temp.cx=mx-dy/L*Math.min(80,L*.25);temp.cy=my+dx/L*Math.min(80,L*.25)}render();return}
   const o=objects.find(x=>x.id===drag.id),s=drag.orig,dx=p.x-drag.start.x,dy=p.y-drag.start.y;
-  if(drag.resize){if(o.type==="text")o.size=Math.max(10,s.size+dx/4);else{o.x2=s.x2+dx;o.y2=s.y2+dy}}
+  if(o.type==="curve"){
+    if(drag.curvePart==="rotate"){const mx=(s.x1+s.x2)/2,my=(s.y1+s.y2)/2,a0=Math.atan2(drag.start.y-my,drag.start.x-mx),a1=Math.atan2(p.y-my,p.x-mx),da=a1-a0,cs=Math.cos(da),sn=Math.sin(da),rot=(x,y)=>({x:mx+(x-mx)*cs-(y-my)*sn,y:my+(x-mx)*sn+(y-my)*cs}),a=rot(s.x1,s.y1),bb=rot(s.x2,s.y2),c=rot(s.cx,s.cy);o.x1=a.x;o.y1=a.y;o.x2=bb.x;o.y2=bb.y;o.cx=c.x;o.cy=c.y}else if(drag.curvePart==="control"){o.cx=s.cx+dx;o.cy=s.cy+dy}
+    else if(drag.curvePart==="start"){o.x1=s.x1+dx;o.y1=s.y1+dy}
+    else if(drag.curvePart==="end"){o.x2=s.x2+dx;o.y2=s.y2+dy}
+    else{o.x1=s.x1+dx;o.y1=s.y1+dy;o.x2=s.x2+dx;o.y2=s.y2+dy;o.cx=s.cx+dx;o.cy=s.cy+dy}
+  }else if(drag.resize){if(o.type==="text")o.size=Math.max(10,s.size+dx/4);else{o.x2=s.x2+dx;o.y2=s.y2+dy}}
   else if(o.type==="text"){o.x1=s.x1+dx;o.y1=s.y1+dy}
   else{o.x1=s.x1+dx;o.y1=s.y1+dy;o.x2=s.x2+dx;o.y2=s.y2+dy}
   render()
@@ -980,6 +1008,7 @@ $$(".tool").forEach(b=>b.onclick=()=>{
 $("#color").oninput=e=>{const o=objects.find(x=>x.id===selected);$("#colorText").textContent=e.target.value.toUpperCase();if(o){o.color=e.target.value;render()}};
 $("#lineWidth").oninput=e=>{const o=objects.find(x=>x.id===selected);$("#lineVal").textContent=e.target.value;if(o&&o.type!=="text"){o.width=+e.target.value;render()}};
 $("#fontSize").oninput=e=>{const o=objects.find(x=>x.id===selected);$("#fontVal").textContent=e.target.value;if(o&&o.type==="text"){o.size=+e.target.value;render()}};
+$("#shapeFill").onchange=e=>{const o=objects.find(x=>x.id===selected);if(o&&(o.type==="circle"||o.type==="rect")){o.fill=e.target.checked;render()}};
 $("#undo").onclick=()=>{if(!history.length)return;objects=JSON.parse(history.pop());selected=null;render()};
 $("#delete").onclick=()=>{if(!selected)return;saveHistory();objects=objects.filter(o=>o.id!==selected);selected=null;render()};
 
@@ -1332,7 +1361,7 @@ let snapLockX=null,snapLockY=null;
 
 function cPoint(e){const r=cc.getBoundingClientRect();return{x:(e.clientX-r.left)*cc.width/r.width,y:(e.clientY-r.top)*cc.height/r.height}}
 function cDash(w){const sw=Math.max(1,+w||1);return[Math.max(8,sw*3.4),Math.max(8,sw*2.4)]}
-function cShapeBounds(o){return{x:Math.min(o.x1,o.x2),y:Math.min(o.y1,o.y2),w:Math.max(2,Math.abs(o.x2-o.x1)),h:Math.max(2,Math.abs(o.y2-o.y1))}}
+function cShapeBounds(o){if(o.type==="curve"){const xs=[o.x1,o.x2,o.cx],ys=[o.y1,o.y2,o.cy],x=Math.min(...xs),y=Math.min(...ys);return{x,y,w:Math.max(2,Math.max(...xs)-x),h:Math.max(2,Math.max(...ys)-y)}}return{x:Math.min(o.x1,o.x2),y:Math.min(o.y1,o.y2),w:Math.max(2,Math.abs(o.x2-o.x1)),h:Math.max(2,Math.abs(o.y2-o.y1))}}
 function cTextBounds(t){cx.save();cx.font=`600 ${t.size}px Arial`;const ls=t.text.split("\\n"),w=Math.max(40,...ls.map(x=>cx.measureText(x).width));cx.restore();return{x:t.x,y:t.y,w,h:ls.length*t.size*1.25}}
 function distanceToSegment(p,a,b){const vx=b.x-a.x,vy=b.y-a.y,wx=p.x-a.x,wy=p.y-a.y,c1=vx*wx+vy*wy;if(c1<=0)return Math.hypot(p.x-a.x,p.y-a.y);const c2=vx*vx+vy*vy;if(c2<=c1)return Math.hypot(p.x-b.x,p.y-b.y);const t=c1/c2,px=a.x+t*vx,py=a.y+t*vy;return Math.hypot(p.x-px,p.y-py)}
 function saveCState(){cHistory.push({items:items.map(x=>({...x})),textItems:textItems.map(x=>({...x})),cObjects:cObjects.map(x=>({...x}))});if(cHistory.length>50)cHistory.shift()}
@@ -1343,10 +1372,11 @@ function drawCShape(o,selectedShape=false){
  cx.save();cx.strokeStyle=o.color;cx.fillStyle=o.color;cx.lineWidth=o.width;cx.lineCap="round";cx.lineJoin="round";cx.setLineDash(o.type==="dash"?cDash(o.width):[]);
  if(o.type==="line"||o.type==="dash"){cx.beginPath();cx.moveTo(o.x1,o.y1);cx.lineTo(o.x2,o.y2);cx.stroke()}
  else if(o.type==="arrow"){cx.beginPath();cx.moveTo(o.x1,o.y1);cx.lineTo(o.x2,o.y2);cx.stroke();const a=Math.atan2(o.y2-o.y1,o.x2-o.x1),h=Math.max(18,o.width*4);cx.beginPath();cx.moveTo(o.x2,o.y2);cx.lineTo(o.x2-h*Math.cos(a-Math.PI/6),o.y2-h*Math.sin(a-Math.PI/6));cx.lineTo(o.x2-h*Math.cos(a+Math.PI/6),o.y2-h*Math.sin(a+Math.PI/6));cx.closePath();cx.fill()}
- else if(o.type==="circle"){const b=cShapeBounds(o);cx.beginPath();cx.ellipse(b.x+b.w/2,b.y+b.h/2,b.w/2,b.h/2,0,0,Math.PI*2);cx.stroke()}
- else if(o.type==="rect"){const b=cShapeBounds(o);cx.strokeRect(b.x,b.y,b.w,b.h)}
+ else if(o.type==="circle"){const b=cShapeBounds(o);cx.beginPath();cx.ellipse(b.x+b.w/2,b.y+b.h/2,b.w/2,b.h/2,0,0,Math.PI*2);o.fill?cx.fill():cx.stroke()}
+ else if(o.type==="rect"){const b=cShapeBounds(o);if(o.fill)cx.fillRect(b.x,b.y,b.w,b.h);else cx.strokeRect(b.x,b.y,b.w,b.h)}
+ else if(o.type==="curve"){cx.beginPath();cx.moveTo(o.x1,o.y1);cx.quadraticCurveTo(o.cx,o.cy,o.x2,o.y2);cx.stroke()}
  cx.restore();
- if(selectedShape){const b=cShapeBounds(o);cx.save();cx.strokeStyle="#2563eb";cx.lineWidth=2;cx.setLineDash([8,6]);cx.strokeRect(b.x-8,b.y-8,b.w+16,b.h+16);cx.setLineDash([]);cx.fillStyle="#fff";cx.strokeStyle="#2563eb";cx.lineWidth=3;cx.beginPath();cx.arc(b.x+b.w+8,b.y+b.h+8,10,0,Math.PI*2);cx.fill();cx.stroke();cx.restore()}
+ if(selectedShape){const b=cShapeBounds(o);cx.save();cx.strokeStyle="#2563eb";cx.lineWidth=2;cx.setLineDash([8,6]);cx.strokeRect(b.x-8,b.y-8,b.w+16,b.h+16);cx.setLineDash([]);cx.fillStyle="#fff";cx.strokeStyle="#2563eb";cx.lineWidth=3;cx.beginPath();cx.arc(b.x+b.w+8,b.y+b.h+8,10,0,Math.PI*2);cx.fill();cx.stroke();cx.restore()}if(selectedShape&&o.type==="curve"){cx.save();cx.strokeStyle="#2563eb";cx.lineWidth=2;cx.setLineDash([5,5]);cx.beginPath();cx.moveTo(o.x1,o.y1);cx.lineTo(o.cx,o.cy);cx.lineTo(o.x2,o.y2);cx.stroke();cx.setLineDash([]);[[o.x1,o.y1],[o.cx,o.cy],[o.x2,o.y2]].forEach(([x,y],i)=>{cx.beginPath();cx.fillStyle=i===1?"#2563eb":"#fff";cx.strokeStyle="#2563eb";cx.arc(x,y,i===1?10:8,0,Math.PI*2);cx.fill();cx.stroke()});const mx=(o.x1+o.x2)/2,my=(o.y1+o.y2)/2,ang=Math.atan2(o.y2-o.y1,o.x2-o.x1),rx=mx-Math.sin(ang)*48,ry=my+Math.cos(ang)*48;cx.setLineDash([4,4]);cx.beginPath();cx.moveTo(mx,my);cx.lineTo(rx,ry);cx.stroke();cx.setLineDash([]);cx.beginPath();cx.fillStyle="#fff";cx.arc(rx,ry,10,0,Math.PI*2);cx.fill();cx.stroke();cx.restore()}
 }
 function cRender(){
  cx.fillStyle="#fff";cx.fillRect(0,0,cc.width,cc.height);
@@ -1359,7 +1389,8 @@ function centerCollageContent(){const bs=[];items.forEach(x=>bs.push({x:x.x,y:x.
 function autoLayout(){const n=items.length;if(!n){fitCollageCanvas();return}saveCState();const mode=$("#layoutMode").value,pad=Math.max(24,cc.width*.025),gap=Math.max(14,cc.width*.015),cols=mode==="column"?1:n,rows=mode==="column"?n:1,cw=(cc.width-pad*2-gap*(cols-1))/cols,ch=(cc.height-pad*2-gap*(rows-1))/rows;items.forEach((it,i)=>{let w,h;if(it.ratio>cw/ch){w=cw;h=w/it.ratio}else{h=ch;w=h*it.ratio}it.x=pad+(i%cols)*(cw+gap)+(cw-w)/2;it.y=pad+Math.floor(i/cols)*(ch+gap)+(ch-h)/2;it.w=w;it.h=h});centerCollageContent();renderThumbs();fitCollageCanvas()}
 function renderThumbs(){const box=$("#thumbList"),empty=$("#combineLibraryEmpty");if(!box)return;box.innerHTML="";if(empty)empty.style.display=items.length?"none":"block";items.forEach((it,i)=>{const d=document.createElement("div");d.className="thumb";d.innerHTML=`<img src="${it.img.src}"><div style="font-size:10px;overflow:hidden;text-overflow:ellipsis">${i+1}. ${it.name}</div><div class="thumbActions"><button data-up="${it.id}">↑</button><button data-down="${it.id}">↓</button><button class="deleteThumb" data-del="${it.id}">×</button></div>`;box.appendChild(d)});box.querySelectorAll("[data-up]").forEach(b=>b.onclick=()=>reorder(b.dataset.up,-1));box.querySelectorAll("[data-down]").forEach(b=>b.onclick=()=>reorder(b.dataset.down,1));box.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{saveCState();items=items.filter(x=>x.id!==b.dataset.del);renderThumbs();fitCollageCanvas()})}
 function reorder(id,d){const i=items.findIndex(x=>x.id===id),j=i+d;if(j<0||j>=items.length)return;saveCState();[items[i],items[j]]=[items[j],items[i]];autoLayout()}
-function cHit(p){for(let i=textItems.length-1;i>=0;i--){const t=textItems[i],b=cTextBounds(t);if(p.x>b.x-12&&p.x<b.x+b.w+12&&p.y>b.y-12&&p.y<b.y+b.h+12)return{kind:"text",obj:t,bounds:b}}for(let i=cObjects.length-1;i>=0;i--){const o=cObjects[i],b=cShapeBounds(o),tol=Math.max(10,o.width*1.5);if((o.type==="line"||o.type==="dash"||o.type==="arrow")?distanceToSegment(p,{x:o.x1,y:o.y1},{x:o.x2,y:o.y2})<=tol:(p.x>b.x-tol&&p.x<b.x+b.w+tol&&p.y>b.y-tol&&p.y<b.y+b.h+tol))return{kind:"shape",obj:o,bounds:b}}for(let i=items.length-1;i>=0;i--){const o=items[i];if(p.x>o.x&&p.x<o.x+o.w&&p.y>o.y&&p.y<o.y+o.h)return{kind:"image",obj:o,bounds:{x:o.x,y:o.y,w:o.w,h:o.h}}}return null}
+function distanceToCurve(p,o){let best=1e9,prev={x:o.x1,y:o.y1};for(let j=1;j<=24;j++){const t=j/24,u=1-t,cur={x:u*u*o.x1+2*u*t*o.cx+t*t*o.x2,y:u*u*o.y1+2*u*t*o.cy+t*t*o.y2};best=Math.min(best,distanceToSegment(p,prev,cur));prev=cur}return best}
+function cHit(p){for(let i=textItems.length-1;i>=0;i--){const t=textItems[i],b=cTextBounds(t);if(p.x>b.x-12&&p.x<b.x+b.w+12&&p.y>b.y-12&&p.y<b.y+b.h+12)return{kind:"text",obj:t,bounds:b}}for(let i=cObjects.length-1;i>=0;i--){const o=cObjects[i],b=cShapeBounds(o),tol=Math.max(10,o.width*1.5);if(o.type==="curve"?distanceToCurve(p,o)<=tol:(o.type==="line"||o.type==="dash"||o.type==="arrow")?distanceToSegment(p,{x:o.x1,y:o.y1},{x:o.x2,y:o.y2})<=tol:(p.x>b.x-tol&&p.x<b.x+b.w+tol&&p.y>b.y-tol&&p.y<b.y+b.h+tol))return{kind:"shape",obj:o,bounds:b}}for(let i=items.length-1;i>=0;i--){const o=items[i];if(p.x>o.x&&p.x<o.x+o.w&&p.y>o.y&&p.y<o.y+o.h)return{kind:"image",obj:o,bounds:{x:o.x,y:o.y,w:o.w,h:o.h}}}return null}
 function createCInlineText(p){
   if(combineTextEditing)return;
   combineTextEditing=true;
@@ -1424,12 +1455,13 @@ document.querySelectorAll("[data-ctool]").forEach(b=>b.onclick=()=>{
     createCInlineText({x:cc.width/2,y:cc.height/2});
   }
 });
-cc.onmousedown=e=>{if(combineTextEditing)return;const p=cPoint(e);snapLockX=null;snapLockY=null;if(["arrow","line","dash","circle","rect"].includes(cTool)){cTemp={id:uid(),type:cTool,x1:p.x,y1:p.y,x2:p.x,y2:p.y,color:$("#cAnnoColor").value,width:+$("#cLineWidth").value};return}if(cTool==="text"){createCInlineText(p);return}const hit=cHit(p);cSel=hit?{kind:hit.kind,id:hit.obj.id}:null;if(!hit){cRender();return}saveCState();const b=hit.bounds,resize=Math.hypot(p.x-(b.x+b.w+8),p.y-(b.y+b.h+8))<35;cDrag={kind:hit.kind,id:hit.obj.id,start:p,orig:{...hit.obj},resize};if(hit.kind==="shape"){$("#cAnnoColor").value=hit.obj.color;$("#cAnnoColorText").textContent=hit.obj.color.toUpperCase();$("#cLineWidth").value=hit.obj.width;$("#cLineWidthVal").textContent=Math.round(hit.obj.width)}if(hit.kind==="text"){$("#collageText").value=hit.obj.text;$("#cTextSize").value=hit.obj.size;$("#cTextSizeVal").textContent=Math.round(hit.obj.size);$("#cTextColor").value=hit.obj.color}cRender()};
-cc.onmousemove=e=>{const p=cPoint(e);if(cTemp){cTemp.x2=p.x;cTemp.y2=p.y;cRender();return}if(!cDrag)return;const dx=p.x-cDrag.start.x,dy=p.y-cDrag.start.y;if(cDrag.kind==="image"){const o=items.find(x=>x.id===cDrag.id),s=cDrag.orig;if(cDrag.resize){const sc=Math.max(.12,Math.max((s.w+dx)/s.w,(s.h+dy)/s.h));o.w=Math.max(70,s.w*sc);o.h=o.w/o.ratio}else{o.x=s.x+dx;o.y=s.y+dy}}else if(cDrag.kind==="text"){const o=textItems.find(x=>x.id===cDrag.id),s=cDrag.orig;if(cDrag.resize)o.size=Math.max(10,s.size+dx/4);else{o.x=s.x+dx;o.y=s.y+dy}}else{const o=cObjects.find(x=>x.id===cDrag.id),s=cDrag.orig;if(cDrag.resize){o.x2=s.x2+dx;o.y2=s.y2+dy}else{o.x1=s.x1+dx;o.x2=s.x2+dx;o.y1=s.y1+dy;o.y2=s.y2+dy}}cRender()};
+cc.onmousedown=e=>{if(combineTextEditing)return;const p=cPoint(e);snapLockX=null;snapLockY=null;if(["arrow","line","dash","circle","rect","curve"].includes(cTool)){cTemp={id:uid(),type:cTool,x1:p.x,y1:p.y,x2:p.x,y2:p.y,color:$("#cAnnoColor").value,width:+$("#cLineWidth").value,fill:$("#cShapeFill")?.checked||false};if(cTool==="curve"){cTemp.cx=p.x;cTemp.cy=p.y}return}if(cTool==="text"){createCInlineText(p);return}const hit=cHit(p);cSel=hit?{kind:hit.kind,id:hit.obj.id}:null;if(!hit){cRender();return}saveCState();const b=hit.bounds;let resize=Math.hypot(p.x-(b.x+b.w+8),p.y-(b.y+b.h+8))<35,curvePart=null;if(hit.kind==="shape"&&hit.obj.type==="curve"){const o=hit.obj,near=(x,y)=>Math.hypot(p.x-x,p.y-y)<28,mx=(o.x1+o.x2)/2,my=(o.y1+o.y2)/2,ang=Math.atan2(o.y2-o.y1,o.x2-o.x1),rx=mx-Math.sin(ang)*48,ry=my+Math.cos(ang)*48;if(near(rx,ry))curvePart="rotate";else if(near(o.cx,o.cy))curvePart="control";else if(near(o.x1,o.y1))curvePart="start";else if(near(o.x2,o.y2))curvePart="end";resize=false}cDrag={kind:hit.kind,id:hit.obj.id,start:p,orig:{...hit.obj},resize,curvePart};if(hit.kind==="shape"){$("#cAnnoColor").value=hit.obj.color;$("#cAnnoColorText").textContent=hit.obj.color.toUpperCase();$("#cLineWidth").value=hit.obj.width;$("#cLineWidthVal").textContent=Math.round(hit.obj.width);$("#cShapeFill").checked=!!hit.obj.fill}if(hit.kind==="text"){$("#collageText").value=hit.obj.text;$("#cTextSize").value=hit.obj.size;$("#cTextSizeVal").textContent=Math.round(hit.obj.size);$("#cTextColor").value=hit.obj.color}cRender()};
+cc.onmousemove=e=>{const p=cPoint(e);if(cTemp){cTemp.x2=p.x;cTemp.y2=p.y;if(cTemp.type==="curve"){const mx=(cTemp.x1+p.x)/2,my=(cTemp.y1+p.y)/2,dx=p.x-cTemp.x1,dy=p.y-cTemp.y1,L=Math.max(1,Math.hypot(dx,dy));cTemp.cx=mx-dy/L*Math.min(80,L*.25);cTemp.cy=my+dx/L*Math.min(80,L*.25)}cRender();return}if(!cDrag)return;const dx=p.x-cDrag.start.x,dy=p.y-cDrag.start.y;if(cDrag.kind==="image"){const o=items.find(x=>x.id===cDrag.id),s=cDrag.orig;if(cDrag.resize){const sc=Math.max(.12,Math.max((s.w+dx)/s.w,(s.h+dy)/s.h));o.w=Math.max(70,s.w*sc);o.h=o.w/o.ratio}else{o.x=s.x+dx;o.y=s.y+dy}}else if(cDrag.kind==="text"){const o=textItems.find(x=>x.id===cDrag.id),s=cDrag.orig;if(cDrag.resize)o.size=Math.max(10,s.size+dx/4);else{o.x=s.x+dx;o.y=s.y+dy}}else{const o=cObjects.find(x=>x.id===cDrag.id),s=cDrag.orig;if(o.type==="curve"){if(cDrag.curvePart==="rotate"){const mx=(s.x1+s.x2)/2,my=(s.y1+s.y2)/2,a0=Math.atan2(cDrag.start.y-my,cDrag.start.x-mx),a1=Math.atan2(p.y-my,p.x-mx),da=a1-a0,cs=Math.cos(da),sn=Math.sin(da),rot=(x,y)=>({x:mx+(x-mx)*cs-(y-my)*sn,y:my+(x-mx)*sn+(y-my)*cs}),a=rot(s.x1,s.y1),bb=rot(s.x2,s.y2),c=rot(s.cx,s.cy);o.x1=a.x;o.y1=a.y;o.x2=bb.x;o.y2=bb.y;o.cx=c.x;o.cy=c.y}else if(cDrag.curvePart==="control"){o.cx=s.cx+dx;o.cy=s.cy+dy}else if(cDrag.curvePart==="start"){o.x1=s.x1+dx;o.y1=s.y1+dy}else if(cDrag.curvePart==="end"){o.x2=s.x2+dx;o.y2=s.y2+dy}else{o.x1=s.x1+dx;o.x2=s.x2+dx;o.y1=s.y1+dy;o.y2=s.y2+dy;o.cx=s.cx+dx;o.cy=s.cy+dy}}else if(cDrag.resize){o.x2=s.x2+dx;o.y2=s.y2+dy}else{o.x1=s.x1+dx;o.x2=s.x2+dx;o.y1=s.y1+dy;o.y2=s.y2+dy}}cRender()};
 cc.onmouseup=e=>{if(cTemp){const p=cPoint(e);cTemp.x2=p.x;cTemp.y2=p.y;if(Math.hypot(cTemp.x2-cTemp.x1,cTemp.y2-cTemp.y1)>3){saveCState();cObjects.push(cTemp)}cTemp=null;setCTool("select");cRender()}cDrag=null};
 cc.onmouseleave=()=>{cDrag=null};
 $("#cAnnoColor").oninput=e=>{const o=cSel?.kind==="shape"?cObjects.find(x=>x.id===cSel.id):null;$("#cAnnoColorText").textContent=e.target.value.toUpperCase();if(o){o.color=e.target.value;cRender()}};
 $("#cLineWidth").oninput=e=>{const o=cSel?.kind==="shape"?cObjects.find(x=>x.id===cSel.id):null;$("#cLineWidthVal").textContent=e.target.value;if(o){o.width=+e.target.value;cRender()}};
+$("#cShapeFill").onchange=e=>{const o=cSel?.kind==="shape"?cObjects.find(x=>x.id===cSel.id):null;if(o&&(o.type==="circle"||o.type==="rect")){o.fill=e.target.checked;cRender()}};
 $("#cUndo").onclick=undoC;$("#deleteCollageObject").onclick=deleteCSelected;
 $("#autoLayout").onclick=autoLayout;$("#layoutMode").onchange=autoLayout;
 $("#addCollageText").onclick=()=>{const tx=$("#collageText").value.trim();if(!tx)return;saveCState();const t={id:uid(),text:tx,x:cc.width*.08,y:cc.height*.08,size:+$("#cTextSize").value,color:$("#cAnnoColor").value};textItems.push(t);cSel={kind:"text",id:t.id};cRender()};
@@ -1623,7 +1655,7 @@ function initAnnotatePhotoInteractions(){
 
 window.addEventListener("resize",()=>{if(loaded)fitPreviewToStage();fitCollageCanvas()});
 initAnnotatePhotoInteractions();
-mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active · Version V59");
+mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active · Version V61");
 })();
 </script>
 
@@ -1635,7 +1667,7 @@ mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScrip
     <div class="mobilePhotoActions">
       <label class="mobileCaptureBtn">
         📷 Add / Take Photo
-        <input id="mobilePhotoInput" type="file" accept="image/*">
+        <input id="mobilePhotoInput" type="file" accept="image/*" multiple>
       </label>
     </div>
     <div class="mobilePreview">
@@ -1668,17 +1700,32 @@ if(mobile){
  (async()=>{try{await user();let r=await sb.rpc("join_fit_session",{p_session_id:sid,p_token:tok});if(r.error||!r.data)throw r.error||new Error("Session invalid or ended");ready=true;st.textContent="Secure session connected";st.style.color="#067647"}catch(e){st.textContent="Connection failed: "+e.message;st.style.color="#b42318";inp.disabled=true}})();
  async function opt(f){let b=await createImageBitmap(f),sc=Math.min(1,1800/Math.max(b.width,b.height)),w=Math.round(b.width*sc),h=Math.round(b.height*sc),c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(b,0,0,w,h);return await new Promise((ok,no)=>c.toBlob(x=>x?ok(x):no(new Error("Compression failed")),"image/jpeg",.82))}
  inp.addEventListener("change",async e=>{
-   let f=e.target.files?.[0];
-   if(!f||!ready)return;
-   img.src=URL.createObjectURL(f);img.style.display="block";ph.style.display="none";done.style.display="none";
-   try{
-     st.textContent="Optimising…";
-     let blob=await opt(f),path=`${sid}/${Date.now()}_${hex(8)}.jpg`;
-     st.textContent="Uploading securely…";
-     let a=await sb.storage.from(B).upload(path,blob,{contentType:"image/jpeg"});if(a.error)throw a.error;
-     let b=await sb.from(T).insert({session_id:sid,photo_path:path});if(b.error)throw b.error;
-     st.textContent="Uploaded securely ✓";st.style.color="#067647";done.style.display="block";inp.value="";
-   }catch(e){st.textContent="Upload failed: "+e.message;st.style.color="#b42318"}
+   const files=[...(e.target.files||[])];
+   if(!files.length||!ready)return;
+   done.style.display="none";
+   st.style.color="#2563eb";
+   let success=0,failed=0;
+   for(let i=0;i<files.length;i++){
+     const f=files[i];
+     img.src=URL.createObjectURL(f);img.style.display="block";ph.style.display="none";
+     try{
+       st.textContent=`Optimising ${i+1}/${files.length}…`;
+       const blob=await opt(f),path=`${sid}/${Date.now()}_${i}_${hex(8)}.jpg`;
+       st.textContent=`Uploading ${i+1}/${files.length} securely…`;
+       const a=await sb.storage.from(B).upload(path,blob,{contentType:"image/jpeg"});if(a.error)throw a.error;
+       const b=await sb.from(T).insert({session_id:sid,photo_path:path});if(b.error)throw b.error;
+       success++;
+     }catch(err){failed++;console.error(err)}
+   }
+   inp.value="";
+   if(success){
+     st.textContent=failed?`${success} uploaded · ${failed} failed`:`${success} photo${success>1?"s":""} uploaded securely ✓`;
+     st.style.color=failed?"#b54708":"#067647";
+     done.textContent=`✓ ${success} photo${success>1?"s":""} uploaded to desktop session`;
+     done.style.display="block";
+   }else{
+     st.textContent="Upload failed";st.style.color="#b42318";
+   }
  });
  return;
 }
