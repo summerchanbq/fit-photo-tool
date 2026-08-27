@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Fit Photo Studio V67 Session Fix</title>
+<title>Fit Photo Studio V68 Durable Sessions</title>
 <style>
 :root{
   --bg:#f3f5f7;--panel:#ffffff;--ink:#15171a;--muted:#707782;--line:#dce1e6;
@@ -233,7 +233,7 @@ body.mobile-mode .mobileCaptureScreen{display:block}
 @media(max-width:1150px){.app{grid-template-columns:200px 150px minmax(0,1fr) 270px}}
 
 
-/* Version V67 full workspace */
+/* Version V68 full workspace */
 .rightVersion{font-size:10px;font-weight:800;letter-spacing:.08em;color:#2563eb;background:#eff6ff;border-radius:999px;padding:4px 8px;align-self:flex-start;margin-bottom:10px}
 .right{display:block!important;overflow-y:auto!important;overflow-x:hidden!important;min-width:0!important;padding:14px 14px 110px!important}
 #annotateControls,#collageControls{display:block;min-width:0;max-width:100%;overflow:visible}
@@ -485,7 +485,7 @@ input[type="color"]{width:42px!important;height:32px!important}
 <header>
   <div class="brand">
     <div class="logo">F</div>
-    <div><h1>Fit Photo Studio</h1><small><strong>Version V67</strong> · Secure Sync · Full Combine Editor</small></div>
+    <div><h1>Fit Photo Studio</h1><small><strong>Version V68</strong> · Secure Sync · Full Combine Editor</small></div>
   </div>
   <div class="topActions">
     <button id="newBtn" class="btn">New</button>
@@ -559,7 +559,7 @@ input[type="color"]{width:42px!important;height:32px!important}
         </div>
       </div>
       <div id="recentSessionsBlock" style="margin-top:12px">
-        <h2>Recent Sessions</h2><div class="note" style="margin-bottom:6px">Only reusable/protected sessions are saved here.</div>
+        <div class="sectionTitleRow"><h2>Recent Sessions</h2><button id="refreshRecentSessionsBtn" class="btn" style="height:28px!important;min-height:28px!important;padding:0 7px!important">Refresh</button></div><div class="note" style="margin-bottom:6px">Reusable/protected sessions are restored after refresh.</div>
         <div id="recentSessions" class="recentSessions"><div class="note">No recent sessions yet.</div></div>
       </div>
     </div>
@@ -674,7 +674,7 @@ input[type="color"]{width:42px!important;height:32px!important}
     <div class="section">
       <div class="sectionTitleRow">
         <h2>ANNOTATION STYLE</h2>
-        <span class="versionPill">V67</span>
+        <span class="versionPill">V68</span>
       </div>
       <div class="prop">
         <label>Color <small><span id="colorText">#000000</span></small></label>
@@ -742,7 +742,7 @@ input[type="color"]{width:42px!important;height:32px!important}
     <div class="section">
       <div class="sectionTitleRow">
         <h2>ANNOTATION STYLE</h2>
-        <span class="versionPill">V67</span>
+        <span class="versionPill">V68</span>
       </div>
       <div class="prop">
         <label>Color <small><span id="cAnnoColorText">#000000</span></small></label>
@@ -1712,7 +1712,7 @@ function initAnnotatePhotoInteractions(){
 
 window.addEventListener("resize",()=>{if(loaded)fitPreviewToStage();fitCollageCanvas()});
 initAnnotatePhotoInteractions();
-mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active · Version V67");
+mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active · Version V68");
 })();
 </script>
 
@@ -1769,7 +1769,16 @@ const q=s=>document.querySelector(s), B="fit-photos", T="fit_photos", S="fit_ses
 const p=new URLSearchParams(location.search), mobile=p.get("mode")==="mobile", sid=p.get("session"), tok=p.get("token");
 function hex(n=24){const a=new Uint8Array(n);crypto.getRandomValues(a);return [...a].map(x=>x.toString(16).padStart(2,"0")).join("")}
 function code(){const c="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";return Array.from({length:6},()=>c[Math.floor(Math.random()*c.length)]).join("")}
-async function user(){let x=await sb.auth.getSession();if(x.data.session?.user)return x.data.session.user;let r=await sb.auth.signInAnonymously();if(r.error)throw r.error;return r.data.user}
+async function user(){
+ try{
+   const x=await sb.auth.getSession();
+   if(x.error){try{await sb.auth.signOut({scope:"local"})}catch(_){}}
+   if(x.data?.session?.user)return x.data.session.user;
+ }catch(_){}
+ const r=await sb.auth.signInAnonymously();
+ if(r.error)throw r.error;
+ return r.data.user;
+}
 async function signed(path){let r=await sb.storage.from(B).createSignedUrl(path,300);if(r.error)throw r.error;return r.data.signedUrl}
 function murl(s,t){let u=new URL(location.href);u.search="";u.searchParams.set("mode","mobile");u.searchParams.set("session",s);u.searchParams.set("token",t);return u.toString()}
 
@@ -1881,11 +1890,28 @@ const RECENT_KEY="fitPhotoRecentSessionsV62";
 function getRecentSessions(){try{return JSON.parse(localStorage.getItem(RECENT_KEY)||"[]")}catch(_){return[]}}
 function saveRecentSession(x){let a=getRecentSessions().filter(s=>s.session!==x.session);a.unshift(x);a=a.slice(0,12);localStorage.setItem(RECENT_KEY,JSON.stringify(a));renderRecentSessions()}
 function updateRecentSession(id,patch){let a=getRecentSessions(),i=a.findIndex(s=>s.session===id);if(i>=0){a[i]={...a[i],...patch};localStorage.setItem(RECENT_KEY,JSON.stringify(a));renderRecentSessions()}}
+async function syncRecentSessionsFromDatabase(){
+ try{
+   const u=await user();if(!u?.id)return;
+   const r=await sb.from(S).select("session_id,session_name,active,created_at,ended_at").eq("owner_id",u.id).order("created_at",{ascending:false}).limit(20);
+   if(r.error)throw r.error;
+   let local=getRecentSessions(),map=new Map(local.map(x=>[x.session,x]));
+   for(const row of (r.data||[])){
+     const old=map.get(row.session_id)||{};
+     map.set(row.session_id,{...old,session:row.session_id,name:row.session_name||old.name||("Session "+row.session_id),protected:!!row.session_name,active:row.active!==false,createdAt:row.created_at||old.createdAt,endedAt:row.ended_at||old.endedAt});
+   }
+   const merged=[...map.values()].sort((a,b)=>String(b.createdAt||"").localeCompare(String(a.createdAt||""))).slice(0,20);
+   localStorage.setItem(RECENT_KEY,JSON.stringify(merged));
+   renderRecentSessions();
+ }catch(e){
+   console.warn("Could not sync recent sessions",e);
+ }
+}
 function renderRecentSessions(){
- const box=q("#recentSessions");if(!box)return;const a=getRecentSessions();
+ const box=q("#recentSessions");if(!box)return;const a=getRecentSessions().filter(s=>s.protected);
  if(!a.length){box.innerHTML='<div class="note">No recent sessions yet.</div>';return}
  box.innerHTML="";
- a.forEach(s=>{const d=document.createElement("div");d.className="recentSessionCard";d.innerHTML=`<div class="recentTitle">${escapeHtml(s.name||("Session "+s.session))}</div><div class="recentMeta">${s.active===false?"Ended":"Active"}</div><button class="btn" ${s.active===false?"disabled":""}>${s.active===false?"Session ended":"Reopen Session"}</button>`;const b=d.querySelector("button");if(s.active!==false)b.onclick=()=>reopenSession(s);box.appendChild(d)})
+ a.forEach(s=>{const noToken=!s.token,d=document.createElement("div");d.className="recentSessionCard";d.innerHTML=`<div class="recentTitle">${escapeHtml(s.name||("Session "+s.session))}</div><div class="recentMeta">${s.active===false?"Ended":noToken?"Active · reconnect link unavailable on this browser":"Active"}</div><button class="btn" ${(s.active===false||noToken)?"disabled":""}>${s.active===false?"Session ended":noToken?"Cannot reopen on this browser":"Reopen Session"}</button>`;const b=d.querySelector("button");if(s.active!==false&&!noToken)b.onclick=()=>reopenSession(s);box.appendChild(d)})
 }
 function escapeHtml(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 async function activateSession(s){
@@ -1948,6 +1974,8 @@ if(q("#reopenPinConfirm"))q("#reopenPinConfirm").onclick=async()=>{
 };
 if(q("#reopenPinInput"))q("#reopenPinInput").addEventListener("keydown",e=>{if(e.key==="Enter")q("#reopenPinConfirm")?.click()});
 renderRecentSessions();
+syncRecentSessionsFromDatabase();
+if(q("#refreshRecentSessionsBtn"))q("#refreshRecentSessionsBtn").onclick=syncRecentSessionsFromDatabase;
 
 if(q("#protectedSessionToggle"))q("#protectedSessionToggle").onchange=e=>{
   const on=e.target.checked;
@@ -1958,6 +1986,8 @@ if(q("#protectedSessionToggle"))q("#protectedSessionToggle").onchange=e=>{
 const createBtn=q("#createSessionBtn");
 if(createBtn)createBtn.onclick=async()=>{
  let s=q("#createSessionStatus"),b=createBtn,isProtected=!!q("#protectedSessionToggle")?.checked;
+ if(ch){try{sb.removeChannel(ch)}catch(_){}ch=null}
+ if(pollTimer){clearInterval(pollTimer);pollTimer=null}
  const name=(q("#sessionNameInput").value||"").trim();
  const pin=(q("#sessionPinInput").value||"").trim();
  const pin2=(q("#sessionPinConfirmInput").value||"").trim();
@@ -1988,6 +2018,7 @@ if(createBtn)createBtn.onclick=async()=>{
 
    s.textContent="Step 3/3: preparing QR…";
    await activateSession(rec);
+   if(isProtected)saveRecentSession(rec);
    q("#sessionPinInput").value="";q("#sessionPinConfirmInput").value="";
    s.textContent=isProtected?"Protected reusable session created ✓":"Quick session created ✓";s.style.color="#067647";
  }catch(e){console.error(e);s.textContent="Create failed: "+(e.message||e);s.style.color="#b42318"}
