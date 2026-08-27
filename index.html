@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Fit Photo Studio V66 Desktop PIN Reopen</title>
+<title>Fit Photo Studio V67 Session Fix</title>
 <style>
 :root{
   --bg:#f3f5f7;--panel:#ffffff;--ink:#15171a;--muted:#707782;--line:#dce1e6;
@@ -233,7 +233,7 @@ body.mobile-mode .mobileCaptureScreen{display:block}
 @media(max-width:1150px){.app{grid-template-columns:200px 150px minmax(0,1fr) 270px}}
 
 
-/* Version V66 full workspace */
+/* Version V67 full workspace */
 .rightVersion{font-size:10px;font-weight:800;letter-spacing:.08em;color:#2563eb;background:#eff6ff;border-radius:999px;padding:4px 8px;align-self:flex-start;margin-bottom:10px}
 .right{display:block!important;overflow-y:auto!important;overflow-x:hidden!important;min-width:0!important;padding:14px 14px 110px!important}
 #annotateControls,#collageControls{display:block;min-width:0;max-width:100%;overflow:visible}
@@ -485,7 +485,7 @@ input[type="color"]{width:42px!important;height:32px!important}
 <header>
   <div class="brand">
     <div class="logo">F</div>
-    <div><h1>Fit Photo Studio</h1><small><strong>Version V66</strong> · Secure Sync · Full Combine Editor</small></div>
+    <div><h1>Fit Photo Studio</h1><small><strong>Version V67</strong> · Secure Sync · Full Combine Editor</small></div>
   </div>
   <div class="topActions">
     <button id="newBtn" class="btn">New</button>
@@ -674,7 +674,7 @@ input[type="color"]{width:42px!important;height:32px!important}
     <div class="section">
       <div class="sectionTitleRow">
         <h2>ANNOTATION STYLE</h2>
-        <span class="versionPill">V66</span>
+        <span class="versionPill">V67</span>
       </div>
       <div class="prop">
         <label>Color <small><span id="colorText">#000000</span></small></label>
@@ -742,7 +742,7 @@ input[type="color"]{width:42px!important;height:32px!important}
     <div class="section">
       <div class="sectionTitleRow">
         <h2>ANNOTATION STYLE</h2>
-        <span class="versionPill">V66</span>
+        <span class="versionPill">V67</span>
       </div>
       <div class="prop">
         <label>Color <small><span id="cAnnoColorText">#000000</span></small></label>
@@ -1712,9 +1712,22 @@ function initAnnotatePhotoInteractions(){
 
 window.addEventListener("resize",()=>{if(loaded)fitPreviewToStage();fitCollageCanvas()});
 initAnnotatePhotoInteractions();
-mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active · Version V66");
+mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active · Version V67");
 })();
 </script>
+
+<div id="reopenPinModal" class="pinModalBackdrop" style="display:none">
+  <div class="pinModalCard">
+    <h3>Reopen Protected Session</h3>
+    <div id="reopenPinSessionName" class="note" style="margin-bottom:8px"></div>
+    <input id="reopenPinInput" type="password" inputmode="numeric" maxlength="6" placeholder="Enter PIN">
+    <div id="reopenPinStatus" class="syncStatus" style="margin-top:6px"></div>
+    <div class="row" style="margin-top:8px">
+      <button id="reopenPinCancel" class="btn">Cancel</button>
+      <button id="reopenPinConfirm" class="btn primary">Reopen</button>
+    </div>
+  </div>
+</div>
 
 <div class="mobileCaptureScreen" id="mobileCaptureScreen">
   <div class="mobileCaptureCard">
@@ -1746,6 +1759,11 @@ mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScrip
 
 <script>
 (() => {
+window.addEventListener("error",e=>{
+  const s=document.querySelector("#createSessionStatus");
+  if(s){s.textContent="Tool error: "+(e.message||"Unknown error");s.style.color="#b42318"}
+});
+
 const U="https://qrtfvatqrtliluwtkkxg.supabase.co",K="sb_publishable_tSBEuKB56T01zCJZxIadtw_MD7t6S6N",sb=window.supabase.createClient(U,K,{auth:{persistSession:true,autoRefreshToken:true}});
 const q=s=>document.querySelector(s), B="fit-photos", T="fit_photos", S="fit_sessions";
 const p=new URLSearchParams(location.search), mobile=p.get("mode")==="mobile", sid=p.get("session"), tok=p.get("token");
@@ -1908,8 +1926,8 @@ async function reopenSession(s){
   }
 }
 
-q("#reopenPinCancel").onclick=closeReopenPin;
-q("#reopenPinConfirm").onclick=async()=>{
+if(q("#reopenPinCancel"))q("#reopenPinCancel").onclick=closeReopenPin;
+if(q("#reopenPinConfirm"))q("#reopenPinConfirm").onclick=async()=>{
   const s=pendingReopenSession,pin=q("#reopenPinInput").value.trim(),st=q("#reopenPinStatus");
   if(!s)return;
   if(!/^\d{4,6}$/.test(pin)){st.textContent="Enter the 4–6 digit PIN";st.style.color="#b42318";return}
@@ -1928,17 +1946,18 @@ q("#reopenPinConfirm").onclick=async()=>{
     q("#reopenPinConfirm").disabled=false;
   }
 };
-q("#reopenPinInput").addEventListener("keydown",e=>{if(e.key==="Enter")q("#reopenPinConfirm").click()});
+if(q("#reopenPinInput"))q("#reopenPinInput").addEventListener("keydown",e=>{if(e.key==="Enter")q("#reopenPinConfirm")?.click()});
 renderRecentSessions();
 
-q("#protectedSessionToggle").onchange=e=>{
+if(q("#protectedSessionToggle"))q("#protectedSessionToggle").onchange=e=>{
   const on=e.target.checked;
   q("#protectedSessionFields").style.display=on?"block":"none";
   q("#createSessionBtn").textContent=on?"Create Protected Session":"Create Quick Session";
 };
 
-q("#createSessionBtn").onclick=async()=>{
- let s=q("#createSessionStatus"),b=q("#createSessionBtn"),isProtected=q("#protectedSessionToggle").checked;
+const createBtn=q("#createSessionBtn");
+if(createBtn)createBtn.onclick=async()=>{
+ let s=q("#createSessionStatus"),b=createBtn,isProtected=!!q("#protectedSessionToggle")?.checked;
  const name=(q("#sessionNameInput").value||"").trim();
  const pin=(q("#sessionPinInput").value||"").trim();
  const pin2=(q("#sessionPinConfirmInput").value||"").trim();
@@ -2121,17 +2140,6 @@ document.addEventListener("DOMContentLoaded",()=>{
 </script>
 
 
-<div id="reopenPinModal" class="pinModalBackdrop" style="display:none">
-  <div class="pinModalCard">
-    <h3>Reopen Protected Session</h3>
-    <div id="reopenPinSessionName" class="note" style="margin-bottom:8px"></div>
-    <input id="reopenPinInput" type="password" inputmode="numeric" maxlength="6" placeholder="Enter PIN">
-    <div id="reopenPinStatus" class="syncStatus" style="margin-top:6px"></div>
-    <div class="row" style="margin-top:8px">
-      <button id="reopenPinCancel" class="btn">Cancel</button>
-      <button id="reopenPinConfirm" class="btn primary">Reopen</button>
-    </div>
-  </div>
-</div>
+
 </body>
 </html>
