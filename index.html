@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Fit Photo Studio V65 Quick or Protected Sessions</title>
+<title>Fit Photo Studio V66 Desktop PIN Reopen</title>
 <style>
 :root{
   --bg:#f3f5f7;--panel:#ffffff;--ink:#15171a;--muted:#707782;--line:#dce1e6;
@@ -233,7 +233,7 @@ body.mobile-mode .mobileCaptureScreen{display:block}
 @media(max-width:1150px){.app{grid-template-columns:200px 150px minmax(0,1fr) 270px}}
 
 
-/* Version V65 full workspace */
+/* Version V66 full workspace */
 .rightVersion{font-size:10px;font-weight:800;letter-spacing:.08em;color:#2563eb;background:#eff6ff;border-radius:999px;padding:4px 8px;align-self:flex-start;margin-bottom:10px}
 .right{display:block!important;overflow-y:auto!important;overflow-x:hidden!important;min-width:0!important;padding:14px 14px 110px!important}
 #annotateControls,#collageControls{display:block;min-width:0;max-width:100%;overflow:visible}
@@ -450,19 +450,6 @@ input[type="color"]{width:42px!important;height:32px!important}
 .mobilePreviousSession button{width:100%;min-height:42px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;font-weight:700}
 
 
-/* V64 named + PIN protected sessions */
-.mobilePinGate{
-  border:1px solid #d7dde5;border-radius:14px;padding:12px;margin:10px 0;background:#f8fafc;
-}
-.mobilePinGate input{
-  width:100%;height:44px;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:10px;
-  padding:0 12px;font-size:18px;letter-spacing:.15em;text-align:center;margin-bottom:8px;
-}
-.mobilePinGate button{
-  width:100%;height:44px;border:0;border-radius:10px;background:#111827;color:#fff;font-weight:700;
-}
-
-
 /* V65 quick vs reusable session */
 .sessionModeToggle{
   display:flex!important;align-items:flex-start!important;gap:8px!important;
@@ -474,6 +461,23 @@ input[type="color"]{width:42px!important;height:32px!important}
 .sessionModeToggle strong{display:block;font-size:10px!important}
 .sessionModeToggle small{display:block;font-size:9px!important;color:#64748b;margin-top:2px;line-height:1.35}
 
+
+/* V66 desktop PIN on reopen */
+.pinModalBackdrop{
+  position:fixed;inset:0;z-index:9999;background:rgba(15,23,42,.35);
+  display:flex;align-items:center;justify-content:center;padding:20px;
+}
+.pinModalCard{
+  width:min(360px,92vw);background:#fff;border-radius:14px;padding:16px;
+  box-shadow:0 18px 50px rgba(15,23,42,.25)
+}
+.pinModalCard h3{margin:0 0 8px;font-size:14px}
+.pinModalCard input{
+  width:100%;height:40px;box-sizing:border-box;border:1px solid #cbd5e1;
+  border-radius:9px;padding:0 10px;font-size:18px;letter-spacing:.12em;text-align:center
+}
+.pinModalCard .row{display:grid!important;grid-template-columns:1fr 1fr!important;gap:7px!important}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -481,7 +485,7 @@ input[type="color"]{width:42px!important;height:32px!important}
 <header>
   <div class="brand">
     <div class="logo">F</div>
-    <div><h1>Fit Photo Studio</h1><small><strong>Version V65</strong> · Secure Sync · Full Combine Editor</small></div>
+    <div><h1>Fit Photo Studio</h1><small><strong>Version V66</strong> · Secure Sync · Full Combine Editor</small></div>
   </div>
   <div class="topActions">
     <button id="newBtn" class="btn">New</button>
@@ -531,7 +535,7 @@ input[type="color"]{width:42px!important;height:32px!important}
           <input id="protectedSessionToggle" type="checkbox">
           <span>
             <strong>Reusable / Protected Session</strong>
-            <small>Turn on only if you need to return and upload again later.</small>
+            <small>Turn on only if you need to return to this session later. PIN is required only when reopening on desktop.</small>
           </span>
         </label>
         <div id="protectedSessionFields" style="display:none">
@@ -670,7 +674,7 @@ input[type="color"]{width:42px!important;height:32px!important}
     <div class="section">
       <div class="sectionTitleRow">
         <h2>ANNOTATION STYLE</h2>
-        <span class="versionPill">V65</span>
+        <span class="versionPill">V66</span>
       </div>
       <div class="prop">
         <label>Color <small><span id="colorText">#000000</span></small></label>
@@ -738,7 +742,7 @@ input[type="color"]{width:42px!important;height:32px!important}
     <div class="section">
       <div class="sectionTitleRow">
         <h2>ANNOTATION STYLE</h2>
-        <span class="versionPill">V65</span>
+        <span class="versionPill">V66</span>
       </div>
       <div class="prop">
         <label>Color <small><span id="cAnnoColorText">#000000</span></small></label>
@@ -1708,7 +1712,7 @@ function initAnnotatePhotoInteractions(){
 
 window.addEventListener("resize",()=>{if(loaded)fitPreviewToStage();fitCollageCanvas()});
 initAnnotatePhotoInteractions();
-mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active · Version V65");
+mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active · Version V66");
 })();
 </script>
 
@@ -1717,18 +1721,12 @@ mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScrip
     <h1>Fit Photo Capture</h1>
     <p>Session <strong id="mobileSessionCode">—</strong></p>
     <p style="font-size:12px;color:#64748b;margin-top:-2px">Photos are automatically optimised and uploaded in the background.</p>
-    <div id="mobilePinGate" class="mobilePinGate" style="display:none">
-      <div style="font-size:12px;color:#64748b;margin-bottom:6px">Enter the Session PIN to connect</div>
-      <input id="mobilePinInput" type="password" inputmode="numeric" maxlength="6" placeholder="4–6 digit PIN">
-      <button id="mobileJoinBtn" type="button">Join Session</button>
-      <div id="mobilePinStatus" class="uploadState"></div>
-    </div>
     <div id="mobilePreviousSession" class="mobilePreviousSession" style="display:none">
       <div style="font-size:12px;color:#64748b">Previous fit review</div>
       <strong id="mobilePreviousLabel">—</strong>
       <button id="mobileContinueBtn" type="button">Continue previous session</button>
     </div>
-    <div class="mobilePhotoActions" id="mobilePhotoActions" style="display:none">
+    <div class="mobilePhotoActions" id="mobilePhotoActions">
       <label class="mobileCaptureBtn">
         📷 Add / Take Photo
         <input id="mobilePhotoInput" type="file" accept="image/*" multiple>
@@ -1750,67 +1748,36 @@ mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScrip
 (() => {
 const U="https://qrtfvatqrtliluwtkkxg.supabase.co",K="sb_publishable_tSBEuKB56T01zCJZxIadtw_MD7t6S6N",sb=window.supabase.createClient(U,K,{auth:{persistSession:true,autoRefreshToken:true}});
 const q=s=>document.querySelector(s), B="fit-photos", T="fit_photos", S="fit_sessions";
-const p=new URLSearchParams(location.search), mobile=p.get("mode")==="mobile", sid=p.get("session"), tok=p.get("token"), protectedMobile=p.get("protected")==="1";
+const p=new URLSearchParams(location.search), mobile=p.get("mode")==="mobile", sid=p.get("session"), tok=p.get("token");
 function hex(n=24){const a=new Uint8Array(n);crypto.getRandomValues(a);return [...a].map(x=>x.toString(16).padStart(2,"0")).join("")}
 function code(){const c="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";return Array.from({length:6},()=>c[Math.floor(Math.random()*c.length)]).join("")}
 async function user(){let x=await sb.auth.getSession();if(x.data.session?.user)return x.data.session.user;let r=await sb.auth.signInAnonymously();if(r.error)throw r.error;return r.data.user}
 async function signed(path){let r=await sb.storage.from(B).createSignedUrl(path,300);if(r.error)throw r.error;return r.data.signedUrl}
-function murl(s,t,protectedMode=false){let u=new URL(location.href);u.search="";u.searchParams.set("mode","mobile");u.searchParams.set("session",s);u.searchParams.set("token",t);if(protectedMode)u.searchParams.set("protected","1");return u.toString()}
+function murl(s,t){let u=new URL(location.href);u.search="";u.searchParams.set("mode","mobile");u.searchParams.set("session",s);u.searchParams.set("token",t);return u.toString()}
 
 if(mobile){
  document.body.classList.add("mobile-mode");q("#mobileSessionCode").textContent="Secure Fit Review";
  const inp=q("#mobilePhotoInput"),img=q("#mobilePreviewImg"),ph=q("#mobilePreviewPlaceholder"),st=q("#mobileUploadState"),done=q("#mobileDone");
  const currentMobileUrl=location.href;
- const verifiedKey="fitPhotoVerified:"+String(sid||"");
  const prevUrl=localStorage.getItem("fitPhotoLastMobileUrl"),prevLabel=localStorage.getItem("fitPhotoLastMobileLabel")||"Previous session";
  if(prevUrl&&prevUrl!==currentMobileUrl){q("#mobilePreviousSession").style.display="block";q("#mobilePreviousLabel").textContent=prevLabel;q("#mobileContinueBtn").onclick=()=>location.href=prevUrl}
  let ready=false;
- async function setMobileReady(name){
-   ready=true;
-   q("#mobileSessionCode").textContent=name||"Fit Review";
-   q("#mobilePinGate").style.display="none";
-   q("#mobilePhotoActions").style.display="grid";
-   st.textContent="Secure session connected";st.style.color="#067647";
-   localStorage.setItem("fitPhotoLastMobileUrl",currentMobileUrl);
-   localStorage.setItem("fitPhotoLastMobileLabel",name||"Fit Review");
- }
- async function verifyProtectedPin(pin){
-   await user();
-   const r=await sb.rpc("join_fit_session_pin",{p_session_id:sid,p_token:tok,p_pin:String(pin||"")});
-   if(r.error||!r.data?.ok)throw new Error(r.error?.message||r.data?.message||"Invalid PIN or session ended");
-   localStorage.setItem(verifiedKey,"1");
-   await setMobileReady(r.data.session_name||"Fit Review");
- }
- if(protectedMobile){
-   q("#mobilePinGate").style.display="block";
-   q("#mobilePhotoActions").style.display="none";
-   q("#mobileJoinBtn").onclick=async()=>{
-     const pin=q("#mobilePinInput").value.trim(),ps=q("#mobilePinStatus");
-     if(!/^\d{4,6}$/.test(pin)){ps.textContent="Enter a 4–6 digit PIN";ps.style.color="#b42318";return}
-     q("#mobileJoinBtn").disabled=true;ps.textContent="Checking PIN…";ps.style.color="#2563eb";
-     try{await verifyProtectedPin(pin);ps.textContent=""}
-     catch(e){ps.textContent=e.message||String(e);ps.style.color="#b42318"}
-     finally{q("#mobileJoinBtn").disabled=false}
-   };
-   if(localStorage.getItem(verifiedKey)==="1"){
-     (async()=>{try{
-       await user();
-       const r=await sb.rpc("resume_fit_session",{p_session_id:sid,p_token:tok});
-       if(r.error||!r.data?.ok)throw new Error("Session ended");
-       await setMobileReady(r.data.session_name||"Fit Review");
-     }catch(_){localStorage.removeItem(verifiedKey);q("#mobilePinGate").style.display="block"}})();
-   }
- }else{
-   // Quick Session: no PIN, join immediately.
-   (async()=>{try{
+ (async()=>{
+   try{
      await user();
      const r=await sb.rpc("join_fit_session",{p_session_id:sid,p_token:tok});
      if(r.error||!r.data)throw r.error||new Error("Session invalid or ended");
-     await setMobileReady("Quick Session");
+     ready=true;
+     const label=localStorage.getItem("fitPhotoLastMobileLabel")||"Fit Review";
+     q("#mobileSessionCode").textContent=label;
+     st.textContent="Secure session connected";st.style.color="#067647";
+     localStorage.setItem("fitPhotoLastMobileUrl",currentMobileUrl);
    }catch(e){
-     st.textContent="Connection failed: "+(e.message||e);st.style.color="#b42318";inp.disabled=true;
-   }})();
- }
+     st.textContent="Connection failed: "+(e.message||e);
+     st.style.color="#b42318";
+     inp.disabled=true;
+   }
+ })();
  async function opt(f){let b=await createImageBitmap(f),sc=Math.min(1,1800/Math.max(b.width,b.height)),w=Math.round(b.width*sc),h=Math.round(b.height*sc),c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(b,0,0,w,h);return await new Promise((ok,no)=>c.toBlob(x=>x?ok(x):no(new Error("Compression failed")),"image/jpeg",.82))}
  inp.addEventListener("change",async e=>{
    const files=[...(e.target.files||[])];
@@ -1906,15 +1873,62 @@ function escapeHtml(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;",
 async function activateSession(s){
  cs=s.session;ct=s.token;seen.clear();q("#livePhotos").innerHTML="";
  q("#sessionArea").style.display="block";q("#sessionNameDisplay").textContent=s.name||("Session "+cs);q("#sessionCode").textContent="ID "+cs;q("#endSessionBtn").style.display="block";
- const mu=murl(cs,ct,!!s.protected),qr=q("#qrImage");qr.src="https://quickchart.io/qr?size=150&text="+encodeURIComponent(mu);qr.style.display="block";
+ const mu=murl(cs,ct),qr=q("#qrImage");qr.src="https://quickchart.io/qr?size=150&text="+encodeURIComponent(mu);qr.style.display="block";
  q("#openMobileLinkBtn").style.display=q("#copyMobileLinkBtn").style.display="block";q("#openMobileLinkBtn").onclick=()=>window.open(mu,"_blank");q("#copyMobileLinkBtn").onclick=()=>navigator.clipboard.writeText(mu);
  q("#createSessionStatus").textContent=`Active: ${s.name||cs}`;q("#createSessionStatus").style.color="#067647";
  await load();sub();await refreshPhotos()
 }
-async function reopenSession(s){
- try{await user();const r=await sb.from(S).select("session_id,session_name,active").eq("session_id",s.session).maybeSingle();if(r.error)throw r.error;if(!r.data?.active){updateRecentSession(s.session,{active:false});throw new Error("This session has already ended")}await activateSession(s)}
- catch(e){q("#createSessionStatus").textContent="Reopen failed: "+(e.message||e);q("#createSessionStatus").style.color="#b42318"}
+let pendingReopenSession=null;
+function closeReopenPin(){
+  pendingReopenSession=null;
+  q("#reopenPinModal").style.display="none";
+  q("#reopenPinInput").value="";
+  q("#reopenPinStatus").textContent="";
 }
+async function reopenSession(s){
+  try{
+    await user();
+
+    // Quick sessions are not normally saved in Recent Sessions, but keep fallback support.
+    if(!s.protected){
+      const r=await sb.from(S).select("session_id,active").eq("session_id",s.session).maybeSingle();
+      if(r.error)throw r.error;
+      if(!r.data?.active){updateRecentSession(s.session,{active:false});throw new Error("This session has already ended")}
+      await activateSession(s);
+      return;
+    }
+
+    pendingReopenSession=s;
+    q("#reopenPinSessionName").textContent=s.name||"Protected Session";
+    q("#reopenPinModal").style.display="flex";
+    setTimeout(()=>q("#reopenPinInput").focus(),0);
+  }catch(e){
+    q("#createSessionStatus").textContent="Reopen failed: "+(e.message||e);
+    q("#createSessionStatus").style.color="#b42318";
+  }
+}
+
+q("#reopenPinCancel").onclick=closeReopenPin;
+q("#reopenPinConfirm").onclick=async()=>{
+  const s=pendingReopenSession,pin=q("#reopenPinInput").value.trim(),st=q("#reopenPinStatus");
+  if(!s)return;
+  if(!/^\d{4,6}$/.test(pin)){st.textContent="Enter the 4–6 digit PIN";st.style.color="#b42318";return}
+
+  q("#reopenPinConfirm").disabled=true;
+  st.textContent="Checking PIN…";st.style.color="#2563eb";
+  try{
+    await user();
+    const r=await sb.rpc("join_fit_session_pin",{p_session_id:s.session,p_token:s.token,p_pin:pin});
+    if(r.error||!r.data?.ok)throw new Error(r.error?.message||r.data?.message||"Incorrect PIN");
+    closeReopenPin();
+    await activateSession(s);
+  }catch(e){
+    st.textContent=e.message||String(e);st.style.color="#b42318";
+  }finally{
+    q("#reopenPinConfirm").disabled=false;
+  }
+};
+q("#reopenPinInput").addEventListener("keydown",e=>{if(e.key==="Enter")q("#reopenPinConfirm").click()});
 renderRecentSessions();
 
 q("#protectedSessionToggle").onchange=e=>{
@@ -2106,5 +2120,18 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 </script>
 
+
+<div id="reopenPinModal" class="pinModalBackdrop" style="display:none">
+  <div class="pinModalCard">
+    <h3>Reopen Protected Session</h3>
+    <div id="reopenPinSessionName" class="note" style="margin-bottom:8px"></div>
+    <input id="reopenPinInput" type="password" inputmode="numeric" maxlength="6" placeholder="Enter PIN">
+    <div id="reopenPinStatus" class="syncStatus" style="margin-top:6px"></div>
+    <div class="row" style="margin-top:8px">
+      <button id="reopenPinCancel" class="btn">Cancel</button>
+      <button id="reopenPinConfirm" class="btn primary">Reopen</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
