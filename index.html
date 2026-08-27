@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Fit Photo Studio V61 Curve Rotation</title>
+<title>Fit Photo Studio V63 Persistent Sessions</title>
 <style>
 :root{
   --bg:#f3f5f7;--panel:#ffffff;--ink:#15171a;--muted:#707782;--line:#dce1e6;
@@ -233,7 +233,7 @@ body.mobile-mode .mobileCaptureScreen{display:block}
 @media(max-width:1150px){.app{grid-template-columns:200px 150px minmax(0,1fr) 270px}}
 
 
-/* Version V61 full workspace */
+/* Version V63 full workspace */
 .rightVersion{font-size:10px;font-weight:800;letter-spacing:.08em;color:#2563eb;background:#eff6ff;border-radius:999px;padding:4px 8px;align-self:flex-start;margin-bottom:10px}
 .right{display:block!important;overflow-y:auto!important;overflow-x:hidden!important;min-width:0!important;padding:14px 14px 110px!important}
 #annotateControls,#collageControls{display:block;min-width:0;max-width:100%;overflow:visible}
@@ -438,6 +438,17 @@ input[type="color"]{width:42px!important;height:32px!important}
 .shapeFillRow input[type="checkbox"]{width:16px!important;height:16px!important;min-width:16px!important}
 .curveHelp{font-size:9px;color:#64748b}
 
+
+/* V62 persistent fit-review sessions */
+.recentSessions{display:flex;flex-direction:column;gap:6px}
+.recentSessionCard{border:1px solid #d7dde5;border-radius:10px;padding:7px;background:#fff}
+.recentSessionCard .recentTitle{font-weight:700;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.recentSessionCard .recentMeta{font-size:9px;color:#64748b;margin:3px 0 6px}
+.recentSessionCard .btn{width:100%}
+.mobilePreviousSession{border:1px solid #d7dde5;border-radius:12px;padding:10px;margin:10px 0;background:#f8fafc}
+.mobilePreviousSession strong{display:block;margin:3px 0 8px}
+.mobilePreviousSession button{width:100%;min-height:42px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;font-weight:700}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -445,7 +456,7 @@ input[type="color"]{width:42px!important;height:32px!important}
 <header>
   <div class="brand">
     <div class="logo">F</div>
-    <div><h1>Fit Photo Studio</h1><small><strong>Version V61</strong> · Secure Sync · Full Combine Editor</small></div>
+    <div><h1>Fit Photo Studio</h1><small><strong>Version V63</strong> · Secure Sync · Full Combine Editor</small></div>
   </div>
   <div class="topActions">
     <button id="newBtn" class="btn">New</button>
@@ -504,6 +515,10 @@ input[type="color"]{width:42px!important;height:32px!important}
           </div>
           <div class="syncStatus" id="syncStatus">Waiting for phone…</div>
         </div>
+      </div>
+      <div id="recentSessionsBlock" style="margin-top:12px">
+        <h2>Recent Sessions</h2>
+        <div id="recentSessions" class="recentSessions"><div class="note">No recent sessions yet.</div></div>
       </div>
     </div>
 
@@ -617,7 +632,7 @@ input[type="color"]{width:42px!important;height:32px!important}
     <div class="section">
       <div class="sectionTitleRow">
         <h2>ANNOTATION STYLE</h2>
-        <span class="versionPill">V61</span>
+        <span class="versionPill">V63</span>
       </div>
       <div class="prop">
         <label>Color <small><span id="colorText">#000000</span></small></label>
@@ -685,7 +700,7 @@ input[type="color"]{width:42px!important;height:32px!important}
     <div class="section">
       <div class="sectionTitleRow">
         <h2>ANNOTATION STYLE</h2>
-        <span class="versionPill">V61</span>
+        <span class="versionPill">V63</span>
       </div>
       <div class="prop">
         <label>Color <small><span id="cAnnoColorText">#000000</span></small></label>
@@ -1655,7 +1670,7 @@ function initAnnotatePhotoInteractions(){
 
 window.addEventListener("resize",()=>{if(loaded)fitPreviewToStage();fitCollageCanvas()});
 initAnnotatePhotoInteractions();
-mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active · Version V61");
+mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active · Version V63");
 })();
 </script>
 
@@ -1664,6 +1679,11 @@ mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScrip
     <h1>Fit Photo Capture</h1>
     <p>Session <strong id="mobileSessionCode">—</strong></p>
     <p style="font-size:12px;color:#64748b;margin-top:-2px">Photos are automatically optimised and uploaded in the background.</p>
+    <div id="mobilePreviousSession" class="mobilePreviousSession" style="display:none">
+      <div style="font-size:12px;color:#64748b">Previous fit review</div>
+      <strong id="mobilePreviousLabel">—</strong>
+      <button id="mobileContinueBtn" type="button">Continue previous session</button>
+    </div>
     <div class="mobilePhotoActions">
       <label class="mobileCaptureBtn">
         📷 Add / Take Photo
@@ -1696,8 +1716,11 @@ function murl(s,t){let u=new URL(location.href);u.search="";u.searchParams.set("
 if(mobile){
  document.body.classList.add("mobile-mode");q("#mobileSessionCode").textContent=sid||"Invalid";
  const inp=q("#mobilePhotoInput"),img=q("#mobilePreviewImg"),ph=q("#mobilePreviewPlaceholder"),st=q("#mobileUploadState"),done=q("#mobileDone");
+ const currentMobileUrl=location.href;
+ const prevUrl=localStorage.getItem("fitPhotoLastMobileUrl"),prevLabel=localStorage.getItem("fitPhotoLastMobileLabel")||"Previous session";
+ if(prevUrl&&prevUrl!==currentMobileUrl){q("#mobilePreviousSession").style.display="block";q("#mobilePreviousLabel").textContent=prevLabel;q("#mobileContinueBtn").onclick=()=>location.href=prevUrl}
  let ready=false;
- (async()=>{try{await user();let r=await sb.rpc("join_fit_session",{p_session_id:sid,p_token:tok});if(r.error||!r.data)throw r.error||new Error("Session invalid or ended");ready=true;st.textContent="Secure session connected";st.style.color="#067647"}catch(e){st.textContent="Connection failed: "+e.message;st.style.color="#b42318";inp.disabled=true}})();
+ (async()=>{try{await user();let r=await sb.rpc("join_fit_session",{p_session_id:sid,p_token:tok});if(r.error||!r.data)throw r.error||new Error("Session invalid or ended");ready=true;st.textContent="Secure session connected";st.style.color="#067647";localStorage.setItem("fitPhotoLastMobileUrl",currentMobileUrl);localStorage.setItem("fitPhotoLastMobileLabel","Session "+(sid||""))}catch(e){st.textContent="Connection failed: "+e.message;st.style.color="#b42318";inp.disabled=true}})();
  async function opt(f){let b=await createImageBitmap(f),sc=Math.min(1,1800/Math.max(b.width,b.height)),w=Math.round(b.width*sc),h=Math.round(b.height*sc),c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(b,0,0,w,h);return await new Promise((ok,no)=>c.toBlob(x=>x?ok(x):no(new Error("Compression failed")),"image/jpeg",.82))}
  inp.addEventListener("change",async e=>{
    const files=[...(e.target.files||[])];
@@ -1778,11 +1801,49 @@ function sub(){
  // Polling is a fallback for RLS/realtime delivery differences; seen[] prevents duplicates.
  pollTimer=setInterval(refreshPhotos,1500);
 }
-q("#createSessionBtn").onclick=async()=>{let s=q("#createSessionStatus"),b=q("#createSessionBtn");b.disabled=true;b.textContent="Creating…";s.textContent="Step 1/3: signing in securely…";s.style.color="#2563eb";try{let u=await user();if(!u?.id)throw new Error("Anonymous sign-in returned no user");s.textContent="Step 2/3: creating database session…";cs=code();ct=hex();let r=await sb.from(S).insert({session_id:cs,token_hash:ct,owner_id:u.id});if(r.error)throw new Error("Database: "+r.error.message);s.textContent="Step 3/3: preparing QR…";q("#sessionArea").style.display="block";q("#sessionCode").textContent=cs;
-let lph=q("#livePhotosPlaceholder");if(lph)lph.style.display="block";
-q("#livePhotosStatus").textContent="Connected — waiting for phone photos…";q("#endSessionBtn").style.display="block";let mu=murl(cs,ct),qr=q("#qrImage");qr.src="https://quickchart.io/qr?size=150&text="+encodeURIComponent(mu);qr.style.display="block";q("#openMobileLinkBtn").style.display=q("#copyMobileLinkBtn").style.display="block";q("#openMobileLinkBtn").onclick=()=>window.open(mu,"_blank");q("#copyMobileLinkBtn").onclick=()=>navigator.clipboard.writeText(mu);await load();sub();await refreshPhotos();s.textContent="Secure session created ✓";s.style.color="#067647"}catch(e){console.error(e);s.textContent="Create failed: "+(e.message||e);s.style.color="#b42318"}finally{b.disabled=false;b.textContent="Create Secure Session"}};
+
+const RECENT_KEY="fitPhotoRecentSessionsV62";
+function getRecentSessions(){try{return JSON.parse(localStorage.getItem(RECENT_KEY)||"[]")}catch(_){return[]}}
+function saveRecentSession(x){let a=getRecentSessions().filter(s=>s.session!==x.session);a.unshift(x);a=a.slice(0,12);localStorage.setItem(RECENT_KEY,JSON.stringify(a));renderRecentSessions()}
+function updateRecentSession(id,patch){let a=getRecentSessions(),i=a.findIndex(s=>s.session===id);if(i>=0){a[i]={...a[i],...patch};localStorage.setItem(RECENT_KEY,JSON.stringify(a));renderRecentSessions()}}
+function renderRecentSessions(){
+ const box=q("#recentSessions");if(!box)return;const a=getRecentSessions();
+ if(!a.length){box.innerHTML='<div class="note">No recent sessions yet.</div>';return}
+ box.innerHTML="";
+ a.forEach(s=>{const d=document.createElement("div");d.className="recentSessionCard";d.innerHTML=`<div class="recentTitle">Session ${escapeHtml(s.session)}</div><div class="recentMeta">${s.active===false?"Ended":"Active"}</div><button class="btn" ${s.active===false?"disabled":""}>${s.active===false?"Session ended":"Reopen Session"}</button>`;const b=d.querySelector("button");if(s.active!==false)b.onclick=()=>reopenSession(s);box.appendChild(d)})
+}
+function escapeHtml(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+async function activateSession(s){
+ cs=s.session;ct=s.token;seen.clear();q("#livePhotos").innerHTML="";
+ q("#sessionArea").style.display="block";q("#sessionCode").textContent=cs;q("#endSessionBtn").style.display="block";
+ const mu=murl(cs,ct),qr=q("#qrImage");qr.src="https://quickchart.io/qr?size=150&text="+encodeURIComponent(mu);qr.style.display="block";
+ q("#openMobileLinkBtn").style.display=q("#copyMobileLinkBtn").style.display="block";q("#openMobileLinkBtn").onclick=()=>window.open(mu,"_blank");q("#copyMobileLinkBtn").onclick=()=>navigator.clipboard.writeText(mu);
+ q("#createSessionStatus").textContent=`Active session: ${cs}`;q("#createSessionStatus").style.color="#067647";
+ await load();sub();await refreshPhotos()
+}
+async function reopenSession(s){
+ try{await user();const r=await sb.from(S).select("session_id,active").eq("session_id",s.session).maybeSingle();if(r.error)throw r.error;if(!r.data?.active){updateRecentSession(s.session,{active:false});throw new Error("This session has already ended")}await activateSession(s)}
+ catch(e){q("#createSessionStatus").textContent="Reopen failed: "+(e.message||e);q("#createSessionStatus").style.color="#b42318"}
+}
+renderRecentSessions();
+
+q("#createSessionBtn").onclick=async()=>{
+ let s=q("#createSessionStatus"),b=q("#createSessionBtn");
+ b.disabled=true;b.textContent="Creating…";s.textContent="Step 1/3: signing in securely…";s.style.color="#2563eb";
+ try{
+  let u=await user();if(!u?.id)throw new Error("Anonymous sign-in returned no user");
+  s.textContent="Step 2/3: creating database session…";cs=code();ct=hex();
+  let r=await sb.from(S).insert({session_id:cs,token_hash:ct,owner_id:u.id});if(r.error)throw new Error("Database: "+r.error.message);
+  const rec={session:cs,token:ct,label:"Session "+cs,active:true,createdAt:new Date().toISOString()};
+  saveRecentSession(rec);
+  s.textContent="Step 3/3: preparing QR…";
+  await activateSession(rec);
+  s.textContent="Secure session created ✓";s.style.color="#067647"
+ }catch(e){console.error(e);s.textContent="Create failed: "+(e.message||e);s.style.color="#b42318"}
+ finally{b.disabled=false;b.textContent="Create Secure Session"}
+};
 q("#refreshLivePhotosBtn").onclick=async()=>{q("#livePhotosStatus").textContent="Checking secure session…";await refreshPhotos()};
-q("#endSessionBtn").onclick=async()=>{if(!cs)return;let r=await sb.from(S).update({active:false,ended_at:new Date().toISOString()}).eq("session_id",cs);if(r.error)return q("#syncStatus").textContent=r.error.message;if(ch)sb.removeChannel(ch);if(pollTimer){clearInterval(pollTimer);pollTimer=null}q("#syncStatus").textContent="Session ended — QR invalid";q("#endSessionBtn").style.display="none"};
+q("#endSessionBtn").onclick=async()=>{if(!cs)return;let r=await sb.from(S).update({active:false,ended_at:new Date().toISOString()}).eq("session_id",cs);if(r.error)return q("#syncStatus").textContent=r.error.message;if(ch)sb.removeChannel(ch);if(pollTimer){clearInterval(pollTimer);pollTimer=null}updateRecentSession(cs,{active:false,endedAt:new Date().toISOString()});q("#syncStatus").textContent="Session ended — QR invalid";q("#endSessionBtn").style.display="none"};
 })();
 
 
