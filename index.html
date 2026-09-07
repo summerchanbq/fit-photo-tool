@@ -1,9 +1,10 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Fit Photo Studio V69 Photo Workflow</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Fit Photo Studio V70 Editor &amp; Sidebar Fix</title>
 <style>
 :root{
   --bg:#f3f5f7;--panel:#ffffff;--ink:#15171a;--muted:#707782;--line:#dce1e6;
@@ -233,7 +234,7 @@ body.mobile-mode .mobileCaptureScreen{display:block}
 @media(max-width:1150px){.app{grid-template-columns:200px 150px minmax(0,1fr) 270px}}
 
 
-/* Version V69 full workspace */
+/* Version V70 full workspace */
 .rightVersion{font-size:10px;font-weight:800;letter-spacing:.08em;color:#2563eb;background:#eff6ff;border-radius:999px;padding:4px 8px;align-self:flex-start;margin-bottom:10px}
 .right{display:block!important;overflow-y:auto!important;overflow-x:hidden!important;min-width:0!important;padding:14px 14px 110px!important}
 #annotateControls,#collageControls{display:block;min-width:0;max-width:100%;overflow:visible}
@@ -493,363 +494,430 @@ input[type="color"]{width:42px!important;height:32px!important}
 
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-</head>
+
+<script>window.FitPhotoBoot={editor:false};window.addEventListener('error',function(e){if(!window.FitEditor){var t=document.querySelector('#hint');if(t)t.textContent='Editor startup error: '+e.message;}});</script><style id="v70-workspace-fixes">/* V70 final layout layer. Fixed-height workspace, independently scrollable columns. */
+[hidden]{display:none!important}
+.app{height:calc(100vh - 66px);height:calc(100dvh - 66px);min-height:0;align-items:stretch}
+aside.left{display:flex!important;flex-direction:column!important;min-width:0!important;min-height:0!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain;scrollbar-gutter:stable;padding:12px 10px!important;scroll-padding-top:245px}
+aside.left>*{flex-shrink:0!important;min-width:0}
+aside.left .howto{margin-top:10px;padding-top:8px;padding-bottom:14px}
+aside.left .connectCard{min-width:0;flex-shrink:0;overflow:visible}
+aside.left input[type=password]{font:inherit;width:100%;border:1px solid var(--line);border-radius:9px;padding:8px 9px}
+#qrPriority.qrPinned{position:sticky;top:-1px;z-index:40;margin:0 0 10px!important;background:var(--panel);padding:0 0 7px;border-bottom:1px solid var(--line);box-shadow:0 7px 10px rgba(255,255,255,.95)}
+#qrPriority #sessionArea{padding:8px!important;margin:0!important;background:#fff;border:1px solid #dbeafe;border-radius:12px;overflow:visible}
+#qrPriority #qrImage{display:block;width:146px!important;height:146px!important;max-width:100%!important;object-fit:contain;aspect-ratio:1;flex-shrink:0;margin:7px auto!important;padding:8px;border-radius:8px;background:#fff}
+#sessionNameDisplay{overflow-wrap:anywhere;letter-spacing:.02em!important;font-size:12px!important}
+#sessionCode{font-size:10px!important}
+#qrPriority .note,#qrPriority .syncStatus{font-size:10px!important;line-height:1.3}
+aside.left .section{margin-bottom:10px;padding-bottom:10px}
+.leftMenuGap{height:10px}
+#connectPhoneSection{padding-top:0!important}
+#recentSessionsBlock{padding-bottom:12px}
+#createSessionStatus{overflow-wrap:anywhere}
+#sessionArea .row:empty{display:none}
+/* The preview never expands the surrounding grid. Its own viewport handles zoom. */
+.center{min-width:0;min-height:0}
+#annotatePanel,#collagePanel{min-height:0;min-width:0}
+.canvasHead{flex-shrink:0;min-height:40px}
+.toolbar,.zoomBar,.combineLayoutStrip{flex-shrink:0;min-width:0}
+.toolbar{height:auto;min-height:50px;gap:5px;flex-wrap:wrap;padding:7px}
+.combineCanvasToolbar{flex-wrap:wrap!important;overflow-x:hidden!important}
+#annotatePanel .stage,#collagePanel .stage{min-height:0;min-width:0}
+#photoWrap{overflow:visible}
+#collageCanvas{width:100%!important;height:100%!important;max-width:none!important;max-height:none!important}
+#collageCanvasWrap{max-width:none!important;max-height:none!important}
+aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-behavior:contain}
+.photoLibrary{min-width:0;scrollbar-gutter:stable;overscroll-behavior:contain}
+#photoAdjustSection .note{font-size:10px!important;overflow-wrap:anywhere}
+#cropCanvas{touch-action:none;max-width:none;max-height:none;flex-shrink:0}
+.cropStage{overflow:hidden;align-items:center;justify-content:center;max-height:65vh}
+#cropBox{display:none!important}
+.cropModalCard{max-height:calc(100vh - 36px);overflow:auto}
+.cropModalCard h3{font-size:14px}
+.mobile-mode{overflow-y:auto!important}
+.mobile-mode .mobileCaptureScreen{padding-bottom:calc(18px + env(safe-area-inset-bottom))}
+@media(max-width:1150px){.app{grid-template-columns:195px 150px minmax(0,1fr) 255px!important;gap:8px;padding:8px}}
+@media(max-width:950px){.app{grid-template-columns:175px 132px minmax(0,1fr) 230px!important}}
+@media(max-height:760px){#qrPriority #qrImage{width:120px!important;height:120px!important;margin:4px auto!important}#qrPriority #sessionArea{padding:6px!important}#qrPriority{margin-bottom:7px!important}aside.left{scroll-padding-top:215px}}
+#saveBtn,#saveCollage,.ctool,#refreshRecentSessionsBtn{height:34px!important;min-height:34px!important;max-height:34px!important}
+.shapeFillRow label{justify-content:flex-start!important}
+#previewImg:not([src]){display:none!important}
+</style></head>
 <body>
 <header>
-  <div class="brand">
-    <div class="logo">F</div>
-    <div><h1>Fit Photo Studio</h1><small><strong>Version V69</strong> · Secure Sync · Full Combine Editor</small></div>
-  </div>
-  <div class="topActions">
-    <button id="newBtn" class="btn">New</button>
-    <button id="topExport" class="btn primary">Export</button>
-  </div>
+<div class="brand">
+<div class="logo">F</div>
+<div><h1>Fit Photo Studio</h1><small><strong>Version V70</strong> · Secure Sync · Full Combine Editor</small></div>
+</div>
+<div class="topActions">
+<button class="btn" id="newBtn">New</button>
+<button class="btn primary" id="topExport">Export</button>
+</div>
 </header>
-
 <div class="app">
-  <aside class="panel left">
-    <div class="section">
-      <h2>Workspace</h2>
-      <div class="modeTabs">
-        <button id="annotateTab" class="active">Annotate</button>
-        <button id="combineTab">Combine</button>
-      </div>
-    </div>
+<aside class="panel left"><div class="qrPriority qrPinned" hidden="" id="qrPriority">
+<div id="sessionArea" style="display:none;margin-top:9px">
+<div class="note">Session</div>
+<div class="sessionCode" id="sessionNameDisplay">—</div>
+<div class="note" id="sessionCode" style="font-size:8px;color:#94a3b8;margin-top:3px">—</div>
+<img alt="Scan with your phone to join this session" id="qrImage" style="display:none"/>
 
-    <div id="annotateLeft">
-      <div class="section">
-        <h2>SELECT PHOTO</h2>
-        <label class="upload">
-          <input id="photoInput" type="file" accept="image/*">
-          <strong>Select Photo</strong>
-          <span>Take or choose a photo</span>
-        </label>
-        <div id="photoMeta" class="meta">No photo selected</div>
-      </div>
-    </div>
+<div class="syncStatus" id="syncStatus">Waiting for phone…</div>
+</div>
+</div>
+<div class="section">
+<h2>Workspace</h2>
+<div class="modeTabs">
+<button class="active" id="annotateTab">Annotate</button>
+<button id="combineTab">Combine</button>
+</div>
+</div>
+<div id="annotateLeft">
+<div class="section">
+<h2>SELECT PHOTO</h2>
+<label class="upload">
+<input accept="image/*" id="photoInput" type="file"/>
+<strong>Select Photo</strong>
+<span>Take or choose a photo</span>
+</label>
+<div class="meta" id="photoMeta">No photo selected</div>
+</div>
+</div>
+<div id="collageLeft">
+<div class="section">
+<h2>SELECT PHOTO</h2>
+<label class="upload">
+<input accept="image/*" id="collageInput" multiple="" type="file"/>
+<strong>Select Photo</strong>
+<span>Take or choose photos</span>
+</label>
+</div>
+</div>
+<div class="leftMenuGap"></div>
+<div class="section" id="connectPhoneSection">
+<h2>Connect Phone</h2>
+<div class="connectCard">
 
-    <div id="collageLeft">
-      <div class="section">
-        <h2>SELECT PHOTO</h2>
-        <label class="upload">
-          <input id="collageInput" type="file" accept="image/*" multiple>
-          <strong>Select Photo</strong>
-          <span>Take or choose photos</span>
-        </label>
-      </div>
-    </div>
-
-    <div class="leftMenuGap"></div>
-
-    <div class="section" id="connectPhoneSection">
-      <h2>Connect Phone</h2>
-      <div class="connectCard">
-        <div class="qrPriority" id="qrPriority">
-
-        <div id="sessionArea" style="display:none;margin-top:9px">
-          <div class="note">Session</div>
-          <div id="sessionNameDisplay" class="sessionCode">—</div>
-          <div id="sessionCode" class="note" style="font-size:8px;color:#94a3b8;margin-top:3px">—</div>
-          <img id="qrImage" alt="Session QR code" style="display:none">
-          <div class="row" style="margin-top:5px">
-            <button id="openMobileLinkBtn" class="btn" style="display:none;padding:6px 7px;font-size:10px">Open mobile</button>
-            <button id="copyMobileLinkBtn" class="btn" style="display:none;padding:6px 7px;font-size:10px">Copy link</button>
-          </div>
-          <div class="syncStatus" id="syncStatus">Waiting for phone…</div>
-        </div>
-        </div>
-
-        <label class="sessionModeToggle">
-          <input id="protectedSessionToggle" type="checkbox">
-          <span>
-            <strong>Reusable / Protected Session</strong>
-            <small>Turn on only if you need to return to this session later. PIN is required only when reopening on desktop.</small>
-          </span>
-        </label>
-        <div id="protectedSessionFields" style="display:none">
-          <input id="sessionNameInput" type="text" maxlength="60" placeholder="Session name" style="width:100%;height:34px;box-sizing:border-box;margin-bottom:7px">
-          <input id="sessionPinInput" type="password" inputmode="numeric" maxlength="6" placeholder="4–6 digit PIN" style="width:100%;height:34px;box-sizing:border-box;margin-bottom:7px">
-          <input id="sessionPinConfirmInput" type="password" inputmode="numeric" maxlength="6" placeholder="Confirm PIN" style="width:100%;height:34px;box-sizing:border-box;margin-bottom:7px">
-        </div>
-        <button id="createSessionBtn" class="btn primary" style="width:100%">Create Quick Session</button>
-<div id="createSessionStatus" class="syncStatus" style="margin-top:7px"></div>
-<button id="endSessionBtn" class="btn" style="width:100%;margin-top:7px;display:none;color:#b42318">End Session</button>
-      </div>
-      <div id="recentSessionsBlock" style="margin-top:12px">
-        <div class="sectionTitleRow"><h2>Recent Sessions</h2><button id="refreshRecentSessionsBtn" class="btn" style="height:28px!important;min-height:28px!important;padding:0 7px!important">Refresh</button></div><div class="note" style="margin-bottom:6px">Reusable/protected sessions are restored after refresh.</div>
-        <div id="recentSessions" class="recentSessions"><div class="note">No recent sessions yet.</div></div>
-      </div>
-    </div>
-
-    <div class="howto">
+<label class="sessionModeToggle">
+<input id="protectedSessionToggle" type="checkbox"/>
+<span>
+<strong>Reusable / Protected Session</strong>
+<small>Turn on only if you need to return to this session later. PIN is required only when reopening on desktop.</small>
+</span>
+</label>
+<div id="protectedSessionFields" style="display:none">
+<input id="sessionNameInput" maxlength="60" placeholder="Session name" style="width:100%;height:34px;box-sizing:border-box;margin-bottom:7px" type="text"/>
+<input id="sessionPinInput" inputmode="numeric" maxlength="6" placeholder="4–6 digit PIN" style="width:100%;height:34px;box-sizing:border-box;margin-bottom:7px" type="password"/>
+<input id="sessionPinConfirmInput" inputmode="numeric" maxlength="6" placeholder="Confirm PIN" style="width:100%;height:34px;box-sizing:border-box;margin-bottom:7px" type="password"/>
+</div>
+<button class="btn primary" id="createSessionBtn" style="width:100%">Create Quick Session</button>
+<div class="syncStatus" id="createSessionStatus" style="margin-top:7px"></div>
+<button class="btn" id="endSessionBtn" style="width:100%;margin-top:7px;display:none;color:#b42318">End Session</button>
+</div>
+<div id="recentSessionsBlock" style="margin-top:12px">
+<div class="sectionTitleRow"><h2>Recent Sessions</h2><button class="btn" id="refreshRecentSessionsBtn" style="height:28px!important;min-height:28px!important;padding:0 7px!important">Refresh</button></div><div class="note" style="margin-bottom:6px">Reusable/protected sessions are restored after refresh.</div>
+<div class="recentSessions" id="recentSessions"><div class="note">No recent sessions yet.</div></div>
+</div>
+</div>
+<div class="howto">
       How to use: choose a photo, pick a tool, draw directly on the preview, then select an item to move or resize it.
-      <div id="debug" class="debug">Debug: JavaScript active</div>
-    </div>
-  </aside>
-
-  
-  <aside class="panel photoLibrary">
-    <div class="libraryHeader">
-      <b>PHOTO LIBRARY</b>
-      <span>Session photos</span>
-    </div>
-    <div class="section" id="livePhotosSection">
-      <h2>Live Photos</h2>
-      <div id="livePhotosPlaceholder" style="border:1.5px dashed #cbd5e1;border-radius:10px;padding:18px 8px;text-align:center;color:#64748b;font-size:10px;margin-bottom:7px;background:#f8fafc">
-  <div style="font-size:22px;margin-bottom:4px">📱→💻</div>
+      <div class="debug" id="debug">Debug: JavaScript active</div>
+</div>
+</aside>
+<aside class="panel photoLibrary">
+<div class="libraryHeader">
+<b>PHOTO LIBRARY</b>
+<span>Session photos</span>
+</div>
+<div class="section" id="livePhotosSection">
+<h2>Live Photos</h2>
+<div id="livePhotosPlaceholder" style="border:1.5px dashed #cbd5e1;border-radius:10px;padding:18px 8px;text-align:center;color:#64748b;font-size:10px;margin-bottom:7px;background:#f8fafc">
+<div style="font-size:22px;margin-bottom:4px">📱→💻</div>
   Phone photos will appear here automatically
 </div>
-<div id="livePhotos" class="livePhotos"></div>
-      <div class="syncStatus" id="livePhotosStatus">Create a session to receive phone photos. Click any received photo to edit it.</div>
+<div class="livePhotos" id="livePhotos"></div>
+<div class="syncStatus" id="livePhotosStatus">Create a session to receive phone photos. Click any received photo to edit it.</div>
 <div class="compactPair" style="margin-top:7px">
-<button id="refreshLivePhotosBtn" class="btn">Refresh Photos</button>
-<button id="downloadAllPhotosBtn" class="btn">Download All</button>
+<button class="btn" id="refreshLivePhotosBtn">Refresh Photos</button>
+<button class="btn" id="downloadAllPhotosBtn">Download All</button>
 </div>
-<div id="batchDownloadStatus" class="syncStatus"></div>
-    </div>
-
-  
-    <div class="section" id="combineLibrarySection">
-      <h2>Combine Photos</h2>
-      <div id="thumbList" class="thumbList"></div>
-      <div id="combineLibraryEmpty" class="libraryEmpty">Add photos or click Live Photos to add them to Combine.</div>
-    </div>
+<div class="syncStatus" id="batchDownloadStatus"></div>
+</div>
+<div class="section" id="combineLibrarySection">
+<h2>Combine Photos</h2>
+<div class="thumbList" id="thumbList"></div>
+<div class="libraryEmpty" id="combineLibraryEmpty">Add photos or click Live Photos to add them to Combine.</div>
+</div>
 </aside>
-
 <main class="panel center">
-    <div id="annotatePanel" style="display:flex;flex-direction:column;height:100%">
-      <div class="canvasHead">
-        <b>Photo Preview</b>
-        <span id="hint">Choose a photo to start</span>
-      </div>
-      <div class="stage">
-        <div class="photoWrap" id="photoWrap">
-          <div id="empty" class="empty">
-            <div>
-              <div style="font-size:38px">🖼️</div>
-              <h3>Your photo will appear here</h3>
-              <p>Choose a fit photo, then annotate directly on top of it.</p>
-            </div>
-          </div>
-          <img id="previewImg" alt="Selected fit photo">
-          <canvas id="overlay"></canvas><div id="photoResizeHandle" title="Drag to resize photo proportionally"></div>
-        </div>
-      </div>
-      <div class="toolbar">
-        <button class="tool active" data-tool="select">↖ Select</button>
-        <button class="tool" data-tool="arrow">↗ Arrow</button>
-        <button class="tool" data-tool="line">╱ Line</button>
-        <button class="tool" data-tool="dash">┄ Dashed</button>
-        <button class="tool" data-tool="circle">○ Circle</button>
-        <button class="tool" data-tool="rect">□ Rectangle</button>
-        <button class="tool" data-tool="curve">⌒ Curve</button>
-        <button class="tool" data-tool="text">T Text</button>
-      </div>
-      <div class="zoomBar" id="annotateZoomBar">
-        <button id="zoomOut" class="btn" title="Zoom out">−</button>
-        <button id="zoomLevel" class="btn zoomReadout" title="Reset to 100%">100%</button>
-        <button id="zoomIn" class="btn" title="Zoom in">+</button>
-        <button id="zoomFit" class="btn" title="Fit photo to screen">Fit</button>
-      </div>
-    </div>
-
-    <div id="collagePanel">
-      <div class="canvasHead">
-        <b>Combined Photo Sheet</b>
-        <span>Click a photo in Photo Library to add · drag to move · drag corner to resize</span>
-      </div>
-      <div class="stage">
-        <div class="collageCanvasWrap" id="collageCanvasWrap" style="position:relative">
-          <canvas id="collageCanvas" width="1400" height="900"></canvas>
-          <div id="guideV" class="guideLine v" style="display:none"></div>
-          <div id="guideH" class="guideLine h" style="display:none"></div>
-          <div id="canvasResizeHandle" class="resizeHandle" title="Drag to resize canvas" style="right:-9px;bottom:-9px;cursor:nwse-resize"></div>
-        </div>
-      </div>
-      <div class="toolbar combineCanvasToolbar" aria-label="Combine drawing tools">
-        <button class="ctool active" data-ctool="select">↖ Select</button>
-        <button class="ctool" data-ctool="arrow">↗ Arrow</button>
-        <button class="ctool" data-ctool="line">╱ Line</button>
-        <button class="ctool" data-ctool="dash">┄ Dashed</button>
-        <button class="ctool" data-ctool="circle">○ Circle</button>
-        <button class="ctool" data-ctool="rect">□ Rectangle</button>
-        <button class="ctool" data-ctool="curve">⌒ Curve</button>
-        <button class="ctool" data-ctool="text">T Text</button>
-      </div>
+<div id="annotatePanel" style="display:flex;flex-direction:column;height:100%">
+<div class="canvasHead">
+<b>Photo Preview</b>
+<span id="hint">Choose a photo to start</span>
+</div>
+<div class="stage">
+<div class="photoWrap" id="photoWrap">
+<div class="empty" id="empty">
+<div>
+<div style="font-size:38px">🖼️</div>
+<h3>Your photo will appear here</h3>
+<p>Choose a fit photo, then annotate directly on top of it.</p>
+</div>
+</div>
+<img alt="Selected fit photo" id="previewImg"/>
+<canvas id="overlay"></canvas><div id="photoResizeHandle" title="Drag to resize photo proportionally"></div>
+</div>
+</div>
+<div class="toolbar">
+<button class="tool active" data-tool="select">↖ Select</button>
+<button class="tool" data-tool="arrow">↗ Arrow</button>
+<button class="tool" data-tool="line">╱ Line</button>
+<button class="tool" data-tool="dash">┄ Dashed</button>
+<button class="tool" data-tool="circle">○ Circle</button>
+<button class="tool" data-tool="rect">□ Rectangle</button>
+<button class="tool" data-tool="curve">⌒ Curve</button>
+<button class="tool" data-tool="text">T Text</button>
+</div>
+<div class="zoomBar" id="annotateZoomBar">
+<button class="btn" id="zoomOut" title="Zoom out">−</button>
+<button class="btn zoomReadout" id="zoomLevel" title="Reset to 100%">100%</button>
+<button class="btn" id="zoomIn" title="Zoom in">+</button>
+<button class="btn" id="zoomFit" title="Fit photo to screen">Fit</button>
+</div>
+</div>
+<div id="collagePanel">
+<div class="canvasHead">
+<b>Combined Photo Sheet</b>
+<span>Click a photo in Photo Library to add · drag to move · drag corner to resize</span>
+</div>
+<div class="stage">
+<div class="collageCanvasWrap" id="collageCanvasWrap" style="position:relative">
+<canvas height="900" id="collageCanvas" width="1400"></canvas>
+<div class="guideLine v" id="guideV" style="display:none"></div>
+<div class="guideLine h" id="guideH" style="display:none"></div>
+<div class="resizeHandle" id="canvasResizeHandle" style="right:-9px;bottom:-9px;cursor:nwse-resize" title="Drag to resize canvas"></div>
+</div>
+</div>
+<div aria-label="Combine drawing tools" class="toolbar combineCanvasToolbar">
+<button class="ctool active" data-ctool="select">↖ Select</button>
+<button class="ctool" data-ctool="arrow">↗ Arrow</button>
+<button class="ctool" data-ctool="line">╱ Line</button>
+<button class="ctool" data-ctool="dash">┄ Dashed</button>
+<button class="ctool" data-ctool="circle">○ Circle</button>
+<button class="ctool" data-ctool="rect">□ Rectangle</button>
+<button class="ctool" data-ctool="curve">⌒ Curve</button>
+<button class="ctool" data-ctool="text">T Text</button>
+</div>
 <div class="combineLayoutStrip">
-  <select id="layoutMode" title="Layout">
-    <option value="row" selected>Horizontal</option>
-    <option value="column">Vertical</option>
-  </select>
-  <button id="autoLayout" class="btn">Auto Arrange</button>
-  <button id="fitCanvasContent" class="btn">Fit to Canvas</button>
+<select id="layoutMode" title="Layout">
+<option selected="" value="row">Horizontal</option>
+<option value="column">Vertical</option>
+</select>
+<button class="btn" id="autoLayout">Auto Arrange</button>
+<button class="btn" id="fitCanvasContent">Fit to Canvas</button>
+</div>
+</div>
+</main>
+<aside class="panel right">
+<div id="annotateControls">
+<div class="section">
+<div class="sectionTitleRow">
+<h2>ANNOTATION STYLE</h2>
+<span class="versionPill">V70</span>
+</div>
+<div class="prop">
+<label>Color <small><span id="colorText">#000000</span></small></label>
+<input id="color" type="color" value="#000000"/>
+</div>
+<div class="prop">
+<label>Line width <small><span id="lineVal">6</span> px</small></label>
+<input id="lineWidth" max="20" min="1" type="range" value="6"/>
+</div>
+<div class="prop">
+<label>Text size <small><span id="fontVal">34</span> px</small></label>
+<input id="fontSize" max="50" min="14" type="range" value="34"/>
+</div>
+<div class="prop shapeFillRow">
+<label><input id="shapeFill" type="checkbox"/> Fill Circle / Rectangle</label>
+</div>
+<div class="compactPair">
+<button class="btn" id="undo">Undo</button>
+<button class="btn" id="delete">Delete</button>
+</div>
+</div>
+<div class="section" id="photoAdjustSection">
+<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V70</span></div>
+<div class="compactPair">
+<button class="btn" id="cropPhotoBtn">Crop</button>
+<button class="btn" id="rotatePhotoBtn">↻ Rotate 90°</button>
+</div>
+<div class="prop" style="margin-top:7px">
+<label>Brightness <small><span id="brightnessVal">100</span>%</small></label>
+<input id="brightnessRange" max="180" min="40" type="range" value="100"/>
+</div>
+<div class="prop">
+<label>Contrast <small><span id="contrastVal">100</span>%</small></label>
+<input id="contrastRange" max="180" min="40" type="range" value="100"/>
+</div>
+<div class="compactPair">
+<button class="btn" id="removeBgBtn" title="Experimental local colour-based removal. Not AI segmentation; similar garment colours may be affected.">Remove BG (Test)</button>
+<button class="btn" id="resetPhotoAdjustBtn">Reset</button>
+</div>
+<div class="note" id="photoAdjustStatus" style="margin-top:5px">Photo operations clear annotations after confirmation. Background removal is a plain-colour experiment.</div>
+</div>
+<div class="section">
+<div class="sectionTitleRow">
+<h2>VOICE → ENGLISH</h2>
+<span class="voiceBadge">NO API KEY</span>
+</div>
+<div class="prop">
+<label>Spoken language</label>
+<select id="lang">
+<option value="en-AU">English (Australia)</option>
+<option value="zh-CN">Chinese / Mandarin</option>
+<option value="zh-HK">Cantonese</option>
+<option value="id-ID">Bahasa Indonesia</option>
+<option value="vi-VN">Vietnamese</option>
+<option value="hi-IN">Hindi</option>
+<option value="ja-JP">Japanese</option>
+<option value="ko-KR">Korean</option>
+</select>
+</div>
+<button class="btn primary" id="mic" style="width:100%">🎙 Start speaking</button>
+<textarea id="voice" placeholder="Speech appears here. Click Translate to English if needed." rows="3" style="margin-top:6px"></textarea>
+<div class="compactPair" style="margin-top:6px">
+<button class="btn" id="translateVoice">Translate to English</button>
+<button class="btn primary" id="addVoice">Add to photo</button>
+</div>
+<div class="note" id="voiceStatus" style="margin-top:5px">Ready.</div>
+<div class="downloadProgress" id="voiceProgress"><span></span></div>
+</div>
+<div class="section">
+<h2>SAVE &amp; SHARE</h2>
+<div class="compactPair">
+<select id="format">
+<option value="png">PNG</option>
+<option value="jpeg">JPG</option>
+</select>
+<button class="btn primary" id="saveBtn">Save</button>
+</div>
+<button class="btn" id="shareBtn" style="width:100%;margin-top:5px">Share</button>
+</div>
+</div>
+<div id="collageControls" style="display:none">
+<div class="section">
+<div class="sectionTitleRow">
+<h2>ANNOTATION STYLE</h2>
+<span class="versionPill">V70</span>
+</div>
+<div class="prop">
+<label>Color <small><span id="cAnnoColorText">#000000</span></small></label>
+<input id="cAnnoColor" type="color" value="#000000"/>
+</div>
+<div class="prop">
+<label>Line width <small><span id="cLineWidthVal">6</span> px</small></label>
+<input id="cLineWidth" max="20" min="1" type="range" value="6"/>
+</div>
+<div class="prop">
+<label>Text size <small><span id="cTextSizeVal">34</span> px</small></label>
+<input id="cTextSize" max="50" min="14" type="range" value="34"/>
+</div>
+<div class="prop shapeFillRow">
+<label><input id="cShapeFill" type="checkbox"/> Fill Circle / Rectangle</label>
+</div>
+<input id="cTextColor" style="display:none" type="color" value="#000000"/>
+<div class="compactPair">
+<button class="btn" id="cUndo">Undo</button>
+<button class="btn" id="deleteCollageObject">Delete</button>
+</div>
+</div>
+<div class="section">
+<div class="sectionTitleRow">
+<h2>VOICE → ENGLISH</h2>
+<span class="voiceBadge">NO API KEY</span>
+</div>
+<div class="prop">
+<label>Spoken language</label>
+<select id="collageLang">
+<option value="en-AU">English (Australia)</option>
+<option value="zh-CN">Chinese / Mandarin</option>
+<option value="zh-HK">Cantonese</option>
+<option value="id-ID">Bahasa Indonesia</option>
+<option value="vi-VN">Vietnamese</option>
+<option value="hi-IN">Hindi</option>
+<option value="ja-JP">Japanese</option>
+<option value="ko-KR">Korean</option>
+</select>
+</div>
+<button class="btn primary" id="collageMic" style="width:100%">🎙 Start speaking</button>
+<textarea id="collageText" placeholder="Speech appears here. Click Translate to English if needed." rows="3" style="margin-top:6px"></textarea>
+<div class="compactPair" style="margin-top:6px">
+<button class="btn" id="translateCollageText">Translate to English</button>
+<button class="btn primary" id="addCollageText">Add to photo</button>
+</div>
+<div class="note" id="collageVoiceStatus" style="margin-top:5px">Ready.</div>
+<div class="downloadProgress" id="collageProgress"><span></span></div>
+</div>
+<div class="section">
+<h2>SAVE &amp; SHARE</h2>
+<div class="compactPair">
+<select id="collageFormat">
+<option value="png">PNG</option>
+<option value="jpeg">JPG</option>
+</select>
+<button class="btn primary" id="saveCollage">Save</button>
+</div>
+<button class="btn" id="shareCollage" style="width:100%;margin-top:5px">Share</button>
+</div>
+</div>
+</aside>
 </div>
 
-    </div>
-  </main>
-
-  
-
-<aside class="panel right">
-  <div id="annotateControls">
-    <div class="section">
-      <div class="sectionTitleRow">
-        <h2>ANNOTATION STYLE</h2>
-        <span class="versionPill">V69</span>
-      </div>
-      <div class="prop">
-        <label>Color <small><span id="colorText">#000000</span></small></label>
-        <input id="color" type="color" value="#000000">
-      </div>
-      <div class="prop">
-        <label>Line width <small><span id="lineVal">6</span> px</small></label>
-        <input id="lineWidth" type="range" min="1" max="20" value="6">
-      </div>
-      <div class="prop">
-        <label>Text size <small><span id="fontVal">34</span> px</small></label>
-        <input id="fontSize" type="range" min="14" max="50" value="34">
-      </div>
-      <div class="prop shapeFillRow">
-        <label><input id="shapeFill" type="checkbox"> Fill Circle / Rectangle</label>
-      </div>
-      <div class="compactPair">
-        <button id="undo" class="btn">Undo</button>
-        <button id="delete" class="btn">Delete</button>
-      </div>
-    </div>
-
-    <div class="section" id="photoAdjustSection">
-      <div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V69</span></div>
-      <div class="compactPair">
-        <button id="cropPhotoBtn" class="btn">Crop</button>
-        <button id="rotatePhotoBtn" class="btn">↻ Rotate 90°</button>
-      </div>
-      <div class="prop" style="margin-top:7px">
-        <label>Brightness <small><span id="brightnessVal">100</span>%</small></label>
-        <input id="brightnessRange" type="range" min="40" max="180" value="100">
-      </div>
-      <div class="prop">
-        <label>Contrast <small><span id="contrastVal">100</span>%</small></label>
-        <input id="contrastRange" type="range" min="40" max="180" value="100">
-      </div>
-      <div class="compactPair">
-        <button id="removeBgBtn" class="btn">Remove BG (Test)</button>
-        <button id="resetPhotoAdjustBtn" class="btn">Reset</button>
-      </div>
-      <div id="photoAdjustStatus" class="note" style="margin-top:5px">Crop/rotate resets annotations. Remove BG is experimental.</div>
-    </div>
-
-    <div class="section">
-      <div class="sectionTitleRow">
-        <h2>VOICE → ENGLISH</h2>
-        <span class="voiceBadge">NO API KEY</span>
-      </div>
-      <div class="prop">
-        <label>Spoken language</label>
-        <select id="lang">
-          <option value="en-AU">English (Australia)</option>
-          <option value="zh-CN">Chinese / Mandarin</option>
-          <option value="zh-HK">Cantonese</option>
-          <option value="id-ID">Bahasa Indonesia</option>
-          <option value="vi-VN">Vietnamese</option>
-          <option value="hi-IN">Hindi</option>
-          <option value="ja-JP">Japanese</option>
-          <option value="ko-KR">Korean</option>
-        </select>
-      </div>
-      <button id="mic" class="btn primary" style="width:100%">🎙 Start speaking</button>
-      <textarea id="voice" rows="3" placeholder="Speech appears here. Click Translate to English if needed." style="margin-top:6px"></textarea>
-      <div class="compactPair" style="margin-top:6px">
-        <button id="translateVoice" class="btn">Translate to English</button>
-        <button id="addVoice" class="btn primary">Add to photo</button>
-      </div>
-      <div id="voiceStatus" class="note" style="margin-top:5px">Ready.</div>
-      <div id="voiceProgress" class="downloadProgress"><span></span></div>
-    </div>
-
-    <div class="section">
-      <h2>SAVE & SHARE</h2>
-      <div class="compactPair">
-        <select id="format">
-          <option value="png">PNG</option>
-          <option value="jpeg">JPG</option>
-        </select>
-        <button id="saveBtn" class="btn primary">Save</button>
-      </div>
-      <button id="shareBtn" class="btn" style="width:100%;margin-top:5px">Share</button>
-    </div>
-  </div>
-
-  <div id="collageControls" style="display:none">
-    <div class="section">
-      <div class="sectionTitleRow">
-        <h2>ANNOTATION STYLE</h2>
-        <span class="versionPill">V69</span>
-      </div>
-      <div class="prop">
-        <label>Color <small><span id="cAnnoColorText">#000000</span></small></label>
-        <input id="cAnnoColor" type="color" value="#000000">
-      </div>
-      <div class="prop">
-        <label>Line width <small><span id="cLineWidthVal">6</span> px</small></label>
-        <input id="cLineWidth" type="range" min="1" max="20" value="6">
-      </div>
-      <div class="prop">
-        <label>Text size <small><span id="cTextSizeVal">34</span> px</small></label>
-        <input id="cTextSize" type="range" min="14" max="50" value="34">
-      </div>
-      <div class="prop shapeFillRow">
-        <label><input id="cShapeFill" type="checkbox"> Fill Circle / Rectangle</label>
-      </div>
-      <input id="cTextColor" type="color" value="#000000" style="display:none">
-      <div class="compactPair">
-        <button id="cUndo" class="btn">Undo</button>
-        <button id="deleteCollageObject" class="btn">Delete</button>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="sectionTitleRow">
-        <h2>VOICE → ENGLISH</h2>
-        <span class="voiceBadge">NO API KEY</span>
-      </div>
-      <div class="prop">
-        <label>Spoken language</label>
-        <select id="collageLang">
-          <option value="en-AU">English (Australia)</option>
-          <option value="zh-CN">Chinese / Mandarin</option>
-          <option value="zh-HK">Cantonese</option>
-          <option value="id-ID">Bahasa Indonesia</option>
-          <option value="vi-VN">Vietnamese</option>
-          <option value="hi-IN">Hindi</option>
-          <option value="ja-JP">Japanese</option>
-          <option value="ko-KR">Korean</option>
-        </select>
-      </div>
-      <button id="collageMic" class="btn primary" style="width:100%">🎙 Start speaking</button>
-      <textarea id="collageText" rows="3" placeholder="Speech appears here. Click Translate to English if needed." style="margin-top:6px"></textarea>
-      <div class="compactPair" style="margin-top:6px">
-        <button id="translateCollageText" class="btn">Translate to English</button>
-        <button id="addCollageText" class="btn primary">Add to photo</button>
-      </div>
-      <div id="collageVoiceStatus" class="note" style="margin-top:5px">Ready.</div>
-      <div id="collageProgress" class="downloadProgress"><span></span></div>
-    </div>
-
-    <div class="section">
-      <h2>SAVE & SHARE</h2>
-      <div class="compactPair">
-        <select id="collageFormat">
-          <option value="png">PNG</option>
-          <option value="jpeg">JPG</option>
-        </select>
-        <button id="saveCollage" class="btn primary">Save</button>
-      </div>
-      <button id="shareCollage" class="btn" style="width:100%;margin-top:5px">Share</button>
-    </div>
-  </div>
-</aside>
+<div class="cropModalBackdrop" id="cropModal" style="display:none">
+<div class="cropModalCard">
+<div class="sectionTitleRow"><h3>Crop Photo</h3><button class="btn" id="cropCancelBtn">Cancel</button></div>
+<div class="cropStage"><canvas aria-label="Drag to choose crop area" id="cropCanvas"></canvas><div id="cropBox"></div></div>
+<div class="note" style="margin:7px 0">Drag on the photo to select the area to keep.</div>
+<button class="btn primary" id="cropApplyBtn" style="width:100%">Apply Crop</button>
+</div>
+</div>
+<div class="pinModalBackdrop" id="reopenPinModal" style="display:none">
+<div class="pinModalCard">
+<h3>Reopen Protected Session</h3>
+<div class="note" id="reopenPinSessionName" style="margin-bottom:8px"></div>
+<input id="reopenPinInput" inputmode="numeric" maxlength="6" placeholder="Enter PIN" type="password"/>
+<div class="syncStatus" id="reopenPinStatus" style="margin-top:6px"></div>
+<div class="row" style="margin-top:8px">
+<button class="btn" id="reopenPinCancel">Cancel</button>
+<button class="btn primary" id="reopenPinConfirm">Reopen</button>
+</div>
+</div>
+</div>
+<div class="mobileCaptureScreen" id="mobileCaptureScreen">
+<div class="mobileCaptureCard">
+<h1>Fit Photo Capture</h1>
+<p>Session <strong id="mobileSessionCode">—</strong></p>
+<p style="font-size:12px;color:#64748b;margin-top:-2px">Photos are automatically optimised and uploaded in the background.</p>
+<div class="mobilePreviousSession" id="mobilePreviousSession" style="display:none">
+<div style="font-size:12px;color:#64748b">Previous fit review</div>
+<strong id="mobilePreviousLabel">—</strong>
+<button id="mobileContinueBtn" type="button">Continue previous session</button>
+</div>
+<div class="mobilePhotoActions" id="mobilePhotoActions">
+<label class="mobileCaptureBtn">
+        📷 Add / Take Photo
+        <input accept="image/*" id="mobilePhotoInput" multiple="" type="file"/>
+</label>
+</div>
+<div class="mobilePreview">
+<span id="mobilePreviewPlaceholder">Photo preview</span>
+<img alt="Selected fit photo" id="mobilePreviewImg"/>
+</div>
+<div class="uploadState" id="mobileUploadState">Ready</div>
+<div class="uploadState" id="mobileOptimiseStats" style="font-size:11px"></div>
+<div class="mobileDone" id="mobileDone">✓ Uploaded to desktop session</div>
+<div class="uploadQueue" id="uploadQueue"></div>
+</div>
 </div>
 
 <script>
@@ -965,7 +1033,13 @@ function draw(o,sel=false){
   if(sel){const b=bounds(o);ctx.save();ctx.strokeStyle="#2563eb";ctx.lineWidth=3;ctx.setLineDash([9,6]);ctx.strokeRect(b.x-10,b.y-10,b.w+20,b.h+20);ctx.setLineDash([]);ctx.fillStyle="#fff";ctx.strokeStyle="#2563eb";ctx.lineWidth=3;[[b.x-10,b.y-10],[b.x+b.w+10,b.y+b.h+10]].forEach(([x,y])=>{ctx.beginPath();ctx.arc(x,y,11,0,Math.PI*2);ctx.fill();ctx.stroke()});ctx.restore()}if(sel&&o.type==="curve"){ctx.save();ctx.strokeStyle="#2563eb";ctx.lineWidth=2;ctx.setLineDash([5,5]);ctx.beginPath();ctx.moveTo(o.x1,o.y1);ctx.lineTo(o.cx,o.cy);ctx.lineTo(o.x2,o.y2);ctx.stroke();ctx.setLineDash([]);[[o.x1,o.y1],[o.cx,o.cy],[o.x2,o.y2]].forEach(([x,y],i)=>{ctx.beginPath();ctx.fillStyle=i===1?"#2563eb":"#fff";ctx.strokeStyle="#2563eb";ctx.arc(x,y,i===1?10:8,0,Math.PI*2);ctx.fill();ctx.stroke()});const mx=(o.x1+o.x2)/2,my=(o.y1+o.y2)/2,ang=Math.atan2(o.y2-o.y1,o.x2-o.x1),rx=mx-Math.sin(ang)*48,ry=my+Math.cos(ang)*48;ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(mx,my);ctx.lineTo(rx,ry);ctx.stroke();ctx.setLineDash([]);ctx.beginPath();ctx.fillStyle="#fff";ctx.arc(rx,ry,10,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.restore()}
 }
 function render(){ctx.clearRect(0,0,cvs.width,cvs.height);objects.forEach(o=>draw(o,o.id===selected));if(temp)draw(temp)}
-function hit(p){for(let i=objects.length-1;i>=0;i--){const o=objects[i],b=bounds(o),pad=26;if(p.x>b.x-pad&&p.x<b.x+b.w+pad&&p.y>b.y-pad&&p.y<b.y+b.h+pad)return o}return null}
+function hit(p){
+ const sel=objects.find(x=>x.id===selected);
+ if(sel?.type==="curve"){
+  const mx=(sel.x1+sel.x2)/2,my=(sel.y1+sel.y2)/2,a=Math.atan2(sel.y2-sel.y1,sel.x2-sel.x1);
+  if([[sel.x1,sel.y1],[sel.x2,sel.y2],[sel.cx,sel.cy],[mx-Math.sin(a)*48,my+Math.cos(a)*48]].some(([x,y])=>Math.hypot(p.x-x,p.y-y)<28))return sel;
+ }
+ for(let i=objects.length-1;i>=0;i--){const o=objects[i],b=bounds(o),pad=26;if(p.x>b.x-pad&&p.x<b.x+b.w+pad&&p.y>b.y-pad&&p.y<b.y+b.h+pad)return o}return null}
 function setTool(t){tool=t;if(t!=="select")selectPhotoFrame(false);$$(".tool").forEach(b=>b.classList.toggle("active",b.dataset.tool===t));$("#hint").textContent=t==="select"?"Select photo or annotation to move / resize":"Draw "+t+" directly on the photo"}
 
 $("#photoInput").addEventListener("change",e=>{
@@ -1486,12 +1560,21 @@ function cRender(){
  textItems.forEach(t=>{cx.fillStyle=t.color;cx.font=`600 ${t.size}px Arial`;cx.textBaseline="top";t.text.split("\\n").forEach((l,i)=>cx.fillText(l,t.x,t.y+i*t.size*1.25));if(cSel?.kind==="text"&&t.id===cSel.id){const b=cTextBounds(t);cx.save();cx.strokeStyle="#2563eb";cx.lineWidth=2;cx.setLineDash([8,6]);cx.strokeRect(b.x-8,b.y-8,b.w+16,b.h+16);cx.setLineDash([]);cx.fillStyle="#fff";cx.beginPath();cx.arc(b.x+b.w+8,b.y+b.h+8,10,0,Math.PI*2);cx.fill();cx.stroke();cx.restore()}})
 }
 function fitCollageCanvas(){const stage=$("#collagePanel .stage"),wrap=$("#collageCanvasWrap");if(!stage||!wrap)return;const r=stage.getBoundingClientRect(),sc=Math.min((r.width-20)/cc.width,(r.height-20)/cc.height,1),dw=Math.max(1,Math.round(cc.width*sc)),dh=Math.max(1,Math.round(cc.height*sc));cc.style.width=dw+"px";cc.style.height=dh+"px";wrap.style.width=dw+"px";wrap.style.height=dh+"px";cRender()}
-function centerCollageContent(){const bs=[];items.forEach(x=>bs.push({x:x.x,y:x.y,r:x.x+x.w,b:x.y+x.h}));textItems.forEach(t=>{const b=cTextBounds(t);bs.push({x:b.x,y:b.y,r:b.x+b.w,b:b.y+b.h})});cObjects.forEach(o=>{const b=cShapeBounds(o);bs.push({x:b.x,y:b.y,r:b.x+b.w,b:b.y+b.h})});if(!bs.length)return;const minX=Math.min(...bs.map(x=>x.x)),maxX=Math.max(...bs.map(x=>x.r)),minY=Math.min(...bs.map(x=>x.y)),maxY=Math.max(...bs.map(x=>x.b)),dx=cc.width/2-(minX+maxX)/2,dy=cc.height/2-(minY+maxY)/2;items.forEach(x=>{x.x+=dx;x.y+=dy});textItems.forEach(x=>{x.x+=dx;x.y+=dy});cObjects.forEach(x=>{x.x1+=dx;x.x2+=dx;x.y1+=dy;x.y2+=dy})}
+function centerCollageContent(){const bs=[];items.forEach(x=>bs.push({x:x.x,y:x.y,r:x.x+x.w,b:x.y+x.h}));textItems.forEach(t=>{const b=cTextBounds(t);bs.push({x:b.x,y:b.y,r:b.x+b.w,b:b.y+b.h})});cObjects.forEach(o=>{const b=cShapeBounds(o);bs.push({x:b.x,y:b.y,r:b.x+b.w,b:b.y+b.h})});if(!bs.length)return;const minX=Math.min(...bs.map(x=>x.x)),maxX=Math.max(...bs.map(x=>x.r)),minY=Math.min(...bs.map(x=>x.y)),maxY=Math.max(...bs.map(x=>x.b)),dx=cc.width/2-(minX+maxX)/2,dy=cc.height/2-(minY+maxY)/2;items.forEach(x=>{x.x+=dx;x.y+=dy});textItems.forEach(x=>{x.x+=dx;x.y+=dy});cObjects.forEach(x=>{x.x1+=dx;x.x2+=dx;x.y1+=dy;x.y2+=dy;if(x.type==="curve"){x.cx+=dx;x.cy+=dy}})}
 function autoLayout(){const n=items.length;if(!n){fitCollageCanvas();return}saveCState();const mode=$("#layoutMode").value,pad=Math.max(24,cc.width*.025),gap=Math.max(14,cc.width*.015),cols=mode==="column"?1:n,rows=mode==="column"?n:1,cw=(cc.width-pad*2-gap*(cols-1))/cols,ch=(cc.height-pad*2-gap*(rows-1))/rows;items.forEach((it,i)=>{let w,h;if(it.ratio>cw/ch){w=cw;h=w/it.ratio}else{h=ch;w=h*it.ratio}it.x=pad+(i%cols)*(cw+gap)+(cw-w)/2;it.y=pad+Math.floor(i/cols)*(ch+gap)+(ch-h)/2;it.w=w;it.h=h});centerCollageContent();renderThumbs();fitCollageCanvas()}
 function renderThumbs(){const box=$("#thumbList"),empty=$("#combineLibraryEmpty");if(!box)return;box.innerHTML="";if(empty)empty.style.display=items.length?"none":"block";items.forEach((it,i)=>{const d=document.createElement("div");d.className="thumb";d.innerHTML=`<img src="${it.img.src}"><div style="font-size:10px;overflow:hidden;text-overflow:ellipsis">${i+1}. ${it.name}</div><div class="thumbActions"><button data-up="${it.id}">↑</button><button data-down="${it.id}">↓</button><button class="deleteThumb" data-del="${it.id}">×</button></div>`;box.appendChild(d)});box.querySelectorAll("[data-up]").forEach(b=>b.onclick=()=>reorder(b.dataset.up,-1));box.querySelectorAll("[data-down]").forEach(b=>b.onclick=()=>reorder(b.dataset.down,1));box.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{saveCState();items=items.filter(x=>x.id!==b.dataset.del);renderThumbs();fitCollageCanvas()})}
 function reorder(id,d){const i=items.findIndex(x=>x.id===id),j=i+d;if(j<0||j>=items.length)return;saveCState();[items[i],items[j]]=[items[j],items[i]];autoLayout()}
 function distanceToCurve(p,o){let best=1e9,prev={x:o.x1,y:o.y1};for(let j=1;j<=24;j++){const t=j/24,u=1-t,cur={x:u*u*o.x1+2*u*t*o.cx+t*t*o.x2,y:u*u*o.y1+2*u*t*o.cy+t*t*o.y2};best=Math.min(best,distanceToSegment(p,prev,cur));prev=cur}return best}
-function cHit(p){for(let i=textItems.length-1;i>=0;i--){const t=textItems[i],b=cTextBounds(t);if(p.x>b.x-12&&p.x<b.x+b.w+12&&p.y>b.y-12&&p.y<b.y+b.h+12)return{kind:"text",obj:t,bounds:b}}for(let i=cObjects.length-1;i>=0;i--){const o=cObjects[i],b=cShapeBounds(o),tol=Math.max(10,o.width*1.5);if(o.type==="curve"?distanceToCurve(p,o)<=tol:(o.type==="line"||o.type==="dash"||o.type==="arrow")?distanceToSegment(p,{x:o.x1,y:o.y1},{x:o.x2,y:o.y2})<=tol:(p.x>b.x-tol&&p.x<b.x+b.w+tol&&p.y>b.y-tol&&p.y<b.y+b.h+tol))return{kind:"shape",obj:o,bounds:b}}for(let i=items.length-1;i>=0;i--){const o=items[i];if(p.x>o.x&&p.x<o.x+o.w&&p.y>o.y&&p.y<o.y+o.h)return{kind:"image",obj:o,bounds:{x:o.x,y:o.y,w:o.w,h:o.h}}}return null}
+function cHit(p){
+ if(cSel?.kind==="shape"){
+  const o=cObjects.find(x=>x.id===cSel.id);
+  if(o?.type==="curve"){
+   const mx=(o.x1+o.x2)/2,my=(o.y1+o.y2)/2,a=Math.atan2(o.y2-o.y1,o.x2-o.x1);
+   const pts=[[o.x1,o.y1],[o.x2,o.y2],[o.cx,o.cy],[mx-Math.sin(a)*48,my+Math.cos(a)*48]];
+   if(pts.some(([x,y])=>Math.hypot(p.x-x,p.y-y)<28))return{kind:"shape",obj:o,bounds:cShapeBounds(o)};
+  }
+ }
+ for(let i=textItems.length-1;i>=0;i--){const t=textItems[i],b=cTextBounds(t);if(p.x>b.x-12&&p.x<b.x+b.w+12&&p.y>b.y-12&&p.y<b.y+b.h+12)return{kind:"text",obj:t,bounds:b}}for(let i=cObjects.length-1;i>=0;i--){const o=cObjects[i],b=cShapeBounds(o),tol=Math.max(10,o.width*1.5);if(o.type==="curve"?distanceToCurve(p,o)<=tol:(o.type==="line"||o.type==="dash"||o.type==="arrow")?distanceToSegment(p,{x:o.x1,y:o.y1},{x:o.x2,y:o.y2})<=tol:(p.x>b.x-tol&&p.x<b.x+b.w+tol&&p.y>b.y-tol&&p.y<b.y+b.h+tol))return{kind:"shape",obj:o,bounds:b}}for(let i=items.length-1;i>=0;i--){const o=items[i];if(p.x>o.x&&p.x<o.x+o.w&&p.y>o.y&&p.y<o.y+o.h)return{kind:"image",obj:o,bounds:{x:o.x,y:o.y,w:o.w,h:o.h}}}return null}
 function createCInlineText(p){
   if(combineTextEditing)return;
   combineTextEditing=true;
@@ -1560,7 +1643,7 @@ cc.onmousedown=e=>{if(combineTextEditing)return;const p=cPoint(e);snapLockX=null
 cc.onmousemove=e=>{const p=cPoint(e);if(cTemp){cTemp.x2=p.x;cTemp.y2=p.y;if(cTemp.type==="curve"){const mx=(cTemp.x1+p.x)/2,my=(cTemp.y1+p.y)/2,dx=p.x-cTemp.x1,dy=p.y-cTemp.y1,L=Math.max(1,Math.hypot(dx,dy));cTemp.cx=mx-dy/L*Math.min(80,L*.25);cTemp.cy=my+dx/L*Math.min(80,L*.25)}cRender();return}if(!cDrag)return;const dx=p.x-cDrag.start.x,dy=p.y-cDrag.start.y;if(cDrag.kind==="image"){const o=items.find(x=>x.id===cDrag.id),s=cDrag.orig;if(cDrag.resize){const sc=Math.max(.12,Math.max((s.w+dx)/s.w,(s.h+dy)/s.h));o.w=Math.max(70,s.w*sc);o.h=o.w/o.ratio}else{o.x=s.x+dx;o.y=s.y+dy}}else if(cDrag.kind==="text"){const o=textItems.find(x=>x.id===cDrag.id),s=cDrag.orig;if(cDrag.resize)o.size=Math.max(10,s.size+dx/4);else{o.x=s.x+dx;o.y=s.y+dy}}else{const o=cObjects.find(x=>x.id===cDrag.id),s=cDrag.orig;if(o.type==="curve"){if(cDrag.curvePart==="rotate"){const mx=(s.x1+s.x2)/2,my=(s.y1+s.y2)/2,a0=Math.atan2(cDrag.start.y-my,cDrag.start.x-mx),a1=Math.atan2(p.y-my,p.x-mx),da=a1-a0,cs=Math.cos(da),sn=Math.sin(da),rot=(x,y)=>({x:mx+(x-mx)*cs-(y-my)*sn,y:my+(x-mx)*sn+(y-my)*cs}),a=rot(s.x1,s.y1),bb=rot(s.x2,s.y2),c=rot(s.cx,s.cy);o.x1=a.x;o.y1=a.y;o.x2=bb.x;o.y2=bb.y;o.cx=c.x;o.cy=c.y}else if(cDrag.curvePart==="control"){o.cx=s.cx+dx;o.cy=s.cy+dy}else if(cDrag.curvePart==="start"){o.x1=s.x1+dx;o.y1=s.y1+dy}else if(cDrag.curvePart==="end"){o.x2=s.x2+dx;o.y2=s.y2+dy}else{o.x1=s.x1+dx;o.x2=s.x2+dx;o.y1=s.y1+dy;o.y2=s.y2+dy;o.cx=s.cx+dx;o.cy=s.cy+dy}}else if(cDrag.resize){o.x2=s.x2+dx;o.y2=s.y2+dy}else{o.x1=s.x1+dx;o.x2=s.x2+dx;o.y1=s.y1+dy;o.y2=s.y2+dy}}cRender()};
 cc.onmouseup=e=>{if(cTemp){const p=cPoint(e);cTemp.x2=p.x;cTemp.y2=p.y;if(Math.hypot(cTemp.x2-cTemp.x1,cTemp.y2-cTemp.y1)>3){saveCState();cObjects.push(cTemp)}cTemp=null;setCTool("select");cRender()}cDrag=null};
 cc.onmouseleave=()=>{cDrag=null};
-$("#cAnnoColor").oninput=e=>{const o=cSel?.kind==="shape"?cObjects.find(x=>x.id===cSel.id):null;$("#cAnnoColorText").textContent=e.target.value.toUpperCase();if(o){o.color=e.target.value;cRender()}};
+$("#cAnnoColor").oninput=e=>{const o=cSel?.kind==="shape"?cObjects.find(x=>x.id===cSel.id):cSel?.kind==="text"?textItems.find(x=>x.id===cSel.id):null;$("#cAnnoColorText").textContent=e.target.value.toUpperCase();$("#cTextColor").value=e.target.value;if(o){o.color=e.target.value;cRender()}};
 $("#cLineWidth").oninput=e=>{const o=cSel?.kind==="shape"?cObjects.find(x=>x.id===cSel.id):null;$("#cLineWidthVal").textContent=e.target.value;if(o){o.width=+e.target.value;cRender()}};
 $("#cShapeFill").onchange=e=>{const o=cSel?.kind==="shape"?cObjects.find(x=>x.id===cSel.id):null;if(o&&(o.type==="circle"||o.type==="rect")){o.fill=e.target.checked;cRender()}};
 $("#cUndo").onclick=undoC;$("#deleteCollageObject").onclick=deleteCSelected;
@@ -1572,7 +1655,7 @@ $("#collageText").oninput=e=>{const t=cSel?.kind==="text"?textItems.find(x=>x.id
 $("#translateCollageText").onclick=async()=>{$("#collageText").value=await translateBrowserText($("#collageText").value,$("#collageLang").value,$("#collageVoiceStatus"),"#collageProgress");const t=cSel?.kind==="text"?textItems.find(x=>x.id===cSel.id):null;if(t){t.text=$("#collageText").value;cRender()}};
 
 $("#canvasResizeHandle").onmousedown=e=>{e.preventDefault();const r=cc.getBoundingClientRect();saveCState();resizingCanvas={x:e.clientX,y:e.clientY,w:cc.width,h:cc.height,screenW:r.width,screenH:r.height,items:items.map(x=>({...x})),texts:textItems.map(x=>({...x})),shapes:cObjects.map(x=>({...x}))}};
-window.addEventListener("mousemove",e=>{if(!resizingCanvas)return;const sx=Math.max(.4,(resizingCanvas.screenW+(e.clientX-resizingCanvas.x))/resizingCanvas.screenW),sy=Math.max(.4,(resizingCanvas.screenH+(e.clientY-resizingCanvas.y))/resizingCanvas.screenH),nw=Math.round(Math.max(600,Math.min(4000,resizingCanvas.w*sx))),nh=Math.round(Math.max(400,Math.min(3000,resizingCanvas.h*sy))),scale=Math.min(nw/resizingCanvas.w,nh/resizingCanvas.h);cc.width=nw;cc.height=nh;resizingCanvas.items.forEach(s=>{const o=items.find(x=>x.id===s.id);if(o){o.x=s.x*scale;o.y=s.y*scale;o.w=s.w*scale;o.h=s.h*scale}});resizingCanvas.texts.forEach(s=>{const o=textItems.find(x=>x.id===s.id);if(o){o.x=s.x*scale;o.y=s.y*scale;o.size=s.size*scale}});resizingCanvas.shapes.forEach(s=>{const o=cObjects.find(x=>x.id===s.id);if(o){o.x1=s.x1*scale;o.x2=s.x2*scale;o.y1=s.y1*scale;o.y2=s.y2*scale;o.width=Math.max(1,s.width*scale)}});centerCollageContent();fitCollageCanvas()});
+window.addEventListener("mousemove",e=>{if(!resizingCanvas)return;const sx=Math.max(.4,(resizingCanvas.screenW+(e.clientX-resizingCanvas.x))/resizingCanvas.screenW),sy=Math.max(.4,(resizingCanvas.screenH+(e.clientY-resizingCanvas.y))/resizingCanvas.screenH),nw=Math.round(Math.max(600,Math.min(4000,resizingCanvas.w*sx))),nh=Math.round(Math.max(400,Math.min(3000,resizingCanvas.h*sy))),scale=Math.min(nw/resizingCanvas.w,nh/resizingCanvas.h);cc.width=nw;cc.height=nh;resizingCanvas.items.forEach(s=>{const o=items.find(x=>x.id===s.id);if(o){o.x=s.x*scale;o.y=s.y*scale;o.w=s.w*scale;o.h=s.h*scale}});resizingCanvas.texts.forEach(s=>{const o=textItems.find(x=>x.id===s.id);if(o){o.x=s.x*scale;o.y=s.y*scale;o.size=s.size*scale}});resizingCanvas.shapes.forEach(s=>{const o=cObjects.find(x=>x.id===s.id);if(o){o.x1=s.x1*scale;o.x2=s.x2*scale;o.y1=s.y1*scale;o.y2=s.y2*scale;o.width=Math.max(1,s.width*scale);if(o.type==="curve"){o.cx=s.cx*scale;o.cy=s.cy*scale}}});centerCollageContent();fitCollageCanvas()});
 window.addEventListener("mouseup",()=>{resizingCanvas=null});
 function mode(m){
   const a=m==="annotate";
@@ -1581,11 +1664,11 @@ function mode(m){
   $("#annotatePanel").style.display=a?"flex":"none";$("#collagePanel").style.display=a?"none":"flex";
   $("#annotateControls").style.display=a?"block":"none";$("#collageControls").style.display=a?"none":"block";
   const right=document.querySelector("aside.right");if(right)right.scrollTop=0;
-  if(!a){requestAnimationFrame(()=>{fitCollageCanvas();cRender()})}
+  if(!a){requestAnimationFrame(()=>{fitCollageCanvas();cRender()})}else if(loaded){requestAnimationFrame(fitPreviewToStage)}
 }
 $("#annotateTab").onclick=()=>mode("annotate");$("#combineTab").onclick=()=>mode("combine");
 $("#newBtn").onclick=()=>{if(confirm("Start a new project?"))location.reload()};
-$("#topExport").onclick=()=>$("#annotatePanel").style.display!=="none"?saveAnnotated():$("#saveCollage").click();
+$("#topExport").onclick=()=>($("#annotatePanel").style.display!=="none"?$("#saveBtn"):$("#saveCollage")).click();
 
 window.addEventListener("keydown",e=>{
   const tag=(document.activeElement?.tagName||"").toLowerCase();
@@ -1647,67 +1730,118 @@ async function addSecureBlobToCombine(blob,label="Secure live photo",sourcePath=
 }
 
 
+// V70: operations stay inside the editor closure. All modal nodes exist before boot.
 let photoBrightness=100,photoContrast=100;
+function photoStatus(text,isError=false){const el=$("#photoAdjustStatus");el.textContent=text;el.style.color=isError?'#b42318':'#64748b';}
 function applyPhotoFilter(){
   img.style.filter=`brightness(${photoBrightness}%) contrast(${photoContrast}%)`;
-  const bv=$("#brightnessVal"),cv=$("#contrastVal");
-  if(bv)bv.textContent=Math.round(photoBrightness);if(cv)cv.textContent=Math.round(photoContrast);
+  $("#brightnessVal").textContent=Math.round(photoBrightness);
+  $("#contrastVal").textContent=Math.round(photoContrast);
 }
-function resetPhotoAdjustments(){
-  photoBrightness=100;photoContrast=100;
-  $("#brightnessRange").value=100;$("#contrastRange").value=100;applyPhotoFilter();
+function resetPhotoAdjustments(){photoBrightness=100;photoContrast=100;$("#brightnessRange").value=100;$("#contrastRange").value=100;applyPhotoFilter();}
+function confirmPhotoChange(){
+  return !objects.length||confirm('This photo operation clears the existing annotations on this photo. Save the annotated version first if needed. Continue?');
 }
-async function replaceBaseImageFromCanvas(c,label){
-  const url=c.toDataURL("image/png");
+async function replaceBaseImageFromCanvas(canvas,label){
   return new Promise((resolve,reject)=>{
-    img.onload=()=>{
-      loaded=true;objects=[];selected=null;temp=null;drag=null;history=[];
-      resetPhotoAdjustments();fitPreviewToStage();requestAnimationFrame(()=>fitPreviewToStage());
-      $("#photoMeta").textContent=`${label} · ${img.naturalWidth}×${img.naturalHeight}`;
-      $("#hint").textContent="Photo ready";render();resolve();
-    };
-    img.onerror=()=>reject(new Error("Could not process image"));
-    img.src=url;
+    canvas.toBlob(blob=>{
+      if(!blob){reject(new Error('The browser could not create the processed photo.'));return;}
+      const url=URL.createObjectURL(blob);
+      img.onload=()=>{
+        loaded=true;objects=[];selected=null;temp=null;drag=null;history=[];
+        resetPhotoAdjustments();$("#photoWrap").style.transform='';selectPhotoFrame(false);
+        fitPreviewToStage();requestAnimationFrame(()=>fitPreviewToStage());
+        $("#photoMeta").textContent=`${label} - ${img.naturalWidth} x ${img.naturalHeight}`;
+        $("#hint").textContent='Photo ready';setTool('select');render();
+        URL.revokeObjectURL(url);resolve();
+      };
+      img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('Could not decode the processed photo.'));};
+      img.src=url;
+    },'image/png');
   });
 }
 function currentFilteredCanvas(){
-  const c=document.createElement("canvas");c.width=img.naturalWidth;c.height=img.naturalHeight;
-  const x=c.getContext("2d");x.filter=`brightness(${photoBrightness}%) contrast(${photoContrast}%)`;x.drawImage(img,0,0);x.filter="none";return c;
+  if(!loaded||!img.naturalWidth)throw new Error('Choose a photo first.');
+  const c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;
+  const x=c.getContext('2d');x.filter=`brightness(${photoBrightness}%) contrast(${photoContrast}%)`;
+  x.drawImage(img,0,0);x.filter='none';return c;
 }
-$("#brightnessRange").oninput=e=>{photoBrightness=+e.target.value;applyPhotoFilter()};
-$("#contrastRange").oninput=e=>{photoContrast=+e.target.value;applyPhotoFilter()};
-$("#resetPhotoAdjustBtn").onclick=resetPhotoAdjustments;
+function exportAnnotatedCanvas(){
+  const out=currentFilteredCanvas(),x=out.getContext('2d'),oldSelected=selected,oldTemp=temp;
+  try{selected=null;temp=null;render();x.drawImage(cvs,0,0,out.width,out.height);}
+  finally{selected=oldSelected;temp=oldTemp;render();}
+  return out;
+}
+function exportCombinedCanvas(){
+  if(!items.length&&!textItems.length&&!cObjects.length)throw new Error('Add photos or annotations to Combine first.');
+  const out=document.createElement('canvas');out.width=cc.width;out.height=cc.height;
+  const oldSel=cSel,oldTemp=cTemp;
+  try{cSel=null;cTemp=null;cRender();out.getContext('2d').drawImage(cc,0,0);}
+  finally{cSel=oldSel;cTemp=oldTemp;cRender();}
+  return out;
+}
+$("#brightnessRange").oninput=e=>{photoBrightness=+e.target.value;applyPhotoFilter();};
+$("#contrastRange").oninput=e=>{photoContrast=+e.target.value;applyPhotoFilter();};
+$("#resetPhotoAdjustBtn").onclick=()=>{resetPhotoAdjustments();photoStatus('Brightness and contrast reset.');};
 $("#rotatePhotoBtn").onclick=async()=>{
-  if(!loaded)return alert("Choose a photo first.");
-  const src=currentFilteredCanvas(),c=document.createElement("canvas");c.width=src.height;c.height=src.width;
-  const x=c.getContext("2d");x.translate(c.width/2,c.height/2);x.rotate(Math.PI/2);x.drawImage(src,-src.width/2,-src.height/2);
-  await replaceBaseImageFromCanvas(c,"Rotated photo");
+  if(!loaded){photoStatus('Choose a photo first.',true);return;}
+  if(!confirmPhotoChange())return;
+  try{
+    const source=currentFilteredCanvas(),out=document.createElement('canvas');out.width=source.height;out.height=source.width;
+    const x=out.getContext('2d');x.translate(out.width/2,out.height/2);x.rotate(Math.PI/2);x.drawImage(source,-source.width/2,-source.height/2);
+    await replaceBaseImageFromCanvas(out,'Rotated photo');photoStatus('Rotated 90 degrees clockwise.');
+  }catch(e){photoStatus(e.message,true);}
 };
 $("#removeBgBtn").onclick=async()=>{
-  if(!loaded)return alert("Choose a photo first.");
-  const st=$("#photoAdjustStatus");st.textContent="Testing background removal…";
-  const c=currentFilteredCanvas(),x=c.getContext("2d"),im=x.getImageData(0,0,c.width,c.height),d=im.data;
-  const pts=[[0,0],[c.width-1,0],[0,c.height-1],[c.width-1,c.height-1]];
-  let rr=0,gg=0,bb=0;pts.forEach(([px,py])=>{const i=(py*c.width+px)*4;rr+=d[i];gg+=d[i+1];bb+=d[i+2]});rr/=4;gg/=4;bb/=4;
-  const threshold=58;
-  for(let i=0;i<d.length;i+=4){const dist=Math.hypot(d[i]-rr,d[i+1]-gg,d[i+2]-bb);if(dist<threshold)d[i+3]=Math.round(255*Math.max(0,dist/threshold))}
-  x.putImageData(im,0,0);await replaceBaseImageFromCanvas(c,"Background removed (test)");
-  st.textContent="Background removal applied (experimental — Undo by reloading the original if needed).";
+  if(!loaded){photoStatus('Choose a photo first.',true);return;}
+  if(!confirmPhotoChange())return;
+  const btn=$("#removeBgBtn");btn.disabled=true;
+  try{
+    photoStatus('Removing similar edge colours locally...');await new Promise(r=>requestAnimationFrame(r));
+    const c=currentFilteredCanvas(),x=c.getContext('2d'),im=x.getImageData(0,0,c.width,c.height),d=im.data;
+    // Basic experimental colour removal, not AI segmentation. Never uploads a photo.
+    const corners=[[0,0],[c.width-1,0],[0,c.height-1],[c.width-1,c.height-1]];
+    let rr=0,gg=0,bb=0;for(const [px,py] of corners){const i=(py*c.width+px)*4;rr+=d[i];gg+=d[i+1];bb+=d[i+2];}rr/=4;gg/=4;bb/=4;
+    const threshold=58;
+    for(let i=0;i<d.length;i+=4){const dist=Math.hypot(d[i]-rr,d[i+1]-gg,d[i+2]-bb);if(dist<threshold)d[i+3]=Math.round(d[i+3]*Math.max(0,dist/threshold));}
+    x.putImageData(im,0,0);await replaceBaseImageFromCanvas(c,'Background removal test');
+    photoStatus('Experimental: plain backgrounds only; similar garment colours may be affected. Reload the original to undo.');
+  }catch(e){photoStatus(e.message,true);}finally{btn.disabled=false;}
 };
-
-let cropStart=null,cropRect=null;
+let cropSource=null,cropStart=null,cropRect=null;
+const cropCanvas=$("#cropCanvas"),cropCtx=cropCanvas.getContext('2d');
+function cropPoint(e){const r=cropCanvas.getBoundingClientRect();return{x:Math.max(0,Math.min(cropCanvas.width,(e.clientX-r.left)*cropCanvas.width/r.width)),y:Math.max(0,Math.min(cropCanvas.height,(e.clientY-r.top)*cropCanvas.height/r.height))};}
+function renderCrop(){
+  if(!cropSource)return;
+  cropCtx.clearRect(0,0,cropCanvas.width,cropCanvas.height);cropCtx.drawImage(cropSource,0,0);
+  if(!cropRect)return;
+  const {x,y,w,h}=cropRect;cropCtx.save();cropCtx.fillStyle='rgba(0,0,0,.42)';
+  cropCtx.fillRect(0,0,cropCanvas.width,y);cropCtx.fillRect(0,y+h,cropCanvas.width,cropCanvas.height-y-h);
+  cropCtx.fillRect(0,y,x,h);cropCtx.fillRect(x+w,y,cropCanvas.width-x-w,h);
+  const scale=cropCanvas.width/Math.max(1,cropCanvas.getBoundingClientRect().width);
+  cropCtx.lineWidth=2*scale;cropCtx.strokeStyle='#ffffff';cropCtx.setLineDash([6*scale,4*scale]);cropCtx.strokeRect(x,y,w,h);cropCtx.restore();
+}
 $("#cropPhotoBtn").onclick=()=>{
-  if(!loaded)return alert("Choose a photo first.");
-  const cm=$("#cropModal"),ccrop=$("#cropCanvas"),cx2=ccrop.getContext("2d");
-  ccrop.width=img.naturalWidth;ccrop.height=img.naturalHeight;cx2.drawImage(currentFilteredCanvas(),0,0);
-  cropRect=null;$("#cropBox").style.display="none";cm.style.display="flex";
+  if(!loaded){photoStatus('Choose a photo first.',true);return;}
+  if(!confirmPhotoChange())return;
+  cropSource=currentFilteredCanvas();cropCanvas.width=cropSource.width;cropCanvas.height=cropSource.height;cropRect=null;cropStart=null;
+  $("#cropBox").style.display='none';$("#cropModal").style.display='flex';
+  const sc=Math.min((window.innerWidth-70)/cropCanvas.width,(window.innerHeight-200)/cropCanvas.height,1);
+  cropCanvas.style.width=Math.floor(cropCanvas.width*sc)+'px';cropCanvas.style.height=Math.floor(cropCanvas.height*sc)+'px';renderCrop();
 };
-$("#cropCancelBtn").onclick=()=>$("#cropModal").style.display="none";
-const cropCanvas=$("#cropCanvas");
-cropCanvas.addEventListener("mousedown",e=>{const r=cropCanvas.getBoundingClientRect();cropStart={x:(e.clientX-r.left)*cropCanvas.width/r.width,y:(e.clientY-r.top)*cropCanvas.height/r.height};cropRect={x:cropStart.x,y:cropStart.y,w:0,h:0}});
-cropCanvas.addEventListener("mousemove",e=>{if(!cropStart)return;const r=cropCanvas.getBoundingClientRect(),x=(e.clientX-r.left)*cropCanvas.width/r.width,y=(e.clientY-r.top)*cropCanvas.height/r.height;cropRect={x:Math.min(cropStart.x,x),y:Math.min(cropStart.y,y),w:Math.abs(x-cropStart.x),h:Math.abs(y-cropStart.y)};const b=$("#cropBox");b.style.display="block";b.style.left=(cropRect.x/cropCanvas.width*r.width)+"px";b.style.top=(cropRect.y/cropCanvas.height*r.height)+"px";b.style.width=(cropRect.w/cropCanvas.width*r.width)+"px";b.style.height=(cropRect.h/cropCanvas.height*r.height)+"px"});
-window.addEventListener("mouseup",()=>cropStart=null);
-$("#cropApplyBtn").onclick=async()=>{if(!cropRect||cropRect.w<10||cropRect.h<10)return alert("Drag to select a crop area first.");const src=$("#cropCanvas"),c=document.createElement("canvas");c.width=Math.round(cropRect.w);c.height=Math.round(cropRect.h);c.getContext("2d").drawImage(src,cropRect.x,cropRect.y,cropRect.w,cropRect.h,0,0,c.width,c.height);$("#cropModal").style.display="none";await replaceBaseImageFromCanvas(c,"Cropped photo")};
+$("#cropCancelBtn").onclick=()=>{$("#cropModal").style.display='none';cropStart=null;};
+cropCanvas.onpointerdown=e=>{e.preventDefault();cropStart=cropPoint(e);cropRect={x:cropStart.x,y:cropStart.y,w:0,h:0};cropCanvas.setPointerCapture(e.pointerId);renderCrop();};
+cropCanvas.onpointermove=e=>{if(!cropStart)return;const p=cropPoint(e);cropRect={x:Math.min(cropStart.x,p.x),y:Math.min(cropStart.y,p.y),w:Math.abs(p.x-cropStart.x),h:Math.abs(p.y-cropStart.y)};renderCrop();};
+cropCanvas.onpointerup=e=>{cropStart=null;if(cropCanvas.hasPointerCapture(e.pointerId))cropCanvas.releasePointerCapture(e.pointerId);};
+cropCanvas.onpointercancel=()=>cropStart=null;
+$("#cropApplyBtn").onclick=async()=>{
+  if(!cropRect||cropRect.w<10||cropRect.h<10){alert('Drag on the photo to select an area first.');return;}
+  try{
+    const c=document.createElement('canvas');c.width=Math.round(cropRect.w);c.height=Math.round(cropRect.h);
+    c.getContext('2d').drawImage(cropSource,cropRect.x,cropRect.y,cropRect.w,cropRect.h,0,0,c.width,c.height);
+    await replaceBaseImageFromCanvas(c,'Cropped photo');$("#cropModal").style.display='none';photoStatus('Crop applied.');
+  }catch(e){photoStatus(e.message,true);}
+};
 
 window.FitEditor={
   isCombineMode:()=>window.getComputedStyle($("#collagePanel")).display!=="none",
@@ -1718,6 +1852,9 @@ window.FitEditor={
   combineAnnotationCount:()=>cObjects.length,
   combineTextCount:()=>textItems.length,
   combineState:()=>({items:items.length,shapes:cObjects.length,texts:textItems.length,tool:cTool,mode:window.getComputedStyle($("#collagePanel")).display}),
+  exportAnnotatedCanvas,
+  exportCombinedCanvas,
+  editorReady:true,
   refit:fitPreviewToStage
 };
 
@@ -1819,66 +1956,21 @@ function initAnnotatePhotoInteractions(){
 
 window.addEventListener("resize",()=>{if(loaded)fitPreviewToStage();fitCollageCanvas()});
 initAnnotatePhotoInteractions();
-mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active · Version V69");
+mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active - Version V70");window.FitPhotoBoot.editor=true;
 })();
-</script>
-
-<div id="cropModal" class="cropModalBackdrop" style="display:none">
-  <div class="cropModalCard">
-    <div class="sectionTitleRow"><h3>Crop Photo</h3><button id="cropCancelBtn" class="btn">Cancel</button></div>
-    <div class="cropStage"><canvas id="cropCanvas"></canvas><div id="cropBox"></div></div>
-    <div class="note" style="margin:7px 0">Drag on the photo to select the area to keep.</div>
-    <button id="cropApplyBtn" class="btn primary" style="width:100%">Apply Crop</button>
-  </div>
-</div>
-<div id="reopenPinModal" class="pinModalBackdrop" style="display:none">
-  <div class="pinModalCard">
-    <h3>Reopen Protected Session</h3>
-    <div id="reopenPinSessionName" class="note" style="margin-bottom:8px"></div>
-    <input id="reopenPinInput" type="password" inputmode="numeric" maxlength="6" placeholder="Enter PIN">
-    <div id="reopenPinStatus" class="syncStatus" style="margin-top:6px"></div>
-    <div class="row" style="margin-top:8px">
-      <button id="reopenPinCancel" class="btn">Cancel</button>
-      <button id="reopenPinConfirm" class="btn primary">Reopen</button>
-    </div>
-  </div>
-</div>
-
-<div class="mobileCaptureScreen" id="mobileCaptureScreen">
-  <div class="mobileCaptureCard">
-    <h1>Fit Photo Capture</h1>
-    <p>Session <strong id="mobileSessionCode">—</strong></p>
-    <p style="font-size:12px;color:#64748b;margin-top:-2px">Photos are automatically optimised and uploaded in the background.</p>
-    <div id="mobilePreviousSession" class="mobilePreviousSession" style="display:none">
-      <div style="font-size:12px;color:#64748b">Previous fit review</div>
-      <strong id="mobilePreviousLabel">—</strong>
-      <button id="mobileContinueBtn" type="button">Continue previous session</button>
-    </div>
-    <div class="mobilePhotoActions" id="mobilePhotoActions">
-      <label class="mobileCaptureBtn">
-        📷 Add / Take Photo
-        <input id="mobilePhotoInput" type="file" accept="image/*" multiple>
-      </label>
-    </div>
-    <div class="mobilePreview">
-      <span id="mobilePreviewPlaceholder">Photo preview</span>
-      <img id="mobilePreviewImg" alt="Selected fit photo">
-    </div>
-    <div class="uploadState" id="mobileUploadState">Ready</div>
-    <div class="uploadState" id="mobileOptimiseStats" style="font-size:11px"></div>
-    <div class="mobileDone" id="mobileDone">✓ Uploaded to desktop session</div>
-    <div id="uploadQueue" class="uploadQueue"></div>
-  </div>
-</div>
-
-
-<script>
+</script><script>
 (() => {
 window.addEventListener("error",e=>{
   const s=document.querySelector("#createSessionStatus");
   if(s){s.textContent="Tool error: "+(e.message||"Unknown error");s.style.color="#b42318"}
 });
 
+if(!window.supabase?.createClient){
+ const msg="Photo sync library could not load. Check your connection and refresh. Local photo editing is still available.";
+ document.querySelector("#createSessionStatus").textContent=msg;
+ document.querySelector("#createSessionBtn").onclick=()=>{document.querySelector("#createSessionStatus").textContent=msg;};
+ return;
+}
 const U="https://qrtfvatqrtliluwtkkxg.supabase.co",K="sb_publishable_tSBEuKB56T01zCJZxIadtw_MD7t6S6N",sb=window.supabase.createClient(U,K,{auth:{persistSession:true,autoRefreshToken:true}});
 const q=s=>document.querySelector(s), B="fit-photos", T="fit_photos", S="fit_sessions";
 const p=new URLSearchParams(location.search), mobile=p.get("mode")==="mobile", sid=p.get("session"), tok=p.get("token");
@@ -1960,7 +2052,7 @@ async function add(row,pre=true){if(!row?.photo_path||seen.has(row.photo_path))r
     const fu=await signed(row.photo_path),resp=await fetch(fu,{cache:"no-store"});
     if(!resp.ok)throw new Error("Could not download secure photo ("+resp.status+")");
     const blob=await resp.blob();
-    if(!window.FitEditor)throw new Error("Editor is not ready");
+    if(!window.FitEditor?.editorReady)throw new Error("The editor did not finish loading. Refresh the page and check the message in the preview header.");
     if(window.FitEditor.isCombineMode()){
       await window.FitEditor.addCombineBlob(blob,row.photo_path.split("/").pop(),row.photo_path);
       q("#livePhotosStatus").textContent=`${seen.size} secure photo(s) · selected photo added to Combine`;
@@ -2002,7 +2094,7 @@ function sub(){
 }
 
 const RECENT_KEY="fitPhotoRecentSessionsV62";
-function getRecentSessions(){try{return JSON.parse(localStorage.getItem(RECENT_KEY)||"[]")}catch(_){return[]}}
+function getRecentSessions(){try{const rows=JSON.parse(localStorage.getItem(RECENT_KEY)||"[]");return Array.isArray(rows)?rows.filter(x=>x&&typeof x.session==="string"):[]}catch(_){return[]}}
 function saveRecentSession(x){let a=getRecentSessions().filter(s=>s.session!==x.session);a.unshift(x);a=a.slice(0,12);localStorage.setItem(RECENT_KEY,JSON.stringify(a));renderRecentSessions()}
 function updateRecentSession(id,patch){let a=getRecentSessions(),i=a.findIndex(s=>s.session===id);if(i>=0){a[i]={...a[i],...patch};localStorage.setItem(RECENT_KEY,JSON.stringify(a));renderRecentSessions()}}
 async function syncRecentSessionsFromDatabase(){
@@ -2031,9 +2123,9 @@ function renderRecentSessions(){
 function escapeHtml(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 async function activateSession(s){
  cs=s.session;ct=s.token;seen.clear();sessionRows.clear();q("#livePhotos").innerHTML="";
- q("#sessionArea").style.display="block";q("#sessionNameDisplay").textContent=s.name||("Session "+cs);q("#sessionCode").textContent="ID "+cs;q("#endSessionBtn").style.display="block";
+ q("#qrPriority").hidden=false;q("#sessionArea").style.display="block";document.querySelector("aside.left").scrollTop=0;q("#sessionNameDisplay").textContent=s.name||("Session "+cs);q("#sessionCode").textContent="ID "+cs;q("#endSessionBtn").style.display="block";
  const mu=murl(cs,ct),qr=q("#qrImage");qr.src="https://quickchart.io/qr?size=150&text="+encodeURIComponent(mu);qr.style.display="block";
- q("#openMobileLinkBtn").style.display=q("#copyMobileLinkBtn").style.display="block";q("#openMobileLinkBtn").onclick=()=>window.open(mu,"_blank");q("#copyMobileLinkBtn").onclick=()=>navigator.clipboard.writeText(mu);
+
  q("#createSessionStatus").textContent=`Active: ${s.name||cs}`;q("#createSessionStatus").style.color="#067647";
  await load();sub();await refreshPhotos()
 }
@@ -2140,22 +2232,57 @@ if(createBtn)createBtn.onclick=async()=>{
  finally{b.disabled=false;b.textContent=isProtected?"Create Protected Session":"Create Quick Session"}
 };
 q("#refreshLivePhotosBtn").onclick=async()=>{q("#livePhotosStatus").textContent="Checking secure session…";await refreshPhotos()};
-q("#downloadAllPhotosBtn").onclick=async()=>{
- const st=q("#batchDownloadStatus"),btn=q("#downloadAllPhotosBtn");
- if(!cs)return st.textContent="Create or reopen a session first.";
+// Store already-compressed image files in a standards-compliant ZIP, without a CDN.
+function makePhotoZip(entries){
+ const encoder=new TextEncoder(),parts=[],central=[];let offset=0,centralBytes=0;
+ const table=new Uint32Array(256);
+ for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=(c&1)?0xedb88320^(c>>>1):c>>>1;table[n]=c>>>0;}
+ function crc32(bytes){let c=0xffffffff;for(const x of bytes)c=table[(c^x)&255]^(c>>>8);return(c^0xffffffff)>>>0;}
+ function header(length){const bytes=new Uint8Array(length);return{bytes,v:new DataView(bytes.buffer)};}
+ const now=new Date(),dosTime=(now.getHours()<<11)|(now.getMinutes()<<5)|(now.getSeconds()>>1),dosDate=((Math.max(1980,now.getFullYear())-1980)<<9)|((now.getMonth()+1)<<5)|now.getDate();
+ for(const entry of entries){
+  const name=encoder.encode(entry.name),bytes=entry.bytes,crc=crc32(bytes),local=header(30);
+  local.v.setUint32(0,0x04034b50,true);local.v.setUint16(4,20,true);local.v.setUint16(6,0x0800,true);local.v.setUint16(8,0,true);
+  local.v.setUint16(10,dosTime,true);local.v.setUint16(12,dosDate,true);local.v.setUint32(14,crc,true);
+  local.v.setUint32(18,bytes.length,true);local.v.setUint32(22,bytes.length,true);local.v.setUint16(26,name.length,true);
+  parts.push(local.bytes,name,bytes);
+  const c=header(46);c.v.setUint32(0,0x02014b50,true);c.v.setUint16(4,20,true);c.v.setUint16(6,20,true);c.v.setUint16(8,0x0800,true);
+  c.v.setUint16(10,0,true);c.v.setUint16(12,dosTime,true);c.v.setUint16(14,dosDate,true);c.v.setUint32(16,crc,true);
+  c.v.setUint32(20,bytes.length,true);c.v.setUint32(24,bytes.length,true);c.v.setUint16(28,name.length,true);c.v.setUint32(42,offset,true);
+  central.push(c.bytes,name);centralBytes+=46+name.length;offset+=30+name.length+bytes.length;
+ }
+ const end=header(22);end.v.setUint32(0,0x06054b50,true);end.v.setUint16(8,entries.length,true);end.v.setUint16(10,entries.length,true);
+ end.v.setUint32(12,centralBytes,true);end.v.setUint32(16,offset,true);
+ return new Blob([...parts,...central,end.bytes],{type:'application/zip'});
+}
+q('#downloadAllPhotosBtn').onclick=async()=>{
+ const st=q('#batchDownloadStatus'),btn=q('#downloadAllPhotosBtn'),sessionID=cs;
+ if(!sessionID){st.textContent='Create or reopen a session first.';return;}
+ const filename=askFileName('fit-photos-'+sessionID,'zip');if(!filename)return;
+ btn.disabled=true;st.textContent='Reading the current session...';
  try{
-   btn.disabled=true;st.textContent="Preparing archive…";await refreshPhotos();
-   const paths=[...sessionRows.keys()];if(!paths.length)throw new Error("No photos in this session.");
-   if(!window.JSZip)throw new Error("ZIP library did not load.");
-   const zip=new JSZip();
-   for(let i=0;i<paths.length;i++){st.textContent=`Adding ${i+1}/${paths.length}…`;const u=await signed(paths[i]),r=await fetch(u,{cache:"no-store"});if(!r.ok)throw new Error("Could not fetch photo");const b=await r.blob();zip.file(paths[i].split("/").pop()||`photo-${i+1}.jpg`,b)}
-   st.textContent="Creating ZIP…";const blob=await zip.generateAsync({type:"blob"});
-   const a=document.createElement("a"),url=URL.createObjectURL(blob);a.href=url;a.download=`fit-photos-${cs}.zip`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
-   st.textContent=`Downloaded ${paths.length} photo(s).`;
- }catch(e){st.textContent="Download failed: "+(e.message||e)}
- finally{btn.disabled=false}
+  const result=await sb.rpc('get_fit_session_photos',{p_session_id:sessionID});if(result.error)throw result.error;
+  const paths=[...new Set((result.data||[]).map(x=>x.photo_path).filter(Boolean))];
+  if(!paths.length)throw new Error('No available photos in this session.');
+  if(paths.length>65535)throw new Error('Too many files for one ZIP.');
+  const entries=[];let total=0;
+  for(let i=0;i<paths.length;i++){
+   if(cs!==sessionID)throw new Error('The session changed. Please try again.');
+   st.textContent=`Preparing ${i+1} / ${paths.length}...`;
+   const url=await signed(paths[i]),response=await fetch(url,{cache:'no-store'});
+   if(!response.ok)throw new Error(`Photo ${i+1} could not be downloaded. Refresh and retry.`);
+   const bytes=new Uint8Array(await response.arrayBuffer());total+=bytes.length;
+   if(total>250*1024*1024)throw new Error('This archive exceeds 250 MB. Download smaller sessions instead.');
+   const raw=paths[i].split('/').pop()||'photo.jpg',safe=raw.replace(/[\\/:*?"<>|\x00-\x1f]/g,'-');
+   entries.push({name:String(i+1).padStart(3,'0')+'-'+safe,bytes});
+  }
+  st.textContent='Creating archive...';const blob=makePhotoZip(entries);downloadBlob(blob,filename);
+  st.textContent=`Archive ready: ${entries.length} photos. Check your browser downloads.`;
+ }catch(e){st.textContent='Archive failed: '+(e.message||e);}
+ finally{btn.disabled=false;}
 };
-q("#endSessionBtn").onclick=async()=>{if(!cs)return;let r=await sb.from(S).update({active:false,ended_at:new Date().toISOString()}).eq("session_id",cs);if(r.error)return q("#syncStatus").textContent=r.error.message;if(ch)sb.removeChannel(ch);if(pollTimer){clearInterval(pollTimer);pollTimer=null}updateRecentSession(cs,{active:false,endedAt:new Date().toISOString()});q("#syncStatus").textContent="Session ended — QR invalid";q("#endSessionBtn").style.display="none"};
+
+q("#endSessionBtn").onclick=async()=>{if(!cs)return;let r=await sb.from(S).update({active:false,ended_at:new Date().toISOString()}).eq("session_id",cs);if(r.error)return q("#syncStatus").textContent=r.error.message;if(ch)sb.removeChannel(ch);if(pollTimer){clearInterval(pollTimer);pollTimer=null}updateRecentSession(cs,{active:false,endedAt:new Date().toISOString()});q("#qrPriority").hidden=true;q("#qrImage").removeAttribute("src");q("#syncStatus").textContent="Session ended - QR invalid";q("#endSessionBtn").style.display="none"};
 })();
 
 
@@ -2207,7 +2334,7 @@ function askFileName(defaultName,ext){
   if(!name)name=defaultName;
   name=name.replace(/[\\/:*?"<>|]+/g,"-");
   const lower=name.toLowerCase();
-  if(!lower.endsWith("."+ext.toLowerCase()))name+="."+ext;
+  if(!lower.endsWith("."+ext.toLowerCase()))name=name.replace(/\.(png|jpe?g|zip)$/i,"")+"."+ext;
   return name;
 }
 function downloadBlob(blob, filename){
@@ -2227,31 +2354,23 @@ function canvasToBlob(canvas,mime,quality=.94){
   });
 }
 async function exportAnnotatedBlob(){
-  if(typeof loaded!=="undefined" && !loaded) throw new Error("Choose a photo first.");
-  if(typeof render==="function") render();
-  const base=document.querySelector("#previewImg");
-  const overlay=document.querySelector("#overlay");
-  if(!base || !base.naturalWidth) throw new Error("No photo loaded.");
-  const out=document.createElement("canvas");
-  out.width=base.naturalWidth;out.height=base.naturalHeight;
-  const ox=out.getContext("2d");
-  ox.filter=`brightness(${typeof photoBrightness!=="undefined"?photoBrightness:100}%) contrast(${typeof photoContrast!=="undefined"?photoContrast:100}%)`;
-  ox.drawImage(base,0,0,out.width,out.height);ox.filter="none";
-  ox.drawImage(overlay,0,0,out.width,out.height);
-  const fmt=document.querySelector("#format")?.value||"png";
-  const mime=fmt==="jpeg"?"image/jpeg":"image/png";
-  const ext=fmt==="jpeg"?"jpg":"png";
-  return {blob:await canvasToBlob(out,mime,.94),ext,mime};
+ if(!window.FitEditor?.exportAnnotatedCanvas)throw new Error("The photo editor has not finished loading.");
+ const c=window.FitEditor.exportAnnotatedCanvas(),fmt=document.querySelector("#format").value;
+ const mime=fmt==="jpeg"?"image/jpeg":"image/png",ext=fmt==="jpeg"?"jpg":"png";
+ return{blob:await canvasToBlob(prepareExportBackground(c,mime),mime,.94),ext,mime};
 }
 async function exportCombineBlob(){
-  if(typeof cRender==="function") cRender();
-  const canvas=document.querySelector("#collageCanvas");
-  if(!canvas) throw new Error("Combine canvas is not ready.");
-  const fmt=document.querySelector("#collageFormat")?.value||"png";
-  const mime=fmt==="jpeg"?"image/jpeg":"image/png";
-  const ext=fmt==="jpeg"?"jpg":"png";
-  return {blob:await canvasToBlob(canvas,mime,.94),ext,mime};
+ if(!window.FitEditor?.exportCombinedCanvas)throw new Error("The Combine editor has not finished loading.");
+ const c=window.FitEditor.exportCombinedCanvas(),fmt=document.querySelector("#collageFormat").value;
+ const mime=fmt==="jpeg"?"image/jpeg":"image/png",ext=fmt==="jpeg"?"jpg":"png";
+ return{blob:await canvasToBlob(prepareExportBackground(c,mime),mime,.94),ext,mime};
 }
+function prepareExportBackground(c,mime){
+ if(mime!=="image/jpeg")return c;
+ const out=document.createElement("canvas");out.width=c.width;out.height=c.height;
+ const x=out.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,out.width,out.height);x.drawImage(c,0,0);return out;
+}
+
 async function shareOrDownload(makeFile,baseName){
   const {blob,ext,mime}=await makeFile();
   const file=new File([blob],`${baseName}.${ext}`,{type:mime});
@@ -2299,9 +2418,5 @@ document.addEventListener("DOMContentLoaded",()=>{
   };
 });
 
-</script>
-
-
-
-</body>
+</script></body>
 </html>
