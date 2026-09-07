@@ -234,7 +234,7 @@ body.mobile-mode .mobileCaptureScreen{display:block}
 @media(max-width:1150px){.app{grid-template-columns:200px 225px minmax(0,1fr) 270px}}
 
 
-/* Version V77 full workspace */
+/* Version V78 full workspace */
 .rightVersion{font-size:10px;font-weight:800;letter-spacing:.08em;color:#2563eb;background:#eff6ff;border-radius:999px;padding:4px 8px;align-self:flex-start;margin-bottom:10px}
 .right{display:block!important;overflow-y:auto!important;overflow-x:hidden!important;min-width:0!important;padding:14px 14px 110px!important}
 #annotateControls,#collageControls{display:block;min-width:0;max-width:100%;overflow:visible}
@@ -638,12 +638,65 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 #editDoneBtn[data-save-state=saved]{background:#067647!important;border-color:#067647!important}
 #editDoneBtn[data-save-state=error]{background:#b42318!important;border-color:#b42318!important}
 #editedPhotos .badge{max-width:calc(100% - 8px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-</style></head>
+</style>
+<style id="v78-library-final-fix">
+/* Final V78 override: every Photo Library section is 3 columns */
+.app{grid-template-columns:225px 260px minmax(0,1fr) 300px!important}
+.photoLibrary{min-width:260px!important}
+.photoLibrary #livePhotos,
+.photoLibrary #editedPhotos,
+.photoLibrary #thumbList{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:5px!important;
+  max-height:none!important;
+  overflow:visible!important;
+}
+.photoLibrary #livePhotos .livePhoto,
+.photoLibrary #editedPhotos .livePhoto{
+  width:100%!important;
+  min-width:0!important;
+  aspect-ratio:1!important;
+  cursor:grab!important;
+  user-select:none!important;
+  -webkit-user-drag:element!important;
+}
+.photoLibrary .livePhoto img,
+.photoLibrary .thumb img{
+  pointer-events:none!important;
+  user-select:none!important;
+  -webkit-user-drag:none!important;
+}
+.photoLibrary .livePhoto.dragging,
+.photoLibrary .thumb.dragging{
+  opacity:.42!important;
+  outline:2px dashed #2563eb!important;
+}
+.photoLibrary #thumbList .thumb{
+  display:flex!important;
+  flex-direction:column!important;
+  min-width:0!important;
+  padding:4px!important;
+  gap:4px!important;
+  cursor:grab!important;
+  user-select:none!important;
+}
+.photoLibrary #thumbList .thumb img{
+  width:100%!important;height:auto!important;aspect-ratio:1!important;object-fit:cover!important;
+}
+.photoLibrary #thumbList .thumbActions{display:flex!important;gap:2px!important}
+.photoLibrary #thumbList .thumbActions button{flex:1!important;min-width:0!important;padding:3px!important;font-size:8px!important}
+@media(max-width:1150px){
+ .app{grid-template-columns:200px 245px minmax(0,1fr) 270px!important}
+ .photoLibrary{min-width:245px!important}
+}
+</style>
+</head>
 <body>
 <header>
 <div class="brand">
 <div class="logo">F</div>
-<div><h1>Fit Photo Studio</h1><small><strong>Version V77</strong> · Secure Sync · Full Combine Editor</small></div>
+<div><h1>Fit Photo Studio</h1><small><strong>Version V78</strong> · Secure Sync · Full Combine Editor</small></div>
 </div>
 <div class="topActions">
 <button class="btn" id="newBtn">New</button>
@@ -725,14 +778,14 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <button class="btn primary" id="downloadAllLibraryBtn" style="width:100%;margin-top:7px">Download All Original + Edited</button>
 </div>
 <div class="section" id="livePhotosSection">
-<div class="sectionTitleRow"><h2>ORIGINAL PHOTOS</h2><button class="btn" id="downloadAllOriginalBtn">Download All</button></div>
+<div class="sectionTitleRow"><h2>ORIGINAL PHOTOS</h2><button class="btn" id="downloadAllOriginalBtn">Download All</button></div><div class="librarySectionHint">Drag photos to reorder</div>
 <div class="libraryEmpty" id="livePhotosPlaceholder">Phone photos will appear here automatically.</div>
 <div class="livePhotos" id="livePhotos"></div>
 <div class="syncStatus" id="livePhotosStatus">Create a session to receive phone photos.</div>
 <button class="btn" id="refreshLivePhotosBtn" style="width:100%;margin-top:6px">Refresh Photos</button>
 </div>
 <div class="section" id="editedPhotosSection">
-<div class="sectionTitleRow"><h2>EDITED PHOTOS <span class="libraryCount" id="editedPhotoCount">0</span></h2><button class="btn" id="downloadAllEditedBtn">Download All</button></div>
+<div class="sectionTitleRow"><h2>EDITED PHOTOS <span class="libraryCount" id="editedPhotoCount">0</span></h2><button class="btn" id="downloadAllEditedBtn">Download All</button></div><div class="librarySectionHint">Drag photos to reorder</div>
 <div class="libraryEmpty" id="editedPhotosPlaceholder">Click Edit Done to save a version you can reopen and edit. Stored on this browser.</div>
 <div class="livePhotos" id="editedPhotos"></div>
 <div class="syncStatus" id="editedPhotosStatus">0 editable photo(s)</div>
@@ -818,7 +871,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="section">
 <div class="sectionTitleRow">
 <h2>ANNOTATION STYLE</h2>
-<span class="versionPill">V77</span>
+<span class="versionPill">V78</span>
 </div>
 <div class="prop">
 <label>Color <small><span id="colorText">#000000</span></small></label>
@@ -841,7 +894,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 </div>
 </div>
 <div class="section" id="photoAdjustSection">
-<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V77</span></div>
+<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V78</span></div>
 <div class="compactPair">
 <button class="btn" id="cropPhotoBtn">Crop</button>
 <button class="btn" id="rotatePhotoBtn">↻ Rotate 90°</button>
@@ -900,7 +953,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="section">
 <div class="sectionTitleRow">
 <h2>ANNOTATION STYLE</h2>
-<span class="versionPill">V77</span>
+<span class="versionPill">V78</span>
 </div>
 <div class="prop">
 <label>Color <small><span id="cAnnoColorText">#000000</span></small></label>
@@ -1653,7 +1706,7 @@ function cRender(){
 function fitCollageCanvas(){const stage=$("#collagePanel .stage"),wrap=$("#collageCanvasWrap");if(!stage||!wrap)return;const r=stage.getBoundingClientRect(),sc=Math.min((r.width-20)/cc.width,(r.height-20)/cc.height,1),dw=Math.max(1,Math.round(cc.width*sc)),dh=Math.max(1,Math.round(cc.height*sc));cc.style.width=dw+"px";cc.style.height=dh+"px";wrap.style.width=dw+"px";wrap.style.height=dh+"px";cRender()}
 function centerCollageContent(){const bs=[];items.forEach(x=>bs.push({x:x.x,y:x.y,r:x.x+x.w,b:x.y+x.h}));textItems.forEach(t=>{const b=cTextBounds(t);bs.push({x:b.x,y:b.y,r:b.x+b.w,b:b.y+b.h})});cObjects.forEach(o=>{const b=cShapeBounds(o);bs.push({x:b.x,y:b.y,r:b.x+b.w,b:b.y+b.h})});if(!bs.length)return;const minX=Math.min(...bs.map(x=>x.x)),maxX=Math.max(...bs.map(x=>x.r)),minY=Math.min(...bs.map(x=>x.y)),maxY=Math.max(...bs.map(x=>x.b)),dx=cc.width/2-(minX+maxX)/2,dy=cc.height/2-(minY+maxY)/2;items.forEach(x=>{x.x+=dx;x.y+=dy});textItems.forEach(x=>{x.x+=dx;x.y+=dy});cObjects.forEach(x=>{x.x1+=dx;x.x2+=dx;x.y1+=dy;x.y2+=dy;if(x.type==="curve"){x.cx+=dx;x.cy+=dy}})}
 function autoLayout(){const n=items.length;if(!n){fitCollageCanvas();return}saveCState();const mode=$("#layoutMode").value,pad=Math.max(24,cc.width*.025),gap=Math.max(14,cc.width*.015),cols=mode==="column"?1:n,rows=mode==="column"?n:1,cw=(cc.width-pad*2-gap*(cols-1))/cols,ch=(cc.height-pad*2-gap*(rows-1))/rows;items.forEach((it,i)=>{let w,h;if(it.ratio>cw/ch){w=cw;h=w/it.ratio}else{h=ch;w=h*it.ratio}it.x=pad+(i%cols)*(cw+gap)+(cw-w)/2;it.y=pad+Math.floor(i/cols)*(ch+gap)+(ch-h)/2;it.w=w;it.h=h});centerCollageContent();renderThumbs();fitCollageCanvas()}
-function renderThumbs(){const box=$("#thumbList"),empty=$("#combineLibraryEmpty");if(!box)return;box.innerHTML="";if(empty)empty.style.display=items.length?"none":"block";items.forEach((it,i)=>{const d=document.createElement("div");d.className="thumb";d.draggable=true;d.dataset.itemId=it.id;d.innerHTML=`<img src="${it.img.src}"><div title="${it.name}">${i+1}. ${it.name}</div><div class="thumbActions"><button data-up="${it.id}">↑</button><button data-down="${it.id}">↓</button><button class="deleteThumb" data-del="${it.id}">×</button></div>`;d.ondragstart=e=>{d.classList.add("dragging");e.dataTransfer.effectAllowed="move";e.dataTransfer.setData("text/plain",it.id)};d.ondragend=()=>d.classList.remove("dragging");d.ondragover=e=>e.preventDefault();d.ondrop=e=>{e.preventDefault();const from=e.dataTransfer.getData("text/plain");if(from&&from!==it.id){const a=items.findIndex(x=>x.id===from),b=items.findIndex(x=>x.id===it.id);if(a>=0&&b>=0){saveCState();const [m]=items.splice(a,1);items.splice(items.findIndex(x=>x.id===it.id),0,m);autoLayout()}}};box.appendChild(d)});box.querySelectorAll("[data-up]").forEach(b=>b.onclick=()=>reorder(b.dataset.up,-1));box.querySelectorAll("[data-down]").forEach(b=>b.onclick=()=>reorder(b.dataset.down,1));box.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{saveCState();items=items.filter(x=>x.id!==b.dataset.del);renderThumbs();fitCollageCanvas()})}
+function renderThumbs(){const box=$("#thumbList"),empty=$("#combineLibraryEmpty");if(!box)return;box.innerHTML="";if(empty)empty.style.display=items.length?"none":"block";items.forEach((it,i)=>{const d=document.createElement("div");d.className="thumb";d.draggable=true;d.dataset.itemId=it.id;d.innerHTML=`<img src="${it.img.src}" draggable="false"><div title="${it.name}">${i+1}. ${it.name}</div><div class="thumbActions"><button data-up="${it.id}">↑</button><button data-down="${it.id}">↓</button><button class="deleteThumb" data-del="${it.id}">×</button></div>`;d.ondragstart=e=>{d.classList.add("dragging");e.dataTransfer.effectAllowed="move";e.dataTransfer.setData("text/plain",it.id)};d.ondragend=()=>d.classList.remove("dragging");d.ondragenter=e=>e.preventDefault();d.ondragover=e=>{e.preventDefault();e.dataTransfer.dropEffect="move"};d.ondrop=e=>{e.preventDefault();const from=e.dataTransfer.getData("text/plain");if(from&&from!==it.id){const a=items.findIndex(x=>x.id===from),b=items.findIndex(x=>x.id===it.id);if(a>=0&&b>=0){saveCState();const [m]=items.splice(a,1);items.splice(items.findIndex(x=>x.id===it.id),0,m);autoLayout()}}};box.appendChild(d)});box.querySelectorAll("[data-up]").forEach(b=>b.onclick=()=>reorder(b.dataset.up,-1));box.querySelectorAll("[data-down]").forEach(b=>b.onclick=()=>reorder(b.dataset.down,1));box.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{saveCState();items=items.filter(x=>x.id!==b.dataset.del);renderThumbs();fitCollageCanvas()})}
 function reorder(id,d){const i=items.findIndex(x=>x.id===id),j=i+d;if(j<0||j>=items.length)return;saveCState();[items[i],items[j]]=[items[j],items[i]];autoLayout()}
 function distanceToCurve(p,o){let best=1e9,prev={x:o.x1,y:o.y1};for(let j=1;j<=24;j++){const t=j/24,u=1-t,cur={x:u*u*o.x1+2*u*t*o.cx+t*t*o.x2,y:u*u*o.y1+2*u*t*o.cy+t*t*o.y2};best=Math.min(best,distanceToSegment(p,prev,cur));prev=cur}return best}
 function cHit(p){
@@ -2135,7 +2188,7 @@ function initAnnotatePhotoInteractions(){
 
 window.addEventListener("resize",()=>{if(loaded)fitPreviewToStage();fitCollageCanvas()});
 initAnnotatePhotoInteractions();
-mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active - Version V77");window.FitPhotoBoot.editor=true;
+mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active - Version V78");window.FitPhotoBoot.editor=true;
 })();
 </script><script id="fit-local-library">/* V75 local editable library: independent of Supabase and its network availability. */
 (()=>{
@@ -2219,18 +2272,21 @@ async function refreshGallery(highlightId){
  for(const [index,record] of rows.entries()){
   const b=document.createElement('button');b.type='button';b.className='livePhoto editedPhoto';b.draggable=true;b.dataset.projectId=record.id;
   b.title=(record.name||'Edited photo')+' - click to continue editing';b.setAttribute('aria-label',b.title);
-  const image=document.createElement('img');image.alt=record.name||'Edited photo';
+  const image=document.createElement('img');image.alt=record.name||'Edited photo';image.draggable=false;
   const source=record.thumbnailBlob||record.exportBlob||record.baseBlob||record.image;
   if(source instanceof Blob){image.src=URL.createObjectURL(source);freshUrls.push(image.src);}else image.src=source;
   image.onerror=()=>{b.classList.add('previewUnavailable');image.alt='Saved version: click to reopen';};
   const badge=document.createElement('span');badge.className='editDoneBadge';badge.textContent='EDITED';
   const caption=document.createElement('span');caption.className='badge';caption.textContent='Click to continue';
   b.append(image,badge,caption);
-  b.ondragstart=e=>{b.classList.add('dragging');e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',record.id)};
-  b.ondragend=()=>b.classList.remove('dragging');
-  b.ondragover=e=>e.preventDefault();
-  b.ondrop=e=>{e.preventDefault();reorderEditedPhotos(record.id,e.dataTransfer.getData('text/plain')).catch(err=>setStatus('Reorder failed: '+describeError(err),true));};
+  let editedWasDragged=false;
+  b.ondragstart=e=>{editedWasDragged=true;b.classList.add('dragging');e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',record.id)};
+  b.ondragend=()=>{b.classList.remove('dragging');setTimeout(()=>editedWasDragged=false,0)};
+  b.ondragenter=e=>e.preventDefault();
+  b.ondragover=e=>{e.preventDefault();e.dataTransfer.dropEffect='move'};
+  b.ondrop=e=>{e.preventDefault();e.stopPropagation();reorderEditedPhotos(record.id,e.dataTransfer.getData('text/plain')).catch(err=>setStatus('Reorder failed: '+describeError(err),true));};
   b.onclick=async()=>{
+   if(editedWasDragged)return;
    if(loadBusy||saveBusy){setStatus('Please wait for the current photo operation.');return;}
    loadBusy=true;b.disabled=true;
    try{
@@ -2446,12 +2502,15 @@ if(mobile){
 let cs=null,ct=null,ch=null,seen=new Set(),sessionRows=new Map(),originalOrder=[];
 const ORIGINAL_ORDER_KEY="fitPhotoOriginalOrderV77";
 async function add(row,pre=true){if(!row?.photo_path||seen.has(row.photo_path))return;seen.add(row.photo_path);sessionRows.set(row.photo_path,row);
-if(!originalOrder.includes(row.photo_path))originalOrder.push(row.photo_path);let ph=q("#livePhotosPlaceholder");if(ph)ph.style.display="none";let u=await signed(row.photo_path),h=q("#livePhotos"),b=document.createElement("button");b.className="livePhoto";b.type="button";b.draggable=true;b.dataset.photoPath=row.photo_path;b.innerHTML=`<img src="${u}"><span class="badge">Click to edit</span>`;
- b.ondragstart=e=>{b.classList.add("dragging");e.dataTransfer.effectAllowed="move";e.dataTransfer.setData("text/plain",row.photo_path)};
- b.ondragend=()=>b.classList.remove("dragging");
- b.ondragover=e=>e.preventDefault();
- b.ondrop=e=>{e.preventDefault();reorderOriginal(row.photo_path,e.dataTransfer.getData("text/plain"))};
+if(!originalOrder.includes(row.photo_path))originalOrder.push(row.photo_path);let ph=q("#livePhotosPlaceholder");if(ph)ph.style.display="none";let u=await signed(row.photo_path),h=q("#livePhotos"),b=document.createElement("button");b.className="livePhoto";b.type="button";b.draggable=true;b.dataset.photoPath=row.photo_path;b.innerHTML=`<img src="${u}" draggable="false"><span class="badge">Click to edit</span>`;
+ let originalWasDragged=false;
+ b.ondragstart=e=>{originalWasDragged=true;b.classList.add("dragging");e.dataTransfer.effectAllowed="move";e.dataTransfer.setData("text/plain",row.photo_path)};
+ b.ondragend=()=>{b.classList.remove("dragging");setTimeout(()=>originalWasDragged=false,0)};
+ b.ondragenter=e=>e.preventDefault();
+ b.ondragover=e=>{e.preventDefault();e.dataTransfer.dropEffect="move"};
+ b.ondrop=e=>{e.preventDefault();e.stopPropagation();reorderOriginal(row.photo_path,e.dataTransfer.getData("text/plain"))};
  b.onclick=async()=>{
+  if(originalWasDragged)return;
   document.querySelectorAll(".livePhoto").forEach(x=>x.classList.remove("active"));
   b.classList.add("active");
   try{
