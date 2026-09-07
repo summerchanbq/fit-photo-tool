@@ -234,7 +234,7 @@ body.mobile-mode .mobileCaptureScreen{display:block}
 @media(max-width:1150px){.app{grid-template-columns:200px 210px minmax(0,1fr) 270px}}
 
 
-/* Version V73 full workspace */
+/* Version V74 full workspace */
 .rightVersion{font-size:10px;font-weight:800;letter-spacing:.08em;color:#2563eb;background:#eff6ff;border-radius:999px;padding:4px 8px;align-self:flex-start;margin-bottom:10px}
 .right{display:block!important;overflow-y:auto!important;overflow-x:hidden!important;min-width:0!important;padding:14px 14px 110px!important}
 #annotateControls,#collageControls{display:block;min-width:0;max-width:100%;overflow:visible}
@@ -510,6 +510,10 @@ input[type="color"]{width:42px!important;height:32px!important}
   background:#111827!important;color:#fff!important;border-color:#111827!important;
 }
 
+
+.editedSavePulse{animation:editedSavePulse .8s ease}
+@keyframes editedSavePulse{0%{box-shadow:0 0 0 0 rgba(6,118,71,.45)}100%{box-shadow:0 0 0 8px rgba(6,118,71,0)}}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -565,7 +569,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <header>
 <div class="brand">
 <div class="logo">F</div>
-<div><h1>Fit Photo Studio</h1><small><strong>Version V73</strong> · Secure Sync · Full Combine Editor</small></div>
+<div><h1>Fit Photo Studio</h1><small><strong>Version V74</strong> · Secure Sync · Full Combine Editor</small></div>
 </div>
 <div class="topActions">
 <button class="btn" id="newBtn">New</button>
@@ -742,7 +746,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="section">
 <div class="sectionTitleRow">
 <h2>ANNOTATION STYLE</h2>
-<span class="versionPill">V73</span>
+<span class="versionPill">V74</span>
 </div>
 <div class="prop">
 <label>Color <small><span id="colorText">#000000</span></small></label>
@@ -765,7 +769,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 </div>
 </div>
 <div class="section" id="photoAdjustSection">
-<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V73</span></div>
+<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V74</span></div>
 <div class="compactPair">
 <button class="btn" id="cropPhotoBtn">Crop</button>
 <button class="btn" id="rotatePhotoBtn">↻ Rotate 90°</button>
@@ -824,7 +828,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="section">
 <div class="sectionTitleRow">
 <h2>ANNOTATION STYLE</h2>
-<span class="versionPill">V73</span>
+<span class="versionPill">V74</span>
 </div>
 <div class="prop">
 <label>Color <small><span id="cAnnoColorText">#000000</span></small></label>
@@ -1998,7 +2002,7 @@ function initAnnotatePhotoInteractions(){
 
 window.addEventListener("resize",()=>{if(loaded)fitPreviewToStage();fitCollageCanvas()});
 initAnnotatePhotoInteractions();
-mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active - Version V73");window.FitPhotoBoot.editor=true;
+mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active - Version V74");window.FitPhotoBoot.editor=true;
 })();
 </script><script>
 (() => {
@@ -2087,15 +2091,54 @@ if(mobile){
 }
 
 let cs=null,ct=null,ch=null,seen=new Set(),sessionRows=new Map();
-const EDITED_KEY="fitPhotoEditedProjectsV71";
-function getEditedProjects(){try{return JSON.parse(localStorage.getItem(EDITED_KEY)||"[]")}catch(_){return[]}}
-function saveEditedProjects(a){localStorage.setItem(EDITED_KEY,JSON.stringify(a.slice(0,40)))}
-function renderEditedPhotos(){
- const box=q("#editedPhotos"),ph=q("#editedPhotosPlaceholder"),st=q("#editedPhotosStatus");if(!box)return;
- const a=getEditedProjects();box.innerHTML="";if(ph)ph.style.display=a.length?"none":"block";if(st)st.textContent=`${a.length} editable photo(s)`;
- a.forEach(p=>{const b=document.createElement("button");b.className="livePhoto editedPhoto";b.type="button";b.innerHTML=`<img src="${p.image}"><span class="editDoneBadge">EDITED</span><span class="badge">Click to continue</span>`;b.onclick=async()=>{try{if(!window.FitEditor?.editorReady)throw new Error("Editor is not ready");await window.FitEditor.loadEditableProject(p);q("#livePhotosStatus").textContent="Editable version reopened — continue editing."}catch(e){alert("Could not reopen edited photo: "+(e.message||e))}};box.appendChild(b)})
+const EDITED_DB="FitPhotoStudioV74";
+const EDITED_STORE="editedProjects";
+let editedDbPromise=null;
+function openEditedDb(){
+ if(editedDbPromise)return editedDbPromise;
+ editedDbPromise=new Promise((resolve,reject)=>{
+   const req=indexedDB.open(EDITED_DB,1);
+   req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains(EDITED_STORE))db.createObjectStore(EDITED_STORE,{keyPath:"id"})};
+   req.onsuccess=()=>resolve(req.result);
+   req.onerror=()=>reject(req.error||new Error("Could not open local photo library"));
+ });
+ return editedDbPromise;
 }
-renderEditedPhotos();
+async function getEditedProjects(){
+ const db=await openEditedDb();
+ return new Promise((resolve,reject)=>{
+   const tx=db.transaction(EDITED_STORE,"readonly"),req=tx.objectStore(EDITED_STORE).getAll();
+   req.onsuccess=()=>resolve((req.result||[]).sort((a,b)=>String(b.createdAt||"").localeCompare(String(a.createdAt||""))));
+   req.onerror=()=>reject(req.error);
+ });
+}
+async function putEditedProject(p){
+ const db=await openEditedDb();
+ return new Promise((resolve,reject)=>{
+   const tx=db.transaction(EDITED_STORE,"readwrite");tx.objectStore(EDITED_STORE).put(p);
+   tx.oncomplete=()=>resolve(p);tx.onerror=()=>reject(tx.error||new Error("Could not save edited photo"));
+ });
+}
+async function migrateLegacyEditedProjects(){
+ try{
+   const raw=localStorage.getItem("fitPhotoEditedProjectsV71");
+   if(!raw)return;
+   const legacy=JSON.parse(raw)||[];
+   for(const p of legacy)await putEditedProject(p);
+   localStorage.removeItem("fitPhotoEditedProjectsV71");
+ }catch(e){console.warn("Legacy edited-photo migration failed",e)}
+}
+async function renderEditedPhotos(){
+ const box=q("#editedPhotos"),ph=q("#editedPhotosPlaceholder"),st=q("#editedPhotosStatus");if(!box)return;
+ try{
+   const a=await getEditedProjects();box.innerHTML="";if(ph)ph.style.display=a.length?"none":"block";if(st)st.textContent=`${a.length} editable photo(s)`;
+   a.forEach(p=>{const b=document.createElement("button");b.className="livePhoto editedPhoto";b.type="button";b.innerHTML=`<img src="${p.image}"><span class="editDoneBadge">EDITED</span><span class="badge">Click to continue</span>`;b.onclick=async()=>{try{if(!window.FitEditor?.editorReady)throw new Error("Editor is not ready");await window.FitEditor.loadEditableProject(p);q("#livePhotosStatus").textContent="Editable version reopened — continue editing."}catch(e){alert("Could not reopen edited photo: "+(e.message||e))}};box.appendChild(b)})
+ }catch(e){
+   if(ph)ph.style.display="block";
+   if(st)st.textContent="Editable library unavailable: "+(e.message||e);
+ }
+}
+(async()=>{await migrateLegacyEditedProjects();await renderEditedPhotos()})();
 async function add(row,pre=true){if(!row?.photo_path||seen.has(row.photo_path))return;seen.add(row.photo_path);sessionRows.set(row.photo_path,row);let ph=q("#livePhotosPlaceholder");if(ph)ph.style.display="none";let u=await signed(row.photo_path),h=q("#livePhotos"),b=document.createElement("button");b.className="livePhoto";b.type="button";b.innerHTML=`<img src="${u}"><span class="badge">Click to edit</span>`;b.onclick=async()=>{
   document.querySelectorAll(".livePhoto").forEach(x=>x.classList.remove("active"));
   b.classList.add("active");
@@ -2349,13 +2392,43 @@ async function editedEntries(){
 }
 q("#editDoneBtn").onclick=async()=>{
  try{
-   const p=await window.FitEditor.makeEditableProject(),a=getEditedProjects();a.unshift(p);saveEditedProjects(a);renderEditedPhotos();
-   q("#editedPhotosStatus").textContent=`Edit Done ✓ Saved editable version · ${getEditedProjects().length} total`;
- }catch(e){alert("Edit Done failed: "+(e.message||e))}
+   const p=await window.FitEditor.makeEditableProject();
+   await putEditedProject(p);
+   await renderEditedPhotos();
+   const total=(await getEditedProjects()).length;
+   q("#editedPhotosStatus").textContent=`Edit Done ✓ Saved editable version · ${total} total`;
+   q("#editedPhotosSection")?.scrollIntoView({behavior:"smooth",block:"nearest"});
+ }catch(e){
+   console.error("Edit Done failed",e);
+   alert("Edit Done failed: "+(e.message||e));
+ }
 };
 q("#downloadAllOriginalBtn").onclick=async()=>{try{await zipDownload(await originalEntries(),`fit-original-${cs||"photos"}.zip`,q("#livePhotosStatus"))}catch(e){alert(e.message||e)}};
-q("#downloadAllEditedBtn").onclick=async()=>{try{await zipDownload(await editedEntries(),`fit-edited-${cs||"photos"}.zip`,q("#editedPhotosStatus"))}catch(e){alert(e.message||e)}};
-q("#downloadAllLibraryBtn").onclick=async()=>{try{const all=[...(await originalEntries()),...(await editedEntries())];await zipDownload(all,`fit-photo-library-${cs||"photos"}.zip`,q("#editedPhotosStatus"))}catch(e){alert(e.message||e)}};
+q("#downloadAllEditedBtn").onclick=async()=>{
+ try{
+   const a=await getEditedProjects(),arr=[];
+   for(const [i,p] of a.entries()){
+     await window.FitEditor.loadEditableProject(p);
+     const c=window.FitEditor.exportAnnotatedCanvas();
+     const blob=await new Promise((ok,no)=>c.toBlob(b=>b?ok(b):no(new Error("Could not export edited photo")),"image/png"));
+     arr.push({name:`edited-${i+1}.png`,blob});
+   }
+   await zipDownload(arr,`fit-edited-${cs||"photos"}.zip`,q("#editedPhotosStatus"));
+ }catch(e){alert(e.message||e)}
+};
+q("#downloadAllLibraryBtn").onclick=async()=>{
+ try{
+   const all=[...(await originalEntries())];
+   const a=await getEditedProjects();
+   for(const [i,p] of a.entries()){
+     await window.FitEditor.loadEditableProject(p);
+     const c=window.FitEditor.exportAnnotatedCanvas();
+     const blob=await new Promise((ok,no)=>c.toBlob(b=>b?ok(b):no(new Error("Could not export edited photo")),"image/png"));
+     all.push({name:`edited-${i+1}.png`,blob});
+   }
+   await zipDownload(all,`fit-photo-library-${cs||"photos"}.zip`,q("#editedPhotosStatus"));
+ }catch(e){alert(e.message||e)}
+};
 q("#endSessionBtn").onclick=async()=>{if(!cs)return;let r=await sb.from(S).update({active:false,ended_at:new Date().toISOString()}).eq("session_id",cs);if(r.error)return q("#syncStatus").textContent=r.error.message;if(ch)sb.removeChannel(ch);if(pollTimer){clearInterval(pollTimer);pollTimer=null}updateRecentSession(cs,{active:false,endedAt:new Date().toISOString()});q("#qrPriority").hidden=true;q("#qrImage").removeAttribute("src");q("#syncStatus").textContent="Session ended - QR invalid";q("#endSessionBtn").style.display="none"};
 })();
 
