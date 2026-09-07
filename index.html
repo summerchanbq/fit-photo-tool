@@ -25,7 +25,7 @@ header{
 .topActions{display:flex;gap:8px}
 .btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 12px;color:var(--ink)}
 .btn:hover{background:#fafafa}.btn.primary{background:var(--dark);border-color:var(--dark);color:#fff}
-.app{height:calc(100vh - 66px);display:grid;grid-template-columns:225px 170px minmax(0,1fr) 300px;gap:12px;padding:12px}
+.app{height:calc(100vh - 66px);display:grid;grid-template-columns:225px 230px minmax(0,1fr) 300px;gap:12px;padding:12px}
 .panel{background:#fff;border:1px solid var(--line);border-radius:15px;min-height:0}
 .left,.right{padding:14px}
 .left{display:flex;flex-direction:column}
@@ -231,10 +231,10 @@ body.mobile-mode .mobileCaptureScreen{display:block}
  position:relative!important;bottom:auto!important;box-shadow:none!important;background:#fff!important;z-index:auto!important;
 }
 #saveBtn,#saveCollage{min-height:42px!important}
-@media(max-width:1150px){.app{grid-template-columns:200px 150px minmax(0,1fr) 270px}}
+@media(max-width:1150px){.app{grid-template-columns:200px 210px minmax(0,1fr) 270px}}
 
 
-/* Version V70 full workspace */
+/* Version V71 full workspace */
 .rightVersion{font-size:10px;font-weight:800;letter-spacing:.08em;color:#2563eb;background:#eff6ff;border-radius:999px;padding:4px 8px;align-self:flex-start;margin-bottom:10px}
 .right{display:block!important;overflow-y:auto!important;overflow-x:hidden!important;min-width:0!important;padding:14px 14px 110px!important}
 #annotateControls,#collageControls{display:block;min-width:0;max-width:100%;overflow:visible}
@@ -258,7 +258,7 @@ body.mobile-mode .mobileCaptureScreen{display:block}
 #collageCanvas{display:block;touch-action:none}
 #canvasResizeHandle{z-index:30}
 .cInlineText{position:absolute;z-index:50;border:2px solid #2563eb;border-radius:6px;padding:5px 7px;min-width:120px;max-width:360px;background:rgba(255,255,255,.97);outline:none;font-weight:600}
-@media(max-width:1150px){.app{grid-template-columns:195px 145px minmax(0,1fr) 265px!important}}
+@media(max-width:1150px){.app{grid-template-columns:195px 205px minmax(0,1fr) 265px!important}}
 
 
 /* V46 unified compact right panel */
@@ -492,6 +492,15 @@ input[type="color"]{width:42px!important;height:32px!important}
 #cropBox{position:absolute;border:2px dashed #fff;box-shadow:0 0 0 9999px rgba(0,0,0,.35);pointer-events:none;display:none}
 #photoAdjustSection .compactPair .btn{min-width:0!important;padding:0 5px!important}
 
+
+/* V71 editable photo library */
+.photoLibrary{min-width:210px!important}
+.photoLibrary .sectionTitleRow .btn{height:27px!important;min-height:27px!important;padding:0 6px!important;font-size:8.5px!important}
+#editedPhotos,#livePhotos{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important}
+.editedPhoto{position:relative}
+.editedPhoto .editDoneBadge{position:absolute;right:4px;top:4px;background:#067647;color:#fff;border-radius:999px;padding:2px 5px;font-size:7px;font-weight:700;z-index:3}
+#editDoneBtn{margin-top:5px!important}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -547,7 +556,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <header>
 <div class="brand">
 <div class="logo">F</div>
-<div><h1>Fit Photo Studio</h1><small><strong>Version V70</strong> · Secure Sync · Full Combine Editor</small></div>
+<div><h1>Fit Photo Studio</h1><small><strong>Version V71</strong> · Secure Sync · Full Combine Editor</small></div>
 </div>
 <div class="topActions">
 <button class="btn" id="newBtn">New</button>
@@ -626,27 +635,27 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 </aside>
 <aside class="panel photoLibrary">
 <div class="libraryHeader">
-<b>PHOTO LIBRARY</b>
-<span>Session photos</span>
+  <b>PHOTO LIBRARY</b>
+  <span>Original + editable versions</span>
+  <button class="btn primary" id="downloadAllLibraryBtn" style="width:100%;margin-top:7px">Download All Original + Edited</button>
 </div>
 <div class="section" id="livePhotosSection">
-<h2>Live Photos</h2>
-<div id="livePhotosPlaceholder" style="border:1.5px dashed #cbd5e1;border-radius:10px;padding:18px 8px;text-align:center;color:#64748b;font-size:10px;margin-bottom:7px;background:#f8fafc">
-<div style="font-size:22px;margin-bottom:4px">📱→💻</div>
-  Phone photos will appear here automatically
+  <div class="sectionTitleRow"><h2>ORIGINAL PHOTOS</h2><button class="btn" id="downloadAllOriginalBtn">Download All</button></div>
+  <div id="livePhotosPlaceholder" class="libraryEmpty">Phone photos will appear here automatically.</div>
+  <div class="livePhotos" id="livePhotos"></div>
+  <div class="syncStatus" id="livePhotosStatus">Create a session to receive phone photos.</div>
+  <button class="btn" id="refreshLivePhotosBtn" style="width:100%;margin-top:6px">Refresh Photos</button>
 </div>
-<div class="livePhotos" id="livePhotos"></div>
-<div class="syncStatus" id="livePhotosStatus">Create a session to receive phone photos. Click any received photo to edit it.</div>
-<div class="compactPair" style="margin-top:7px">
-<button class="btn" id="refreshLivePhotosBtn">Refresh Photos</button>
-<button class="btn" id="downloadAllPhotosBtn">Download All</button>
-</div>
-<div class="syncStatus" id="batchDownloadStatus"></div>
+<div class="section" id="editedPhotosSection">
+  <div class="sectionTitleRow"><h2>EDITED PHOTOS</h2><button class="btn" id="downloadAllEditedBtn">Download All</button></div>
+  <div id="editedPhotosPlaceholder" class="libraryEmpty">Click <b>Edit Done</b> to keep an editable version here.</div>
+  <div class="livePhotos" id="editedPhotos"></div>
+  <div class="syncStatus" id="editedPhotosStatus">0 editable photo(s)</div>
 </div>
 <div class="section" id="combineLibrarySection">
-<h2>Combine Photos</h2>
-<div class="thumbList" id="thumbList"></div>
-<div class="libraryEmpty" id="combineLibraryEmpty">Add photos or click Live Photos to add them to Combine.</div>
+  <h2>COMBINE PHOTOS</h2>
+  <div class="thumbList" id="thumbList"></div>
+  <div class="libraryEmpty" id="combineLibraryEmpty">Add Original or Edited photos to Combine.</div>
 </div>
 </aside>
 <main class="panel center">
@@ -723,7 +732,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="section">
 <div class="sectionTitleRow">
 <h2>ANNOTATION STYLE</h2>
-<span class="versionPill">V70</span>
+<span class="versionPill">V71</span>
 </div>
 <div class="prop">
 <label>Color <small><span id="colorText">#000000</span></small></label>
@@ -746,7 +755,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 </div>
 </div>
 <div class="section" id="photoAdjustSection">
-<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V70</span></div>
+<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V71</span></div>
 <div class="compactPair">
 <button class="btn" id="cropPhotoBtn">Crop</button>
 <button class="btn" id="rotatePhotoBtn">↻ Rotate 90°</button>
@@ -759,11 +768,8 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <label>Contrast <small><span id="contrastVal">100</span>%</small></label>
 <input id="contrastRange" max="180" min="40" type="range" value="100"/>
 </div>
-<div class="compactPair">
-<button class="btn" id="removeBgBtn" title="Experimental local colour-based removal. Not AI segmentation; similar garment colours may be affected.">Remove BG (Test)</button>
-<button class="btn" id="resetPhotoAdjustBtn">Reset</button>
-</div>
-<div class="note" id="photoAdjustStatus" style="margin-top:5px">Photo operations clear annotations after confirmation. Background removal is a plain-colour experiment.</div>
+<button class="btn" id="resetPhotoAdjustBtn" style="width:100%">Reset</button>
+<div class="note" id="photoAdjustStatus" style="margin-top:5px">Crop / rotate clear annotations after confirmation.</div>
 </div>
 <div class="section">
 <div class="sectionTitleRow">
@@ -800,6 +806,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <option value="jpeg">JPG</option>
 </select>
 <button class="btn primary" id="saveBtn">Save</button>
+<button class="btn" id="editDoneBtn" style="grid-column:1/-1;width:100%">✓ Edit Done · Keep in Library</button>
 </div>
 <button class="btn" id="shareBtn" style="width:100%;margin-top:5px">Share</button>
 </div>
@@ -808,7 +815,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="section">
 <div class="sectionTitleRow">
 <h2>ANNOTATION STYLE</h2>
-<span class="versionPill">V70</span>
+<span class="versionPill">V71</span>
 </div>
 <div class="prop">
 <label>Color <small><span id="cAnnoColorText">#000000</span></small></label>
@@ -1792,22 +1799,6 @@ $("#rotatePhotoBtn").onclick=async()=>{
     await replaceBaseImageFromCanvas(out,'Rotated photo');photoStatus('Rotated 90 degrees clockwise.');
   }catch(e){photoStatus(e.message,true);}
 };
-$("#removeBgBtn").onclick=async()=>{
-  if(!loaded){photoStatus('Choose a photo first.',true);return;}
-  if(!confirmPhotoChange())return;
-  const btn=$("#removeBgBtn");btn.disabled=true;
-  try{
-    photoStatus('Removing similar edge colours locally...');await new Promise(r=>requestAnimationFrame(r));
-    const c=currentFilteredCanvas(),x=c.getContext('2d'),im=x.getImageData(0,0,c.width,c.height),d=im.data;
-    // Basic experimental colour removal, not AI segmentation. Never uploads a photo.
-    const corners=[[0,0],[c.width-1,0],[0,c.height-1],[c.width-1,c.height-1]];
-    let rr=0,gg=0,bb=0;for(const [px,py] of corners){const i=(py*c.width+px)*4;rr+=d[i];gg+=d[i+1];bb+=d[i+2];}rr/=4;gg/=4;bb/=4;
-    const threshold=58;
-    for(let i=0;i<d.length;i+=4){const dist=Math.hypot(d[i]-rr,d[i+1]-gg,d[i+2]-bb);if(dist<threshold)d[i+3]=Math.round(d[i+3]*Math.max(0,dist/threshold));}
-    x.putImageData(im,0,0);await replaceBaseImageFromCanvas(c,'Background removal test');
-    photoStatus('Experimental: plain backgrounds only; similar garment colours may be affected. Reload the original to undo.');
-  }catch(e){photoStatus(e.message,true);}finally{btn.disabled=false;}
-};
 let cropSource=null,cropStart=null,cropRect=null;
 const cropCanvas=$("#cropCanvas"),cropCtx=cropCanvas.getContext('2d');
 function cropPoint(e){const r=cropCanvas.getBoundingClientRect();return{x:Math.max(0,Math.min(cropCanvas.width,(e.clientX-r.left)*cropCanvas.width/r.width)),y:Math.max(0,Math.min(cropCanvas.height,(e.clientY-r.top)*cropCanvas.height/r.height))};}
@@ -1843,6 +1834,34 @@ $("#cropApplyBtn").onclick=async()=>{
   }catch(e){photoStatus(e.message,true);}
 };
 
+
+function makeEditableProject(){
+ if(!loaded)throw new Error("Choose a photo first.");
+ return {
+   version:1,
+   id:uid(),
+   name:($("#photoMeta")?.textContent||"Edited photo").split(" · ")[0],
+   image:img.src,
+   objects:JSON.parse(JSON.stringify(objects)),
+   brightness:photoBrightness,
+   contrast:photoContrast,
+   createdAt:new Date().toISOString()
+ };
+}
+async function loadEditableProject(p){
+ return new Promise((resolve,reject)=>{
+   img.onload=()=>{
+     loaded=true;$("#empty").style.display="none";img.style.display="block";
+     objects=JSON.parse(JSON.stringify(p.objects||[]));selected=null;temp=null;drag=null;history=[];
+     photoBrightness=+p.brightness||100;photoContrast=+p.contrast||100;
+     $("#brightnessRange").value=photoBrightness;$("#contrastRange").value=photoContrast;applyPhotoFilter();
+     $("#photoMeta").textContent=`${p.name||"Edited photo"} · ${img.naturalWidth}×${img.naturalHeight}`;
+     fitPreviewToStage();setTool("select");requestAnimationFrame(()=>{fitPreviewToStage();render()});resolve(true);
+   };
+   img.onerror=()=>reject(new Error("Could not reopen edited photo"));
+   img.src=p.image;
+ });
+}
 window.FitEditor={
   isCombineMode:()=>window.getComputedStyle($("#collagePanel")).display!=="none",
   loadAnnotateBlob:loadSecureBlobIntoAnnotate,
@@ -1854,6 +1873,8 @@ window.FitEditor={
   combineState:()=>({items:items.length,shapes:cObjects.length,texts:textItems.length,tool:cTool,mode:window.getComputedStyle($("#collagePanel")).display}),
   exportAnnotatedCanvas,
   exportCombinedCanvas,
+  makeEditableProject,
+  loadEditableProject,
   editorReady:true,
   refit:fitPreviewToStage
 };
@@ -1956,7 +1977,7 @@ function initAnnotatePhotoInteractions(){
 
 window.addEventListener("resize",()=>{if(loaded)fitPreviewToStage();fitCollageCanvas()});
 initAnnotatePhotoInteractions();
-mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active - Version V70");window.FitPhotoBoot.editor=true;
+mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active - Version V71");window.FitPhotoBoot.editor=true;
 })();
 </script><script>
 (() => {
@@ -2045,6 +2066,15 @@ if(mobile){
 }
 
 let cs=null,ct=null,ch=null,seen=new Set(),sessionRows=new Map();
+const EDITED_KEY="fitPhotoEditedProjectsV71";
+function getEditedProjects(){try{return JSON.parse(localStorage.getItem(EDITED_KEY)||"[]")}catch(_){return[]}}
+function saveEditedProjects(a){localStorage.setItem(EDITED_KEY,JSON.stringify(a.slice(0,40)))}
+function renderEditedPhotos(){
+ const box=q("#editedPhotos"),ph=q("#editedPhotosPlaceholder"),st=q("#editedPhotosStatus");if(!box)return;
+ const a=getEditedProjects();box.innerHTML="";if(ph)ph.style.display=a.length?"none":"block";if(st)st.textContent=`${a.length} editable photo(s)`;
+ a.forEach(p=>{const b=document.createElement("button");b.className="livePhoto editedPhoto";b.type="button";b.innerHTML=`<img src="${p.image}"><span class="editDoneBadge">EDITED</span><span class="badge">Click to continue</span>`;b.onclick=async()=>{try{if(!window.FitEditor?.editorReady)throw new Error("Editor is not ready");await window.FitEditor.loadEditableProject(p);q("#livePhotosStatus").textContent="Editable version reopened — continue editing."}catch(e){alert("Could not reopen edited photo: "+(e.message||e))}};box.appendChild(b)})
+}
+renderEditedPhotos();
 async function add(row,pre=true){if(!row?.photo_path||seen.has(row.photo_path))return;seen.add(row.photo_path);sessionRows.set(row.photo_path,row);let ph=q("#livePhotosPlaceholder");if(ph)ph.style.display="none";let u=await signed(row.photo_path),h=q("#livePhotos"),b=document.createElement("button");b.className="livePhoto";b.type="button";b.innerHTML=`<img src="${u}"><span class="badge">Click to edit</span>`;b.onclick=async()=>{
   document.querySelectorAll(".livePhoto").forEach(x=>x.classList.remove("active"));
   b.classList.add("active");
@@ -2282,6 +2312,29 @@ q('#downloadAllPhotosBtn').onclick=async()=>{
  finally{btn.disabled=false;}
 };
 
+
+async function zipDownload(entries,filename,statusEl){
+ if(!entries.length)throw new Error("No photos to download.");
+ if(!window.JSZip)throw new Error("ZIP library did not load.");
+ const zip=new JSZip(),st=statusEl||q("#livePhotosStatus");
+ for(let i=0;i<entries.length;i++){if(st)st.textContent=`Preparing ${i+1}/${entries.length}…`;const e=entries[i];zip.file(e.name,e.blob)}
+ const out=await zip.generateAsync({type:"blob"}),url=URL.createObjectURL(out),a=document.createElement("a");a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
+}
+async function originalEntries(){
+ await refreshPhotos();const arr=[];for(const path of sessionRows.keys()){const u=await signed(path),r=await fetch(u,{cache:"no-store"});if(!r.ok)throw new Error("Could not fetch original photo");arr.push({name:"original-"+(path.split("/").pop()||"photo.jpg"),blob:await r.blob()})}return arr;
+}
+async function editedEntries(){
+ const arr=[];for(const [i,p] of getEditedProjects().entries()){await window.FitEditor.loadEditableProject(p);const c=window.FitEditor.exportAnnotatedCanvas();const blob=await new Promise((ok,no)=>c.toBlob(b=>b?ok(b):no(new Error("Could not export edited photo")),"image/png"));arr.push({name:`edited-${i+1}.png`,blob})}return arr;
+}
+q("#editDoneBtn").onclick=async()=>{
+ try{
+   const p=window.FitEditor.makeEditableProject(),a=getEditedProjects();a.unshift(p);saveEditedProjects(a);renderEditedPhotos();
+   q("#editedPhotosStatus").textContent=`Edit Done ✓ Saved editable version · ${getEditedProjects().length} total`;
+ }catch(e){alert("Edit Done failed: "+(e.message||e))}
+};
+q("#downloadAllOriginalBtn").onclick=async()=>{try{await zipDownload(await originalEntries(),`fit-original-${cs||"photos"}.zip`,q("#livePhotosStatus"))}catch(e){alert(e.message||e)}};
+q("#downloadAllEditedBtn").onclick=async()=>{try{await zipDownload(await editedEntries(),`fit-edited-${cs||"photos"}.zip`,q("#editedPhotosStatus"))}catch(e){alert(e.message||e)}};
+q("#downloadAllLibraryBtn").onclick=async()=>{try{const all=[...(await originalEntries()),...(await editedEntries())];await zipDownload(all,`fit-photo-library-${cs||"photos"}.zip`,q("#editedPhotosStatus"))}catch(e){alert(e.message||e)}};
 q("#endSessionBtn").onclick=async()=>{if(!cs)return;let r=await sb.from(S).update({active:false,ended_at:new Date().toISOString()}).eq("session_id",cs);if(r.error)return q("#syncStatus").textContent=r.error.message;if(ch)sb.removeChannel(ch);if(pollTimer){clearInterval(pollTimer);pollTimer=null}updateRecentSession(cs,{active:false,endedAt:new Date().toISOString()});q("#qrPriority").hidden=true;q("#qrImage").removeAttribute("src");q("#syncStatus").textContent="Session ended - QR invalid";q("#endSessionBtn").style.display="none"};
 })();
 
