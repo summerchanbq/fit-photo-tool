@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>Fit Photo Studio V70 Editor &amp; Sidebar Fix</title>
+<title>Fit Photo Studio V75 - Edit Done Repair</title>
 <style>
 :root{
   --bg:#f3f5f7;--panel:#ffffff;--ink:#15171a;--muted:#707782;--line:#dce1e6;
@@ -234,7 +234,7 @@ body.mobile-mode .mobileCaptureScreen{display:block}
 @media(max-width:1150px){.app{grid-template-columns:200px 210px minmax(0,1fr) 270px}}
 
 
-/* Version V74 full workspace */
+/* Version V75 full workspace */
 .rightVersion{font-size:10px;font-weight:800;letter-spacing:.08em;color:#2563eb;background:#eff6ff;border-radius:999px;padding:4px 8px;align-self:flex-start;margin-bottom:10px}
 .right{display:block!important;overflow-y:auto!important;overflow-x:hidden!important;min-width:0!important;padding:14px 14px 110px!important}
 #annotateControls,#collageControls{display:block;min-width:0;max-width:100%;overflow:visible}
@@ -516,7 +516,6 @@ input[type="color"]{width:42px!important;height:32px!important}
 
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script>window.FitPhotoBoot={editor:false};window.addEventListener('error',function(e){if(!window.FitEditor){var t=document.querySelector('#hint');if(t)t.textContent='Editor startup error: '+e.message;}});</script><style id="v70-workspace-fixes">/* V70 final layout layer. Fixed-height workspace, independently scrollable columns. */
 [hidden]{display:none!important}
 .app{height:calc(100vh - 66px);height:calc(100dvh - 66px);min-height:0;align-items:stretch}
@@ -564,12 +563,23 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 #saveBtn,#saveCollage,.ctool,#refreshRecentSessionsBtn{height:34px!important;min-height:34px!important;max-height:34px!important}
 .shapeFillRow label{justify-content:flex-start!important}
 #previewImg:not([src]){display:none!important}
+</style><style id="v75-library-feedback">
+#editedPhotosStatus{min-height:2.6em;overflow-wrap:anywhere;line-height:1.45!important}
+#editedPhotos .editedPhoto{height:auto!important;min-height:0!important;aspect-ratio:1;display:block!important;padding:0!important;min-width:0;border:2px solid transparent}
+#editedPhotos .editedPhoto img{display:block;width:100%;height:100%;object-fit:cover}
+#editedPhotos .editedPhoto.active{border-color:#2563eb}
+#editedPhotos .editedPhoto.previewUnavailable{background:#f1f5f9;min-height:80px!important}
+.libraryCount{display:inline-block;border-radius:8px;padding:1px 5px;background:#eef2f6;color:#64748b}
+#editDoneBtn[aria-busy=true]{opacity:.72;cursor:wait}
+#editDoneBtn[data-save-state=saved]{background:#067647!important;border-color:#067647!important}
+#editDoneBtn[data-save-state=error]{background:#b42318!important;border-color:#b42318!important}
+#editedPhotos .badge{max-width:calc(100% - 8px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 </style></head>
 <body>
 <header>
 <div class="brand">
 <div class="logo">F</div>
-<div><h1>Fit Photo Studio</h1><small><strong>Version V74</strong> · Secure Sync · Full Combine Editor</small></div>
+<div><h1>Fit Photo Studio</h1><small><strong>Version V75</strong> · Secure Sync · Full Combine Editor</small></div>
 </div>
 <div class="topActions">
 <button class="btn" id="newBtn">New</button>
@@ -583,7 +593,6 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="sessionCode" id="sessionNameDisplay">—</div>
 <div class="note" id="sessionCode" style="font-size:8px;color:#94a3b8;margin-top:3px">—</div>
 <img alt="Scan with your phone to join this session" id="qrImage" style="display:none"/>
-
 <div class="syncStatus" id="syncStatus">Waiting for phone…</div>
 </div>
 </div>
@@ -619,7 +628,6 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="section" id="connectPhoneSection">
 <h2>Connect Phone</h2>
 <div class="connectCard">
-
 <label class="sessionModeToggle">
 <input id="protectedSessionToggle" type="checkbox"/>
 <span>
@@ -648,34 +656,34 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 </aside>
 <aside class="panel photoLibrary">
 <div class="libraryHeader">
-  <b>PHOTO LIBRARY</b>
-  <span>Original + editable versions</span>
-  <button class="btn primary" id="downloadAllLibraryBtn" style="width:100%;margin-top:7px">Download All Original + Edited</button>
+<b>PHOTO LIBRARY</b>
+<span>Original + editable versions</span>
+<button class="btn primary" id="downloadAllLibraryBtn" style="width:100%;margin-top:7px">Download All Original + Edited</button>
 </div>
 <div class="section" id="livePhotosSection">
-  <div class="sectionTitleRow"><h2>ORIGINAL PHOTOS</h2><button class="btn" id="downloadAllOriginalBtn">Download All</button></div>
-  <div id="livePhotosPlaceholder" class="libraryEmpty">Phone photos will appear here automatically.</div>
-  <div class="livePhotos" id="livePhotos"></div>
-  <div class="syncStatus" id="livePhotosStatus">Create a session to receive phone photos.</div>
-  <button class="btn" id="refreshLivePhotosBtn" style="width:100%;margin-top:6px">Refresh Photos</button>
+<div class="sectionTitleRow"><h2>ORIGINAL PHOTOS</h2><button class="btn" id="downloadAllOriginalBtn">Download All</button></div>
+<div class="libraryEmpty" id="livePhotosPlaceholder">Phone photos will appear here automatically.</div>
+<div class="livePhotos" id="livePhotos"></div>
+<div class="syncStatus" id="livePhotosStatus">Create a session to receive phone photos.</div>
+<button class="btn" id="refreshLivePhotosBtn" style="width:100%;margin-top:6px">Refresh Photos</button>
 </div>
 <div class="section" id="editedPhotosSection">
-  <div class="sectionTitleRow"><h2>EDITED PHOTOS</h2><button class="btn" id="downloadAllEditedBtn">Download All</button></div>
-  <div id="editedPhotosPlaceholder" class="libraryEmpty">Click <b>Edit Done</b> to keep an editable version here.</div>
-  <div class="livePhotos" id="editedPhotos"></div>
-  <div class="syncStatus" id="editedPhotosStatus">0 editable photo(s)</div>
-</div>
+<div class="sectionTitleRow"><h2>EDITED PHOTOS <span class="libraryCount" id="editedPhotoCount">0</span></h2><button class="btn" id="downloadAllEditedBtn">Download All</button></div>
+<div class="libraryEmpty" id="editedPhotosPlaceholder">Click Edit Done to save a version you can reopen and edit. Stored on this browser.</div>
+<div class="livePhotos" id="editedPhotos"></div>
+<div class="syncStatus" id="editedPhotosStatus">0 editable photo(s)</div>
+<button class="btn" id="refreshEditedPhotosBtn" style="width:100%;margin-top:6px" type="button">Refresh Saved Photos</button></div>
 <div class="section" id="combineLibrarySection">
-  <h2>COMBINE PHOTOS</h2>
-  <div class="thumbList" id="thumbList"></div>
-  <div class="libraryEmpty" id="combineLibraryEmpty">Add Original or Edited photos to Combine.</div>
+<h2>COMBINE PHOTOS</h2>
+<div class="thumbList" id="thumbList"></div>
+<div class="libraryEmpty" id="combineLibraryEmpty">Add Original or Edited photos to Combine.</div>
 </div>
 </aside>
 <main class="panel center">
 <div id="annotatePanel" style="display:flex;flex-direction:column;height:100%">
 <div class="canvasHead">
 <b>Photo Preview</b>
-<button id="editDoneBtn" class="btn editDoneHeaderBtn" title="Keep this editable version in Edited Photos">✓ Edit Done</button>
+<button aria-label="Save editable photo to Edited Photos" class="btn editDoneHeaderBtn" id="editDoneBtn" title="Save photo and editable layers to this browser" type="button">✓ Edit Done</button>
 <span id="hint" style="display:none">Choose a photo to start</span>
 </div>
 <div class="stage">
@@ -746,7 +754,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="section">
 <div class="sectionTitleRow">
 <h2>ANNOTATION STYLE</h2>
-<span class="versionPill">V74</span>
+<span class="versionPill">V75</span>
 </div>
 <div class="prop">
 <label>Color <small><span id="colorText">#000000</span></small></label>
@@ -769,7 +777,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 </div>
 </div>
 <div class="section" id="photoAdjustSection">
-<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V74</span></div>
+<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V75</span></div>
 <div class="compactPair">
 <button class="btn" id="cropPhotoBtn">Crop</button>
 <button class="btn" id="rotatePhotoBtn">↻ Rotate 90°</button>
@@ -828,7 +836,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="section">
 <div class="sectionTitleRow">
 <h2>ANNOTATION STYLE</h2>
-<span class="versionPill">V74</span>
+<span class="versionPill">V75</span>
 </div>
 <div class="prop">
 <label>Color <small><span id="cAnnoColorText">#000000</span></small></label>
@@ -892,7 +900,6 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 </div>
 </aside>
 </div>
-
 <div class="cropModalBackdrop" id="cropModal" style="display:none">
 <div class="cropModalCard">
 <div class="sectionTitleRow"><h3>Crop Photo</h3><button class="btn" id="cropCancelBtn">Cancel</button></div>
@@ -939,8 +946,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="uploadQueue" id="uploadQueue"></div>
 </div>
 </div>
-
-<script>
+<script id="fit-editor-engine">
 (()=>{
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const debug=t=>$("#debug").textContent="Debug: "+t;
@@ -1068,7 +1074,7 @@ $("#photoInput").addEventListener("change",e=>{
   debug(`loading ${f.name} (${Math.round(f.size/1024)} KB)`);
   const url=URL.createObjectURL(f);
   img.onload=()=>{
-    loaded=true;
+    loaded=true;resetSavedProjectIdentity();
     snapshotCropSource();
     if(typeof resetPhotoAdjustments==="function")resetPhotoAdjustments();
     $("#empty").style.display="none";
@@ -1717,7 +1723,7 @@ async function loadSecureBlobIntoAnnotate(blob,label="Secure live photo"){
   return new Promise((resolve,reject)=>{
     const url=URL.createObjectURL(blob);
     img.onload=()=>{
-      loaded=true;if(typeof resetPhotoAdjustments==="function")resetPhotoAdjustments();
+      loaded=true;resetSavedProjectIdentity();if(typeof resetPhotoAdjustments==="function")resetPhotoAdjustments();
       snapshotCropSource();
       $("#empty").style.display="none";
       img.style.display="block";
@@ -1840,7 +1846,7 @@ $("#cropPhotoBtn").onclick=()=>{
   cropSource=originalCropSource||currentFilteredCanvas();cropCanvas.width=cropSource.width;cropCanvas.height=cropSource.height;cropStart=null;
   cropRect=currentCropRect?{...currentCropRect}:{x:0,y:0,w:cropSource.width,h:cropSource.height};
   $("#cropBox").style.display='block';$("#cropModal").style.display='flex';
-  const sc=Math.min((window.innerWidth-70)/cropCanvas.width,(window.innerHeight-200)/cropCanvas.height,1);
+  const sc=Math.min((window.innerWidth-70)/cropCanvas.width,(window.innerHeight-200)/cropCanvas.height,window.innerHeight*.62/cropCanvas.height,1);
   cropCanvas.style.width=Math.floor(cropCanvas.width*sc)+'px';cropCanvas.style.height=Math.floor(cropCanvas.height*sc)+'px';renderCrop();
 };
 $("#cropCancelBtn").onclick=()=>{$("#cropModal").style.display='none';cropStart=null;};
@@ -1859,34 +1865,95 @@ $("#cropApplyBtn").onclick=async()=>{
 };
 
 
+// V75: preserve the complete editable document, not a transient blob URL.
+let savedProjectIdentity=null;
+let editorDocumentKey=uid();
+function resetSavedProjectIdentity(){savedProjectIdentity=null;editorDocumentKey=uid();}
+function encodeProjectCanvas(canvas,mime='image/png',quality=.92){
+  return new Promise((resolve,reject)=>{
+    try{canvas.toBlob(b=>b?resolve(b):reject(new Error('Could not encode this photo.')),mime,quality);}
+    catch(e){reject(e);}
+  });
+}
+function projectCanvas(source){
+  const c=document.createElement('canvas');c.width=source.naturalWidth||source.width;c.height=source.naturalHeight||source.height;
+  c.getContext('2d').drawImage(source,0,0);return c;
+}
+function decodedProjectImage(source){
+  return new Promise((resolve,reject)=>{
+    if(!(source instanceof Blob)&&!(typeof source==='string'&&/^(data:image\/|blob:)/.test(source))){reject(new Error('This saved version does not contain a usable image.'));return;}
+    const image=new Image(),url=source instanceof Blob?URL.createObjectURL(source):source;
+    const timer=setTimeout(()=>{if(source instanceof Blob)URL.revokeObjectURL(url);reject(new Error('Saved image could not be opened.'));},15000);
+    image.onload=()=>{clearTimeout(timer);if(source instanceof Blob)URL.revokeObjectURL(url);resolve(image);};
+    image.onerror=()=>{clearTimeout(timer);if(source instanceof Blob)URL.revokeObjectURL(url);reject(new Error('Saved image is unavailable. Older temporary-URL versions may need to be saved again from the original.'));};
+    image.src=url;
+  });
+}
 async function makeEditableProject(){
- if(!loaded)throw new Error("Choose a photo first.");
- return {
-   version:2,
-   id:uid(),
-   name:($("#photoMeta")?.textContent||"Edited photo").split(" · ")[0],
-   image:imageDataUrl(),
-   objects:JSON.parse(JSON.stringify(objects)),
-   brightness:photoBrightness,
-   contrast:photoContrast,
-   createdAt:new Date().toISOString()
- };
+  if(!loaded||!img.naturalWidth)throw new Error('Choose a photo first.');
+  // Finalise any live text before taking the snapshot.
+  const active=document.querySelector('#photoWrap .liveTextEditor');
+  if(active){active.blur();await new Promise(r=>setTimeout(r,0));}
+  const now=new Date().toISOString(),base=projectCanvas(img),original=originalCropSource?projectCanvas(originalCropSource):base;
+  const flat=exportAnnotatedCanvas(),small=document.createElement('canvas'),scale=Math.min(1,280/Math.max(flat.width,flat.height));
+  small.width=Math.max(1,Math.round(flat.width*scale));small.height=Math.max(1,Math.round(flat.height*scale));
+  const sx=small.getContext('2d');sx.fillStyle='#fff';sx.fillRect(0,0,small.width,small.height);sx.drawImage(flat,0,0,small.width,small.height);
+  // Copy mutable values before any asynchronous encoding.
+  const record={version:3,kind:'annotate',id:savedProjectIdentity?.id||uid(),documentKey:editorDocumentKey,
+    name:($('#photoMeta')?.textContent||'Edited photo').split(' \u00b7 ')[0],
+    objects:JSON.parse(JSON.stringify(objects)),brightness:photoBrightness,contrast:photoContrast,
+    cropRect:currentCropRect?{...currentCropRect}:{x:0,y:0,w:original.width,h:original.height},
+    originalWidth:original.width,originalHeight:original.height,width:base.width,height:base.height,
+    createdAt:savedProjectIdentity?.createdAt||now,updatedAt:now};
+  const [baseBlob,originalBlob,exportBlob,thumbnailBlob]=await Promise.all([
+    encodeProjectCanvas(base),encodeProjectCanvas(original),encodeProjectCanvas(flat),encodeProjectCanvas(small,'image/jpeg',.86)]);
+  return Object.assign(record,{baseBlob,originalBlob,exportBlob,thumbnailBlob});
+}
+function markEditableProjectSaved(record){
+  if(record.documentKey===editorDocumentKey)savedProjectIdentity={id:record.id,createdAt:record.createdAt};
 }
 async function loadEditableProject(p){
- return new Promise((resolve,reject)=>{
-   img.onload=()=>{
-     loaded=true;$("#empty").style.display="none";img.style.display="block";
-     snapshotCropSource();
-     objects=JSON.parse(JSON.stringify(p.objects||[]));selected=null;temp=null;drag=null;history=[];
-     photoBrightness=+p.brightness||100;photoContrast=+p.contrast||100;
-     $("#brightnessRange").value=photoBrightness;$("#contrastRange").value=photoContrast;applyPhotoFilter();
-     $("#photoMeta").textContent=`${p.name||"Edited photo"} · ${img.naturalWidth}×${img.naturalHeight}`;
-     fitPreviewToStage();setTool("select");requestAnimationFrame(()=>{fitPreviewToStage();render()});resolve(true);
-   };
-   img.onerror=()=>reject(new Error("Could not reopen edited photo"));
-   img.src=p.image;
- });
+  if(!p||!p.id)throw new Error('Invalid saved photo.');
+  const base=await decodedProjectImage(p.baseBlob||p.image);
+  const original=p.originalBlob?await decodedProjectImage(p.originalBlob):base;
+  const url=URL.createObjectURL(await encodeProjectCanvas(projectCanvas(base)));
+  await new Promise((resolve,reject)=>{
+    img.onload=()=>{URL.revokeObjectURL(url);resolve();};
+    img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('Could not display saved photo.'));};
+    img.src=url;
+  });
+  loaded=true;$('#empty').style.display='none';img.style.display='block';
+  originalCropSource=projectCanvas(original);
+  currentCropRect=p.cropRect?{...p.cropRect}:{x:0,y:0,w:original.width,h:original.height};
+  objects=JSON.parse(JSON.stringify(Array.isArray(p.objects)?p.objects:[]));selected=null;temp=null;drag=null;history=[];
+  photoBrightness=Number.isFinite(+p.brightness)?+p.brightness:100;
+  photoContrast=Number.isFinite(+p.contrast)?+p.contrast:100;
+  $('#brightnessRange').value=photoBrightness;$('#contrastRange').value=photoContrast;applyPhotoFilter();
+  $('#photoMeta').textContent=(p.name||'Edited photo')+' \u00b7 '+img.naturalWidth+'\u00d7'+img.naturalHeight;
+  $('#photoWrap').style.transform='';selectPhotoFrame(false);annotateTextEditing=false;
+  savedProjectIdentity={id:p.id,createdAt:p.createdAt||new Date().toISOString()};editorDocumentKey=uid();
+  mode('annotate');setTool('select');fitPreviewToStage();render();
+  await new Promise(r=>requestAnimationFrame(r));fitPreviewToStage();render();return true;
 }
+// Legacy V71-V74 exports are rendered off-screen: batch download never replaces the live editor.
+async function renderEditableProjectCanvas(p){
+  const base=await decodedProjectImage(p.baseBlob||p.image),out=projectCanvas(base),x=out.getContext('2d');
+  x.clearRect(0,0,out.width,out.height);x.filter=`brightness(${Number.isFinite(+p.brightness)?+p.brightness:100}%) contrast(${Number.isFinite(+p.contrast)?+p.contrast:100}%)`;
+  x.drawImage(base,0,0);x.filter='none';
+  for(const o of (p.objects||[])){
+    x.save();x.strokeStyle=o.color||'#000000';x.fillStyle=o.color||'#000000';x.lineWidth=o.width||6;x.lineCap='round';x.lineJoin='round';
+    if(o.type==='text'){x.font=`700 ${o.size||34}px Arial`;x.textBaseline='top';String(o.text||'').split('\n').forEach((v,i)=>x.fillText(v,o.x1,o.y1+i*(o.size||34)*1.2));}
+    else if(o.type==='line'||o.type==='dash'||o.type==='arrow'){
+      x.setLineDash(o.type==='dash'?adaptiveDash(o.width||6):[]);x.beginPath();x.moveTo(o.x1,o.y1);x.lineTo(o.x2,o.y2);x.stroke();
+      if(o.type==='arrow'){const a=Math.atan2(o.y2-o.y1,o.x2-o.x1),L=24+(o.width||6)*2;x.beginPath();x.moveTo(o.x2,o.y2);x.lineTo(o.x2-L*Math.cos(a-Math.PI/6),o.y2-L*Math.sin(a-Math.PI/6));x.lineTo(o.x2-L*Math.cos(a+Math.PI/6),o.y2-L*Math.sin(a+Math.PI/6));x.closePath();x.fill();}
+    }else if(o.type==='circle'){x.beginPath();x.ellipse((o.x1+o.x2)/2,(o.y1+o.y2)/2,Math.abs(o.x2-o.x1)/2,Math.abs(o.y2-o.y1)/2,0,0,Math.PI*2);o.fill?x.fill():x.stroke();}
+    else if(o.type==='rect'){o.fill?x.fillRect(o.x1,o.y1,o.x2-o.x1,o.y2-o.y1):x.strokeRect(o.x1,o.y1,o.x2-o.x1,o.y2-o.y1);}
+    else if(o.type==='curve'){x.beginPath();x.moveTo(o.x1,o.y1);x.quadraticCurveTo(o.cx,o.cy,o.x2,o.y2);x.stroke();}
+    x.restore();
+  }
+  return out;
+}
+
 window.FitEditor={
   isCombineMode:()=>window.getComputedStyle($("#collagePanel")).display!=="none",
   loadAnnotateBlob:loadSecureBlobIntoAnnotate,
@@ -1900,6 +1967,8 @@ window.FitEditor={
   exportCombinedCanvas,
   makeEditableProject,
   loadEditableProject,
+  markEditableProjectSaved,
+  renderEditableProjectCanvas,
   editorReady:true,
   refit:fitPreviewToStage
 };
@@ -2002,9 +2071,200 @@ function initAnnotatePhotoInteractions(){
 
 window.addEventListener("resize",()=>{if(loaded)fitPreviewToStage();fitCollageCanvas()});
 initAnnotatePhotoInteractions();
-mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active - Version V74");window.FitPhotoBoot.editor=true;
+mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active - Version V75");window.FitPhotoBoot.editor=true;
 })();
-</script><script>
+</script><script id="fit-local-library">/* V75 local editable library: independent of Supabase and its network availability. */
+(()=>{
+'use strict';
+const q=s=>document.querySelector(s);
+if(new URLSearchParams(location.search).get('mode')==='mobile')return;
+const DB_NAME='FitPhotoStudioV74',STORE='editedProjects',LEGACY_KEY='fitPhotoEditedProjectsV71';
+let dbPromise=null,saveBusy=false,archiveBusy=false,loadBusy=false,renderSeq=0,statusTimer=null;
+let previewUrls=[];
+function setStatus(message,error=false){
+ const el=q('#editedPhotosStatus');if(el){el.textContent=message;el.style.color=error?'#b42318':'#067647';el.dataset.state=error?'error':'ready';}
+}
+function describeError(e){
+ if(e?.name==='QuotaExceededError')return 'Browser storage is full. Export your work and free some browser storage before retrying.';
+ if(e?.name==='SecurityError'||e?.name==='NotAllowedError')return 'This browser is blocking local storage. Open the normal website (not a file preview/private mode) and allow site storage.';
+ return e?.message||String(e);
+}
+function openDb(){
+ if(dbPromise)return dbPromise;
+ dbPromise=new Promise((resolve,reject)=>{
+  let req,settled=false;
+  const fail=e=>{if(settled)return;settled=true;clearTimeout(timer);reject(e);};
+  const timer=setTimeout(()=>fail(new Error('Local library is taking too long to open. Close other copies of this tool and retry.')),8000);
+  try{req=indexedDB.open(DB_NAME,1);}catch(e){fail(e);return;}
+  req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains(STORE))req.result.createObjectStore(STORE,{keyPath:'id'});};
+  req.onblocked=()=>fail(new Error('Another tab is blocking the local photo library. Close the other tab and retry.'));
+  req.onerror=()=>fail(req.error||new Error('Could not open the local photo library.'));
+  req.onsuccess=()=>{
+   if(settled){req.result.close();return;}
+   settled=true;clearTimeout(timer);const db=req.result;
+   db.onversionchange=()=>{db.close();dbPromise=null;};resolve(db);
+  };
+ }).catch(e=>{dbPromise=null;throw e;});
+ return dbPromise;
+}
+async function readRecords(id){
+ const db=await openDb();
+ return new Promise((resolve,reject)=>{
+  const tx=db.transaction(STORE,'readonly'),store=tx.objectStore(STORE),req=id?store.get(id):store.getAll();let result;
+  req.onsuccess=()=>{result=req.result;};
+  tx.oncomplete=()=>resolve(result);tx.onerror=()=>reject(tx.error||req.error||new Error('Could not read the photo library.'));tx.onabort=()=>reject(tx.error||new Error('Library read was interrupted.'));
+ });
+}
+async function writeRecord(record){
+ if(!record?.id||(!(record.baseBlob instanceof Blob)&&!record.image))throw new Error('The editor did not provide a complete photo.');
+ const db=await openDb();
+ await new Promise((resolve,reject)=>{
+  const tx=db.transaction(STORE,'readwrite');let req;
+  try{req=tx.objectStore(STORE).put(record);}catch(e){try{tx.abort();}catch(_){}reject(e);return;}
+  tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error||req?.error||new Error('Could not save the photo.'));tx.onabort=()=>reject(tx.error||new Error('Photo save was interrupted. Please retry.'));
+ });
+ const saved=await readRecords(record.id);
+ if(!saved||saved.id!==record.id)throw new Error('The write could not be verified. Please retry.');
+ return saved;
+}
+function usable(p){return !!p&&typeof p.id==='string'&&(p.baseBlob instanceof Blob||(typeof p.image==='string'&&/^(data:image\/|blob:)/.test(p.image)));}
+async function allRecords(){const rows=await readRecords();return (Array.isArray(rows)?rows:[]).filter(usable).sort((a,b)=>String(b.updatedAt||b.createdAt||'').localeCompare(String(a.updatedAt||a.createdAt||'')));}
+async function migrateLegacy(){
+ let raw;try{raw=localStorage.getItem(LEGACY_KEY);}catch(_){return;}
+ if(!raw)return;
+ let rows;try{rows=JSON.parse(raw);}catch(_){return;}
+ if(!Array.isArray(rows))return;
+ for(const p of rows){
+  if(!usable(p))continue;
+  // Preserve legacy source data; do not silently delete entries that could not migrate.
+  if(!await readRecords(p.id))await writeRecord(p);
+ }
+}
+function editor(){if(!window.FitEditor?.editorReady)throw new Error('Editor did not finish loading. Check the page status and reload.');return window.FitEditor;}
+async function refreshGallery(highlightId){
+ const seq=++renderSeq,rows=await allRecords();if(seq!==renderSeq)return rows;
+ const box=q('#editedPhotos'),placeholder=q('#editedPhotosPlaceholder');if(!box)throw new Error('Edited Photos panel is missing.');
+ const freshUrls=[],fragment=document.createDocumentFragment();
+ for(const record of rows){
+  const b=document.createElement('button');b.type='button';b.className='livePhoto editedPhoto';b.dataset.projectId=record.id;
+  b.title=(record.name||'Edited photo')+' - click to continue editing';b.setAttribute('aria-label',b.title);
+  const image=document.createElement('img');image.alt=record.name||'Edited photo';
+  const source=record.thumbnailBlob||record.exportBlob||record.baseBlob||record.image;
+  if(source instanceof Blob){image.src=URL.createObjectURL(source);freshUrls.push(image.src);}else image.src=source;
+  image.onerror=()=>{b.classList.add('previewUnavailable');image.alt='Saved version: click to reopen';};
+  const badge=document.createElement('span');badge.className='editDoneBadge';badge.textContent='EDITED';
+  const caption=document.createElement('span');caption.className='badge';caption.textContent='Click to continue';
+  b.append(image,badge,caption);
+  b.onclick=async()=>{
+   if(loadBusy||saveBusy){setStatus('Please wait for the current photo operation.');return;}
+   loadBusy=true;b.disabled=true;
+   try{
+    setStatus('Opening saved editable version...');const p=await readRecords(record.id);if(!usable(p))throw new Error('This saved version is unavailable.');
+    await editor().loadEditableProject(p);
+    box.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x.dataset.projectId===p.id));
+    setStatus('Opened saved version. Edit and click Edit Done to update it.');
+   }catch(e){setStatus('Open failed: '+describeError(e),true);}
+   finally{loadBusy=false;b.disabled=false;}
+  };
+  if(record.id===highlightId)b.classList.add('active','editedSavePulse');
+  fragment.append(b);
+ }
+ box.replaceChildren(fragment);previewUrls.forEach(u=>URL.revokeObjectURL(u));previewUrls=freshUrls;
+ if(placeholder)placeholder.style.display=rows.length?'none':'block';
+ if(q('#editedPhotoCount'))q('#editedPhotoCount').textContent=String(rows.length);
+ setStatus(rows.length+' saved editable photo(s) on this browser.');
+ return rows;
+}
+async function saveCurrent(){
+ if(saveBusy||loadBusy)return;
+ const button=q('#editDoneBtn');saveBusy=true;clearTimeout(statusTimer);
+ button.disabled=true;button.setAttribute('aria-busy','true');button.textContent='Saving...';button.dataset.saveState='saving';
+ setStatus('Saving the image and editable layers...');
+ try{
+  const p=await editor().makeEditableProject();
+  await writeRecord(p); // A committed transaction and a read-back are required before success.
+  editor().markEditableProjectSaved(p);
+  const rows=await refreshGallery(p.id);
+  button.textContent='\u2713 Saved';button.dataset.saveState='saved';
+  setStatus('Saved \u2713 '+rows.length+' editable photo(s). Click the thumbnail to continue.');
+  // Scroll this column only; never move the preview or the whole application.
+  const panel=q('.photoLibrary'),section=q('#editedPhotosSection');
+  if(panel&&section){const pr=panel.getBoundingClientRect(),sr=section.getBoundingClientRect();if(sr.bottom>pr.bottom||sr.top<pr.top)panel.scrollTo({top:panel.scrollTop+sr.top-pr.top-12,behavior:'smooth'});}
+  statusTimer=setTimeout(()=>{if(!saveBusy)button.textContent='\u2713 Edit Done';},2000);
+ }catch(e){
+  button.textContent='Retry Edit Done';button.dataset.saveState='error';setStatus('Save failed: '+describeError(e),true);console.warn('Edited photo save:',e);
+ }finally{saveBusy=false;button.disabled=false;button.removeAttribute('aria-busy');}
+}
+function archiveFilename(base){
+ const answer=prompt('File name:',base);if(answer===null)return null;
+ const name=(answer.trim()||base).replace(/[\\/:*?"<>|\x00-\x1f]/g,'-').replace(/\.zip$/i,'');return name+'.zip';
+}
+function deliverBlob(blob,filename){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);}
+async function archive(which){
+ if(archiveBusy||saveBusy||loadBusy)return;
+ const name=archiveFilename(which==='all'?'fit-photo-library':which==='original'?'fit-original-photos':'fit-edited-photos');if(!name)return;
+ archiveBusy=true;const buttons=['#downloadAllOriginalBtn','#downloadAllEditedBtn','#downloadAllLibraryBtn'].map(q).filter(Boolean);buttons.forEach(b=>b.disabled=true);
+ try{
+  const files=[];
+  if(which!=='edited'){
+   if(!window.FitPhotoSync?.getOriginalArchiveEntries){if(which==='original')throw new Error('Photo sync is not connected. Create or reopen a session first.');}
+   else files.push(...await window.FitPhotoSync.getOriginalArchiveEntries());
+  }
+  if(which!=='original'){
+   const rows=await allRecords();
+   for(let i=0;i<rows.length;i++){
+    setStatus(`Preparing edited photo ${i+1} / ${rows.length}...`);const p=rows[i];
+    let blob=p.exportBlob;
+    if(!(blob instanceof Blob)){const c=await editor().renderEditableProjectCanvas(p);blob=await new Promise((res,rej)=>c.toBlob(b=>b?res(b):rej(new Error('Could not export saved photo.')),'image/png'));}
+    const safe=String(p.name||'edited-photo').replace(/[\\/:*?"<>|\x00-\x1f]/g,'-').slice(0,80).replace(/\.(png|jpe?g)$/i,'');
+    files.push({name:`edited/${String(i+1).padStart(3,'0')}-${safe}.png`,blob});
+   }
+  }
+  if(!files.length)throw new Error('No available photos to download.');
+  if(files.length>65535)throw new Error('Too many files for a single archive.');
+  let total=0;const entries=[];
+  for(const file of files){const bytes=new Uint8Array(await file.blob.arrayBuffer());total+=bytes.length;if(total>250*1024*1024)throw new Error('Archive exceeds 250 MB. Download Original and Edited separately.');entries.push({name:file.name,bytes});}
+  const zip=makePhotoZip(entries);deliverBlob(zip,name);setStatus('Archive ready: '+entries.length+' photo(s). Check your downloads.');
+ }catch(e){setStatus('Download failed: '+describeError(e),true);}
+ finally{archiveBusy=false;buttons.forEach(b=>b.disabled=false);}
+}
+function makePhotoZip(entries){
+ const encoder=new TextEncoder(),parts=[],central=[];let offset=0,centralBytes=0;
+ const table=new Uint32Array(256);
+ for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=(c&1)?0xedb88320^(c>>>1):c>>>1;table[n]=c>>>0;}
+ function crc32(bytes){let c=0xffffffff;for(const x of bytes)c=table[(c^x)&255]^(c>>>8);return(c^0xffffffff)>>>0;}
+ function header(length){const bytes=new Uint8Array(length);return{bytes,v:new DataView(bytes.buffer)};}
+ const now=new Date(),dosTime=(now.getHours()<<11)|(now.getMinutes()<<5)|(now.getSeconds()>>1),dosDate=((Math.max(1980,now.getFullYear())-1980)<<9)|((now.getMonth()+1)<<5)|now.getDate();
+ for(const entry of entries){
+  const name=encoder.encode(entry.name),bytes=entry.bytes,crc=crc32(bytes),local=header(30);
+  local.v.setUint32(0,0x04034b50,true);local.v.setUint16(4,20,true);local.v.setUint16(6,0x0800,true);local.v.setUint16(8,0,true);
+  local.v.setUint16(10,dosTime,true);local.v.setUint16(12,dosDate,true);local.v.setUint32(14,crc,true);
+  local.v.setUint32(18,bytes.length,true);local.v.setUint32(22,bytes.length,true);local.v.setUint16(26,name.length,true);
+  parts.push(local.bytes,name,bytes);
+  const c=header(46);c.v.setUint32(0,0x02014b50,true);c.v.setUint16(4,20,true);c.v.setUint16(6,20,true);c.v.setUint16(8,0x0800,true);
+  c.v.setUint16(10,0,true);c.v.setUint16(12,dosTime,true);c.v.setUint16(14,dosDate,true);c.v.setUint32(16,crc,true);
+  c.v.setUint32(20,bytes.length,true);c.v.setUint32(24,bytes.length,true);c.v.setUint16(28,name.length,true);c.v.setUint32(42,offset,true);
+  central.push(c.bytes,name);centralBytes+=46+name.length;offset+=30+name.length+bytes.length;
+ }
+ const end=header(22);end.v.setUint32(0,0x06054b50,true);end.v.setUint16(8,entries.length,true);end.v.setUint16(10,entries.length,true);
+ end.v.setUint32(12,centralBytes,true);end.v.setUint32(16,offset,true);
+ return new Blob([...parts,...central,end.bytes],{type:'application/zip'});
+}
+
+function init(){
+ const b=q('#editDoneBtn');if(!b)return;
+ b.onclick=saveCurrent;b.dataset.saveState='ready';
+ const status=q('#editedPhotosStatus');if(status){status.setAttribute('role','status');status.setAttribute('aria-live','polite');}
+ const bind=(selector,fn)=>{const button=q(selector);if(button)button.onclick=fn;};
+ bind('#refreshEditedPhotosBtn',()=>refreshGallery().catch(e=>setStatus('Library: '+describeError(e),true)));
+ bind('#downloadAllOriginalBtn',()=>archive('original'));bind('#downloadAllEditedBtn',()=>archive('edited'));bind('#downloadAllLibraryBtn',()=>archive('all'));
+ // Failure to open IndexedDB never prevents the button from being bound.
+ (async()=>{try{await migrateLegacy();await refreshGallery();}catch(e){setStatus('Local library: '+describeError(e),true);}})();
+ window.FitPhotoLibrary={ready:true,refresh:refreshGallery};
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script><script id="fit-photo-sync">
 (() => {
 window.addEventListener("error",e=>{
   const s=document.querySelector("#createSessionStatus");
@@ -2091,54 +2351,6 @@ if(mobile){
 }
 
 let cs=null,ct=null,ch=null,seen=new Set(),sessionRows=new Map();
-const EDITED_DB="FitPhotoStudioV74";
-const EDITED_STORE="editedProjects";
-let editedDbPromise=null;
-function openEditedDb(){
- if(editedDbPromise)return editedDbPromise;
- editedDbPromise=new Promise((resolve,reject)=>{
-   const req=indexedDB.open(EDITED_DB,1);
-   req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains(EDITED_STORE))db.createObjectStore(EDITED_STORE,{keyPath:"id"})};
-   req.onsuccess=()=>resolve(req.result);
-   req.onerror=()=>reject(req.error||new Error("Could not open local photo library"));
- });
- return editedDbPromise;
-}
-async function getEditedProjects(){
- const db=await openEditedDb();
- return new Promise((resolve,reject)=>{
-   const tx=db.transaction(EDITED_STORE,"readonly"),req=tx.objectStore(EDITED_STORE).getAll();
-   req.onsuccess=()=>resolve((req.result||[]).sort((a,b)=>String(b.createdAt||"").localeCompare(String(a.createdAt||""))));
-   req.onerror=()=>reject(req.error);
- });
-}
-async function putEditedProject(p){
- const db=await openEditedDb();
- return new Promise((resolve,reject)=>{
-   const tx=db.transaction(EDITED_STORE,"readwrite");tx.objectStore(EDITED_STORE).put(p);
-   tx.oncomplete=()=>resolve(p);tx.onerror=()=>reject(tx.error||new Error("Could not save edited photo"));
- });
-}
-async function migrateLegacyEditedProjects(){
- try{
-   const raw=localStorage.getItem("fitPhotoEditedProjectsV71");
-   if(!raw)return;
-   const legacy=JSON.parse(raw)||[];
-   for(const p of legacy)await putEditedProject(p);
-   localStorage.removeItem("fitPhotoEditedProjectsV71");
- }catch(e){console.warn("Legacy edited-photo migration failed",e)}
-}
-async function renderEditedPhotos(){
- const box=q("#editedPhotos"),ph=q("#editedPhotosPlaceholder"),st=q("#editedPhotosStatus");if(!box)return;
- try{
-   const a=await getEditedProjects();box.innerHTML="";if(ph)ph.style.display=a.length?"none":"block";if(st)st.textContent=`${a.length} editable photo(s)`;
-   a.forEach(p=>{const b=document.createElement("button");b.className="livePhoto editedPhoto";b.type="button";b.innerHTML=`<img src="${p.image}"><span class="editDoneBadge">EDITED</span><span class="badge">Click to continue</span>`;b.onclick=async()=>{try{if(!window.FitEditor?.editorReady)throw new Error("Editor is not ready");await window.FitEditor.loadEditableProject(p);q("#livePhotosStatus").textContent="Editable version reopened — continue editing."}catch(e){alert("Could not reopen edited photo: "+(e.message||e))}};box.appendChild(b)})
- }catch(e){
-   if(ph)ph.style.display="block";
-   if(st)st.textContent="Editable library unavailable: "+(e.message||e);
- }
-}
-(async()=>{await migrateLegacyEditedProjects();await renderEditedPhotos()})();
 async function add(row,pre=true){if(!row?.photo_path||seen.has(row.photo_path))return;seen.add(row.photo_path);sessionRows.set(row.photo_path,row);let ph=q("#livePhotosPlaceholder");if(ph)ph.style.display="none";let u=await signed(row.photo_path),h=q("#livePhotos"),b=document.createElement("button");b.className="livePhoto";b.type="button";b.innerHTML=`<img src="${u}"><span class="badge">Click to edit</span>`;b.onclick=async()=>{
   document.querySelectorAll(".livePhoto").forEach(x=>x.classList.remove("active"));
   b.classList.add("active");
@@ -2326,108 +2538,21 @@ if(createBtn)createBtn.onclick=async()=>{
  finally{b.disabled=false;b.textContent=isProtected?"Create Protected Session":"Create Quick Session"}
 };
 q("#refreshLivePhotosBtn").onclick=async()=>{q("#livePhotosStatus").textContent="Checking secure session…";await refreshPhotos()};
-// Store already-compressed image files in a standards-compliant ZIP, without a CDN.
-function makePhotoZip(entries){
- const encoder=new TextEncoder(),parts=[],central=[];let offset=0,centralBytes=0;
- const table=new Uint32Array(256);
- for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=(c&1)?0xedb88320^(c>>>1):c>>>1;table[n]=c>>>0;}
- function crc32(bytes){let c=0xffffffff;for(const x of bytes)c=table[(c^x)&255]^(c>>>8);return(c^0xffffffff)>>>0;}
- function header(length){const bytes=new Uint8Array(length);return{bytes,v:new DataView(bytes.buffer)};}
- const now=new Date(),dosTime=(now.getHours()<<11)|(now.getMinutes()<<5)|(now.getSeconds()>>1),dosDate=((Math.max(1980,now.getFullYear())-1980)<<9)|((now.getMonth()+1)<<5)|now.getDate();
- for(const entry of entries){
-  const name=encoder.encode(entry.name),bytes=entry.bytes,crc=crc32(bytes),local=header(30);
-  local.v.setUint32(0,0x04034b50,true);local.v.setUint16(4,20,true);local.v.setUint16(6,0x0800,true);local.v.setUint16(8,0,true);
-  local.v.setUint16(10,dosTime,true);local.v.setUint16(12,dosDate,true);local.v.setUint32(14,crc,true);
-  local.v.setUint32(18,bytes.length,true);local.v.setUint32(22,bytes.length,true);local.v.setUint16(26,name.length,true);
-  parts.push(local.bytes,name,bytes);
-  const c=header(46);c.v.setUint32(0,0x02014b50,true);c.v.setUint16(4,20,true);c.v.setUint16(6,20,true);c.v.setUint16(8,0x0800,true);
-  c.v.setUint16(10,0,true);c.v.setUint16(12,dosTime,true);c.v.setUint16(14,dosDate,true);c.v.setUint32(16,crc,true);
-  c.v.setUint32(20,bytes.length,true);c.v.setUint32(24,bytes.length,true);c.v.setUint16(28,name.length,true);c.v.setUint32(42,offset,true);
-  central.push(c.bytes,name);centralBytes+=46+name.length;offset+=30+name.length+bytes.length;
- }
- const end=header(22);end.v.setUint32(0,0x06054b50,true);end.v.setUint16(8,entries.length,true);end.v.setUint16(10,entries.length,true);
- end.v.setUint32(12,centralBytes,true);end.v.setUint32(16,offset,true);
- return new Blob([...parts,...central,end.bytes],{type:'application/zip'});
-}
-q('#downloadAllPhotosBtn').onclick=async()=>{
- const st=q('#batchDownloadStatus'),btn=q('#downloadAllPhotosBtn'),sessionID=cs;
- if(!sessionID){st.textContent='Create or reopen a session first.';return;}
- const filename=askFileName('fit-photos-'+sessionID,'zip');if(!filename)return;
- btn.disabled=true;st.textContent='Reading the current session...';
- try{
-  const result=await sb.rpc('get_fit_session_photos',{p_session_id:sessionID});if(result.error)throw result.error;
-  const paths=[...new Set((result.data||[]).map(x=>x.photo_path).filter(Boolean))];
-  if(!paths.length)throw new Error('No available photos in this session.');
-  if(paths.length>65535)throw new Error('Too many files for one ZIP.');
-  const entries=[];let total=0;
+// Local Edited Photos is handled by an independent module. This adapter only reads originals.
+window.FitPhotoSync={
+ getOriginalArchiveEntries:async()=>{
+  const sessionID=cs;if(!sessionID)return [];
+  const r=await sb.rpc('get_fit_session_photos',{p_session_id:sessionID});if(r.error)throw r.error;
+  const paths=[...new Set((r.data||[]).map(x=>x.photo_path).filter(Boolean))],files=[];
   for(let i=0;i<paths.length;i++){
-   if(cs!==sessionID)throw new Error('The session changed. Please try again.');
-   st.textContent=`Preparing ${i+1} / ${paths.length}...`;
-   const url=await signed(paths[i]),response=await fetch(url,{cache:'no-store'});
-   if(!response.ok)throw new Error(`Photo ${i+1} could not be downloaded. Refresh and retry.`);
-   const bytes=new Uint8Array(await response.arrayBuffer());total+=bytes.length;
-   if(total>250*1024*1024)throw new Error('This archive exceeds 250 MB. Download smaller sessions instead.');
-   const raw=paths[i].split('/').pop()||'photo.jpg',safe=raw.replace(/[\\/:*?"<>|\x00-\x1f]/g,'-');
-   entries.push({name:String(i+1).padStart(3,'0')+'-'+safe,bytes});
+   if(cs!==sessionID)throw new Error('The session changed. Retry this download.');
+   const u=await signed(paths[i]),res=await fetch(u,{cache:'no-store'});
+   if(!res.ok)throw new Error('Could not read original photo '+(i+1)+'.');
+   const safe=(paths[i].split('/').pop()||'photo.jpg').replace(/[\\/:*?"<>|\x00-\x1f]/g,'-');
+   files.push({name:'original/'+String(i+1).padStart(3,'0')+'-'+safe,blob:await res.blob()});
   }
-  st.textContent='Creating archive...';const blob=makePhotoZip(entries);downloadBlob(blob,filename);
-  st.textContent=`Archive ready: ${entries.length} photos. Check your browser downloads.`;
- }catch(e){st.textContent='Archive failed: '+(e.message||e);}
- finally{btn.disabled=false;}
-};
-
-
-async function zipDownload(entries,filename,statusEl){
- if(!entries.length)throw new Error("No photos to download.");
- if(!window.JSZip)throw new Error("ZIP library did not load.");
- const zip=new JSZip(),st=statusEl||q("#livePhotosStatus");
- for(let i=0;i<entries.length;i++){if(st)st.textContent=`Preparing ${i+1}/${entries.length}…`;const e=entries[i];zip.file(e.name,e.blob)}
- const out=await zip.generateAsync({type:"blob"}),url=URL.createObjectURL(out),a=document.createElement("a");a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
-}
-async function originalEntries(){
- await refreshPhotos();const arr=[];for(const path of sessionRows.keys()){const u=await signed(path),r=await fetch(u,{cache:"no-store"});if(!r.ok)throw new Error("Could not fetch original photo");arr.push({name:"original-"+(path.split("/").pop()||"photo.jpg"),blob:await r.blob()})}return arr;
-}
-async function editedEntries(){
- const arr=[];for(const [i,p] of getEditedProjects().entries()){await window.FitEditor.loadEditableProject(p);const c=window.FitEditor.exportAnnotatedCanvas();const blob=await new Promise((ok,no)=>c.toBlob(b=>b?ok(b):no(new Error("Could not export edited photo")),"image/png"));arr.push({name:`edited-${i+1}.png`,blob})}return arr;
-}
-q("#editDoneBtn").onclick=async()=>{
- try{
-   const p=await window.FitEditor.makeEditableProject();
-   await putEditedProject(p);
-   await renderEditedPhotos();
-   const total=(await getEditedProjects()).length;
-   q("#editedPhotosStatus").textContent=`Edit Done ✓ Saved editable version · ${total} total`;
-   q("#editedPhotosSection")?.scrollIntoView({behavior:"smooth",block:"nearest"});
- }catch(e){
-   console.error("Edit Done failed",e);
-   alert("Edit Done failed: "+(e.message||e));
+  return files;
  }
-};
-q("#downloadAllOriginalBtn").onclick=async()=>{try{await zipDownload(await originalEntries(),`fit-original-${cs||"photos"}.zip`,q("#livePhotosStatus"))}catch(e){alert(e.message||e)}};
-q("#downloadAllEditedBtn").onclick=async()=>{
- try{
-   const a=await getEditedProjects(),arr=[];
-   for(const [i,p] of a.entries()){
-     await window.FitEditor.loadEditableProject(p);
-     const c=window.FitEditor.exportAnnotatedCanvas();
-     const blob=await new Promise((ok,no)=>c.toBlob(b=>b?ok(b):no(new Error("Could not export edited photo")),"image/png"));
-     arr.push({name:`edited-${i+1}.png`,blob});
-   }
-   await zipDownload(arr,`fit-edited-${cs||"photos"}.zip`,q("#editedPhotosStatus"));
- }catch(e){alert(e.message||e)}
-};
-q("#downloadAllLibraryBtn").onclick=async()=>{
- try{
-   const all=[...(await originalEntries())];
-   const a=await getEditedProjects();
-   for(const [i,p] of a.entries()){
-     await window.FitEditor.loadEditableProject(p);
-     const c=window.FitEditor.exportAnnotatedCanvas();
-     const blob=await new Promise((ok,no)=>c.toBlob(b=>b?ok(b):no(new Error("Could not export edited photo")),"image/png"));
-     all.push({name:`edited-${i+1}.png`,blob});
-   }
-   await zipDownload(all,`fit-photo-library-${cs||"photos"}.zip`,q("#editedPhotosStatus"));
- }catch(e){alert(e.message||e)}
 };
 q("#endSessionBtn").onclick=async()=>{if(!cs)return;let r=await sb.from(S).update({active:false,ended_at:new Date().toISOString()}).eq("session_id",cs);if(r.error)return q("#syncStatus").textContent=r.error.message;if(ch)sb.removeChannel(ch);if(pollTimer){clearInterval(pollTimer);pollTimer=null}updateRecentSession(cs,{active:false,endedAt:new Date().toISOString()});q("#qrPriority").hidden=true;q("#qrImage").removeAttribute("src");q("#syncStatus").textContent="Session ended - QR invalid";q("#endSessionBtn").style.display="none"};
 })();
