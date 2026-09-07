@@ -234,7 +234,7 @@ body.mobile-mode .mobileCaptureScreen{display:block}
 @media(max-width:1150px){.app{grid-template-columns:200px 210px minmax(0,1fr) 270px}}
 
 
-/* Version V71 full workspace */
+/* Version V72 full workspace */
 .rightVersion{font-size:10px;font-weight:800;letter-spacing:.08em;color:#2563eb;background:#eff6ff;border-radius:999px;padding:4px 8px;align-self:flex-start;margin-bottom:10px}
 .right{display:block!important;overflow-y:auto!important;overflow-x:hidden!important;min-width:0!important;padding:14px 14px 110px!important}
 #annotateControls,#collageControls{display:block;min-width:0;max-width:100%;overflow:visible}
@@ -501,6 +501,15 @@ input[type="color"]{width:42px!important;height:32px!important}
 .editedPhoto .editDoneBadge{position:absolute;right:4px;top:4px;background:#067647;color:#fff;border-radius:999px;padding:2px 5px;font-size:7px;font-weight:700;z-index:3}
 #editDoneBtn{margin-top:5px!important}
 
+
+/* V72 Edit Done in Photo Preview header */
+.editDoneHeaderBtn{
+  margin-left:auto!important;
+  height:28px!important;min-height:28px!important;max-height:28px!important;
+  padding:0 10px!important;font-size:9px!important;
+  background:#111827!important;color:#fff!important;border-color:#111827!important;
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -556,7 +565,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <header>
 <div class="brand">
 <div class="logo">F</div>
-<div><h1>Fit Photo Studio</h1><small><strong>Version V71</strong> · Secure Sync · Full Combine Editor</small></div>
+<div><h1>Fit Photo Studio</h1><small><strong>Version V72</strong> · Secure Sync · Full Combine Editor</small></div>
 </div>
 <div class="topActions">
 <button class="btn" id="newBtn">New</button>
@@ -662,7 +671,8 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div id="annotatePanel" style="display:flex;flex-direction:column;height:100%">
 <div class="canvasHead">
 <b>Photo Preview</b>
-<span id="hint">Choose a photo to start</span>
+<button id="editDoneBtn" class="btn editDoneHeaderBtn" title="Keep this editable version in Edited Photos">✓ Edit Done</button>
+<span id="hint" style="display:none">Choose a photo to start</span>
 </div>
 <div class="stage">
 <div class="photoWrap" id="photoWrap">
@@ -732,7 +742,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="section">
 <div class="sectionTitleRow">
 <h2>ANNOTATION STYLE</h2>
-<span class="versionPill">V71</span>
+<span class="versionPill">V72</span>
 </div>
 <div class="prop">
 <label>Color <small><span id="colorText">#000000</span></small></label>
@@ -755,7 +765,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 </div>
 </div>
 <div class="section" id="photoAdjustSection">
-<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V71</span></div>
+<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V72</span></div>
 <div class="compactPair">
 <button class="btn" id="cropPhotoBtn">Crop</button>
 <button class="btn" id="rotatePhotoBtn">↻ Rotate 90°</button>
@@ -806,7 +816,6 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <option value="jpeg">JPG</option>
 </select>
 <button class="btn primary" id="saveBtn">Save</button>
-<button class="btn" id="editDoneBtn" style="grid-column:1/-1;width:100%">✓ Edit Done · Keep in Library</button>
 </div>
 <button class="btn" id="shareBtn" style="width:100%;margin-top:5px">Share</button>
 </div>
@@ -815,7 +824,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="section">
 <div class="sectionTitleRow">
 <h2>ANNOTATION STYLE</h2>
-<span class="versionPill">V71</span>
+<span class="versionPill">V72</span>
 </div>
 <div class="prop">
 <label>Color <small><span id="cAnnoColorText">#000000</span></small></label>
@@ -1977,7 +1986,7 @@ function initAnnotatePhotoInteractions(){
 
 window.addEventListener("resize",()=>{if(loaded)fitPreviewToStage();fitCollageCanvas()});
 initAnnotatePhotoInteractions();
-mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active - Version V71");window.FitPhotoBoot.editor=true;
+mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active - Version V72");window.FitPhotoBoot.editor=true;
 })();
 </script><script>
 (() => {
