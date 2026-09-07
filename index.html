@@ -234,7 +234,7 @@ body.mobile-mode .mobileCaptureScreen{display:block}
 @media(max-width:1150px){.app{grid-template-columns:200px 210px minmax(0,1fr) 270px}}
 
 
-/* Version V72 full workspace */
+/* Version V73 full workspace */
 .rightVersion{font-size:10px;font-weight:800;letter-spacing:.08em;color:#2563eb;background:#eff6ff;border-radius:999px;padding:4px 8px;align-self:flex-start;margin-bottom:10px}
 .right{display:block!important;overflow-y:auto!important;overflow-x:hidden!important;min-width:0!important;padding:14px 14px 110px!important}
 #annotateControls,#collageControls{display:block;min-width:0;max-width:100%;overflow:visible}
@@ -565,7 +565,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <header>
 <div class="brand">
 <div class="logo">F</div>
-<div><h1>Fit Photo Studio</h1><small><strong>Version V72</strong> · Secure Sync · Full Combine Editor</small></div>
+<div><h1>Fit Photo Studio</h1><small><strong>Version V73</strong> · Secure Sync · Full Combine Editor</small></div>
 </div>
 <div class="topActions">
 <button class="btn" id="newBtn">New</button>
@@ -742,7 +742,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="section">
 <div class="sectionTitleRow">
 <h2>ANNOTATION STYLE</h2>
-<span class="versionPill">V72</span>
+<span class="versionPill">V73</span>
 </div>
 <div class="prop">
 <label>Color <small><span id="colorText">#000000</span></small></label>
@@ -765,7 +765,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 </div>
 </div>
 <div class="section" id="photoAdjustSection">
-<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V72</span></div>
+<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V73</span></div>
 <div class="compactPair">
 <button class="btn" id="cropPhotoBtn">Crop</button>
 <button class="btn" id="rotatePhotoBtn">↻ Rotate 90°</button>
@@ -824,7 +824,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="section">
 <div class="sectionTitleRow">
 <h2>ANNOTATION STYLE</h2>
-<span class="versionPill">V72</span>
+<span class="versionPill">V73</span>
 </div>
 <div class="prop">
 <label>Color <small><span id="cAnnoColorText">#000000</span></small></label>
@@ -893,7 +893,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="cropModalCard">
 <div class="sectionTitleRow"><h3>Crop Photo</h3><button class="btn" id="cropCancelBtn">Cancel</button></div>
 <div class="cropStage"><canvas aria-label="Drag to choose crop area" id="cropCanvas"></canvas><div id="cropBox"></div></div>
-<div class="note" style="margin:7px 0">Drag on the photo to select the area to keep.</div>
+<div class="note" style="margin:7px 0">Drag on the original photo to adjust the crop area. Your previous crop selection is shown and can be expanded again.</div>
 <button class="btn primary" id="cropApplyBtn" style="width:100%">Apply Crop</button>
 </div>
 </div>
@@ -1065,6 +1065,7 @@ $("#photoInput").addEventListener("change",e=>{
   const url=URL.createObjectURL(f);
   img.onload=()=>{
     loaded=true;
+    snapshotCropSource();
     if(typeof resetPhotoAdjustments==="function")resetPhotoAdjustments();
     $("#empty").style.display="none";
     img.style.display="block";
@@ -1713,6 +1714,7 @@ async function loadSecureBlobIntoAnnotate(blob,label="Secure live photo"){
     const url=URL.createObjectURL(blob);
     img.onload=()=>{
       loaded=true;if(typeof resetPhotoAdjustments==="function")resetPhotoAdjustments();
+      snapshotCropSource();
       $("#empty").style.display="none";
       img.style.display="block";
       objects=[];selected=null;temp=null;drag=null;history=[];
@@ -1747,8 +1749,15 @@ async function addSecureBlobToCombine(blob,label="Secure live photo",sourcePath=
 
 
 // V70: operations stay inside the editor closure. All modal nodes exist before boot.
-let photoBrightness=100,photoContrast=100;
+let photoBrightness=100,photoContrast=100; let originalCropSource=null; let currentCropRect=null;
 function photoStatus(text,isError=false){const el=$("#photoAdjustStatus");el.textContent=text;el.style.color=isError?'#b42318':'#64748b';}
+function snapshotCropSource(){
+  if(!img.naturalWidth||!img.naturalHeight)return;
+  const c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;c.getContext('2d').drawImage(img,0,0);originalCropSource=c;currentCropRect={x:0,y:0,w:c.width,h:c.height};
+}
+function imageDataUrl(){
+  const c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;c.getContext('2d').drawImage(img,0,0);return c.toDataURL('image/jpeg',0.9);
+}
 function applyPhotoFilter(){
   img.style.filter=`brightness(${photoBrightness}%) contrast(${photoContrast}%)`;
   $("#brightnessVal").textContent=Math.round(photoBrightness);
@@ -1805,7 +1814,7 @@ $("#rotatePhotoBtn").onclick=async()=>{
   try{
     const source=currentFilteredCanvas(),out=document.createElement('canvas');out.width=source.height;out.height=source.width;
     const x=out.getContext('2d');x.translate(out.width/2,out.height/2);x.rotate(Math.PI/2);x.drawImage(source,-source.width/2,-source.height/2);
-    await replaceBaseImageFromCanvas(out,'Rotated photo');photoStatus('Rotated 90 degrees clockwise.');
+    await replaceBaseImageFromCanvas(out,'Rotated photo');snapshotCropSource();photoStatus('Rotated 90 degrees clockwise.');
   }catch(e){photoStatus(e.message,true);}
 };
 let cropSource=null,cropStart=null,cropRect=null;
@@ -1824,8 +1833,9 @@ function renderCrop(){
 $("#cropPhotoBtn").onclick=()=>{
   if(!loaded){photoStatus('Choose a photo first.',true);return;}
   if(!confirmPhotoChange())return;
-  cropSource=currentFilteredCanvas();cropCanvas.width=cropSource.width;cropCanvas.height=cropSource.height;cropRect=null;cropStart=null;
-  $("#cropBox").style.display='none';$("#cropModal").style.display='flex';
+  cropSource=originalCropSource||currentFilteredCanvas();cropCanvas.width=cropSource.width;cropCanvas.height=cropSource.height;cropStart=null;
+  cropRect=currentCropRect?{...currentCropRect}:{x:0,y:0,w:cropSource.width,h:cropSource.height};
+  $("#cropBox").style.display='block';$("#cropModal").style.display='flex';
   const sc=Math.min((window.innerWidth-70)/cropCanvas.width,(window.innerHeight-200)/cropCanvas.height,1);
   cropCanvas.style.width=Math.floor(cropCanvas.width*sc)+'px';cropCanvas.style.height=Math.floor(cropCanvas.height*sc)+'px';renderCrop();
 };
@@ -1839,18 +1849,19 @@ $("#cropApplyBtn").onclick=async()=>{
   try{
     const c=document.createElement('canvas');c.width=Math.round(cropRect.w);c.height=Math.round(cropRect.h);
     c.getContext('2d').drawImage(cropSource,cropRect.x,cropRect.y,cropRect.w,cropRect.h,0,0,c.width,c.height);
-    await replaceBaseImageFromCanvas(c,'Cropped photo');$("#cropModal").style.display='none';photoStatus('Crop applied.');
+    currentCropRect={x:cropRect.x,y:cropRect.y,w:cropRect.w,h:cropRect.h};
+    await replaceBaseImageFromCanvas(c,'Cropped photo');$("#cropModal").style.display='none';photoStatus('Crop applied. Reopen Crop to restore or expand the previous selection.');
   }catch(e){photoStatus(e.message,true);}
 };
 
 
-function makeEditableProject(){
+async function makeEditableProject(){
  if(!loaded)throw new Error("Choose a photo first.");
  return {
-   version:1,
+   version:2,
    id:uid(),
    name:($("#photoMeta")?.textContent||"Edited photo").split(" · ")[0],
-   image:img.src,
+   image:imageDataUrl(),
    objects:JSON.parse(JSON.stringify(objects)),
    brightness:photoBrightness,
    contrast:photoContrast,
@@ -1861,6 +1872,7 @@ async function loadEditableProject(p){
  return new Promise((resolve,reject)=>{
    img.onload=()=>{
      loaded=true;$("#empty").style.display="none";img.style.display="block";
+     snapshotCropSource();
      objects=JSON.parse(JSON.stringify(p.objects||[]));selected=null;temp=null;drag=null;history=[];
      photoBrightness=+p.brightness||100;photoContrast=+p.contrast||100;
      $("#brightnessRange").value=photoBrightness;$("#contrastRange").value=photoContrast;applyPhotoFilter();
@@ -1986,7 +1998,7 @@ function initAnnotatePhotoInteractions(){
 
 window.addEventListener("resize",()=>{if(loaded)fitPreviewToStage();fitCollageCanvas()});
 initAnnotatePhotoInteractions();
-mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active - Version V72");window.FitPhotoBoot.editor=true;
+mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active - Version V73");window.FitPhotoBoot.editor=true;
 })();
 </script><script>
 (() => {
@@ -2337,7 +2349,7 @@ async function editedEntries(){
 }
 q("#editDoneBtn").onclick=async()=>{
  try{
-   const p=window.FitEditor.makeEditableProject(),a=getEditedProjects();a.unshift(p);saveEditedProjects(a);renderEditedPhotos();
+   const p=await window.FitEditor.makeEditableProject(),a=getEditedProjects();a.unshift(p);saveEditedProjects(a);renderEditedPhotos();
    q("#editedPhotosStatus").textContent=`Edit Done ✓ Saved editable version · ${getEditedProjects().length} total`;
  }catch(e){alert("Edit Done failed: "+(e.message||e))}
 };
