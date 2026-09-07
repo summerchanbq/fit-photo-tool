@@ -234,7 +234,7 @@ body.mobile-mode .mobileCaptureScreen{display:block}
 @media(max-width:1150px){.app{grid-template-columns:200px 225px minmax(0,1fr) 270px}}
 
 
-/* Version V76 full workspace */
+/* Version V77 full workspace */
 .rightVersion{font-size:10px;font-weight:800;letter-spacing:.08em;color:#2563eb;background:#eff6ff;border-radius:999px;padding:4px 8px;align-self:flex-start;margin-bottom:10px}
 .right{display:block!important;overflow-y:auto!important;overflow-x:hidden!important;min-width:0!important;padding:14px 14px 110px!important}
 #annotateControls,#collageControls{display:block;min-width:0;max-width:100%;overflow:visible}
@@ -517,6 +517,67 @@ input[type="color"]{width:42px!important;height:32px!important}
 .editedSavePulse{animation:editedSavePulse .8s ease}
 @keyframes editedSavePulse{0%{box-shadow:0 0 0 0 rgba(6,118,71,.45)}100%{box-shadow:0 0 0 8px rgba(6,118,71,0)}}
 
+
+/* V77: all Photo Library galleries use the same compact 3-column layout */
+.photoLibrary{min-width:250px!important}
+.photoLibrary .livePhotos{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:5px!important;
+  max-height:none!important;
+  overflow:visible!important;
+}
+.photoLibrary .livePhoto{
+  width:100%!important;
+  min-width:0!important;
+  aspect-ratio:1!important;
+  cursor:grab!important;
+}
+.photoLibrary .livePhoto.dragging{opacity:.42!important;cursor:grabbing!important}
+.photoLibrary .thumbList{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:5px!important;
+  max-height:none!important;
+  overflow:visible!important;
+}
+.photoLibrary .thumb{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  gap:4px!important;
+  min-width:0!important;
+  padding:4px!important;
+  cursor:grab!important;
+}
+.photoLibrary .thumb.dragging{opacity:.42!important}
+.photoLibrary .thumb img{
+  width:100%!important;
+  height:auto!important;
+  aspect-ratio:1!important;
+  object-fit:cover!important;
+  border-radius:7px!important;
+}
+.photoLibrary .thumb .thumbActions{
+  display:flex!important;
+  gap:3px!important;
+}
+.photoLibrary .thumb .thumbActions button{
+  flex:1!important;
+  min-width:0!important;
+  padding:3px 4px!important;
+  font-size:9px!important;
+}
+.photoLibrary .thumb > div:not(.thumbActions){
+  font-size:8px!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+@media(max-width:1150px){
+  .app{grid-template-columns:200px 235px minmax(0,1fr) 270px!important}
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>window.FitPhotoBoot={editor:false};window.addEventListener('error',function(e){if(!window.FitEditor){var t=document.querySelector('#hint');if(t)t.textContent='Editor startup error: '+e.message;}});</script><style id="v70-workspace-fixes">/* V70 final layout layer. Fixed-height workspace, independently scrollable columns. */
@@ -582,7 +643,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <header>
 <div class="brand">
 <div class="logo">F</div>
-<div><h1>Fit Photo Studio</h1><small><strong>Version V76</strong> · Secure Sync · Full Combine Editor</small></div>
+<div><h1>Fit Photo Studio</h1><small><strong>Version V77</strong> · Secure Sync · Full Combine Editor</small></div>
 </div>
 <div class="topActions">
 <button class="btn" id="newBtn">New</button>
@@ -757,7 +818,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="section">
 <div class="sectionTitleRow">
 <h2>ANNOTATION STYLE</h2>
-<span class="versionPill">V76</span>
+<span class="versionPill">V77</span>
 </div>
 <div class="prop">
 <label>Color <small><span id="colorText">#000000</span></small></label>
@@ -780,7 +841,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 </div>
 </div>
 <div class="section" id="photoAdjustSection">
-<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V76</span></div>
+<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V77</span></div>
 <div class="compactPair">
 <button class="btn" id="cropPhotoBtn">Crop</button>
 <button class="btn" id="rotatePhotoBtn">↻ Rotate 90°</button>
@@ -839,7 +900,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="section">
 <div class="sectionTitleRow">
 <h2>ANNOTATION STYLE</h2>
-<span class="versionPill">V76</span>
+<span class="versionPill">V77</span>
 </div>
 <div class="prop">
 <label>Color <small><span id="cAnnoColorText">#000000</span></small></label>
@@ -1592,7 +1653,7 @@ function cRender(){
 function fitCollageCanvas(){const stage=$("#collagePanel .stage"),wrap=$("#collageCanvasWrap");if(!stage||!wrap)return;const r=stage.getBoundingClientRect(),sc=Math.min((r.width-20)/cc.width,(r.height-20)/cc.height,1),dw=Math.max(1,Math.round(cc.width*sc)),dh=Math.max(1,Math.round(cc.height*sc));cc.style.width=dw+"px";cc.style.height=dh+"px";wrap.style.width=dw+"px";wrap.style.height=dh+"px";cRender()}
 function centerCollageContent(){const bs=[];items.forEach(x=>bs.push({x:x.x,y:x.y,r:x.x+x.w,b:x.y+x.h}));textItems.forEach(t=>{const b=cTextBounds(t);bs.push({x:b.x,y:b.y,r:b.x+b.w,b:b.y+b.h})});cObjects.forEach(o=>{const b=cShapeBounds(o);bs.push({x:b.x,y:b.y,r:b.x+b.w,b:b.y+b.h})});if(!bs.length)return;const minX=Math.min(...bs.map(x=>x.x)),maxX=Math.max(...bs.map(x=>x.r)),minY=Math.min(...bs.map(x=>x.y)),maxY=Math.max(...bs.map(x=>x.b)),dx=cc.width/2-(minX+maxX)/2,dy=cc.height/2-(minY+maxY)/2;items.forEach(x=>{x.x+=dx;x.y+=dy});textItems.forEach(x=>{x.x+=dx;x.y+=dy});cObjects.forEach(x=>{x.x1+=dx;x.x2+=dx;x.y1+=dy;x.y2+=dy;if(x.type==="curve"){x.cx+=dx;x.cy+=dy}})}
 function autoLayout(){const n=items.length;if(!n){fitCollageCanvas();return}saveCState();const mode=$("#layoutMode").value,pad=Math.max(24,cc.width*.025),gap=Math.max(14,cc.width*.015),cols=mode==="column"?1:n,rows=mode==="column"?n:1,cw=(cc.width-pad*2-gap*(cols-1))/cols,ch=(cc.height-pad*2-gap*(rows-1))/rows;items.forEach((it,i)=>{let w,h;if(it.ratio>cw/ch){w=cw;h=w/it.ratio}else{h=ch;w=h*it.ratio}it.x=pad+(i%cols)*(cw+gap)+(cw-w)/2;it.y=pad+Math.floor(i/cols)*(ch+gap)+(ch-h)/2;it.w=w;it.h=h});centerCollageContent();renderThumbs();fitCollageCanvas()}
-function renderThumbs(){const box=$("#thumbList"),empty=$("#combineLibraryEmpty");if(!box)return;box.innerHTML="";if(empty)empty.style.display=items.length?"none":"block";items.forEach((it,i)=>{const d=document.createElement("div");d.className="thumb";d.innerHTML=`<img src="${it.img.src}"><div style="font-size:10px;overflow:hidden;text-overflow:ellipsis">${i+1}. ${it.name}</div><div class="thumbActions"><button data-up="${it.id}">↑</button><button data-down="${it.id}">↓</button><button class="deleteThumb" data-del="${it.id}">×</button></div>`;box.appendChild(d)});box.querySelectorAll("[data-up]").forEach(b=>b.onclick=()=>reorder(b.dataset.up,-1));box.querySelectorAll("[data-down]").forEach(b=>b.onclick=()=>reorder(b.dataset.down,1));box.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{saveCState();items=items.filter(x=>x.id!==b.dataset.del);renderThumbs();fitCollageCanvas()})}
+function renderThumbs(){const box=$("#thumbList"),empty=$("#combineLibraryEmpty");if(!box)return;box.innerHTML="";if(empty)empty.style.display=items.length?"none":"block";items.forEach((it,i)=>{const d=document.createElement("div");d.className="thumb";d.draggable=true;d.dataset.itemId=it.id;d.innerHTML=`<img src="${it.img.src}"><div title="${it.name}">${i+1}. ${it.name}</div><div class="thumbActions"><button data-up="${it.id}">↑</button><button data-down="${it.id}">↓</button><button class="deleteThumb" data-del="${it.id}">×</button></div>`;d.ondragstart=e=>{d.classList.add("dragging");e.dataTransfer.effectAllowed="move";e.dataTransfer.setData("text/plain",it.id)};d.ondragend=()=>d.classList.remove("dragging");d.ondragover=e=>e.preventDefault();d.ondrop=e=>{e.preventDefault();const from=e.dataTransfer.getData("text/plain");if(from&&from!==it.id){const a=items.findIndex(x=>x.id===from),b=items.findIndex(x=>x.id===it.id);if(a>=0&&b>=0){saveCState();const [m]=items.splice(a,1);items.splice(items.findIndex(x=>x.id===it.id),0,m);autoLayout()}}};box.appendChild(d)});box.querySelectorAll("[data-up]").forEach(b=>b.onclick=()=>reorder(b.dataset.up,-1));box.querySelectorAll("[data-down]").forEach(b=>b.onclick=()=>reorder(b.dataset.down,1));box.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{saveCState();items=items.filter(x=>x.id!==b.dataset.del);renderThumbs();fitCollageCanvas()})}
 function reorder(id,d){const i=items.findIndex(x=>x.id===id),j=i+d;if(j<0||j>=items.length)return;saveCState();[items[i],items[j]]=[items[j],items[i]];autoLayout()}
 function distanceToCurve(p,o){let best=1e9,prev={x:o.x1,y:o.y1};for(let j=1;j<=24;j++){const t=j/24,u=1-t,cur={x:u*u*o.x1+2*u*t*o.cx+t*t*o.x2,y:u*u*o.y1+2*u*t*o.cy+t*t*o.y2};best=Math.min(best,distanceToSegment(p,prev,cur));prev=cur}return best}
 function cHit(p){
@@ -2074,7 +2135,7 @@ function initAnnotatePhotoInteractions(){
 
 window.addEventListener("resize",()=>{if(loaded)fitPreviewToStage();fitCollageCanvas()});
 initAnnotatePhotoInteractions();
-mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active - Version V76");window.FitPhotoBoot.editor=true;
+mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active - Version V77");window.FitPhotoBoot.editor=true;
 })();
 </script><script id="fit-local-library">/* V75 local editable library: independent of Supabase and its network availability. */
 (()=>{
@@ -2383,7 +2444,9 @@ if(mobile){
 }
 
 let cs=null,ct=null,ch=null,seen=new Set(),sessionRows=new Map(),originalOrder=[];
-async function add(row,pre=true){if(!row?.photo_path||seen.has(row.photo_path))return;seen.add(row.photo_path);sessionRows.set(row.photo_path,row);originalOrder.push(row.photo_path);let ph=q("#livePhotosPlaceholder");if(ph)ph.style.display="none";let u=await signed(row.photo_path),h=q("#livePhotos"),b=document.createElement("button");b.className="livePhoto";b.type="button";b.draggable=true;b.dataset.photoPath=row.photo_path;b.innerHTML=`<img src="${u}"><span class="badge">Click to edit</span>`;
+const ORIGINAL_ORDER_KEY="fitPhotoOriginalOrderV77";
+async function add(row,pre=true){if(!row?.photo_path||seen.has(row.photo_path))return;seen.add(row.photo_path);sessionRows.set(row.photo_path,row);
+if(!originalOrder.includes(row.photo_path))originalOrder.push(row.photo_path);let ph=q("#livePhotosPlaceholder");if(ph)ph.style.display="none";let u=await signed(row.photo_path),h=q("#livePhotos"),b=document.createElement("button");b.className="livePhoto";b.type="button";b.draggable=true;b.dataset.photoPath=row.photo_path;b.innerHTML=`<img src="${u}"><span class="badge">Click to edit</span>`;
  b.ondragstart=e=>{b.classList.add("dragging");e.dataTransfer.effectAllowed="move";e.dataTransfer.setData("text/plain",row.photo_path)};
  b.ondragend=()=>b.classList.remove("dragging");
  b.ondragover=e=>e.preventDefault();
@@ -2406,7 +2469,15 @@ async function add(row,pre=true){if(!row?.photo_path||seen.has(row.photo_path))r
     console.error(e);
     alert("Could not open secure photo: "+(e.message||e));
   }
-};pre&&h.firstChild?h.insertBefore(b,h.firstChild):h.appendChild(b);q("#livePhotosStatus").textContent=`${seen.size} secure photo(s) received`}
+};
+ h.appendChild(b);
+ sortOriginalDom();
+ q("#livePhotosStatus").textContent=`${seen.size} secure photo(s) received`}
+function sortOriginalDom(){
+ const box=q("#livePhotos");if(!box)return;
+ const byPath=new Map([...box.querySelectorAll("[data-photo-path]")].map(el=>[el.dataset.photoPath,el]));
+ originalOrder.forEach(p=>{const el=byPath.get(p);if(el)box.appendChild(el)});
+}
 function reorderOriginal(targetPath,dragPath){
  if(!dragPath||targetPath===dragPath)return;
  const ti=originalOrder.indexOf(targetPath),di=originalOrder.indexOf(dragPath);
@@ -2416,6 +2487,7 @@ function reorderOriginal(targetPath,dragPath){
  originalOrder.splice(ni,0,moved);
  const box=q("#livePhotos"),dragEl=box?.querySelector(`[data-photo-path="${CSS.escape(dragPath)}"]`),targetEl=box?.querySelector(`[data-photo-path="${CSS.escape(targetPath)}"]`);
  if(dragEl&&targetEl)box.insertBefore(dragEl,targetEl);
+ try{localStorage.setItem(ORIGINAL_ORDER_KEY+"-"+cs,JSON.stringify(originalOrder))}catch(_){}
  q("#livePhotosStatus").textContent=`${originalOrder.length} secure photo(s) · order updated`;
 }
 async function load(){let r=await sb.rpc("get_fit_session_photos",{p_session_id:cs});if(r.error)throw r.error;for(let x of r.data||[])await add(x,false)}
@@ -2476,7 +2548,8 @@ function renderRecentSessions(){
 }
 function escapeHtml(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 async function activateSession(s){
- cs=s.session;ct=s.token;seen.clear();sessionRows.clear();originalOrder=[];q("#livePhotos").innerHTML="";
+ cs=s.session;ct=s.token;seen.clear();sessionRows.clear();
+ try{originalOrder=JSON.parse(localStorage.getItem(ORIGINAL_ORDER_KEY+"-"+cs)||"[]");if(!Array.isArray(originalOrder))originalOrder=[]}catch(_){originalOrder=[]}q("#livePhotos").innerHTML="";
  q("#qrPriority").hidden=false;q("#sessionArea").style.display="block";document.querySelector("aside.left").scrollTop=0;q("#sessionNameDisplay").textContent=s.name||("Session "+cs);q("#sessionCode").textContent="ID "+cs;q("#endSessionBtn").style.display="block";
  const mu=murl(cs,ct),qr=q("#qrImage");qr.src="https://quickchart.io/qr?size=150&text="+encodeURIComponent(mu);qr.style.display="block";
 
