@@ -25,7 +25,7 @@ header{
 .topActions{display:flex;gap:8px}
 .btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 12px;color:var(--ink)}
 .btn:hover{background:#fafafa}.btn.primary{background:var(--dark);border-color:var(--dark);color:#fff}
-.app{height:calc(100vh - 66px);display:grid;grid-template-columns:225px 230px minmax(0,1fr) 300px;gap:12px;padding:12px}
+.app{height:calc(100vh - 66px);display:grid;grid-template-columns:225px 250px minmax(0,1fr) 300px;gap:12px;padding:12px}
 .panel{background:#fff;border:1px solid var(--line);border-radius:15px;min-height:0}
 .left,.right{padding:14px}
 .left{display:flex;flex-direction:column}
@@ -231,10 +231,10 @@ body.mobile-mode .mobileCaptureScreen{display:block}
  position:relative!important;bottom:auto!important;box-shadow:none!important;background:#fff!important;z-index:auto!important;
 }
 #saveBtn,#saveCollage{min-height:42px!important}
-@media(max-width:1150px){.app{grid-template-columns:200px 210px minmax(0,1fr) 270px}}
+@media(max-width:1150px){.app{grid-template-columns:200px 225px minmax(0,1fr) 270px}}
 
 
-/* Version V75 full workspace */
+/* Version V76 full workspace */
 .rightVersion{font-size:10px;font-weight:800;letter-spacing:.08em;color:#2563eb;background:#eff6ff;border-radius:999px;padding:4px 8px;align-self:flex-start;margin-bottom:10px}
 .right{display:block!important;overflow-y:auto!important;overflow-x:hidden!important;min-width:0!important;padding:14px 14px 110px!important}
 #annotateControls,#collageControls{display:block;min-width:0;max-width:100%;overflow:visible}
@@ -258,7 +258,7 @@ body.mobile-mode .mobileCaptureScreen{display:block}
 #collageCanvas{display:block;touch-action:none}
 #canvasResizeHandle{z-index:30}
 .cInlineText{position:absolute;z-index:50;border:2px solid #2563eb;border-radius:6px;padding:5px 7px;min-width:120px;max-width:360px;background:rgba(255,255,255,.97);outline:none;font-weight:600}
-@media(max-width:1150px){.app{grid-template-columns:195px 205px minmax(0,1fr) 265px!important}}
+@media(max-width:1150px){.app{grid-template-columns:195px 220px minmax(0,1fr) 265px!important}}
 
 
 /* V46 unified compact right panel */
@@ -496,7 +496,10 @@ input[type="color"]{width:42px!important;height:32px!important}
 /* V71 editable photo library */
 .photoLibrary{min-width:210px!important}
 .photoLibrary .sectionTitleRow .btn{height:27px!important;min-height:27px!important;padding:0 6px!important;font-size:8.5px!important}
-#editedPhotos,#livePhotos{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important}
+#editedPhotos,#livePhotos{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:5px!important}
+.photoLibrary .livePhoto{cursor:grab;min-width:0}
+.photoLibrary .livePhoto.dragging{opacity:.45;cursor:grabbing}
+.librarySectionHint{font-size:8px!important;color:#98a0aa!important;margin:2px 0 5px!important}
 .editedPhoto{position:relative}
 .editedPhoto .editDoneBadge{position:absolute;right:4px;top:4px;background:#067647;color:#fff;border-radius:999px;padding:2px 5px;font-size:7px;font-weight:700;z-index:3}
 #editDoneBtn{margin-top:5px!important}
@@ -579,7 +582,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <header>
 <div class="brand">
 <div class="logo">F</div>
-<div><h1>Fit Photo Studio</h1><small><strong>Version V75</strong> · Secure Sync · Full Combine Editor</small></div>
+<div><h1>Fit Photo Studio</h1><small><strong>Version V76</strong> · Secure Sync · Full Combine Editor</small></div>
 </div>
 <div class="topActions">
 <button class="btn" id="newBtn">New</button>
@@ -754,7 +757,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="section">
 <div class="sectionTitleRow">
 <h2>ANNOTATION STYLE</h2>
-<span class="versionPill">V75</span>
+<span class="versionPill">V76</span>
 </div>
 <div class="prop">
 <label>Color <small><span id="colorText">#000000</span></small></label>
@@ -777,7 +780,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 </div>
 </div>
 <div class="section" id="photoAdjustSection">
-<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V75</span></div>
+<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V76</span></div>
 <div class="compactPair">
 <button class="btn" id="cropPhotoBtn">Crop</button>
 <button class="btn" id="rotatePhotoBtn">↻ Rotate 90°</button>
@@ -836,7 +839,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="section">
 <div class="sectionTitleRow">
 <h2>ANNOTATION STYLE</h2>
-<span class="versionPill">V75</span>
+<span class="versionPill">V76</span>
 </div>
 <div class="prop">
 <label>Color <small><span id="cAnnoColorText">#000000</span></small></label>
@@ -2071,7 +2074,7 @@ function initAnnotatePhotoInteractions(){
 
 window.addEventListener("resize",()=>{if(loaded)fitPreviewToStage();fitCollageCanvas()});
 initAnnotatePhotoInteractions();
-mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active - Version V75");window.FitPhotoBoot.editor=true;
+mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active - Version V76");window.FitPhotoBoot.editor=true;
 })();
 </script><script id="fit-local-library">/* V75 local editable library: independent of Supabase and its network availability. */
 (()=>{
@@ -2128,7 +2131,14 @@ async function writeRecord(record){
  return saved;
 }
 function usable(p){return !!p&&typeof p.id==='string'&&(p.baseBlob instanceof Blob||(typeof p.image==='string'&&/^(data:image\/|blob:)/.test(p.image)));}
-async function allRecords(){const rows=await readRecords();return (Array.isArray(rows)?rows:[]).filter(usable).sort((a,b)=>String(b.updatedAt||b.createdAt||'').localeCompare(String(a.updatedAt||a.createdAt||'')));}
+async function allRecords(){
+ const rows=await readRecords();
+ return (Array.isArray(rows)?rows:[]).filter(usable).sort((a,b)=>{
+   const ai=Number.isFinite(a.sortIndex)?a.sortIndex:Number.MAX_SAFE_INTEGER;
+   const bi=Number.isFinite(b.sortIndex)?b.sortIndex:Number.MAX_SAFE_INTEGER;
+   return ai-bi || String(b.updatedAt||b.createdAt||'').localeCompare(String(a.updatedAt||a.createdAt||''));
+ });
+}
 async function migrateLegacy(){
  let raw;try{raw=localStorage.getItem(LEGACY_KEY);}catch(_){return;}
  if(!raw)return;
@@ -2145,8 +2155,8 @@ async function refreshGallery(highlightId){
  const seq=++renderSeq,rows=await allRecords();if(seq!==renderSeq)return rows;
  const box=q('#editedPhotos'),placeholder=q('#editedPhotosPlaceholder');if(!box)throw new Error('Edited Photos panel is missing.');
  const freshUrls=[],fragment=document.createDocumentFragment();
- for(const record of rows){
-  const b=document.createElement('button');b.type='button';b.className='livePhoto editedPhoto';b.dataset.projectId=record.id;
+ for(const [index,record] of rows.entries()){
+  const b=document.createElement('button');b.type='button';b.className='livePhoto editedPhoto';b.draggable=true;b.dataset.projectId=record.id;
   b.title=(record.name||'Edited photo')+' - click to continue editing';b.setAttribute('aria-label',b.title);
   const image=document.createElement('img');image.alt=record.name||'Edited photo';
   const source=record.thumbnailBlob||record.exportBlob||record.baseBlob||record.image;
@@ -2155,6 +2165,10 @@ async function refreshGallery(highlightId){
   const badge=document.createElement('span');badge.className='editDoneBadge';badge.textContent='EDITED';
   const caption=document.createElement('span');caption.className='badge';caption.textContent='Click to continue';
   b.append(image,badge,caption);
+  b.ondragstart=e=>{b.classList.add('dragging');e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',record.id)};
+  b.ondragend=()=>b.classList.remove('dragging');
+  b.ondragover=e=>e.preventDefault();
+  b.ondrop=e=>{e.preventDefault();reorderEditedPhotos(record.id,e.dataTransfer.getData('text/plain')).catch(err=>setStatus('Reorder failed: '+describeError(err),true));};
   b.onclick=async()=>{
    if(loadBusy||saveBusy){setStatus('Please wait for the current photo operation.');return;}
    loadBusy=true;b.disabled=true;
@@ -2175,6 +2189,22 @@ async function refreshGallery(highlightId){
  setStatus(rows.length+' saved editable photo(s) on this browser.');
  return rows;
 }
+async function reorderEditedPhotos(targetId,dragId){
+ if(!dragId||targetId===dragId)return;
+ const rows=await allRecords();
+ const ti=rows.findIndex(x=>String(x.id)===String(targetId)),di=rows.findIndex(x=>String(x.id)===String(dragId));
+ if(ti<0||di<0)return;
+ const [moved]=rows.splice(di,1),ni=rows.findIndex(x=>String(x.id)===String(targetId));
+ rows.splice(ni,0,moved);
+ const db=await openDb();
+ await new Promise((resolve,reject)=>{
+   const tx=db.transaction(STORE,'readwrite'),store=tx.objectStore(STORE);
+   rows.forEach((row,i)=>{row.sortIndex=i;store.put(row)});
+   tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error||new Error('Could not save photo order'));tx.onabort=()=>reject(tx.error||new Error('Photo order update was interrupted.'));
+ });
+ await refreshGallery();
+ setStatus('Photo order updated.');
+}
 async function saveCurrent(){
  if(saveBusy||loadBusy)return;
  const button=q('#editDoneBtn');saveBusy=true;clearTimeout(statusTimer);
@@ -2182,6 +2212,8 @@ async function saveCurrent(){
  setStatus('Saving the image and editable layers...');
  try{
   const p=await editor().makeEditableProject();
+  const existing=await allRecords();
+  p.sortIndex=existing.length;
   await writeRecord(p); // A committed transaction and a read-back are required before success.
   editor().markEditableProjectSaved(p);
   const rows=await refreshGallery(p.id);
@@ -2350,8 +2382,13 @@ if(mobile){
  return;
 }
 
-let cs=null,ct=null,ch=null,seen=new Set(),sessionRows=new Map();
-async function add(row,pre=true){if(!row?.photo_path||seen.has(row.photo_path))return;seen.add(row.photo_path);sessionRows.set(row.photo_path,row);let ph=q("#livePhotosPlaceholder");if(ph)ph.style.display="none";let u=await signed(row.photo_path),h=q("#livePhotos"),b=document.createElement("button");b.className="livePhoto";b.type="button";b.innerHTML=`<img src="${u}"><span class="badge">Click to edit</span>`;b.onclick=async()=>{
+let cs=null,ct=null,ch=null,seen=new Set(),sessionRows=new Map(),originalOrder=[];
+async function add(row,pre=true){if(!row?.photo_path||seen.has(row.photo_path))return;seen.add(row.photo_path);sessionRows.set(row.photo_path,row);originalOrder.push(row.photo_path);let ph=q("#livePhotosPlaceholder");if(ph)ph.style.display="none";let u=await signed(row.photo_path),h=q("#livePhotos"),b=document.createElement("button");b.className="livePhoto";b.type="button";b.draggable=true;b.dataset.photoPath=row.photo_path;b.innerHTML=`<img src="${u}"><span class="badge">Click to edit</span>`;
+ b.ondragstart=e=>{b.classList.add("dragging");e.dataTransfer.effectAllowed="move";e.dataTransfer.setData("text/plain",row.photo_path)};
+ b.ondragend=()=>b.classList.remove("dragging");
+ b.ondragover=e=>e.preventDefault();
+ b.ondrop=e=>{e.preventDefault();reorderOriginal(row.photo_path,e.dataTransfer.getData("text/plain"))};
+ b.onclick=async()=>{
   document.querySelectorAll(".livePhoto").forEach(x=>x.classList.remove("active"));
   b.classList.add("active");
   try{
@@ -2370,6 +2407,17 @@ async function add(row,pre=true){if(!row?.photo_path||seen.has(row.photo_path))r
     alert("Could not open secure photo: "+(e.message||e));
   }
 };pre&&h.firstChild?h.insertBefore(b,h.firstChild):h.appendChild(b);q("#livePhotosStatus").textContent=`${seen.size} secure photo(s) received`}
+function reorderOriginal(targetPath,dragPath){
+ if(!dragPath||targetPath===dragPath)return;
+ const ti=originalOrder.indexOf(targetPath),di=originalOrder.indexOf(dragPath);
+ if(ti<0||di<0)return;
+ const [moved]=originalOrder.splice(di,1);
+ const ni=originalOrder.indexOf(targetPath);
+ originalOrder.splice(ni,0,moved);
+ const box=q("#livePhotos"),dragEl=box?.querySelector(`[data-photo-path="${CSS.escape(dragPath)}"]`),targetEl=box?.querySelector(`[data-photo-path="${CSS.escape(targetPath)}"]`);
+ if(dragEl&&targetEl)box.insertBefore(dragEl,targetEl);
+ q("#livePhotosStatus").textContent=`${originalOrder.length} secure photo(s) · order updated`;
+}
 async function load(){let r=await sb.rpc("get_fit_session_photos",{p_session_id:cs});if(r.error)throw r.error;for(let x of r.data||[])await add(x,false)}
 let pollTimer=null;
 async function refreshPhotos(){
@@ -2428,7 +2476,7 @@ function renderRecentSessions(){
 }
 function escapeHtml(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 async function activateSession(s){
- cs=s.session;ct=s.token;seen.clear();sessionRows.clear();q("#livePhotos").innerHTML="";
+ cs=s.session;ct=s.token;seen.clear();sessionRows.clear();originalOrder=[];q("#livePhotos").innerHTML="";
  q("#qrPriority").hidden=false;q("#sessionArea").style.display="block";document.querySelector("aside.left").scrollTop=0;q("#sessionNameDisplay").textContent=s.name||("Session "+cs);q("#sessionCode").textContent="ID "+cs;q("#endSessionBtn").style.display="block";
  const mu=murl(cs,ct),qr=q("#qrImage");qr.src="https://quickchart.io/qr?size=150&text="+encodeURIComponent(mu);qr.style.display="block";
 
