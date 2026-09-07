@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>Fit Photo Studio V75 - Edit Done Repair</title>
+<title>Fit Photo Studio V80</title>
 <style>
 :root{
   --bg:#f3f5f7;--panel:#ffffff;--ink:#15171a;--muted:#707782;--line:#dce1e6;
@@ -234,7 +234,7 @@ body.mobile-mode .mobileCaptureScreen{display:block}
 @media(max-width:1150px){.app{grid-template-columns:200px 225px minmax(0,1fr) 270px}}
 
 
-/* Version V79 full workspace */
+/* Version V80 full workspace */
 .rightVersion{font-size:10px;font-weight:800;letter-spacing:.08em;color:#2563eb;background:#eff6ff;border-radius:999px;padding:4px 8px;align-self:flex-start;margin-bottom:10px}
 .right{display:block!important;overflow-y:auto!important;overflow-x:hidden!important;min-width:0!important;padding:14px 14px 110px!important}
 #annotateControls,#collageControls{display:block;min-width:0;max-width:100%;overflow:visible}
@@ -711,12 +711,22 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 .photoLibrary .livePhoto .badge{pointer-events:none!important}
 .libraryDragHint{font-size:8px;color:#64748b;margin:2px 0 5px}
 </style>
+<meta property="og:title" content="Fit Photo Studio V80">
+<meta name="twitter:title" content="Fit Photo Studio V80">
+<meta property="og:site_name" content="Fit Photo Studio V80">
+
+<style id="v80-reorder-final">
+.photoLibrary .livePhoto{cursor:grab!important;touch-action:none!important}
+.photoLibrary .livePhoto:active{cursor:grabbing!important}
+.photoLibrary .livePhoto.dragging{opacity:.55!important;transform:scale(.96)!important;z-index:10!important}
+.photoLibrary .livePhoto.drag-over{outline:2px solid #2563eb!important}
+</style>
 </head>
 <body>
 <header>
 <div class="brand">
 <div class="logo">F</div>
-<div><h1>Fit Photo Studio</h1><small><strong>Version V79</strong> · Secure Sync · Full Combine Editor</small></div>
+<div><h1>Fit Photo Studio</h1><small><strong>Version V80</strong> · Secure Sync · Full Combine Editor</small></div>
 </div>
 <div class="topActions">
 <button class="btn" id="newBtn">New</button>
@@ -2208,7 +2218,7 @@ function initAnnotatePhotoInteractions(){
 
 window.addEventListener("resize",()=>{if(loaded)fitPreviewToStage();fitCollageCanvas()});
 initAnnotatePhotoInteractions();
-mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active - Version V79");window.FitPhotoBoot.editor=true;
+mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active - Version V80");window.FitPhotoBoot.editor=true;
 })();
 </script><script id="fit-local-library">/* V75 local editable library: independent of Supabase and its network availability. */
 (()=>{
@@ -2299,12 +2309,10 @@ async function refreshGallery(highlightId){
   const badge=document.createElement('span');badge.className='editDoneBadge';badge.textContent='EDITED';
   const caption=document.createElement('span');caption.className='badge';caption.textContent='Click to continue';
   b.append(image,badge,caption);
-  let editedWasDragged=false;
   b.draggable=false;
-  let suppressEditedClick=false;
-  installPointerReorder(b,el=>el.dataset.projectId,(ctx)=>{if(!ctx.commit&&ctx.event){suppressEditedClick=true}if(ctx.commit){reorderEditedPhotos(ctx.overId,ctx.id).catch(err=>setStatus('Reorder failed: '+describeError(err),true));setTimeout(()=>suppressEditedClick=false,0)}});
+  installPointerReorder(b,el=>el.dataset.projectId,(order)=>{persistEditedOrder(order).catch(err=>setStatus('Reorder failed: '+describeError(err),true));});
   b.onclick=async()=>{
-   if(suppressEditedClick)return;
+   if(b.dataset.justDragged)return;
    if(loadBusy||saveBusy){setStatus('Please wait for the current photo operation.');return;}
    loadBusy=true;b.disabled=true;
    try{
@@ -2323,6 +2331,16 @@ async function refreshGallery(highlightId){
  if(q('#editedPhotoCount'))q('#editedPhotoCount').textContent=String(rows.length);
  setStatus(rows.length+' saved editable photo(s) on this browser.');
  return rows;
+}
+async function persistEditedOrder(order){
+ const rows=await allRecords(),map=new Map(rows.map(x=>[String(x.id),x]));
+ const db=await openDb();
+ await new Promise((resolve,reject)=>{
+   const tx=db.transaction(STORE,'readwrite'),store=tx.objectStore(STORE);
+   order.forEach((id,i)=>{const row=map.get(String(id));if(row){row.sortIndex=i;store.put(row)}});
+   tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error||new Error('Could not save photo order'));
+ });
+ setStatus('Photo order updated.');
 }
 async function reorderEditedPhotos(targetId,dragId){
  if(!dragId||targetId===dragId)return;
@@ -2520,43 +2538,64 @@ if(mobile){
 let cs=null,ct=null,ch=null,seen=new Set(),sessionRows=new Map(),originalOrder=[];
 const ORIGINAL_ORDER_KEY="fitPhotoOriginalOrderV77";
 
-function installPointerReorder(el,getId,onMove){
- let press=null,moved=false,overId=null;
- el.addEventListener('pointerdown',e=>{
+function installPointerReorder(el,getId,onCommit){
+ let state=null;
+ const container=()=>el.parentElement;
+ function siblings(){return [...container().children].filter(x=>x.classList.contains("livePhoto"))}
+ function targetFromPointer(x,y){
+   const list=siblings().filter(x=>x!==el);
+   if(!list.length)return null;
+   let best=null,bestDist=Infinity;
+   for(const item of list){
+     const r=item.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+     const d=Math.hypot(x-cx,y-cy);
+     if(d<bestDist){bestDist=d;best=item}
+   }
+   return best;
+ }
+ el.addEventListener("pointerdown",e=>{
    if(e.button!==0)return;
-   press={x:e.clientX,y:e.clientY,pointerId:e.pointerId};
-   moved=false;
+   state={pointerId:e.pointerId,startX:e.clientX,startY:e.clientY,moved:false};
    try{el.setPointerCapture(e.pointerId)}catch(_){}
  });
- el.addEventListener('pointermove',e=>{
-   if(!press)return;
-   const dist=Math.hypot(e.clientX-press.x,e.clientY-press.y);
-   if(dist<6)return;
-   if(!moved){moved=true;el.classList.add('dragging')}
-   const under=document.elementFromPoint(e.clientX,e.clientY)?.closest('.livePhoto');
-   document.querySelectorAll('.photoLibrary .livePhoto.drag-over').forEach(x=>x.classList.remove('drag-over'));
-   if(under&&under!==el){under.classList.add('drag-over');overId=getId(under)}
-   onMove({id:getId(el),overId,commit:false,event:e});
+ el.addEventListener("pointermove",e=>{
+   if(!state||state.pointerId!==e.pointerId)return;
+   if(!state.moved&&Math.hypot(e.clientX-state.startX,e.clientY-state.startY)<5)return;
+   state.moved=true;el.classList.add("dragging");
+   const target=targetFromPointer(e.clientX,e.clientY);
+   document.querySelectorAll(".photoLibrary .livePhoto.drag-over").forEach(x=>x.classList.remove("drag-over"));
+   if(!target)return;
+   target.classList.add("drag-over");
+   const box=container(),r=target.getBoundingClientRect();
+   const before=(e.clientY<r.top+r.height/2)||(
+     Math.abs(e.clientY-(r.top+r.height/2))<r.height/2 && e.clientX<r.left+r.width/2
+   );
+   if(before)box.insertBefore(el,target);else box.insertBefore(el,target.nextSibling);
  });
  const finish=e=>{
-   if(!press)return;
-   const wasMoved=moved;
-   const target=overId;
-   press=null;overId=null;
-   el.classList.remove('dragging');
-   document.querySelectorAll('.photoLibrary .livePhoto.drag-over').forEach(x=>x.classList.remove('drag-over'));
-   if(wasMoved&&target)onMove({id:getId(el),overId:target,commit:true,event:e});
+   if(!state||state.pointerId!==e.pointerId)return;
+   const moved=state.moved;state=null;
+   el.classList.remove("dragging");
+   document.querySelectorAll(".photoLibrary .livePhoto.drag-over").forEach(x=>x.classList.remove("drag-over"));
+   if(moved){
+     const order=siblings().map(getId).filter(Boolean);
+     onCommit(order);
+     el.dataset.justDragged="1";
+     setTimeout(()=>delete el.dataset.justDragged,80);
+   }
  };
- el.addEventListener('pointerup',finish);
- el.addEventListener('pointercancel',finish);
- el.addEventListener('pointerleave',e=>{if(press&&moved){ /* keep pointer capture active */ }});
+ el.addEventListener("pointerup",finish);
+ el.addEventListener("pointercancel",finish);
 }
 async function add(row,pre=true){if(!row?.photo_path||seen.has(row.photo_path))return;seen.add(row.photo_path);sessionRows.set(row.photo_path,row);
 if(!originalOrder.includes(row.photo_path))originalOrder.push(row.photo_path);let ph=q("#livePhotosPlaceholder");if(ph)ph.style.display="none";let u=await signed(row.photo_path),h=q("#livePhotos"),b=document.createElement("button");b.className="livePhoto";b.type="button";b.draggable=false;b.dataset.photoPath=row.photo_path;b.innerHTML=`<img src="${u}" draggable="false"><span class="badge">Click to edit</span>`;
- let suppressOriginalClick=false;
- installPointerReorder(b,el=>el.dataset.photoPath,(ctx)=>{if(!ctx.commit&&ctx.event){suppressOriginalClick=true}if(ctx.commit){reorderOriginal(ctx.overId,ctx.id);setTimeout(()=>suppressOriginalClick=false,0)}});
+ installPointerReorder(b,el=>el.dataset.photoPath,(order)=>{
+   originalOrder=order;
+   try{localStorage.setItem(ORIGINAL_ORDER_KEY+"-"+cs,JSON.stringify(originalOrder))}catch(_){}
+   q("#livePhotosStatus").textContent=`${originalOrder.length} secure photo(s) · order updated`;
+ });
  b.onclick=async()=>{
-  if(suppressOriginalClick)return;
+  if(b.dataset.justDragged)return;
   document.querySelectorAll(".livePhoto").forEach(x=>x.classList.remove("active"));
   b.classList.add("active");
   try{
