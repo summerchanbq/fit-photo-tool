@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Fit Photo Studio V68 Durable Sessions</title>
+<title>Fit Photo Studio V69 Photo Workflow</title>
 <style>
 :root{
   --bg:#f3f5f7;--panel:#ffffff;--ink:#15171a;--muted:#707782;--line:#dce1e6;
@@ -233,7 +233,7 @@ body.mobile-mode .mobileCaptureScreen{display:block}
 @media(max-width:1150px){.app{grid-template-columns:200px 150px minmax(0,1fr) 270px}}
 
 
-/* Version V68 full workspace */
+/* Version V69 full workspace */
 .rightVersion{font-size:10px;font-weight:800;letter-spacing:.08em;color:#2563eb;background:#eff6ff;border-radius:999px;padding:4px 8px;align-self:flex-start;margin-bottom:10px}
 .right{display:block!important;overflow-y:auto!important;overflow-x:hidden!important;min-width:0!important;padding:14px 14px 110px!important}
 #annotateControls,#collageControls{display:block;min-width:0;max-width:100%;overflow:visible}
@@ -478,14 +478,28 @@ input[type="color"]{width:42px!important;height:32px!important}
 }
 .pinModalCard .row{display:grid!important;grid-template-columns:1fr 1fr!important;gap:7px!important}
 
+
+/* V69 workflow update */
+.qrPriority{order:-1;margin-bottom:8px}
+#connectPhoneSection .connectCard{display:flex;flex-direction:column}
+#sessionArea{margin-top:0!important;margin-bottom:9px!important;padding:7px!important;border:1px solid #dbeafe;border-radius:10px;background:#fff}
+#qrImage{width:132px!important;height:132px!important;max-width:132px!important;margin:5px auto!important;position:relative!important;z-index:5!important}
+.cropModalBackdrop{position:fixed;inset:0;z-index:10000;background:rgba(15,23,42,.55);align-items:center;justify-content:center;padding:18px}
+.cropModalCard{width:min(760px,94vw);background:#fff;border-radius:14px;padding:14px}
+.cropStage{position:relative;max-height:68vh;overflow:auto;background:#111;display:flex;justify-content:center}
+#cropCanvas{display:block;max-width:100%;max-height:65vh}
+#cropBox{position:absolute;border:2px dashed #fff;box-shadow:0 0 0 9999px rgba(0,0,0,.35);pointer-events:none;display:none}
+#photoAdjustSection .compactPair .btn{min-width:0!important;padding:0 5px!important}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 </head>
 <body>
 <header>
   <div class="brand">
     <div class="logo">F</div>
-    <div><h1>Fit Photo Studio</h1><small><strong>Version V68</strong> · Secure Sync · Full Combine Editor</small></div>
+    <div><h1>Fit Photo Studio</h1><small><strong>Version V69</strong> · Secure Sync · Full Combine Editor</small></div>
   </div>
   <div class="topActions">
     <button id="newBtn" class="btn">New</button>
@@ -531,6 +545,21 @@ input[type="color"]{width:42px!important;height:32px!important}
     <div class="section" id="connectPhoneSection">
       <h2>Connect Phone</h2>
       <div class="connectCard">
+        <div class="qrPriority" id="qrPriority">
+
+        <div id="sessionArea" style="display:none;margin-top:9px">
+          <div class="note">Session</div>
+          <div id="sessionNameDisplay" class="sessionCode">—</div>
+          <div id="sessionCode" class="note" style="font-size:8px;color:#94a3b8;margin-top:3px">—</div>
+          <img id="qrImage" alt="Session QR code" style="display:none">
+          <div class="row" style="margin-top:5px">
+            <button id="openMobileLinkBtn" class="btn" style="display:none;padding:6px 7px;font-size:10px">Open mobile</button>
+            <button id="copyMobileLinkBtn" class="btn" style="display:none;padding:6px 7px;font-size:10px">Copy link</button>
+          </div>
+          <div class="syncStatus" id="syncStatus">Waiting for phone…</div>
+        </div>
+        </div>
+
         <label class="sessionModeToggle">
           <input id="protectedSessionToggle" type="checkbox">
           <span>
@@ -546,17 +575,6 @@ input[type="color"]{width:42px!important;height:32px!important}
         <button id="createSessionBtn" class="btn primary" style="width:100%">Create Quick Session</button>
 <div id="createSessionStatus" class="syncStatus" style="margin-top:7px"></div>
 <button id="endSessionBtn" class="btn" style="width:100%;margin-top:7px;display:none;color:#b42318">End Session</button>
-        <div id="sessionArea" style="display:none;margin-top:9px">
-          <div class="note">Session</div>
-          <div id="sessionNameDisplay" class="sessionCode">—</div>
-          <div id="sessionCode" class="note" style="font-size:8px;color:#94a3b8;margin-top:3px">—</div>
-          <img id="qrImage" alt="Session QR code" style="display:none">
-          <div class="row" style="margin-top:5px">
-            <button id="openMobileLinkBtn" class="btn" style="display:none;padding:6px 7px;font-size:10px">Open mobile</button>
-            <button id="copyMobileLinkBtn" class="btn" style="display:none;padding:6px 7px;font-size:10px">Copy link</button>
-          </div>
-          <div class="syncStatus" id="syncStatus">Waiting for phone…</div>
-        </div>
       </div>
       <div id="recentSessionsBlock" style="margin-top:12px">
         <div class="sectionTitleRow"><h2>Recent Sessions</h2><button id="refreshRecentSessionsBtn" class="btn" style="height:28px!important;min-height:28px!important;padding:0 7px!important">Refresh</button></div><div class="note" style="margin-bottom:6px">Reusable/protected sessions are restored after refresh.</div>
@@ -584,7 +602,11 @@ input[type="color"]{width:42px!important;height:32px!important}
 </div>
 <div id="livePhotos" class="livePhotos"></div>
       <div class="syncStatus" id="livePhotosStatus">Create a session to receive phone photos. Click any received photo to edit it.</div>
-<button id="refreshLivePhotosBtn" class="btn" style="width:100%;margin-top:7px">Refresh Photos</button>
+<div class="compactPair" style="margin-top:7px">
+<button id="refreshLivePhotosBtn" class="btn">Refresh Photos</button>
+<button id="downloadAllPhotosBtn" class="btn">Download All</button>
+</div>
+<div id="batchDownloadStatus" class="syncStatus"></div>
     </div>
 
   
@@ -674,7 +696,7 @@ input[type="color"]{width:42px!important;height:32px!important}
     <div class="section">
       <div class="sectionTitleRow">
         <h2>ANNOTATION STYLE</h2>
-        <span class="versionPill">V68</span>
+        <span class="versionPill">V69</span>
       </div>
       <div class="prop">
         <label>Color <small><span id="colorText">#000000</span></small></label>
@@ -695,6 +717,27 @@ input[type="color"]{width:42px!important;height:32px!important}
         <button id="undo" class="btn">Undo</button>
         <button id="delete" class="btn">Delete</button>
       </div>
+    </div>
+
+    <div class="section" id="photoAdjustSection">
+      <div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V69</span></div>
+      <div class="compactPair">
+        <button id="cropPhotoBtn" class="btn">Crop</button>
+        <button id="rotatePhotoBtn" class="btn">↻ Rotate 90°</button>
+      </div>
+      <div class="prop" style="margin-top:7px">
+        <label>Brightness <small><span id="brightnessVal">100</span>%</small></label>
+        <input id="brightnessRange" type="range" min="40" max="180" value="100">
+      </div>
+      <div class="prop">
+        <label>Contrast <small><span id="contrastVal">100</span>%</small></label>
+        <input id="contrastRange" type="range" min="40" max="180" value="100">
+      </div>
+      <div class="compactPair">
+        <button id="removeBgBtn" class="btn">Remove BG (Test)</button>
+        <button id="resetPhotoAdjustBtn" class="btn">Reset</button>
+      </div>
+      <div id="photoAdjustStatus" class="note" style="margin-top:5px">Crop/rotate resets annotations. Remove BG is experimental.</div>
     </div>
 
     <div class="section">
@@ -742,7 +785,7 @@ input[type="color"]{width:42px!important;height:32px!important}
     <div class="section">
       <div class="sectionTitleRow">
         <h2>ANNOTATION STYLE</h2>
-        <span class="versionPill">V68</span>
+        <span class="versionPill">V69</span>
       </div>
       <div class="prop">
         <label>Color <small><span id="cAnnoColorText">#000000</span></small></label>
@@ -932,6 +975,7 @@ $("#photoInput").addEventListener("change",e=>{
   const url=URL.createObjectURL(f);
   img.onload=()=>{
     loaded=true;
+    if(typeof resetPhotoAdjustments==="function")resetPhotoAdjustments();
     $("#empty").style.display="none";
     img.style.display="block";
     $("#photoMeta").textContent=`${f.name} · ${img.naturalWidth}×${img.naturalHeight}`;
@@ -1569,7 +1613,7 @@ async function loadSecureBlobIntoAnnotate(blob,label="Secure live photo"){
   return new Promise((resolve,reject)=>{
     const url=URL.createObjectURL(blob);
     img.onload=()=>{
-      loaded=true;
+      loaded=true;if(typeof resetPhotoAdjustments==="function")resetPhotoAdjustments();
       $("#empty").style.display="none";
       img.style.display="block";
       objects=[];selected=null;temp=null;drag=null;history=[];
@@ -1601,6 +1645,69 @@ async function addSecureBlobToCombine(blob,label="Secure live photo",sourcePath=
     im.src=url;
   });
 }
+
+
+let photoBrightness=100,photoContrast=100;
+function applyPhotoFilter(){
+  img.style.filter=`brightness(${photoBrightness}%) contrast(${photoContrast}%)`;
+  const bv=$("#brightnessVal"),cv=$("#contrastVal");
+  if(bv)bv.textContent=Math.round(photoBrightness);if(cv)cv.textContent=Math.round(photoContrast);
+}
+function resetPhotoAdjustments(){
+  photoBrightness=100;photoContrast=100;
+  $("#brightnessRange").value=100;$("#contrastRange").value=100;applyPhotoFilter();
+}
+async function replaceBaseImageFromCanvas(c,label){
+  const url=c.toDataURL("image/png");
+  return new Promise((resolve,reject)=>{
+    img.onload=()=>{
+      loaded=true;objects=[];selected=null;temp=null;drag=null;history=[];
+      resetPhotoAdjustments();fitPreviewToStage();requestAnimationFrame(()=>fitPreviewToStage());
+      $("#photoMeta").textContent=`${label} · ${img.naturalWidth}×${img.naturalHeight}`;
+      $("#hint").textContent="Photo ready";render();resolve();
+    };
+    img.onerror=()=>reject(new Error("Could not process image"));
+    img.src=url;
+  });
+}
+function currentFilteredCanvas(){
+  const c=document.createElement("canvas");c.width=img.naturalWidth;c.height=img.naturalHeight;
+  const x=c.getContext("2d");x.filter=`brightness(${photoBrightness}%) contrast(${photoContrast}%)`;x.drawImage(img,0,0);x.filter="none";return c;
+}
+$("#brightnessRange").oninput=e=>{photoBrightness=+e.target.value;applyPhotoFilter()};
+$("#contrastRange").oninput=e=>{photoContrast=+e.target.value;applyPhotoFilter()};
+$("#resetPhotoAdjustBtn").onclick=resetPhotoAdjustments;
+$("#rotatePhotoBtn").onclick=async()=>{
+  if(!loaded)return alert("Choose a photo first.");
+  const src=currentFilteredCanvas(),c=document.createElement("canvas");c.width=src.height;c.height=src.width;
+  const x=c.getContext("2d");x.translate(c.width/2,c.height/2);x.rotate(Math.PI/2);x.drawImage(src,-src.width/2,-src.height/2);
+  await replaceBaseImageFromCanvas(c,"Rotated photo");
+};
+$("#removeBgBtn").onclick=async()=>{
+  if(!loaded)return alert("Choose a photo first.");
+  const st=$("#photoAdjustStatus");st.textContent="Testing background removal…";
+  const c=currentFilteredCanvas(),x=c.getContext("2d"),im=x.getImageData(0,0,c.width,c.height),d=im.data;
+  const pts=[[0,0],[c.width-1,0],[0,c.height-1],[c.width-1,c.height-1]];
+  let rr=0,gg=0,bb=0;pts.forEach(([px,py])=>{const i=(py*c.width+px)*4;rr+=d[i];gg+=d[i+1];bb+=d[i+2]});rr/=4;gg/=4;bb/=4;
+  const threshold=58;
+  for(let i=0;i<d.length;i+=4){const dist=Math.hypot(d[i]-rr,d[i+1]-gg,d[i+2]-bb);if(dist<threshold)d[i+3]=Math.round(255*Math.max(0,dist/threshold))}
+  x.putImageData(im,0,0);await replaceBaseImageFromCanvas(c,"Background removed (test)");
+  st.textContent="Background removal applied (experimental — Undo by reloading the original if needed).";
+};
+
+let cropStart=null,cropRect=null;
+$("#cropPhotoBtn").onclick=()=>{
+  if(!loaded)return alert("Choose a photo first.");
+  const cm=$("#cropModal"),ccrop=$("#cropCanvas"),cx2=ccrop.getContext("2d");
+  ccrop.width=img.naturalWidth;ccrop.height=img.naturalHeight;cx2.drawImage(currentFilteredCanvas(),0,0);
+  cropRect=null;$("#cropBox").style.display="none";cm.style.display="flex";
+};
+$("#cropCancelBtn").onclick=()=>$("#cropModal").style.display="none";
+const cropCanvas=$("#cropCanvas");
+cropCanvas.addEventListener("mousedown",e=>{const r=cropCanvas.getBoundingClientRect();cropStart={x:(e.clientX-r.left)*cropCanvas.width/r.width,y:(e.clientY-r.top)*cropCanvas.height/r.height};cropRect={x:cropStart.x,y:cropStart.y,w:0,h:0}});
+cropCanvas.addEventListener("mousemove",e=>{if(!cropStart)return;const r=cropCanvas.getBoundingClientRect(),x=(e.clientX-r.left)*cropCanvas.width/r.width,y=(e.clientY-r.top)*cropCanvas.height/r.height;cropRect={x:Math.min(cropStart.x,x),y:Math.min(cropStart.y,y),w:Math.abs(x-cropStart.x),h:Math.abs(y-cropStart.y)};const b=$("#cropBox");b.style.display="block";b.style.left=(cropRect.x/cropCanvas.width*r.width)+"px";b.style.top=(cropRect.y/cropCanvas.height*r.height)+"px";b.style.width=(cropRect.w/cropCanvas.width*r.width)+"px";b.style.height=(cropRect.h/cropCanvas.height*r.height)+"px"});
+window.addEventListener("mouseup",()=>cropStart=null);
+$("#cropApplyBtn").onclick=async()=>{if(!cropRect||cropRect.w<10||cropRect.h<10)return alert("Drag to select a crop area first.");const src=$("#cropCanvas"),c=document.createElement("canvas");c.width=Math.round(cropRect.w);c.height=Math.round(cropRect.h);c.getContext("2d").drawImage(src,cropRect.x,cropRect.y,cropRect.w,cropRect.h,0,0,c.width,c.height);$("#cropModal").style.display="none";await replaceBaseImageFromCanvas(c,"Cropped photo")};
 
 window.FitEditor={
   isCombineMode:()=>window.getComputedStyle($("#collagePanel")).display!=="none",
@@ -1712,10 +1819,18 @@ function initAnnotatePhotoInteractions(){
 
 window.addEventListener("resize",()=>{if(loaded)fitPreviewToStage();fitCollageCanvas()});
 initAnnotatePhotoInteractions();
-mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active · Version V68");
+mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active · Version V69");
 })();
 </script>
 
+<div id="cropModal" class="cropModalBackdrop" style="display:none">
+  <div class="cropModalCard">
+    <div class="sectionTitleRow"><h3>Crop Photo</h3><button id="cropCancelBtn" class="btn">Cancel</button></div>
+    <div class="cropStage"><canvas id="cropCanvas"></canvas><div id="cropBox"></div></div>
+    <div class="note" style="margin:7px 0">Drag on the photo to select the area to keep.</div>
+    <button id="cropApplyBtn" class="btn primary" style="width:100%">Apply Crop</button>
+  </div>
+</div>
 <div id="reopenPinModal" class="pinModalBackdrop" style="display:none">
   <div class="pinModalCard">
     <h3>Reopen Protected Session</h3>
@@ -1837,8 +1952,8 @@ if(mobile){
  return;
 }
 
-let cs=null,ct=null,ch=null,seen=new Set();
-async function add(row,pre=true){if(!row?.photo_path||seen.has(row.photo_path))return;seen.add(row.photo_path);let ph=q("#livePhotosPlaceholder");if(ph)ph.style.display="none";let u=await signed(row.photo_path),h=q("#livePhotos"),b=document.createElement("button");b.className="livePhoto";b.type="button";b.innerHTML=`<img src="${u}"><span class="badge">Click to edit</span>`;b.onclick=async()=>{
+let cs=null,ct=null,ch=null,seen=new Set(),sessionRows=new Map();
+async function add(row,pre=true){if(!row?.photo_path||seen.has(row.photo_path))return;seen.add(row.photo_path);sessionRows.set(row.photo_path,row);let ph=q("#livePhotosPlaceholder");if(ph)ph.style.display="none";let u=await signed(row.photo_path),h=q("#livePhotos"),b=document.createElement("button");b.className="livePhoto";b.type="button";b.innerHTML=`<img src="${u}"><span class="badge">Click to edit</span>`;b.onclick=async()=>{
   document.querySelectorAll(".livePhoto").forEach(x=>x.classList.remove("active"));
   b.classList.add("active");
   try{
@@ -1915,7 +2030,7 @@ function renderRecentSessions(){
 }
 function escapeHtml(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 async function activateSession(s){
- cs=s.session;ct=s.token;seen.clear();q("#livePhotos").innerHTML="";
+ cs=s.session;ct=s.token;seen.clear();sessionRows.clear();q("#livePhotos").innerHTML="";
  q("#sessionArea").style.display="block";q("#sessionNameDisplay").textContent=s.name||("Session "+cs);q("#sessionCode").textContent="ID "+cs;q("#endSessionBtn").style.display="block";
  const mu=murl(cs,ct),qr=q("#qrImage");qr.src="https://quickchart.io/qr?size=150&text="+encodeURIComponent(mu);qr.style.display="block";
  q("#openMobileLinkBtn").style.display=q("#copyMobileLinkBtn").style.display="block";q("#openMobileLinkBtn").onclick=()=>window.open(mu,"_blank");q("#copyMobileLinkBtn").onclick=()=>navigator.clipboard.writeText(mu);
@@ -2025,6 +2140,21 @@ if(createBtn)createBtn.onclick=async()=>{
  finally{b.disabled=false;b.textContent=isProtected?"Create Protected Session":"Create Quick Session"}
 };
 q("#refreshLivePhotosBtn").onclick=async()=>{q("#livePhotosStatus").textContent="Checking secure session…";await refreshPhotos()};
+q("#downloadAllPhotosBtn").onclick=async()=>{
+ const st=q("#batchDownloadStatus"),btn=q("#downloadAllPhotosBtn");
+ if(!cs)return st.textContent="Create or reopen a session first.";
+ try{
+   btn.disabled=true;st.textContent="Preparing archive…";await refreshPhotos();
+   const paths=[...sessionRows.keys()];if(!paths.length)throw new Error("No photos in this session.");
+   if(!window.JSZip)throw new Error("ZIP library did not load.");
+   const zip=new JSZip();
+   for(let i=0;i<paths.length;i++){st.textContent=`Adding ${i+1}/${paths.length}…`;const u=await signed(paths[i]),r=await fetch(u,{cache:"no-store"});if(!r.ok)throw new Error("Could not fetch photo");const b=await r.blob();zip.file(paths[i].split("/").pop()||`photo-${i+1}.jpg`,b)}
+   st.textContent="Creating ZIP…";const blob=await zip.generateAsync({type:"blob"});
+   const a=document.createElement("a"),url=URL.createObjectURL(blob);a.href=url;a.download=`fit-photos-${cs}.zip`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
+   st.textContent=`Downloaded ${paths.length} photo(s).`;
+ }catch(e){st.textContent="Download failed: "+(e.message||e)}
+ finally{btn.disabled=false}
+};
 q("#endSessionBtn").onclick=async()=>{if(!cs)return;let r=await sb.from(S).update({active:false,ended_at:new Date().toISOString()}).eq("session_id",cs);if(r.error)return q("#syncStatus").textContent=r.error.message;if(ch)sb.removeChannel(ch);if(pollTimer){clearInterval(pollTimer);pollTimer=null}updateRecentSession(cs,{active:false,endedAt:new Date().toISOString()});q("#syncStatus").textContent="Session ended — QR invalid";q("#endSessionBtn").style.display="none"};
 })();
 
@@ -2105,7 +2235,8 @@ async function exportAnnotatedBlob(){
   const out=document.createElement("canvas");
   out.width=base.naturalWidth;out.height=base.naturalHeight;
   const ox=out.getContext("2d");
-  ox.drawImage(base,0,0,out.width,out.height);
+  ox.filter=`brightness(${typeof photoBrightness!=="undefined"?photoBrightness:100}%) contrast(${typeof photoContrast!=="undefined"?photoContrast:100}%)`;
+  ox.drawImage(base,0,0,out.width,out.height);ox.filter="none";
   ox.drawImage(overlay,0,0,out.width,out.height);
   const fmt=document.querySelector("#format")?.value||"png";
   const mime=fmt==="jpeg"?"image/jpeg":"image/png";
