@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>Fit Photo Studio V80</title>
+<title>Fit Photo Studio V81</title>
 <style>
 :root{
   --bg:#f3f5f7;--panel:#ffffff;--ink:#15171a;--muted:#707782;--line:#dce1e6;
@@ -691,7 +691,6 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
  .photoLibrary{min-width:245px!important}
 }
 </style>
-
 <style id="v79-pointer-reorder">
 .photoLibrary .livePhoto{
   touch-action:none!important;
@@ -711,22 +710,197 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 .photoLibrary .livePhoto .badge{pointer-events:none!important}
 .libraryDragHint{font-size:8px;color:#64748b;margin:2px 0 5px}
 </style>
-<meta property="og:title" content="Fit Photo Studio V80">
-<meta name="twitter:title" content="Fit Photo Studio V80">
-<meta property="og:site_name" content="Fit Photo Studio V80">
-
+<meta content="Fit Photo Studio V81" property="og:title"/>
+<meta content="Fit Photo Studio V81" name="twitter:title"/>
+<meta content="Fit Photo Studio V81" property="og:site_name"/>
 <style id="v80-reorder-final">
 .photoLibrary .livePhoto{cursor:grab!important;touch-action:none!important}
 .photoLibrary .livePhoto:active{cursor:grabbing!important}
 .photoLibrary .livePhoto.dragging{opacity:.55!important;transform:scale(.96)!important;z-index:10!important}
 .photoLibrary .livePhoto.drag-over{outline:2px solid #2563eb!important}
 </style>
-</head>
+<script id="fit-library-sort">/* Shared photo sorting. No dependency on Supabase, IndexedDB, or the editor's private scope. */
+(() => {
+ 'use strict';
+ const groups=new Map();
+ let active=null,suppressClick=null,scrollFrame=0;
+ const same=(a,b)=>a.length===b.length&&a.every((v,i)=>v===b[i]);
+ function tiles(g){return [...g.box.children].filter(x=>x.matches(g.selector));}
+ function ids(g){return tiles(g).map(g.getId);}
+ function apply(g,order){
+  const map=new Map(tiles(g).map(el=>[g.getId(el),el]));
+  order.forEach(id=>{const el=map.get(id);if(el)g.box.appendChild(el);});
+ }
+ function feedback(g,text,error=false){if(error){g.onError?.(new Error(text));}else g.onFeedback?.(text);}
+ function isBusy(g){return g.committing||!!(active&&active.g===g)||!!g.busy?.();}
+ function decorate(g){
+  const a=tiles(g);
+  a.forEach((tile,index)=>{
+   tile.draggable=false;
+   tile.querySelectorAll('img').forEach(im=>im.draggable=false);
+   let badge=tile.querySelector(':scope > .photoOrderBadge');
+   if(!badge){badge=document.createElement('span');badge.className='photoOrderBadge';tile.append(badge);}
+   badge.textContent=String(index+1);badge.setAttribute('aria-hidden','true');
+   let bar=tile.querySelector(':scope > .photoSortActions');
+   if(!bar){
+    bar=document.createElement('span');bar.className='photoSortActions';
+    for(const [step,label,glyph] of [[-1,'Move earlier','\u2039'],[1,'Move later','\u203a']]){
+     const control=document.createElement('span');control.dataset.sortStep=String(step);control.tabIndex=0;control.setAttribute('role','button');control.setAttribute('aria-label',label);control.title=label;control.textContent=glyph;bar.append(control);
+    }
+    tile.append(bar);
+   }
+   bar.querySelector('[data-sort-step="-1"]').setAttribute('aria-disabled',index===0?'true':'false');
+   bar.querySelector('[data-sort-step="1"]').setAttribute('aria-disabled',index===a.length-1?'true':'false');
+  });
+ }
+ async function commit(g,order,before){
+  if(same(order,before)){decorate(g);return;}
+  g.committing=true;g.box.setAttribute('aria-busy','true');feedback(g,'Saving photo order...');
+  try{
+   await g.onCommit(order);
+   decorate(g);feedback(g,'Photo order saved.');
+  }catch(e){
+   apply(g,before);decorate(g);feedback(g,'Could not save order: '+(e?.message||e),true);
+  }finally{g.committing=false;g.box.removeAttribute('aria-busy');}
+ }
+ function stepMove(g,tile,step){
+  if(isBusy(g))return;
+  const before=ids(g),from=before.indexOf(g.getId(tile)),to=from+step;
+  if(from<0||to<0||to>=before.length)return;
+  const order=[...before];order.splice(to,0,...order.splice(from,1));
+  apply(g,order);decorate(g);void commit(g,order,before);
+ }
+ function nearestSlot(s,x,y){
+  const r=s.g.box.getBoundingClientRect();
+  if(x<r.left-12||x>r.right+12||y<r.top-12||y>r.bottom+12)return null;
+  let best=0,dist=Infinity;
+  s.slots.forEach((slot,i)=>{const d=(x-r.left-slot.x)**2+(y-r.top-slot.y)**2;if(d<dist){dist=d;best=i;}});
+  return best;
+ }
+ function previewAt(s,x,y){
+  s.x=x;s.y=y;
+  if(s.ghost){s.ghost.style.left=(x-s.grabX)+'px';s.ghost.style.top=(y-s.grabY)+'px';}
+  const dest=nearestSlot(s,x,y);s.valid=dest!==null;
+  if(dest===null||dest===s.destination)return;
+  s.destination=dest;
+  const order=[...s.before],from=order.indexOf(s.id);
+  order.splice(dest,0,...order.splice(from,1));
+  apply(s.g,order);decorate(s.g);
+ }
+ function autoScroll(){
+  if(!active?.moved){scrollFrame=0;return;}
+  const s=active,panel=s.g.box.closest('.photoLibrary'),r=panel?.getBoundingClientRect();
+  if(r&&s.x>=r.left&&s.x<=r.right){
+   const band=42;
+   let dy=s.y<r.top+band?-Math.ceil((r.top+band-s.y)/4):s.y>r.bottom-band?Math.ceil((s.y-r.bottom+band)/4):0;
+   dy=Math.max(-16,Math.min(16,dy));
+   if(dy){const before=panel.scrollTop;panel.scrollTop+=dy;if(before!==panel.scrollTop)previewAt(s,s.x,s.y);}
+  }
+  scrollFrame=requestAnimationFrame(autoScroll);
+ }
+ function beginDrag(s,e){
+  const r=s.tile.getBoundingClientRect(),br=s.g.box.getBoundingClientRect();
+  s.before=ids(s.g);s.slots=tiles(s.g).map(t=>{const b=t.getBoundingClientRect();return{x:b.left-br.left+b.width/2,y:b.top-br.top+b.height/2};});
+  s.grabX=s.startX-r.left;s.grabY=s.startY-r.top;s.moved=true;s.destination=s.before.indexOf(s.id);s.valid=true;
+  s.ghost=s.tile.cloneNode(true);s.ghost.removeAttribute('id');s.ghost.querySelectorAll('[id]').forEach(x=>x.removeAttribute('id'));
+  s.ghost.classList.remove('active','dragging','editedSavePulse');s.ghost.classList.add('photo-sort-ghost');s.ghost.setAttribute('aria-hidden','true');
+  Object.assign(s.ghost.style,{width:r.width+'px',height:r.height+'px'});document.body.append(s.ghost);
+  s.tile.classList.add('photo-sort-source');s.g.box.dataset.sorting='true';document.body.classList.add('photo-sort-active');
+  // Capture on the stationary container, NOT a tile that is being moved in the DOM.
+  try{s.g.box.setPointerCapture(e.pointerId);}catch(_){}
+  feedback(s.g,'Drag to the new position; release to save.');
+  if(!scrollFrame)scrollFrame=requestAnimationFrame(autoScroll);
+ }
+ function pointerMove(e){
+  const s=active;if(!s||s.pointerId!==e.pointerId)return;
+  if(!s.moved){if(Math.hypot(e.clientX-s.startX,e.clientY-s.startY)<6)return;beginDrag(s,e);}
+  e.preventDefault();previewAt(s,e.clientX,e.clientY);
+ }
+ function finish(e,cancel=false){
+  const s=active;if(!s||(e&&s.pointerId!==e.pointerId))return;
+  if(s.moved&&e&&!cancel)previewAt(s,e.clientX,e.clientY);
+  active=null;if(scrollFrame){cancelAnimationFrame(scrollFrame);scrollFrame=0;}
+  try{if(s.g.box.hasPointerCapture(s.pointerId))s.g.box.releasePointerCapture(s.pointerId);}catch(_){}
+  s.ghost?.remove();s.tile.classList.remove('photo-sort-source');delete s.g.box.dataset.sorting;document.body.classList.remove('photo-sort-active');
+  if(!s.moved)return;
+  e?.preventDefault();
+  suppressClick={box:s.g.box,until:performance.now()+600};
+  if(cancel||!s.valid){apply(s.g,s.before);decorate(s.g);feedback(s.g,'Reorder cancelled.');return;}
+  const order=ids(s.g);void commit(s.g,order,s.before);
+ }
+ function register(box,options){
+  if(typeof box==='string')box=document.querySelector(box);
+  if(!box)throw new Error('Photo sorting container is missing.');
+  if(groups.has(box))return groups.get(box).api;
+  const g={box,selector:options.selector,getId:options.getId,onCommit:options.onCommit,onError:options.onError,onFeedback:options.onFeedback,busy:options.busy,committing:false};
+  const api={decorate:()=>decorate(g),isBusy:()=>isBusy(g),isSorting:()=>g.committing||!!(active&&active.g===g),order:()=>ids(g)};g.api=api;groups.set(box,g);
+  box.addEventListener('dragstart',e=>e.preventDefault());
+  box.addEventListener('pointerdown',e=>{
+   // A new intentional click must not be suppressed by an earlier drag.
+   if(suppressClick?.box===box)suppressClick=null;
+   if(active||isBusy(g)||e.button!==0||e.isPrimary===false)return;
+   if(e.target.closest('[data-sort-step],.deleteThumb,[data-del],.thumbActions'))return;
+   const tile=e.target.closest(g.selector);if(!tile||tile.parentElement!==box||tile.disabled)return;
+   active={g,tile,id:g.getId(tile),pointerId:e.pointerId,startX:e.clientX,startY:e.clientY,x:e.clientX,y:e.clientY,moved:false,valid:false};
+  });
+  box.addEventListener('click',e=>{
+   const control=e.target.closest('[data-sort-step]');if(!control)return;
+   const tile=control.closest(g.selector);if(!tile||tile.parentElement!==box)return;
+   e.preventDefault();e.stopImmediatePropagation();
+   if(control.getAttribute('aria-disabled')!=='true')stepMove(g,tile,Number(control.dataset.sortStep));
+  },true);
+  box.addEventListener('keydown',e=>{
+   const tile=e.target.closest(g.selector);if(!tile||tile.parentElement!==box)return;
+   const control=e.target.closest('[data-sort-step]');
+   if(control&&(e.key==='Enter'||e.key===' ')){e.preventDefault();e.stopPropagation();if(control.getAttribute('aria-disabled')!=='true')stepMove(g,tile,Number(control.dataset.sortStep));}
+   else if(e.altKey&&(e.key==='ArrowLeft'||e.key==='ArrowRight')){e.preventDefault();e.stopPropagation();stepMove(g,tile,e.key==='ArrowLeft'?-1:1);}
+  });
+  decorate(g);return api;
+ }
+ document.addEventListener('pointermove',pointerMove,{capture:true,passive:false});
+ document.addEventListener('pointerup',e=>finish(e,false),true);
+ document.addEventListener('pointercancel',e=>finish(e,true),true);
+ document.addEventListener('click',e=>{if(suppressClick&&performance.now()<suppressClick.until&&suppressClick.box.contains(e.target)){e.preventDefault();e.stopImmediatePropagation();}},true);
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&active?.moved){e.preventDefault();finish(null,true);}},true);
+ window.addEventListener('blur',()=>{if(active)finish(null,true);});
+ window.FitLibrarySort=Object.freeze({register,isBusy:box=>{if(typeof box==='string')box=document.querySelector(box);const g=groups.get(box);return g?isBusy(g):false;},version:81});
+})();
+</script><style id="v81-library-order">/* V81 final photo library layout and sorting controls, identical in all three sections. */
+.photoLibrary #livePhotos,.photoLibrary #editedPhotos,.photoLibrary #thumbList {
+ display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important;
+ max-height:none!important;overflow:visible!important;
+}
+.photoLibrary #livePhotos>.livePhoto,.photoLibrary #editedPhotos>.livePhoto,.photoLibrary #thumbList>.thumb {
+ display:block!important;position:relative!important;width:100%!important;min-width:0!important;max-width:100%!important;
+ height:auto!important;min-height:0!important;aspect-ratio:1!important;padding:0!important;margin:0!important;
+ border:2px solid transparent!important;border-radius:9px!important;overflow:hidden!important;
+ background:#eef1f4!important;cursor:grab!important;touch-action:none!important;user-select:none!important;-webkit-user-drag:none!important;
+}
+.photoLibrary #livePhotos>.livePhoto img,.photoLibrary #editedPhotos>.livePhoto img,.photoLibrary #thumbList>.thumb img {
+ width:100%!important;height:100%!important;object-fit:cover!important;display:block!important;border-radius:0!important;
+ pointer-events:none!important;user-select:none!important;-webkit-user-drag:none!important;
+}
+.photoLibrary .livePhoto.active,.photoLibrary .thumb.active {border-color:#2563eb!important;}
+.photoLibrary .livePhoto .badge,.photoLibrary .thumb .badge {position:absolute!important;bottom:22px!important;left:3px!important;font-size:7px!important;pointer-events:none!important;max-width:calc(100% - 6px)!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:rgba(15,23,42,.76);color:white;padding:2px 3px;border-radius:3px;}
+.photoLibrary .photoOrderBadge {position:absolute;left:3px;top:3px;background:#fff;color:#25374b;border-radius:4px;padding:1px 4px;font-size:8px!important;font-weight:700;pointer-events:none;z-index:2;}
+.photoLibrary .photoSortActions {position:absolute;display:flex;bottom:0;left:0;right:0;height:20px;background:rgba(255,255,255,.95);z-index:3;border-top:1px solid #dce1e6;}
+.photoLibrary .photoSortActions [data-sort-step] {display:flex;flex:1;justify-content:center;align-items:center;cursor:pointer;font-size:19px!important;font-weight:700;line-height:18px;color:#334155;touch-action:manipulation;}
+.photoLibrary .photoSortActions [data-sort-step]:hover {background:#dbeafe;color:#1d4ed8;}
+.photoLibrary .photoSortActions [aria-disabled=true] {opacity:.3;cursor:default;}
+.photoLibrary .photo-sort-source {opacity:.22!important;border:2px dashed #2563eb!important;transform:none!important;}
+.photo-sort-ghost {position:fixed!important;pointer-events:none!important;z-index:2147480000!important;opacity:.92!important;transform:rotate(2deg)!important;overflow:hidden!important;border:2px solid #2563eb!important;border-radius:9px!important;box-shadow:0 8px 26px rgba(0,0,0,.24)!important;margin:0!important;padding:0!important;background:white!important;}
+.photo-sort-ghost img {width:100%!important;height:100%!important;object-fit:cover!important;}
+.photo-sort-ghost span,.photo-sort-ghost button {display:none!important;}
+.photo-sort-active {cursor:grabbing!important;user-select:none!important;}
+.photoLibrary #thumbList .deleteThumb {position:absolute;right:2px;top:2px;z-index:4;width:17px;height:17px;line-height:15px;padding:0;border:0;border-radius:4px;background:rgba(255,255,255,.9);color:#b42318;cursor:pointer;}
+.photoLibrary .librarySectionHint {font-size:8px!important;color:#64748b!important;margin:3px 0 6px!important;line-height:1.3;}
+.photoLibrary [aria-busy=true] .photoSortActions {opacity:.55;}
+</style></head>
 <body>
 <header>
 <div class="brand">
 <div class="logo">F</div>
-<div><h1>Fit Photo Studio</h1><small><strong>Version V80</strong> · Secure Sync · Full Combine Editor</small></div>
+<div><h1>Fit Photo Studio</h1><small><strong>V81</strong> · Secure Sync · Full Combine Editor</small></div>
 </div>
 <div class="topActions">
 <button class="btn" id="newBtn">New</button>
@@ -808,21 +982,21 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <button class="btn primary" id="downloadAllLibraryBtn" style="width:100%;margin-top:7px">Download All Original + Edited</button>
 </div>
 <div class="section" id="livePhotosSection">
-<div class="sectionTitleRow"><h2>ORIGINAL PHOTOS</h2><button class="btn" id="downloadAllOriginalBtn">Download All</button></div><div class="librarySectionHint">Drag photos to reorder</div>
+<div class="sectionTitleRow"><h2>ORIGINAL PHOTOS</h2><button class="btn" id="downloadAllOriginalBtn">Download All</button></div>
 <div class="libraryEmpty" id="livePhotosPlaceholder">Phone photos will appear here automatically.</div>
-<div class="livePhotos" id="livePhotos"></div>
+<div class="librarySectionHint">Drag to reorder, or use the arrows below each photo.</div><div class="livePhotos" id="livePhotos"></div><div aria-live="polite" class="syncStatus" id="originalSortStatus" role="status"></div>
 <div class="syncStatus" id="livePhotosStatus">Create a session to receive phone photos.</div>
 <button class="btn" id="refreshLivePhotosBtn" style="width:100%;margin-top:6px">Refresh Photos</button>
 </div>
 <div class="section" id="editedPhotosSection">
-<div class="sectionTitleRow"><h2>EDITED PHOTOS <span class="libraryCount" id="editedPhotoCount">0</span></h2><button class="btn" id="downloadAllEditedBtn">Download All</button></div><div class="librarySectionHint">Drag photos to reorder</div>
+<div class="sectionTitleRow"><h2>EDITED PHOTOS <span class="libraryCount" id="editedPhotoCount">0</span></h2><button class="btn" id="downloadAllEditedBtn">Download All</button></div>
 <div class="libraryEmpty" id="editedPhotosPlaceholder">Click Edit Done to save a version you can reopen and edit. Stored on this browser.</div>
-<div class="livePhotos" id="editedPhotos"></div>
+<div class="librarySectionHint">Drag to reorder, or use the arrows below each photo.</div><div class="livePhotos" id="editedPhotos"></div>
 <div class="syncStatus" id="editedPhotosStatus">0 editable photo(s)</div>
 <button class="btn" id="refreshEditedPhotosBtn" style="width:100%;margin-top:6px" type="button">Refresh Saved Photos</button></div>
 <div class="section" id="combineLibrarySection">
 <h2>COMBINE PHOTOS</h2>
-<div class="thumbList" id="thumbList"></div>
+<div class="librarySectionHint">Drag to reorder, or use the arrows below each photo.</div><div class="thumbList" id="thumbList"></div><div aria-live="polite" class="syncStatus" id="combineSortStatus" role="status"></div>
 <div class="libraryEmpty" id="combineLibraryEmpty">Add Original or Edited photos to Combine.</div>
 </div>
 </aside>
@@ -901,7 +1075,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="section">
 <div class="sectionTitleRow">
 <h2>ANNOTATION STYLE</h2>
-<span class="versionPill">V79</span>
+<span class="versionPill">V81</span>
 </div>
 <div class="prop">
 <label>Color <small><span id="colorText">#000000</span></small></label>
@@ -924,7 +1098,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 </div>
 </div>
 <div class="section" id="photoAdjustSection">
-<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V79</span></div>
+<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V81</span></div>
 <div class="compactPair">
 <button class="btn" id="cropPhotoBtn">Crop</button>
 <button class="btn" id="rotatePhotoBtn">↻ Rotate 90°</button>
@@ -983,7 +1157,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="section">
 <div class="sectionTitleRow">
 <h2>ANNOTATION STYLE</h2>
-<span class="versionPill">V79</span>
+<span class="versionPill">V81</span>
 </div>
 <div class="prop">
 <label>Color <small><span id="cAnnoColorText">#000000</span></small></label>
@@ -1735,9 +1909,36 @@ function cRender(){
 }
 function fitCollageCanvas(){const stage=$("#collagePanel .stage"),wrap=$("#collageCanvasWrap");if(!stage||!wrap)return;const r=stage.getBoundingClientRect(),sc=Math.min((r.width-20)/cc.width,(r.height-20)/cc.height,1),dw=Math.max(1,Math.round(cc.width*sc)),dh=Math.max(1,Math.round(cc.height*sc));cc.style.width=dw+"px";cc.style.height=dh+"px";wrap.style.width=dw+"px";wrap.style.height=dh+"px";cRender()}
 function centerCollageContent(){const bs=[];items.forEach(x=>bs.push({x:x.x,y:x.y,r:x.x+x.w,b:x.y+x.h}));textItems.forEach(t=>{const b=cTextBounds(t);bs.push({x:b.x,y:b.y,r:b.x+b.w,b:b.y+b.h})});cObjects.forEach(o=>{const b=cShapeBounds(o);bs.push({x:b.x,y:b.y,r:b.x+b.w,b:b.y+b.h})});if(!bs.length)return;const minX=Math.min(...bs.map(x=>x.x)),maxX=Math.max(...bs.map(x=>x.r)),minY=Math.min(...bs.map(x=>x.y)),maxY=Math.max(...bs.map(x=>x.b)),dx=cc.width/2-(minX+maxX)/2,dy=cc.height/2-(minY+maxY)/2;items.forEach(x=>{x.x+=dx;x.y+=dy});textItems.forEach(x=>{x.x+=dx;x.y+=dy});cObjects.forEach(x=>{x.x1+=dx;x.x2+=dx;x.y1+=dy;x.y2+=dy;if(x.type==="curve"){x.cx+=dx;x.cy+=dy}})}
-function autoLayout(){const n=items.length;if(!n){fitCollageCanvas();return}saveCState();const mode=$("#layoutMode").value,pad=Math.max(24,cc.width*.025),gap=Math.max(14,cc.width*.015),cols=mode==="column"?1:n,rows=mode==="column"?n:1,cw=(cc.width-pad*2-gap*(cols-1))/cols,ch=(cc.height-pad*2-gap*(rows-1))/rows;items.forEach((it,i)=>{let w,h;if(it.ratio>cw/ch){w=cw;h=w/it.ratio}else{h=ch;w=h*it.ratio}it.x=pad+(i%cols)*(cw+gap)+(cw-w)/2;it.y=pad+Math.floor(i/cols)*(ch+gap)+(ch-h)/2;it.w=w;it.h=h});centerCollageContent();renderThumbs();fitCollageCanvas()}
-function renderThumbs(){const box=$("#thumbList"),empty=$("#combineLibraryEmpty");if(!box)return;box.innerHTML="";if(empty)empty.style.display=items.length?"none":"block";items.forEach((it,i)=>{const d=document.createElement("div");d.className="thumb";d.draggable=true;d.dataset.itemId=it.id;d.innerHTML=`<img src="${it.img.src}" draggable="false"><div title="${it.name}">${i+1}. ${it.name}</div><div class="thumbActions"><button data-up="${it.id}">↑</button><button data-down="${it.id}">↓</button><button class="deleteThumb" data-del="${it.id}">×</button></div>`;d.draggable=false;installPointerReorder(d,el=>el.dataset.itemId,(ctx)=>{if(ctx.commit){const a=items.findIndex(x=>x.id===ctx.id),bidx=items.findIndex(x=>x.id===ctx.overId);if(a>=0&&bidx>=0){saveCState();const [m]=items.splice(a,1);items.splice(items.findIndex(x=>x.id===ctx.overId),0,m);autoLayout()}}});d.ondrop=e=>{e.preventDefault();const from=e.dataTransfer.getData("text/plain");if(from&&from!==it.id){const a=items.findIndex(x=>x.id===from),b=items.findIndex(x=>x.id===it.id);if(a>=0&&b>=0){saveCState();const [m]=items.splice(a,1);items.splice(items.findIndex(x=>x.id===it.id),0,m);autoLayout()}}};box.appendChild(d)});box.querySelectorAll("[data-up]").forEach(b=>b.onclick=()=>reorder(b.dataset.up,-1));box.querySelectorAll("[data-down]").forEach(b=>b.onclick=()=>reorder(b.dataset.down,1));box.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{saveCState();items=items.filter(x=>x.id!==b.dataset.del);renderThumbs();fitCollageCanvas()})}
-function reorder(id,d){const i=items.findIndex(x=>x.id===id),j=i+d;if(j<0||j>=items.length)return;saveCState();[items[i],items[j]]=[items[j],items[i]];autoLayout()}
+function autoLayout(skipHistory=false){const n=items.length;if(!n){fitCollageCanvas();return}if(skipHistory!==true)saveCState();const mode=$("#layoutMode").value,pad=Math.max(24,cc.width*.025),gap=Math.max(14,cc.width*.015),cols=mode==="column"?1:n,rows=mode==="column"?n:1,cw=(cc.width-pad*2-gap*(cols-1))/cols,ch=(cc.height-pad*2-gap*(rows-1))/rows;items.forEach((it,i)=>{let w,h;if(it.ratio>cw/ch){w=cw;h=w/it.ratio}else{h=ch;w=h*it.ratio}it.x=pad+(i%cols)*(cw+gap)+(cw-w)/2;it.y=pad+Math.floor(i/cols)*(ch+gap)+(ch-h)/2;it.w=w;it.h=h});centerCollageContent();renderThumbs();fitCollageCanvas()}
+let combineGallerySort=window.FitLibrarySort.register('#thumbList',{
+ selector:'.thumb[data-item-id]',getId:el=>el.dataset.itemId,
+ onCommit(order){
+  const map=new Map(items.map(x=>[x.id,x]));
+  if(order.length!==items.length||new Set(order).size!==order.length||order.some(id=>!map.has(id)))throw new Error('Combine changed during sorting. Please retry.');
+  saveCState();items=order.map(id=>map.get(id));autoLayout(true);
+ },
+ onFeedback:message=>{const e=$('#combineSortStatus');if(e)e.textContent=message;},
+ onError:e=>{const s=$('#combineSortStatus');if(s){s.textContent=e.message;s.style.color='#b42318';}}
+});
+function renderThumbs(){
+ const box=$("#thumbList"),empty=$("#combineLibraryEmpty");if(!box)return;
+ box.replaceChildren();if(empty)empty.style.display=items.length?"none":"block";
+ items.forEach((it,i)=>{
+  const d=document.createElement('div');d.className='thumb';d.dataset.itemId=it.id;d.draggable=false;d.tabIndex=0;d.setAttribute('role','button');d.title=it.name||'Combined photo';
+  const image=document.createElement('img');image.src=it.img.src;image.draggable=false;image.alt=it.name||'Combined photo';
+  const caption=document.createElement('span');caption.className='badge';caption.textContent=it.name||'Photo';
+  const remove=document.createElement('button');remove.type='button';remove.className='deleteThumb';remove.dataset.del=it.id;remove.textContent='\u00d7';remove.title='Remove from Combine';remove.setAttribute('aria-label','Remove from Combine');
+  remove.onclick=e=>{e.stopPropagation();saveCState();items=items.filter(x=>x.id!==it.id);if(cSel?.id===it.id)cSel=null;renderThumbs();fitCollageCanvas();};
+  d.append(image,caption,remove);
+  d.onclick=e=>{if(e.target.closest('[data-sort-step],.deleteThumb'))return;mode('combine');setCTool('select');cSel={kind:'image',id:it.id};cRender();box.querySelectorAll('.thumb').forEach(t=>t.classList.toggle('active',t.dataset.itemId===it.id));};
+  if(cSel?.id===it.id)d.classList.add('active');box.append(d);
+ });
+ combineGallerySort?.decorate();
+}
+function reorder(id,d){
+ const a=items.findIndex(x=>x.id===id),b=a+d;if(a<0||b<0||b>=items.length)return;
+ saveCState();[items[a],items[b]]=[items[b],items[a]];autoLayout(true);
+}
 function distanceToCurve(p,o){let best=1e9,prev={x:o.x1,y:o.y1};for(let j=1;j<=24;j++){const t=j/24,u=1-t,cur={x:u*u*o.x1+2*u*t*o.cx+t*t*o.x2,y:u*u*o.y1+2*u*t*o.cy+t*t*o.y2};best=Math.min(best,distanceToSegment(p,prev,cur));prev=cur}return best}
 function cHit(p){
  if(cSel?.kind==="shape"){
@@ -2218,7 +2419,7 @@ function initAnnotatePhotoInteractions(){
 
 window.addEventListener("resize",()=>{if(loaded)fitPreviewToStage();fitCollageCanvas()});
 initAnnotatePhotoInteractions();
-mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active - Version V80");window.FitPhotoBoot.editor=true;
+mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active - V81");window.FitPhotoBoot.editor=true;
 })();
 </script><script id="fit-local-library">/* V75 local editable library: independent of Supabase and its network availability. */
 (()=>{
@@ -2227,7 +2428,7 @@ const q=s=>document.querySelector(s);
 if(new URLSearchParams(location.search).get('mode')==='mobile')return;
 const DB_NAME='FitPhotoStudioV74',STORE='editedProjects',LEGACY_KEY='fitPhotoEditedProjectsV71';
 let dbPromise=null,saveBusy=false,archiveBusy=false,loadBusy=false,renderSeq=0,statusTimer=null;
-let previewUrls=[];
+let previewUrls=[];let gallerySort=null;
 function setStatus(message,error=false){
  const el=q('#editedPhotosStatus');if(el){el.textContent=message;el.style.color=error?'#b42318':'#067647';el.dataset.state=error?'error':'ready';}
 }
@@ -2296,7 +2497,8 @@ async function migrateLegacy(){
 }
 function editor(){if(!window.FitEditor?.editorReady)throw new Error('Editor did not finish loading. Check the page status and reload.');return window.FitEditor;}
 async function refreshGallery(highlightId){
- const seq=++renderSeq,rows=await allRecords();if(seq!==renderSeq)return rows;
+ if(gallerySort?.isSorting())return allRecords();
+ const seq=++renderSeq,rows=await allRecords();if(seq!==renderSeq||gallerySort?.isSorting())return rows;
  const box=q('#editedPhotos'),placeholder=q('#editedPhotosPlaceholder');if(!box)throw new Error('Edited Photos panel is missing.');
  const freshUrls=[],fragment=document.createDocumentFragment();
  for(const [index,record] of rows.entries()){
@@ -2310,9 +2512,7 @@ async function refreshGallery(highlightId){
   const caption=document.createElement('span');caption.className='badge';caption.textContent='Click to continue';
   b.append(image,badge,caption);
   b.draggable=false;
-  installPointerReorder(b,el=>el.dataset.projectId,(order)=>{persistEditedOrder(order).catch(err=>setStatus('Reorder failed: '+describeError(err),true));});
   b.onclick=async()=>{
-   if(b.dataset.justDragged)return;
    if(loadBusy||saveBusy){setStatus('Please wait for the current photo operation.');return;}
    loadBusy=true;b.disabled=true;
    try{
@@ -2326,47 +2526,40 @@ async function refreshGallery(highlightId){
   if(record.id===highlightId)b.classList.add('active','editedSavePulse');
   fragment.append(b);
  }
- box.replaceChildren(fragment);previewUrls.forEach(u=>URL.revokeObjectURL(u));previewUrls=freshUrls;
+ box.replaceChildren(fragment);gallerySort?.decorate();previewUrls.forEach(u=>URL.revokeObjectURL(u));previewUrls=freshUrls;
  if(placeholder)placeholder.style.display=rows.length?'none':'block';
  if(q('#editedPhotoCount'))q('#editedPhotoCount').textContent=String(rows.length);
  setStatus(rows.length+' saved editable photo(s) on this browser.');
  return rows;
 }
 async function persistEditedOrder(order){
- const rows=await allRecords(),map=new Map(rows.map(x=>[String(x.id),x]));
  const db=await openDb();
+ // Fetch and write inside one transaction so a concurrent save cannot be overwritten.
  await new Promise((resolve,reject)=>{
-   const tx=db.transaction(STORE,'readwrite'),store=tx.objectStore(STORE);
-   order.forEach((id,i)=>{const row=map.get(String(id));if(row){row.sortIndex=i;store.put(row)}});
-   tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error||new Error('Could not save photo order'));
+  const tx=db.transaction(STORE,'readwrite'),store=tx.objectStore(STORE),req=store.getAll();
+  req.onsuccess=()=>{
+   const rows=(req.result||[]).filter(usable),map=new Map(rows.map(x=>[x.id,x]));
+   if(new Set(order).size!==order.length||order.some(id=>!map.has(id))){tx.abort();return;}
+   const full=[...order,...rows.map(x=>x.id).filter(id=>!order.includes(id))];
+   full.forEach((id,i)=>{const row=map.get(id);row.sortIndex=i;store.put(row);});
+  };
+  tx.oncomplete=resolve;
+  tx.onerror=()=>reject(tx.error||new Error('Could not save photo order.'));
+  tx.onabort=()=>reject(tx.error||new Error('The library changed while sorting. Please retry.'));
  });
- setStatus('Photo order updated.');
-}
-async function reorderEditedPhotos(targetId,dragId){
- if(!dragId||targetId===dragId)return;
- const rows=await allRecords();
- const ti=rows.findIndex(x=>String(x.id)===String(targetId)),di=rows.findIndex(x=>String(x.id)===String(dragId));
- if(ti<0||di<0)return;
- const [moved]=rows.splice(di,1),ni=rows.findIndex(x=>String(x.id)===String(targetId));
- rows.splice(ni,0,moved);
- const db=await openDb();
- await new Promise((resolve,reject)=>{
-   const tx=db.transaction(STORE,'readwrite'),store=tx.objectStore(STORE);
-   rows.forEach((row,i)=>{row.sortIndex=i;store.put(row)});
-   tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error||new Error('Could not save photo order'));tx.onabort=()=>reject(tx.error||new Error('Photo order update was interrupted.'));
- });
- await refreshGallery();
- setStatus('Photo order updated.');
+ const saved=await allRecords();
+ if(order.some((id,i)=>saved[i]?.id!==id))throw new Error('The saved order could not be verified. Please retry.');
 }
 async function saveCurrent(){
- if(saveBusy||loadBusy)return;
+ if(saveBusy||loadBusy||gallerySort?.isBusy())return;
  const button=q('#editDoneBtn');saveBusy=true;clearTimeout(statusTimer);
  button.disabled=true;button.setAttribute('aria-busy','true');button.textContent='Saving...';button.dataset.saveState='saving';
  setStatus('Saving the image and editable layers...');
  try{
   const p=await editor().makeEditableProject();
   const existing=await allRecords();
-  p.sortIndex=existing.length;
+  const previous=existing.find(x=>x.id===p.id);
+  p.sortIndex=previous?(Number.isFinite(previous.sortIndex)?previous.sortIndex:existing.indexOf(previous)):(1+Math.max(-1,...existing.map((r,i)=>Number.isFinite(r.sortIndex)?r.sortIndex:i)));
   await writeRecord(p); // A committed transaction and a read-back are required before success.
   editor().markEditableProjectSaved(p);
   const rows=await refreshGallery(p.id);
@@ -2386,7 +2579,7 @@ function archiveFilename(base){
 }
 function deliverBlob(blob,filename){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);}
 async function archive(which){
- if(archiveBusy||saveBusy||loadBusy)return;
+ if(archiveBusy||saveBusy||loadBusy||gallerySort?.isBusy())return;
  const name=archiveFilename(which==='all'?'fit-photo-library':which==='original'?'fit-original-photos':'fit-edited-photos');if(!name)return;
  archiveBusy=true;const buttons=['#downloadAllOriginalBtn','#downloadAllEditedBtn','#downloadAllLibraryBtn'].map(q).filter(Boolean);buttons.forEach(b=>b.disabled=true);
  try{
@@ -2437,6 +2630,11 @@ function makePhotoZip(entries){
 }
 
 function init(){
+ gallerySort=window.FitLibrarySort.register('#editedPhotos',{
+  selector:'.editedPhoto[data-project-id]',getId:el=>el.dataset.projectId,
+  onCommit:persistEditedOrder,busy:()=>saveBusy||archiveBusy||loadBusy,
+  onFeedback:message=>setStatus(message),onError:e=>setStatus(describeError(e),true)
+ });
  const b=q('#editDoneBtn');if(!b)return;
  b.onclick=saveCurrent;b.dataset.saveState='ready';
  const status=q('#editedPhotosStatus');if(status){status.setAttribute('role','status');status.setAttribute('aria-live','polite');}
@@ -2538,101 +2736,52 @@ if(mobile){
 let cs=null,ct=null,ch=null,seen=new Set(),sessionRows=new Map(),originalOrder=[];
 const ORIGINAL_ORDER_KEY="fitPhotoOriginalOrderV77";
 
-function installPointerReorder(el,getId,onCommit){
- let state=null;
- const container=()=>el.parentElement;
- function siblings(){return [...container().children].filter(x=>x.classList.contains("livePhoto"))}
- function targetFromPointer(x,y){
-   const list=siblings().filter(x=>x!==el);
-   if(!list.length)return null;
-   let best=null,bestDist=Infinity;
-   for(const item of list){
-     const r=item.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
-     const d=Math.hypot(x-cx,y-cy);
-     if(d<bestDist){bestDist=d;best=item}
-   }
-   return best;
- }
- el.addEventListener("pointerdown",e=>{
-   if(e.button!==0)return;
-   state={pointerId:e.pointerId,startX:e.clientX,startY:e.clientY,moved:false};
-   try{el.setPointerCapture(e.pointerId)}catch(_){}
- });
- el.addEventListener("pointermove",e=>{
-   if(!state||state.pointerId!==e.pointerId)return;
-   if(!state.moved&&Math.hypot(e.clientX-state.startX,e.clientY-state.startY)<5)return;
-   state.moved=true;el.classList.add("dragging");
-   const target=targetFromPointer(e.clientX,e.clientY);
-   document.querySelectorAll(".photoLibrary .livePhoto.drag-over").forEach(x=>x.classList.remove("drag-over"));
-   if(!target)return;
-   target.classList.add("drag-over");
-   const box=container(),r=target.getBoundingClientRect();
-   const before=(e.clientY<r.top+r.height/2)||(
-     Math.abs(e.clientY-(r.top+r.height/2))<r.height/2 && e.clientX<r.left+r.width/2
-   );
-   if(before)box.insertBefore(el,target);else box.insertBefore(el,target.nextSibling);
- });
- const finish=e=>{
-   if(!state||state.pointerId!==e.pointerId)return;
-   const moved=state.moved;state=null;
-   el.classList.remove("dragging");
-   document.querySelectorAll(".photoLibrary .livePhoto.drag-over").forEach(x=>x.classList.remove("drag-over"));
-   if(moved){
-     const order=siblings().map(getId).filter(Boolean);
-     onCommit(order);
-     el.dataset.justDragged="1";
-     setTimeout(()=>delete el.dataset.justDragged,80);
-   }
- };
- el.addEventListener("pointerup",finish);
- el.addEventListener("pointercancel",finish);
-}
-async function add(row,pre=true){if(!row?.photo_path||seen.has(row.photo_path))return;seen.add(row.photo_path);sessionRows.set(row.photo_path,row);
-if(!originalOrder.includes(row.photo_path))originalOrder.push(row.photo_path);let ph=q("#livePhotosPlaceholder");if(ph)ph.style.display="none";let u=await signed(row.photo_path),h=q("#livePhotos"),b=document.createElement("button");b.className="livePhoto";b.type="button";b.draggable=false;b.dataset.photoPath=row.photo_path;b.innerHTML=`<img src="${u}" draggable="false"><span class="badge">Click to edit</span>`;
- installPointerReorder(b,el=>el.dataset.photoPath,(order)=>{
-   originalOrder=order;
-   try{localStorage.setItem(ORIGINAL_ORDER_KEY+"-"+cs,JSON.stringify(originalOrder))}catch(_){}
-   q("#livePhotosStatus").textContent=`${originalOrder.length} secure photo(s) · order updated`;
- });
- b.onclick=async()=>{
-  if(b.dataset.justDragged)return;
-  document.querySelectorAll(".livePhoto").forEach(x=>x.classList.remove("active"));
-  b.classList.add("active");
-  try{
-    const fu=await signed(row.photo_path),resp=await fetch(fu,{cache:"no-store"});
-    if(!resp.ok)throw new Error("Could not download secure photo ("+resp.status+")");
+const originalSort=window.FitLibrarySort.register('#livePhotos',{
+ selector:'.livePhoto[data-photo-path]',getId:el=>el.dataset.photoPath,
+ onCommit(order){
+  if(!cs)throw new Error('Create or reopen a session first.');
+  if(order.some(path=>!sessionRows.has(path)))throw new Error('Photos changed while sorting. Please retry.');
+  const next=[...order,...originalOrder.filter(path=>!order.includes(path))];
+  localStorage.setItem(ORIGINAL_ORDER_KEY+'-'+cs,JSON.stringify(next));
+  if(localStorage.getItem(ORIGINAL_ORDER_KEY+'-'+cs)!==JSON.stringify(next))throw new Error('Browser did not retain the order.');
+  originalOrder=next;
+ },
+ onFeedback:message=>{const el=q('#originalSortStatus');if(el)el.textContent=message;},
+ onError:e=>{const el=q('#originalSortStatus');if(el){el.textContent=e.message;el.style.color='#b42318';}}
+});
+async function add(row,pre=true){
+ if(!row?.photo_path||seen.has(row.photo_path))return;
+ const startedIn=cs;seen.add(row.photo_path);
+ try{
+  const u=await signed(row.photo_path);
+  if(cs!==startedIn)return;
+  sessionRows.set(row.photo_path,row);if(!originalOrder.includes(row.photo_path))originalOrder.push(row.photo_path);
+  const ph=q('#livePhotosPlaceholder');if(ph)ph.style.display='none';
+  const box=q('#livePhotos'),b=document.createElement('button');b.type='button';b.className='livePhoto';b.draggable=false;b.dataset.photoPath=row.photo_path;
+  const image=document.createElement('img');image.src=u;image.alt=row.photo_path.split('/').pop();image.draggable=false;
+  const caption=document.createElement('span');caption.className='badge';caption.textContent='Click to edit';b.append(image,caption);
+  b.onclick=async()=>{
+   if(originalSort.isBusy())return;
+   box.querySelectorAll('.livePhoto').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+   try{
+    const fu=await signed(row.photo_path),resp=await fetch(fu,{cache:'no-store'});
+    if(!resp.ok)throw new Error('Could not download photo ('+resp.status+')');
     const blob=await resp.blob();
-    if(!window.FitEditor?.editorReady)throw new Error("The editor did not finish loading. Refresh the page and check the message in the preview header.");
+    if(!window.FitEditor?.editorReady)throw new Error('The editor has not finished loading.');
     if(window.FitEditor.isCombineMode()){
-      await window.FitEditor.addCombineBlob(blob,row.photo_path.split("/").pop(),row.photo_path);
-      q("#livePhotosStatus").textContent=`${seen.size} secure photo(s) · selected photo added to Combine`;
-    }else{
-      await window.FitEditor.loadAnnotateBlob(blob,"Secure live photo");
-    }
-  }catch(e){
-    console.error(e);
-    alert("Could not open secure photo: "+(e.message||e));
-  }
-};
- h.appendChild(b);
- sortOriginalDom();
- q("#livePhotosStatus").textContent=`${seen.size} secure photo(s) received`}
-function sortOriginalDom(){
- const box=q("#livePhotos");if(!box)return;
- const byPath=new Map([...box.querySelectorAll("[data-photo-path]")].map(el=>[el.dataset.photoPath,el]));
- originalOrder.forEach(p=>{const el=byPath.get(p);if(el)box.appendChild(el)});
+     await window.FitEditor.addCombineBlob(blob,row.photo_path.split('/').pop(),row.photo_path);
+     q('#livePhotosStatus').textContent='Selected photo added to Combine.';
+    }else await window.FitEditor.loadAnnotateBlob(blob,row.photo_path.split('/').pop());
+   }catch(e){alert('Could not open photo: '+(e.message||e));}
+  };
+  box.append(b);sortOriginalDom();originalSort.decorate();
+  q('#livePhotosStatus').textContent=seen.size+' photo(s) received';
+ }catch(e){if(cs===startedIn)seen.delete(row.photo_path);throw e;}
 }
-function reorderOriginal(targetPath,dragPath){
- if(!dragPath||targetPath===dragPath)return;
- const ti=originalOrder.indexOf(targetPath),di=originalOrder.indexOf(dragPath);
- if(ti<0||di<0)return;
- const [moved]=originalOrder.splice(di,1);
- const ni=originalOrder.indexOf(targetPath);
- originalOrder.splice(ni,0,moved);
- const box=q("#livePhotos"),dragEl=box?.querySelector(`[data-photo-path="${CSS.escape(dragPath)}"]`),targetEl=box?.querySelector(`[data-photo-path="${CSS.escape(targetPath)}"]`);
- if(dragEl&&targetEl)box.insertBefore(dragEl,targetEl);
- try{localStorage.setItem(ORIGINAL_ORDER_KEY+"-"+cs,JSON.stringify(originalOrder))}catch(_){}
- q("#livePhotosStatus").textContent=`${originalOrder.length} secure photo(s) · order updated`;
+function sortOriginalDom(){
+ if(originalSort.isBusy())return;
+ const box=q('#livePhotos'),map=new Map([...box.children].map(el=>[el.dataset.photoPath,el]));
+ originalOrder.forEach(path=>{const el=map.get(path);if(el)box.append(el);});
 }
 async function load(){let r=await sb.rpc("get_fit_session_photos",{p_session_id:cs});if(r.error)throw r.error;for(let x of r.data||[])await add(x,false)}
 let pollTimer=null;
@@ -2808,7 +2957,8 @@ window.FitPhotoSync={
  getOriginalArchiveEntries:async()=>{
   const sessionID=cs;if(!sessionID)return [];
   const r=await sb.rpc('get_fit_session_photos',{p_session_id:sessionID});if(r.error)throw r.error;
-  const paths=[...new Set((r.data||[]).map(x=>x.photo_path).filter(Boolean))],files=[];
+  const available=[...new Set((r.data||[]).map(x=>x.photo_path).filter(Boolean))],present=new Set(available);
+  const paths=[...originalOrder.filter(path=>present.has(path)),...available.filter(path=>!originalOrder.includes(path))],files=[];
   for(let i=0;i<paths.length;i++){
    if(cs!==sessionID)throw new Error('The session changed. Retry this download.');
    const u=await signed(paths[i]),res=await fetch(u,{cache:'no-store'});
