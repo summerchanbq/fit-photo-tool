@@ -3,8 +3,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
+<meta name="referrer" content="no-referrer"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>Fit Photo Studio V81</title>
+<title>Fit Photo Studio V82</title>
 <style>
 :root{
   --bg:#f3f5f7;--panel:#ffffff;--ink:#15171a;--muted:#707782;--line:#dce1e6;
@@ -710,9 +711,9 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 .photoLibrary .livePhoto .badge{pointer-events:none!important}
 .libraryDragHint{font-size:8px;color:#64748b;margin:2px 0 5px}
 </style>
-<meta content="Fit Photo Studio V81" property="og:title"/>
-<meta content="Fit Photo Studio V81" name="twitter:title"/>
-<meta content="Fit Photo Studio V81" property="og:site_name"/>
+<meta content="Fit Photo Studio V82" property="og:title"/>
+<meta content="Fit Photo Studio V82" name="twitter:title"/>
+<meta content="Fit Photo Studio V82" property="og:site_name"/>
 <style id="v80-reorder-final">
 .photoLibrary .livePhoto{cursor:grab!important;touch-action:none!important}
 .photoLibrary .livePhoto:active{cursor:grabbing!important}
@@ -862,10 +863,10 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
  document.addEventListener('pointercancel',e=>finish(e,true),true);
  document.addEventListener('click',e=>{if(suppressClick&&performance.now()<suppressClick.until&&suppressClick.box.contains(e.target)){e.preventDefault();e.stopImmediatePropagation();}},true);
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&active?.moved){e.preventDefault();finish(null,true);}},true);
- window.addEventListener('blur',()=>{if(active)finish(null,true);});
+ window.addEventListener('blur',()=>{if(active)finish(null,true);});window.addEventListener('fit:scopechange',()=>{if(active)finish(null,true);});
  window.FitLibrarySort=Object.freeze({register,isBusy:box=>{if(typeof box==='string')box=document.querySelector(box);const g=groups.get(box);return g?isBusy(g):false;},version:81});
 })();
-</script><style id="v81-library-order">/* V81 final photo library layout and sorting controls, identical in all three sections. */
+</script><style id="v81-library-order">/* V82 final photo library layout and sorting controls, identical in all three sections. */
 .photoLibrary #livePhotos,.photoLibrary #editedPhotos,.photoLibrary #thumbList {
  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important;
  max-height:none!important;overflow:visible!important;
@@ -895,12 +896,46 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 .photoLibrary #thumbList .deleteThumb {position:absolute;right:2px;top:2px;z-index:4;width:17px;height:17px;line-height:15px;padding:0;border:0;border-radius:4px;background:rgba(255,255,255,.9);color:#b42318;cursor:pointer;}
 .photoLibrary .librarySectionHint {font-size:8px!important;color:#64748b!important;margin:3px 0 6px!important;line-height:1.3;}
 .photoLibrary [aria-busy=true] .photoSortActions {opacity:.55;}
+</style><style id="v82-final">/* V82: retain the compact four-column workspace, remove conflicting minima. */
+[hidden]{display:none!important}
+.v82Backdrop{position:fixed;inset:0;z-index:20000;background:rgba(15,23,42,.55);display:flex;align-items:center;justify-content:center;padding:18px}
+.v82Modal{width:min(700px,96vw);max-height:92dvh;overflow:auto;background:#fff;border-radius:16px;padding:18px;box-shadow:0 16px 60px #0003}
+.v82Modal h3{font-size:17px!important;margin:0 0 10px}.v82Modal p,.v82Modal label{font-size:12px!important;line-height:1.6}
+.v82Modal .btn{font-size:12px!important;min-height:38px!important;height:auto!important;text-decoration:none}
+.v82Modal .row{flex-wrap:wrap}.v82Modal .row>*{white-space:nowrap}
+#downloadPreviewImage{display:block;max-width:100%;max-height:44vh;margin:12px auto;object-fit:contain;border:1px solid #e2e8f0}
+#cameraVideo{width:100%;max-height:60vh;display:block;background:#10151d;border-radius:8px}
+#cameraStatus,#downloadProgressText{overflow-wrap:anywhere}
+#combinePhotoAdjustSection .compactPair .btn{min-width:0;padding:0 5px!important}
+#collagePanel .stage{overflow:auto!important;align-items:flex-start;justify-content:flex-start}
+#collageCanvasWrap{flex:0 0 auto;margin:auto!important}
+#editedSessionLabel{margin-top:5px;overflow-wrap:anywhere;color:#475569}
+#legacyPhotosBtn.active{background:#fff7ed;border-color:#fdba74;color:#9a3412}
+#legacyPhotosNote{line-height:1.5!important;margin:6px 0}
+#mobilePhotoActions .mobileCaptureBtn{position:relative;overflow:hidden}
+#mobilePhotoActions .mobileCaptureBtn input{display:block!important;position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+#mobilePhotoActions .mobileCaptureBtn:has(input:disabled){opacity:.45;cursor:not-allowed}
+#mobilePhotoActions .secondary{background:#fff!important;color:#111827!important;border:1px solid #cbd5e1}
+.mobileCaptureCard .btn{font-size:13px!important;height:auto!important;min-height:40px!important;padding:8px 10px!important}
+.mobileCaptureCard .captureHelp{font-size:12px!important;line-height:1.5;margin-top:10px}
+.mobileCaptureCard h1{font-size:22px!important}.mobileCaptureCard p,.mobileCaptureCard strong{font-size:13px!important}
+.mobileCaptureCard .uploadState{font-size:13px!important;line-height:1.5}
+.queueItem{grid-template-columns:44px minmax(0,1fr);align-items:start}.queueItem .row{grid-column:1/-1;gap:5px}
+.queueMeta{overflow-wrap:anywhere}.queueItem .queueStatus{display:block;overflow-wrap:anywhere;margin-top:4px}
+.queueItem .btn{min-height:32px!important;font-size:11px!important}
+.photoLibrary{min-width:0!important}
+@media(max-width:1250px){.app{grid-template-columns:190px 205px minmax(200px,1fr) 250px!important;gap:8px;padding:8px}.photoLibrary{min-width:0!important}}
+@media(max-width:1050px){.app{grid-template-columns:165px 172px minmax(200px,1fr) 220px!important;gap:6px;padding:6px}aside.left,.photoLibrary{padding:8px!important}header{padding:0 14px}.combineLayoutStrip{flex-wrap:wrap}}
+@media(max-width:800px){body:not(.mobile-mode){overflow-x:auto}.app{min-width:790px}header{min-width:790px}body.mobile-mode header{min-width:0}.v82Modal .row{display:flex;flex-direction:column}.v82Backdrop{padding:10px}}
+
+#endSessionBtn[style*="display:none"],#endSessionBtn[style*="display: none"]{display:none!important}
 </style></head>
 <body>
+<script>if(new URLSearchParams(location.search).get("mode")==="mobile")document.body.classList.add("mobile-mode");</script>
 <header>
 <div class="brand">
 <div class="logo">F</div>
-<div><h1>Fit Photo Studio</h1><small><strong>V81</strong> · Secure Sync · Full Combine Editor</small></div>
+<div><h1>Fit Photo Studio</h1><small><strong>V82</strong> · Session-scoped Library · Full Combine Editor</small></div>
 </div>
 <div class="topActions">
 <button class="btn" id="newBtn">New</button>
@@ -930,8 +965,9 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <label class="upload">
 <input accept="image/*" id="photoInput" type="file"/>
 <strong>Select Photo</strong>
-<span>Take or choose a photo</span>
+<span>Choose an image from this device</span>
 </label>
+<button class="btn" id="desktopCameraBtn" style="width:100%;margin-top:7px">Take Photo</button>
 <div class="meta" id="photoMeta">No photo selected</div>
 </div>
 </div>
@@ -941,8 +977,9 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <label class="upload">
 <input accept="image/*" id="collageInput" multiple="" type="file"/>
 <strong>Select Photo</strong>
-<span>Take or choose photos</span>
+<span>Choose one or more images</span>
 </label>
+<button class="btn" id="combineCameraBtn" style="width:100%;margin-top:7px">Take Photo</button>
 </div>
 </div>
 <div class="leftMenuGap"></div>
@@ -990,9 +1027,12 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 </div>
 <div class="section" id="editedPhotosSection">
 <div class="sectionTitleRow"><h2>EDITED PHOTOS <span class="libraryCount" id="editedPhotoCount">0</span></h2><button class="btn" id="downloadAllEditedBtn">Download All</button></div>
-<div class="libraryEmpty" id="editedPhotosPlaceholder">Click Edit Done to save a version you can reopen and edit. Stored on this browser.</div>
+<div class="libraryEmpty" id="editedPhotosPlaceholder">Click Edit Done to save in this session. Editable files stay in this browser; changing device or website address does not transfer them.</div>
 <div class="librarySectionHint">Drag to reorder, or use the arrows below each photo.</div><div class="livePhotos" id="editedPhotos"></div>
 <div class="syncStatus" id="editedPhotosStatus">0 editable photo(s)</div>
+<div class="note" id="editedSessionLabel">Local workspace</div>
+<button class="btn" id="legacyPhotosBtn" style="width:100%;margin-top:5px" type="button">Earlier unassigned photos</button>
+<div class="note" id="legacyPhotosNote" hidden>These older files have no session ID. Opening one does not assign it. Edit Done saves a copy in the current session.</div>
 <button class="btn" id="refreshEditedPhotosBtn" style="width:100%;margin-top:6px" type="button">Refresh Saved Photos</button></div>
 <div class="section" id="combineLibrarySection">
 <h2>COMBINE PHOTOS</h2>
@@ -1040,7 +1080,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div id="collagePanel">
 <div class="canvasHead">
 <b>Combined Photo Sheet</b>
-<span>Click a photo in Photo Library to add · drag to move · drag corner to resize</span>
+<button class="btn editDoneHeaderBtn" id="combineEditDoneBtn" type="button" title="Save the entire editable sheet in this session">✓ Edit Done</button>
 </div>
 <div class="stage">
 <div class="collageCanvasWrap" id="collageCanvasWrap" style="position:relative">
@@ -1060,6 +1100,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <button class="ctool" data-ctool="curve">⌒ Curve</button>
 <button class="ctool" data-ctool="text">T Text</button>
 </div>
+<div class="zoomBar" id="combineZoomBar"><button class="btn" id="cZoomOut">−</button><button class="btn zoomReadout" id="cZoomLevel">100%</button><button class="btn" id="cZoomIn">+</button><button class="btn" id="cZoomFit">Fit</button></div>
 <div class="combineLayoutStrip">
 <select id="layoutMode" title="Layout">
 <option selected="" value="row">Horizontal</option>
@@ -1075,7 +1116,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="section">
 <div class="sectionTitleRow">
 <h2>ANNOTATION STYLE</h2>
-<span class="versionPill">V81</span>
+<span class="versionPill">V82</span>
 </div>
 <div class="prop">
 <label>Color <small><span id="colorText">#000000</span></small></label>
@@ -1098,7 +1139,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 </div>
 </div>
 <div class="section" id="photoAdjustSection">
-<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V81</span></div>
+<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V82</span></div>
 <div class="compactPair">
 <button class="btn" id="cropPhotoBtn">Crop</button>
 <button class="btn" id="rotatePhotoBtn">↻ Rotate 90°</button>
@@ -1157,7 +1198,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="section">
 <div class="sectionTitleRow">
 <h2>ANNOTATION STYLE</h2>
-<span class="versionPill">V81</span>
+<span class="versionPill">V82</span>
 </div>
 <div class="prop">
 <label>Color <small><span id="cAnnoColorText">#000000</span></small></label>
@@ -1179,6 +1220,15 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <button class="btn" id="cUndo">Undo</button>
 <button class="btn" id="deleteCollageObject">Delete</button>
 </div>
+</div>
+<div class="section" id="combinePhotoAdjustSection">
+<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V82</span></div>
+<div class="prop"><label for="cAdjustTarget">Apply to</label><select id="cAdjustTarget"><option value="photo">Selected photo</option><option value="sheet">Entire sheet</option></select></div>
+<div class="compactPair"><button class="btn" id="cCropPhotoBtn">Crop</button><button class="btn" id="cRotatePhotoBtn">↻ Rotate 90°</button></div>
+<div class="prop" style="margin-top:7px"><label>Brightness <small><span id="cBrightnessVal">100</span>%</small></label><input id="cBrightnessRange" type="range" min="40" max="180" value="100"/></div>
+<div class="prop"><label>Contrast <small><span id="cContrastVal">100</span>%</small></label><input id="cContrastRange" type="range" min="40" max="180" value="100"/></div>
+<button class="btn" id="cResetPhotoAdjustBtn" style="width:100%">Reset</button>
+<div class="note" id="cPhotoAdjustStatus" style="margin-top:5px">Select a photo on the sheet, or choose Entire sheet. Reset affects brightness / contrast only.</div>
 </div>
 <div class="section">
 <div class="sectionTitleRow">
@@ -1225,7 +1275,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="cropModalCard">
 <div class="sectionTitleRow"><h3>Crop Photo</h3><button class="btn" id="cropCancelBtn">Cancel</button></div>
 <div class="cropStage"><canvas aria-label="Drag to choose crop area" id="cropCanvas"></canvas><div id="cropBox"></div></div>
-<div class="note" style="margin:7px 0">Drag on the original photo to adjust the crop area. Your previous crop selection is shown and can be expanded again.</div>
+<div class="note" id="cropHelp" style="margin:7px 0">Drag on the original photo to adjust the crop area. Reopen Crop to expand the selection.</div>
 <button class="btn primary" id="cropApplyBtn" style="width:100%">Apply Crop</button>
 </div>
 </div>
@@ -1245,18 +1295,19 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="mobileCaptureCard">
 <h1>Fit Photo Capture</h1>
 <p>Session <strong id="mobileSessionCode">—</strong></p>
-<p style="font-size:12px;color:#64748b;margin-top:-2px">Photos are automatically optimised and uploaded in the background.</p>
+<p style="font-size:12px;color:#64748b;margin-top:-2px">Keep this page open while photos upload. Original files remain available here until you close or refresh the page.</p>
 <div class="mobilePreviousSession" id="mobilePreviousSession" style="display:none">
 <div style="font-size:12px;color:#64748b">Previous fit review</div>
 <strong id="mobilePreviousLabel">—</strong>
 <button id="mobileContinueBtn" type="button">Continue previous session</button>
 </div>
 <div class="mobilePhotoActions" id="mobilePhotoActions">
-<label class="mobileCaptureBtn">
-        📷 Add / Take Photo
-        <input accept="image/*" id="mobilePhotoInput" multiple="" type="file"/>
-</label>
+<label class="mobileCaptureBtn" id="mobileCameraLabel">Take Photo<input accept="image/*" capture="environment" id="mobileCameraInput" type="file" disabled/></label>
+<label class="mobileCaptureBtn secondary" id="mobileLibraryLabel">Choose Photos<input accept="image/*" id="mobilePhotoInput" multiple type="file" disabled/></label>
+<button class="btn" id="mobileBrowserCameraBtn" type="button" disabled>Use browser camera</button>
 </div>
+<div class="note captureHelp">No camera option? Open this page directly in your browser and allow camera access. Managed or embedded browsers may restrict capture.</div>
+<button class="btn" id="mobileRetryJoin" hidden type="button">Retry session connection</button>
 <div class="mobilePreview">
 <span id="mobilePreviewPlaceholder">Photo preview</span>
 <img alt="Selected fit photo" id="mobilePreviewImg"/>
@@ -1264,9 +1315,123 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="uploadState" id="mobileUploadState">Ready</div>
 <div class="uploadState" id="mobileOptimiseStats" style="font-size:11px"></div>
 <div class="mobileDone" id="mobileDone">✓ Uploaded to desktop session</div>
+<div class="row" style="margin-top:10px"><button class="btn" id="mobileSaveLastBtn" disabled>Save Last Original</button><button class="btn" id="mobileShareLastBtn" disabled>Share Last Original</button></div>
 <div class="uploadQueue" id="uploadQueue"></div>
 </div>
 </div>
+<div class="v82Backdrop" id="downloadDialog" hidden role="dialog" aria-modal="true" aria-labelledby="downloadTitle">
+<div class="v82Modal">
+<div class="sectionTitleRow"><h3 id="downloadTitle">Save / Share File</h3><button class="btn" id="downloadCloseBtn" type="button">Close</button></div>
+<p id="downloadProgressText" role="status" aria-live="polite">Preparing file...</p>
+<label for="downloadFilename">File name</label><input type="text" id="downloadFilename" autocomplete="off"/>
+<img id="downloadPreviewImage" alt="Prepared export preview" hidden/>
+<div id="downloadReadyActions" hidden><div class="row" style="margin-top:12px"><a class="btn primary" id="readyDownloadLink" download>Download</a><a class="btn" id="openPreviewLink" target="_blank" rel="noopener noreferrer">Open Preview</a><button class="btn" id="readyShareBtn" type="button">Share / Save to Files</button></div></div>
+<p class="note">Use this Download button after the file is ready. On a phone, Open Preview also lets you save the image using your browser. Files do not automatically appear in the Photos app. Embedded or managed browsers may block saving; open the same page directly in an approved browser.</p>
+</div></div>
+<div class="v82Backdrop" id="cameraDialog" hidden role="dialog" aria-modal="true" aria-labelledby="cameraTitle">
+<div class="v82Modal"><div class="sectionTitleRow"><h3 id="cameraTitle">Take Photo</h3><button class="btn" id="cameraCloseBtn" type="button">Close</button></div>
+<video id="cameraVideo" autoplay muted playsinline></video><p id="cameraStatus" role="status" aria-live="polite"></p><button class="btn primary" id="cameraCaptureBtn" type="button" disabled>Capture</button>
+</div></div>
+
+<script id="fit-v82-common">
+/* V82 shared services. No backend schema changes, no external image processing. */
+(()=>{
+'use strict';
+const q=s=>document.querySelector(s);
+let scope={id:'local',name:'Local workspace'},revision=0;
+window.FitSessionScope=Object.freeze({
+ current:()=>({...scope}),revision:()=>revision,
+ activate(id,name){id=String(id||'local');if(id===scope.id){scope.name=name||scope.name;return;}const previous={...scope};scope={id,name:name||id};revision++;window.dispatchEvent(new CustomEvent('fit:scopechange',{detail:{previous,current:{...scope},revision}}));},
+ end(){this.activate('local','Local workspace');}
+});
+const cloneCanvas=source=>{const c=document.createElement('canvas');c.width=source.naturalWidth||source.width;c.height=source.naturalHeight||source.height;if(!c.width||!c.height)throw new Error('The image has no readable pixels.');c.getContext('2d').drawImage(source,0,0);return c;};
+async function decode(file){
+ if(!(file instanceof Blob)||!file.size)throw new Error('This file is empty or unreadable.');
+ if(file.size>100*1024*1024)throw new Error('This image exceeds 100 MB. Use a smaller image.');
+ if(typeof createImageBitmap==='function'){
+  try{const b=await createImageBitmap(file);try{return cloneCanvas(b);}finally{b.close?.();}}catch(_){}
+ }
+ return new Promise((resolve,reject)=>{
+  const im=new Image(),url=URL.createObjectURL(file);let settled=false;
+  const finish=(err)=>{if(settled)return;settled=true;clearTimeout(timer);try{if(err)reject(err);else resolve(cloneCanvas(im));}catch(e){reject(e);}finally{URL.revokeObjectURL(url);}};
+  const timer=setTimeout(()=>finish(new Error('Photo decoding timed out. Try a JPG or PNG image.')),20000);
+  im.onload=()=>finish();im.onerror=()=>finish(new Error('This browser cannot read this image. Try JPG / PNG, or convert HEIC using the device photo app.'));im.src=url;
+ });
+}
+// Pixel LUT avoids the unsupported canvas.filter path in some browser engines.
+// Brightness and contrast affect image pixels only, not editable annotations.
+function filtered(source,brightness=100,contrast=100){
+ const c=cloneCanvas(source);if(+brightness===100&&+contrast===100)return c;
+ const x=c.getContext('2d',{willReadFrequently:true}),im=x.getImageData(0,0,c.width,c.height),d=im.data;
+ const b=Math.max(0,+brightness||0)/100,k=Math.max(0,+contrast||0)/100,lut=new Uint8ClampedArray(256);
+ for(let i=0;i<256;i++)lut[i]=(i*b-127.5)*k+127.5;
+ for(let i=0;i<d.length;i+=4){d[i]=lut[d[i]];d[i+1]=lut[d[i+1]];d[i+2]=lut[d[i+2]];}
+ x.putImageData(im,0,0);return c;
+}
+async function optimise(file){const src=await decode(file),sc=Math.min(1,1800/Math.max(src.width,src.height)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(src.width*sc));c.height=Math.max(1,Math.round(src.height*sc));const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(src,0,0,c.width,c.height);return new Promise((res,rej)=>c.toBlob(b=>b?res(b):rej(new Error('The browser could not encode this image.')),'image/jpeg',.82));}
+window.FitImaging=Object.freeze({decode,filtered,cloneCanvas,optimise});
+
+let downloadSeq=0,downloadURL=null,downloadBlob=null,defaultFilename='fit-photo.png',downloadFocus=null;
+const deferredURLs=new Set();
+const safeName=(name,fallback)=>String(name||fallback).trim().replace(/[\\/:*?"<>|\x00-\x1f]/g,'-').slice(0,160)||fallback;
+function retire(url){if(!url)return;deferredURLs.add(url);setTimeout(()=>{URL.revokeObjectURL(url);deferredURLs.delete(url);},90000);}
+function closeDownload(){downloadSeq++;q('#downloadDialog').hidden=true;retire(downloadURL);downloadURL=null;downloadBlob=null;q('#downloadPreviewImage').removeAttribute('src');q('#readyDownloadLink').removeAttribute('href');q('#openPreviewLink').removeAttribute('href');downloadFocus?.focus?.();}
+function openDownload(){downloadFocus=document.activeElement;retire(downloadURL);downloadURL=null;downloadBlob=null;q('#downloadDialog').hidden=false;q('#downloadProgressText').textContent='Preparing file...';q('#downloadReadyActions').hidden=true;q('#downloadPreviewImage').hidden=true;q('#downloadFilename').disabled=true;q('#downloadCloseBtn').focus();return ++downloadSeq;}
+function filename(){const ext=defaultFilename.match(/\.[a-z0-9]+$/i)?.[0]||'';let name=safeName(q('#downloadFilename').value,defaultFilename);if(ext&&!name.toLowerCase().endsWith(ext.toLowerCase()))name=name.replace(/\.(png|jpe?g|zip|webp|heic)$/i,'')+ext;return name;}
+function ready(blob,name,seq){
+ if(seq!==downloadSeq)return false;if(!(blob instanceof Blob)||!blob.size)throw new Error('The generated file is empty.');
+ downloadBlob=blob;downloadURL=URL.createObjectURL(blob);defaultFilename=safeName(name,'fit-photo.png');
+ q('#downloadFilename').value=defaultFilename;q('#downloadFilename').disabled=false;
+ q('#readyDownloadLink').href=downloadURL;q('#readyDownloadLink').download=defaultFilename;q('#openPreviewLink').href=downloadURL;
+ q('#downloadReadyActions').hidden=false;
+ q('#downloadProgressText').textContent='File ready ('+(blob.size/1024/1024).toFixed(2)+' MB). Choose Download below.';
+ const isImage=blob.type.startsWith('image/');q('#openPreviewLink').hidden=!isImage;
+ q('#downloadPreviewImage').hidden=!isImage;if(isImage)q('#downloadPreviewImage').src=downloadURL;
+ let can=false;try{can=!!navigator.share&&(!navigator.canShare||navigator.canShare({files:[new File([blob],defaultFilename,{type:blob.type})]}));}catch(_){}
+ q('#readyShareBtn').hidden=!can;
+ return true;
+}
+window.FitDownload=Object.freeze({
+ show(blob,name){const seq=openDownload();try{return ready(blob,name,seq);}catch(e){q('#downloadProgressText').textContent='Export failed: '+e.message;return false;}},
+ async prepare(make,name){const seq=openDownload(),epoch=revision;try{const result=await make();if(epoch!==revision||seq!==downloadSeq)return false;return ready(result.blob||result,result.filename||name,seq);}catch(e){if(seq===downloadSeq)q('#downloadProgressText').textContent='Export failed: '+(e.message||e);return false;}},
+ close:closeDownload
+});
+q('#downloadCloseBtn').onclick=closeDownload;
+q('#downloadFilename').oninput=()=>{q('#readyDownloadLink').download=filename();};
+q('#readyDownloadLink').onclick=()=>{q('#readyDownloadLink').download=filename();q('#downloadProgressText').textContent='Download requested. Check the browser Downloads / Files. If nothing appears, use Open Preview or Share. This page cannot confirm that your device saved the file.';};
+q('#readyShareBtn').onclick=()=>{
+ if(!downloadBlob)return;const f=new File([downloadBlob],filename(),{type:downloadBlob.type});
+ try{const result=navigator.share({files:[f],title:filename()});Promise.resolve(result).then(()=>{q('#downloadProgressText').textContent='File passed to the share service.';}).catch(e=>{q('#downloadProgressText').textContent=e.name==='AbortError'?'Share cancelled. The file is still ready.':'Sharing is unavailable or blocked: '+e.message+'. Use Download or Open Preview.';});}
+ catch(e){q('#downloadProgressText').textContent='Sharing is unavailable: '+e.message+'. Use Download or Open Preview.';}
+};
+
+let cameraSeq=0,stream=null,cameraCallback=null,cameraBusy=false,cameraFocus=null;
+function stopStream(s){s?.getTracks().forEach(t=>t.stop());}
+function closeCamera(){cameraSeq++;stopStream(stream);stream=null;cameraCallback=null;q('#cameraVideo').srcObject=null;q('#cameraDialog').hidden=true;q('#cameraCaptureBtn').disabled=true;cameraFocus?.focus?.();}
+function cameraMessage(e){const messages={NotAllowedError:'Camera access was denied or blocked by browser / company policy. Allow camera access and open the page directly in your browser.',NotFoundError:'No available camera was found. Use Choose Photos instead.',NotReadableError:'The camera is busy or unavailable. Close other camera apps and retry.',OverconstrainedError:'The requested camera is unavailable. Use Choose Photos.'};return messages[e?.name]||e?.message||String(e);}
+window.FitCamera=Object.freeze({
+ async open(callback){
+  closeCamera();cameraFocus=document.activeElement;const seq=++cameraSeq;cameraCallback=callback;q('#cameraDialog').hidden=false;q('#cameraStatus').textContent='Requesting camera permission...';q('#cameraCloseBtn').focus();
+  if(!window.isSecureContext||!navigator.mediaDevices?.getUserMedia){q('#cameraStatus').textContent='Browser camera needs a supported HTTPS page and camera permission. Use Take Photo on your phone or Choose Photos.';return;}
+  let timer=setTimeout(()=>{if(seq===cameraSeq){cameraSeq++;q('#cameraStatus').textContent='Camera permission is still pending. Allow access, then close and retry.';}},20000);
+  try{const s=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1440}},audio:false});clearTimeout(timer);if(seq!==cameraSeq){stopStream(s);return;}stream=s;const video=q('#cameraVideo');video.srcObject=s;await video.play();if(seq!==cameraSeq)return;q('#cameraCaptureBtn').disabled=false;q('#cameraStatus').textContent='Position the photo, then select Capture.';}
+  catch(e){clearTimeout(timer);if(seq===cameraSeq){stopStream(stream);stream=null;q('#cameraStatus').textContent=cameraMessage(e);}}
+ },close:closeCamera
+});
+q('#cameraCloseBtn').onclick=closeCamera;
+q('#cameraCaptureBtn').onclick=async()=>{
+ if(cameraBusy||!stream)return;const video=q('#cameraVideo');if(!video.videoWidth){q('#cameraStatus').textContent='Camera is not ready yet.';return;}
+ cameraBusy=true;q('#cameraCaptureBtn').disabled=true;const callback=cameraCallback,seq=cameraSeq;
+ try{const c=document.createElement('canvas');c.width=video.videoWidth;c.height=video.videoHeight;c.getContext('2d').drawImage(video,0,0);const b=await new Promise((res,rej)=>c.toBlob(b=>b?res(b):rej(new Error('Could not capture this frame.')),'image/jpeg',.94));if(seq!==cameraSeq)return;closeCamera();await callback(new File([b],'camera-'+Date.now()+'.jpg',{type:'image/jpeg'}));}
+ catch(e){q('#cameraStatus').textContent=cameraMessage(e);}finally{cameraBusy=false;if(stream)q('#cameraCaptureBtn').disabled=false;}
+};
+window.addEventListener('fit:scopechange',()=>{closeCamera();closeDownload();});
+window.addEventListener('pagehide',()=>{stopStream(stream);if(downloadURL)URL.revokeObjectURL(downloadURL);deferredURLs.forEach(u=>URL.revokeObjectURL(u));});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&stream)closeCamera();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!q('#cameraDialog').hidden)closeCamera();else if(!q('#downloadDialog').hidden)closeDownload();else if(q('#cropModal').style.display!=='none')q('#cropCancelBtn').click();}});
+})();
+
+</script>
 <script id="fit-editor-engine">
 (()=>{
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
@@ -1280,7 +1445,11 @@ function uid(){return Math.random().toString(36).slice(2)+Date.now().toString(36
 function color(){return $("#color").value}
 function lineW(){return +$("#lineWidth").value}
 function fontS(){return +$("#fontSize").value}
-function saveHistory(){history.push(JSON.stringify(objects));if(history.length>50)history.shift()}
+let historyBase=null;
+function annotationSnapshot(){if(!loaded)return null;if(!historyBase)historyBase=projectCanvas(img);return {base:historyBase,original:originalCropSource,crop:currentCropRect?{...currentCropRect}:null,objects:JSON.parse(JSON.stringify(objects)),brightness:photoBrightness,contrast:photoContrast};}
+function saveHistory(){const s=annotationSnapshot();if(s){history.push(s);if(history.length>40)history.shift();}}
+async function undoAnnotation(){const s=history.pop();if(!s)return;const rev=window.FitSessionScope.revision();await displayBaseCanvas(s.base);if(rev!==window.FitSessionScope.revision())return;historyBase=s.base;originalCropSource=s.original;currentCropRect=s.crop;objects=s.objects;photoBrightness=s.brightness;photoContrast=s.contrast;selected=null;temp=null;drag=null;$("#brightnessRange").value=photoBrightness;$("#contrastRange").value=photoContrast;applyPhotoFilter();fitPreviewToStage();render();photoStatus('Undone.');}
+
 function point(e,c=cvs){const r=c.getBoundingClientRect();return{x:(e.clientX-r.left)*c.width/r.width,y:(e.clientY-r.top)*c.height/r.height}}
 
 function fitPreviewToStage(){
@@ -1389,31 +1558,12 @@ function hit(p){
  for(let i=objects.length-1;i>=0;i--){const o=objects[i],b=bounds(o),pad=26;if(p.x>b.x-pad&&p.x<b.x+b.w+pad&&p.y>b.y-pad&&p.y<b.y+b.h+pad)return o}return null}
 function setTool(t){tool=t;if(t!=="select")selectPhotoFrame(false);$$(".tool").forEach(b=>b.classList.toggle("active",b.dataset.tool===t));$("#hint").textContent=t==="select"?"Select photo or annotation to move / resize":"Draw "+t+" directly on the photo"}
 
-$("#photoInput").addEventListener("change",e=>{
-  const f=e.target.files?.[0];if(!f)return;
-  $("#hint").textContent="Loading photo…";
-  debug(`loading ${f.name} (${Math.round(f.size/1024)} KB)`);
-  const url=URL.createObjectURL(f);
-  img.onload=()=>{
-    loaded=true;resetSavedProjectIdentity();
-    snapshotCropSource();
-    if(typeof resetPhotoAdjustments==="function")resetPhotoAdjustments();
-    $("#empty").style.display="none";
-    img.style.display="block";
-    $("#photoMeta").textContent=`${f.name} · ${img.naturalWidth}×${img.naturalHeight}`;
-    objects=[];selected=null;temp=null;drag=null;history=[];
-    fitPreviewToStage();requestAnimationFrame(()=>fitPreviewToStage());
-    $("#hint").textContent="Photo ready";
-    debug("photo loaded");
-    setTimeout(()=>URL.revokeObjectURL(url),1500);
-  };
-  img.onerror=()=>{
-    $("#hint").textContent="Could not preview photo";
-    debug("image decode failed");
-    URL.revokeObjectURL(url);
-  };
-  img.src=url;
+$("#photoInput").addEventListener("change",async e=>{
+  const file=e.target.files?.[0];e.target.value='';if(!file)return;
+  try{await loadSecureBlobIntoAnnotate(file,file.name);}catch(err){photoStatus(err.message,true);debug(err.message);}
 });
+
+
 
 
 
@@ -1532,7 +1682,7 @@ $("#color").oninput=e=>{const o=objects.find(x=>x.id===selected);$("#colorText")
 $("#lineWidth").oninput=e=>{const o=objects.find(x=>x.id===selected);$("#lineVal").textContent=e.target.value;if(o&&o.type!=="text"){o.width=+e.target.value;render()}};
 $("#fontSize").oninput=e=>{const o=objects.find(x=>x.id===selected);$("#fontVal").textContent=e.target.value;if(o&&o.type==="text"){o.size=+e.target.value;render()}};
 $("#shapeFill").onchange=e=>{const o=objects.find(x=>x.id===selected);if(o&&(o.type==="circle"||o.type==="rect")){o.fill=e.target.checked;render()}};
-$("#undo").onclick=()=>{if(!history.length)return;objects=JSON.parse(history.pop());selected=null;render()};
+$("#undo").onclick=()=>undoAnnotation().catch(e=>photoStatus(e.message,true));
 $("#delete").onclick=()=>{if(!selected)return;saveHistory();objects=objects.filter(o=>o.id!==selected);selected=null;render()};
 
 
@@ -1651,7 +1801,7 @@ async function getTranslator(sourceLang,statusEl,progressSelector){
   if(sourceLang==="en")return null;
   if(translatorCache.has(sourceLang))return translatorCache.get(sourceLang);
 
-  if(!("Translator" in self)){
+  if(!self.Translator||typeof self.Translator.create!=="function"){
     throw new Error("Chrome built-in Translator is not available in this browser.");
   }
 
@@ -1885,10 +2035,10 @@ let snapLockX=null,snapLockY=null;
 function cPoint(e){const r=cc.getBoundingClientRect();return{x:(e.clientX-r.left)*cc.width/r.width,y:(e.clientY-r.top)*cc.height/r.height}}
 function cDash(w){const sw=Math.max(1,+w||1);return[Math.max(8,sw*3.4),Math.max(8,sw*2.4)]}
 function cShapeBounds(o){if(o.type==="curve"){const xs=[o.x1,o.x2,o.cx],ys=[o.y1,o.y2,o.cy],x=Math.min(...xs),y=Math.min(...ys);return{x,y,w:Math.max(2,Math.max(...xs)-x),h:Math.max(2,Math.max(...ys)-y)}}return{x:Math.min(o.x1,o.x2),y:Math.min(o.y1,o.y2),w:Math.max(2,Math.abs(o.x2-o.x1)),h:Math.max(2,Math.abs(o.y2-o.y1))}}
-function cTextBounds(t){cx.save();cx.font=`600 ${t.size}px Arial`;const ls=t.text.split("\\n"),w=Math.max(40,...ls.map(x=>cx.measureText(x).width));cx.restore();return{x:t.x,y:t.y,w,h:ls.length*t.size*1.25}}
+function cTextBounds(t){const b=cTextLocalBounds(t),a=(t.rotation||0)*Math.PI/180,cs=Math.cos(a),sn=Math.sin(a),p=[[0,0],[b.w,0],[0,b.h],[b.w,b.h]].map(([x,y])=>({x:t.x+x*cs-y*sn,y:t.y+x*sn+y*cs}));const x=Math.min(...p.map(p=>p.x)),y=Math.min(...p.map(p=>p.y));return{x,y,w:Math.max(...p.map(p=>p.x))-x,h:Math.max(...p.map(p=>p.y))-y};}
 function distanceToSegment(p,a,b){const vx=b.x-a.x,vy=b.y-a.y,wx=p.x-a.x,wy=p.y-a.y,c1=vx*wx+vy*wy;if(c1<=0)return Math.hypot(p.x-a.x,p.y-a.y);const c2=vx*vx+vy*vy;if(c2<=c1)return Math.hypot(p.x-b.x,p.y-b.y);const t=c1/c2,px=a.x+t*vx,py=a.y+t*vy;return Math.hypot(p.x-px,p.y-py)}
-function saveCState(){cHistory.push({items:items.map(x=>({...x})),textItems:textItems.map(x=>({...x})),cObjects:cObjects.map(x=>({...x}))});if(cHistory.length>50)cHistory.shift()}
-function undoC(){const s=cHistory.pop();if(!s)return;items=s.items.map(x=>({...x}));textItems=s.textItems.map(x=>({...x}));cObjects=s.cObjects.map(x=>({...x}));cSel=null;renderThumbs();cRender()}
+function saveCState(){cHistory.push({items:items.map(x=>({...x,crop:x.crop?{...x.crop}:null})),textItems:textItems.map(x=>({...x})),cObjects:cObjects.map(x=>({...x})),width:cc.width,height:cc.height,brightness:sheetBrightness,contrast:sheetContrast});if(cHistory.length>40)cHistory.shift()}
+function undoC(){const s=cHistory.pop();if(!s)return;items=s.items.map(x=>({...x}));textItems=s.textItems.map(x=>({...x}));cObjects=s.cObjects.map(x=>({...x}));cc.width=s.width;cc.height=s.height;sheetBrightness=s.brightness;sheetContrast=s.contrast;cSel=null;cTemp=null;cDrag=null;renderThumbs();fitCollageCanvas();syncCAdjustControls();}
 function setCTool(t){cTool=t;document.querySelectorAll("[data-ctool]").forEach(b=>b.classList.toggle("active",b.dataset.ctool===t));$("#collageCanvas").style.cursor=t==="select"?"default":t==="text"?"text":"crosshair"}
 
 function drawCShape(o,selectedShape=false){
@@ -1901,13 +2051,32 @@ function drawCShape(o,selectedShape=false){
  cx.restore();
  if(selectedShape){const b=cShapeBounds(o);cx.save();cx.strokeStyle="#2563eb";cx.lineWidth=2;cx.setLineDash([8,6]);cx.strokeRect(b.x-8,b.y-8,b.w+16,b.h+16);cx.setLineDash([]);cx.fillStyle="#fff";cx.strokeStyle="#2563eb";cx.lineWidth=3;cx.beginPath();cx.arc(b.x+b.w+8,b.y+b.h+8,10,0,Math.PI*2);cx.fill();cx.stroke();cx.restore()}if(selectedShape&&o.type==="curve"){cx.save();cx.strokeStyle="#2563eb";cx.lineWidth=2;cx.setLineDash([5,5]);cx.beginPath();cx.moveTo(o.x1,o.y1);cx.lineTo(o.cx,o.cy);cx.lineTo(o.x2,o.y2);cx.stroke();cx.setLineDash([]);[[o.x1,o.y1],[o.cx,o.cy],[o.x2,o.y2]].forEach(([x,y],i)=>{cx.beginPath();cx.fillStyle=i===1?"#2563eb":"#fff";cx.strokeStyle="#2563eb";cx.arc(x,y,i===1?10:8,0,Math.PI*2);cx.fill();cx.stroke()});const mx=(o.x1+o.x2)/2,my=(o.y1+o.y2)/2,ang=Math.atan2(o.y2-o.y1,o.x2-o.x1),rx=mx-Math.sin(ang)*48,ry=my+Math.cos(ang)*48;cx.setLineDash([4,4]);cx.beginPath();cx.moveTo(mx,my);cx.lineTo(rx,ry);cx.stroke();cx.setLineDash([]);cx.beginPath();cx.fillStyle="#fff";cx.arc(rx,ry,10,0,Math.PI*2);cx.fill();cx.stroke();cx.restore()}
 }
+let sheetBrightness=100,sheetContrast=100,combineZoom=1;
+const photoLayer=document.createElement('canvas');
+function cTextLocalBounds(t){cx.save();cx.font=`700 ${t.size}px Arial`;const lines=String(t.text||'').split('\n'),w=Math.max(30,...lines.map(x=>cx.measureText(x).width));cx.restore();return{w,h:lines.length*t.size*1.25};}
+function cDrawText(t){cx.save();cx.translate(t.x,t.y);cx.rotate((t.rotation||0)*Math.PI/180);cx.fillStyle=t.color;cx.font=`700 ${t.size}px Arial`;cx.textBaseline='top';String(t.text||'').split('\n').forEach((line,i)=>cx.fillText(line,0,i*t.size*1.25));cx.restore();}
 function cRender(){
- cx.fillStyle="#fff";cx.fillRect(0,0,cc.width,cc.height);
- items.forEach(it=>{cx.drawImage(it.img,it.x,it.y,it.w,it.h);if(cSel?.kind==="image"&&it.id===cSel.id){cx.save();cx.strokeStyle="#2563eb";cx.lineWidth=4;cx.setLineDash([]);cx.strokeRect(it.x,it.y,it.w,it.h);cx.fillStyle="#fff";cx.beginPath();cx.arc(it.x+it.w,it.y+it.h,14,0,Math.PI*2);cx.fill();cx.stroke();cx.restore()}});
- cObjects.forEach(o=>drawCShape(o,cSel?.kind==="shape"&&o.id===cSel.id));if(cTemp)drawCShape(cTemp,false);
- textItems.forEach(t=>{cx.fillStyle=t.color;cx.font=`600 ${t.size}px Arial`;cx.textBaseline="top";t.text.split("\\n").forEach((l,i)=>cx.fillText(l,t.x,t.y+i*t.size*1.25));if(cSel?.kind==="text"&&t.id===cSel.id){const b=cTextBounds(t);cx.save();cx.strokeStyle="#2563eb";cx.lineWidth=2;cx.setLineDash([8,6]);cx.strokeRect(b.x-8,b.y-8,b.w+16,b.h+16);cx.setLineDash([]);cx.fillStyle="#fff";cx.beginPath();cx.arc(b.x+b.w+8,b.y+b.h+8,10,0,Math.PI*2);cx.fill();cx.stroke();cx.restore()}})
+ cx.save();cx.setTransform(1,0,0,1,0,0);cx.clearRect(0,0,cc.width,cc.height);cx.fillStyle='#fff';cx.fillRect(0,0,cc.width,cc.height);
+ if(sheetBrightness===100&&sheetContrast===100){items.forEach(it=>cx.drawImage(it.img,it.x,it.y,it.w,it.h));}
+ else{
+  if(photoLayer.width!==cc.width)photoLayer.width=cc.width;if(photoLayer.height!==cc.height)photoLayer.height=cc.height;
+  const px=photoLayer.getContext('2d');px.clearRect(0,0,photoLayer.width,photoLayer.height);
+  items.forEach(it=>px.drawImage(it.img,it.x,it.y,it.w,it.h));
+  cx.drawImage(window.FitImaging.filtered(photoLayer,sheetBrightness,sheetContrast),0,0);
+ }
+ items.forEach(it=>{if(cSel?.kind==='image'&&it.id===cSel.id){cx.save();cx.strokeStyle='#2563eb';cx.lineWidth=4;cx.setLineDash([]);cx.strokeRect(it.x,it.y,it.w,it.h);cx.fillStyle='#fff';cx.beginPath();cx.arc(it.x+it.w,it.y+it.h,14,0,Math.PI*2);cx.fill();cx.stroke();cx.restore();}});
+ cObjects.forEach(o=>drawCShape(o,cSel?.kind==='shape'&&o.id===cSel.id));if(cTemp)drawCShape(cTemp,false);
+ textItems.forEach(t=>{cDrawText(t);if(cSel?.kind==='text'&&t.id===cSel.id){const b=cTextBounds(t);cx.save();cx.strokeStyle='#2563eb';cx.lineWidth=2;cx.setLineDash([8,6]);cx.strokeRect(b.x-8,b.y-8,b.w+16,b.h+16);cx.setLineDash([]);cx.fillStyle='#fff';cx.beginPath();cx.arc(b.x+b.w+8,b.y+b.h+8,10,0,Math.PI*2);cx.fill();cx.stroke();cx.restore();}});
+ cx.restore();
 }
-function fitCollageCanvas(){const stage=$("#collagePanel .stage"),wrap=$("#collageCanvasWrap");if(!stage||!wrap)return;const r=stage.getBoundingClientRect(),sc=Math.min((r.width-20)/cc.width,(r.height-20)/cc.height,1),dw=Math.max(1,Math.round(cc.width*sc)),dh=Math.max(1,Math.round(cc.height*sc));cc.style.width=dw+"px";cc.style.height=dh+"px";wrap.style.width=dw+"px";wrap.style.height=dh+"px";cRender()}
+function fitCollageCanvas(){
+ const stage=$('#collagePanel .stage'),wrap=$('#collageCanvasWrap');if(!stage||!wrap)return;
+ const r=stage.getBoundingClientRect(),sc=Math.min(Math.max(100,r.width-28)/cc.width,Math.max(100,r.height-28)/cc.height,1);
+ const dw=Math.max(1,Math.round(cc.width*sc*combineZoom)),dh=Math.max(1,Math.round(cc.height*sc*combineZoom));
+ cc.style.width=dw+'px';cc.style.height=dh+'px';wrap.style.width=dw+'px';wrap.style.height=dh+'px';
+ $('#cZoomLevel').textContent=Math.round(combineZoom*100)+'%';cRender();
+}
+
 function centerCollageContent(){const bs=[];items.forEach(x=>bs.push({x:x.x,y:x.y,r:x.x+x.w,b:x.y+x.h}));textItems.forEach(t=>{const b=cTextBounds(t);bs.push({x:b.x,y:b.y,r:b.x+b.w,b:b.y+b.h})});cObjects.forEach(o=>{const b=cShapeBounds(o);bs.push({x:b.x,y:b.y,r:b.x+b.w,b:b.y+b.h})});if(!bs.length)return;const minX=Math.min(...bs.map(x=>x.x)),maxX=Math.max(...bs.map(x=>x.r)),minY=Math.min(...bs.map(x=>x.y)),maxY=Math.max(...bs.map(x=>x.b)),dx=cc.width/2-(minX+maxX)/2,dy=cc.height/2-(minY+maxY)/2;items.forEach(x=>{x.x+=dx;x.y+=dy});textItems.forEach(x=>{x.x+=dx;x.y+=dy});cObjects.forEach(x=>{x.x1+=dx;x.x2+=dx;x.y1+=dy;x.y2+=dy;if(x.type==="curve"){x.cx+=dx;x.cy+=dy}})}
 function autoLayout(skipHistory=false){const n=items.length;if(!n){fitCollageCanvas();return}if(skipHistory!==true)saveCState();const mode=$("#layoutMode").value,pad=Math.max(24,cc.width*.025),gap=Math.max(14,cc.width*.015),cols=mode==="column"?1:n,rows=mode==="column"?n:1,cw=(cc.width-pad*2-gap*(cols-1))/cols,ch=(cc.height-pad*2-gap*(rows-1))/rows;items.forEach((it,i)=>{let w,h;if(it.ratio>cw/ch){w=cw;h=w/it.ratio}else{h=ch;w=h*it.ratio}it.x=pad+(i%cols)*(cw+gap)+(cw-w)/2;it.y=pad+Math.floor(i/cols)*(ch+gap)+(ch-h)/2;it.w=w;it.h=h});centerCollageContent();renderThumbs();fitCollageCanvas()}
 let combineGallerySort=window.FitLibrarySort.register('#thumbList',{
@@ -1925,12 +2094,12 @@ function renderThumbs(){
  box.replaceChildren();if(empty)empty.style.display=items.length?"none":"block";
  items.forEach((it,i)=>{
   const d=document.createElement('div');d.className='thumb';d.dataset.itemId=it.id;d.draggable=false;d.tabIndex=0;d.setAttribute('role','button');d.title=it.name||'Combined photo';
-  const image=document.createElement('img');image.src=it.img.src;image.draggable=false;image.alt=it.name||'Combined photo';
+  const image=document.createElement('img');image.src=it.thumb||it.img.src;image.draggable=false;image.alt=it.name||'Combined photo';
   const caption=document.createElement('span');caption.className='badge';caption.textContent=it.name||'Photo';
   const remove=document.createElement('button');remove.type='button';remove.className='deleteThumb';remove.dataset.del=it.id;remove.textContent='\u00d7';remove.title='Remove from Combine';remove.setAttribute('aria-label','Remove from Combine');
   remove.onclick=e=>{e.stopPropagation();saveCState();items=items.filter(x=>x.id!==it.id);if(cSel?.id===it.id)cSel=null;renderThumbs();fitCollageCanvas();};
   d.append(image,caption,remove);
-  d.onclick=e=>{if(e.target.closest('[data-sort-step],.deleteThumb'))return;mode('combine');setCTool('select');cSel={kind:'image',id:it.id};cRender();box.querySelectorAll('.thumb').forEach(t=>t.classList.toggle('active',t.dataset.itemId===it.id));};
+  d.onclick=e=>{if(e.target.closest('[data-sort-step],.deleteThumb'))return;mode('combine');setCTool('select');cSel={kind:'image',id:it.id};syncCAdjustControls();cRender();box.querySelectorAll('.thumb').forEach(t=>t.classList.toggle('active',t.dataset.itemId===it.id));};
   if(cSel?.id===it.id)d.classList.add('active');box.append(d);
  });
  combineGallerySort?.decorate();
@@ -2007,22 +2176,22 @@ function createCInlineText(p){
 }
 function deleteCSelected(){if(!cSel)return;saveCState();if(cSel.kind==="image")items=items.filter(x=>x.id!==cSel.id);else if(cSel.kind==="text")textItems=textItems.filter(x=>x.id!==cSel.id);else cObjects=cObjects.filter(x=>x.id!==cSel.id);cSel=null;renderThumbs();cRender()}
 
-$("#collageInput").onchange=async e=>{for(const f of [...e.target.files])await new Promise(ok=>{const im=new Image();im.onload=()=>{saveCState();items.push({id:uid(),img:im,name:f.name,x:0,y:0,w:200,h:200,ratio:im.width/im.height});ok()};im.src=URL.createObjectURL(f)});autoLayout()};
+$("#collageInput").onchange=async e=>{const files=[...(e.target.files||[])];e.target.value='';const epoch=window.FitSessionScope.revision();for(const f of files){try{if(epoch!==window.FitSessionScope.revision())break;await addSecureBlobToCombine(f,f.name);}catch(err){cPhotoStatus(err.message,true);}}};
 document.querySelectorAll("[data-ctool]").forEach(b=>b.onclick=()=>{
   setCTool(b.dataset.ctool);
   if(b.dataset.ctool==="text"){
     createCInlineText({x:cc.width/2,y:cc.height/2});
   }
 });
-cc.onmousedown=e=>{if(combineTextEditing)return;const p=cPoint(e);snapLockX=null;snapLockY=null;if(["arrow","line","dash","circle","rect","curve"].includes(cTool)){cTemp={id:uid(),type:cTool,x1:p.x,y1:p.y,x2:p.x,y2:p.y,color:$("#cAnnoColor").value,width:+$("#cLineWidth").value,fill:$("#cShapeFill")?.checked||false};if(cTool==="curve"){cTemp.cx=p.x;cTemp.cy=p.y}return}if(cTool==="text"){createCInlineText(p);return}const hit=cHit(p);cSel=hit?{kind:hit.kind,id:hit.obj.id}:null;if(!hit){cRender();return}saveCState();const b=hit.bounds;let resize=Math.hypot(p.x-(b.x+b.w+8),p.y-(b.y+b.h+8))<35,curvePart=null;if(hit.kind==="shape"&&hit.obj.type==="curve"){const o=hit.obj,near=(x,y)=>Math.hypot(p.x-x,p.y-y)<28,mx=(o.x1+o.x2)/2,my=(o.y1+o.y2)/2,ang=Math.atan2(o.y2-o.y1,o.x2-o.x1),rx=mx-Math.sin(ang)*48,ry=my+Math.cos(ang)*48;if(near(rx,ry))curvePart="rotate";else if(near(o.cx,o.cy))curvePart="control";else if(near(o.x1,o.y1))curvePart="start";else if(near(o.x2,o.y2))curvePart="end";resize=false}cDrag={kind:hit.kind,id:hit.obj.id,start:p,orig:{...hit.obj},resize,curvePart};if(hit.kind==="shape"){$("#cAnnoColor").value=hit.obj.color;$("#cAnnoColorText").textContent=hit.obj.color.toUpperCase();$("#cLineWidth").value=hit.obj.width;$("#cLineWidthVal").textContent=Math.round(hit.obj.width);$("#cShapeFill").checked=!!hit.obj.fill}if(hit.kind==="text"){$("#collageText").value=hit.obj.text;$("#cTextSize").value=hit.obj.size;$("#cTextSizeVal").textContent=Math.round(hit.obj.size);$("#cTextColor").value=hit.obj.color}cRender()};
+cc.onmousedown=e=>{if(combineTextEditing)return;const p=cPoint(e);snapLockX=null;snapLockY=null;if(["arrow","line","dash","circle","rect","curve"].includes(cTool)){cTemp={id:uid(),type:cTool,x1:p.x,y1:p.y,x2:p.x,y2:p.y,color:$("#cAnnoColor").value,width:+$("#cLineWidth").value,fill:$("#cShapeFill")?.checked||false};if(cTool==="curve"){cTemp.cx=p.x;cTemp.cy=p.y}return}if(cTool==="text"){createCInlineText(p);return}const hit=cHit(p);cSel=hit?{kind:hit.kind,id:hit.obj.id}:null;syncCAdjustControls();if(!hit){cRender();return}saveCState();const b=hit.bounds;let resize=Math.hypot(p.x-(b.x+b.w+8),p.y-(b.y+b.h+8))<35,curvePart=null;if(hit.kind==="shape"&&hit.obj.type==="curve"){const o=hit.obj,near=(x,y)=>Math.hypot(p.x-x,p.y-y)<28,mx=(o.x1+o.x2)/2,my=(o.y1+o.y2)/2,ang=Math.atan2(o.y2-o.y1,o.x2-o.x1),rx=mx-Math.sin(ang)*48,ry=my+Math.cos(ang)*48;if(near(rx,ry))curvePart="rotate";else if(near(o.cx,o.cy))curvePart="control";else if(near(o.x1,o.y1))curvePart="start";else if(near(o.x2,o.y2))curvePart="end";resize=false}cDrag={kind:hit.kind,id:hit.obj.id,start:p,orig:{...hit.obj},resize,curvePart};if(hit.kind==="shape"){$("#cAnnoColor").value=hit.obj.color;$("#cAnnoColorText").textContent=hit.obj.color.toUpperCase();$("#cLineWidth").value=hit.obj.width;$("#cLineWidthVal").textContent=Math.round(hit.obj.width);$("#cShapeFill").checked=!!hit.obj.fill}if(hit.kind==="text"){$("#collageText").value=hit.obj.text;$("#cTextSize").value=hit.obj.size;$("#cTextSizeVal").textContent=Math.round(hit.obj.size);$("#cTextColor").value=hit.obj.color}cRender()};
 cc.onmousemove=e=>{const p=cPoint(e);if(cTemp){cTemp.x2=p.x;cTemp.y2=p.y;if(cTemp.type==="curve"){const mx=(cTemp.x1+p.x)/2,my=(cTemp.y1+p.y)/2,dx=p.x-cTemp.x1,dy=p.y-cTemp.y1,L=Math.max(1,Math.hypot(dx,dy));cTemp.cx=mx-dy/L*Math.min(80,L*.25);cTemp.cy=my+dx/L*Math.min(80,L*.25)}cRender();return}if(!cDrag)return;const dx=p.x-cDrag.start.x,dy=p.y-cDrag.start.y;if(cDrag.kind==="image"){const o=items.find(x=>x.id===cDrag.id),s=cDrag.orig;if(cDrag.resize){const sc=Math.max(.12,Math.max((s.w+dx)/s.w,(s.h+dy)/s.h));o.w=Math.max(70,s.w*sc);o.h=o.w/o.ratio}else{o.x=s.x+dx;o.y=s.y+dy}}else if(cDrag.kind==="text"){const o=textItems.find(x=>x.id===cDrag.id),s=cDrag.orig;if(cDrag.resize)o.size=Math.max(10,s.size+dx/4);else{o.x=s.x+dx;o.y=s.y+dy}}else{const o=cObjects.find(x=>x.id===cDrag.id),s=cDrag.orig;if(o.type==="curve"){if(cDrag.curvePart==="rotate"){const mx=(s.x1+s.x2)/2,my=(s.y1+s.y2)/2,a0=Math.atan2(cDrag.start.y-my,cDrag.start.x-mx),a1=Math.atan2(p.y-my,p.x-mx),da=a1-a0,cs=Math.cos(da),sn=Math.sin(da),rot=(x,y)=>({x:mx+(x-mx)*cs-(y-my)*sn,y:my+(x-mx)*sn+(y-my)*cs}),a=rot(s.x1,s.y1),bb=rot(s.x2,s.y2),c=rot(s.cx,s.cy);o.x1=a.x;o.y1=a.y;o.x2=bb.x;o.y2=bb.y;o.cx=c.x;o.cy=c.y}else if(cDrag.curvePart==="control"){o.cx=s.cx+dx;o.cy=s.cy+dy}else if(cDrag.curvePart==="start"){o.x1=s.x1+dx;o.y1=s.y1+dy}else if(cDrag.curvePart==="end"){o.x2=s.x2+dx;o.y2=s.y2+dy}else{o.x1=s.x1+dx;o.x2=s.x2+dx;o.y1=s.y1+dy;o.y2=s.y2+dy;o.cx=s.cx+dx;o.cy=s.cy+dy}}else if(cDrag.resize){o.x2=s.x2+dx;o.y2=s.y2+dy}else{o.x1=s.x1+dx;o.x2=s.x2+dx;o.y1=s.y1+dy;o.y2=s.y2+dy}}cRender()};
-cc.onmouseup=e=>{if(cTemp){const p=cPoint(e);cTemp.x2=p.x;cTemp.y2=p.y;if(Math.hypot(cTemp.x2-cTemp.x1,cTemp.y2-cTemp.y1)>3){saveCState();cObjects.push(cTemp)}cTemp=null;setCTool("select");cRender()}cDrag=null};
+cc.onmouseup=e=>{if(cTemp){const p=cPoint(e);cTemp.x2=p.x;cTemp.y2=p.y;if(Math.hypot(cTemp.x2-cTemp.x1,cTemp.y2-cTemp.y1)>3){saveCState();cObjects.push(cTemp);cSel={kind:'shape',id:cTemp.id};syncCAdjustControls();}cTemp=null;setCTool("select");cRender()}cDrag=null};
 cc.onmouseleave=()=>{cDrag=null};
 $("#cAnnoColor").oninput=e=>{const o=cSel?.kind==="shape"?cObjects.find(x=>x.id===cSel.id):cSel?.kind==="text"?textItems.find(x=>x.id===cSel.id):null;$("#cAnnoColorText").textContent=e.target.value.toUpperCase();$("#cTextColor").value=e.target.value;if(o){o.color=e.target.value;cRender()}};
 $("#cLineWidth").oninput=e=>{const o=cSel?.kind==="shape"?cObjects.find(x=>x.id===cSel.id):null;$("#cLineWidthVal").textContent=e.target.value;if(o){o.width=+e.target.value;cRender()}};
 $("#cShapeFill").onchange=e=>{const o=cSel?.kind==="shape"?cObjects.find(x=>x.id===cSel.id):null;if(o&&(o.type==="circle"||o.type==="rect")){o.fill=e.target.checked;cRender()}};
 $("#cUndo").onclick=undoC;$("#deleteCollageObject").onclick=deleteCSelected;
-$("#autoLayout").onclick=autoLayout;$("#layoutMode").onchange=autoLayout;
+$("#autoLayout").onclick=autoLayout;$("#layoutMode").onchange=autoLayout;$("#fitCanvasContent").onclick=fitCombinedContent;
 $("#addCollageText").onclick=()=>{const tx=$("#collageText").value.trim();if(!tx)return;saveCState();const t={id:uid(),text:tx,x:cc.width*.08,y:cc.height*.08,size:+$("#cTextSize").value,color:$("#cAnnoColor").value};textItems.push(t);cSel={kind:"text",id:t.id};cRender()};
 $("#cTextSize").oninput=e=>{$("#cTextSizeVal").textContent=e.target.value;const t=cSel?.kind==="text"?textItems.find(x=>x.id===cSel.id):null;if(t){t.size=+e.target.value;cRender()}};
 $("#cTextColor").oninput=e=>{const t=cSel?.kind==="text"?textItems.find(x=>x.id===cSel.id):null;if(t){t.color=e.target.value;cRender()}};
@@ -2067,44 +2236,35 @@ window.addEventListener("keydown",e=>{
 
 
 
-async function loadSecureBlobIntoAnnotate(blob,label="Secure live photo"){
-  return new Promise((resolve,reject)=>{
-    const url=URL.createObjectURL(blob);
-    img.onload=()=>{
-      loaded=true;resetSavedProjectIdentity();if(typeof resetPhotoAdjustments==="function")resetPhotoAdjustments();
-      snapshotCropSource();
-      $("#empty").style.display="none";
-      img.style.display="block";
-      objects=[];selected=null;temp=null;drag=null;history=[];
-      fitPreviewToStage();
-      setTool("select");
-      const meta=$("#photoMeta");
-      if(meta)meta.textContent=`${label} · ${img.naturalWidth}×${img.naturalHeight}`;
-      $("#hint").textContent="Secure live photo ready — choose a tool";
-      requestAnimationFrame(()=>{fitPreviewToStage();requestAnimationFrame(()=>fitPreviewToStage());render()});
-      resolve(true);
-    };
-    img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error("Could not decode secure photo"))};
-    img.src=url;
-  });
+let annotateLoadSeq=0;const pendingCombineSources=new Set();
+function thumbnail(source){const sc=Math.min(1,240/Math.max(source.width,source.height)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(source.width*sc));c.height=Math.max(1,Math.round(source.height*sc));c.getContext('2d').drawImage(source,0,0,c.width,c.height);return c.toDataURL('image/jpeg',.82);}
+async function displayBaseCanvas(canvas,epoch=window.FitSessionScope.revision(),request=annotateLoadSeq){
+ const blob=await encodeProjectCanvas(canvas);
+ if(epoch!==window.FitSessionScope.revision()||request!==annotateLoadSeq)throw new Error('Photo operation cancelled because the workspace changed.');
+ const url=URL.createObjectURL(blob);img.onload=null;img.onerror=null;
+ try{img.src=url;await img.decode();if(epoch!==window.FitSessionScope.revision()||request!==annotateLoadSeq)throw new Error('Photo operation cancelled because the workspace changed.');}
+ finally{URL.revokeObjectURL(url);}
 }
-
-async function addSecureBlobToCombine(blob,label="Secure live photo",sourcePath=""){
-  return new Promise((resolve,reject)=>{
-    if(sourcePath && items.some(x=>x.sourcePath===sourcePath)){resolve(false);return}
-    const url=URL.createObjectURL(blob),im=new Image();
-    im.onload=()=>{
-      items.push({id:uid(),img:im,name:label,x:0,y:0,w:200,h:200,ratio:im.width/im.height,sourcePath});
-      renderThumbs();
-      autoLayout();
-      cRender();
-      resolve(true);
-    };
-    im.onerror=()=>{URL.revokeObjectURL(url);reject(new Error("Could not decode secure photo"))};
-    im.src=url;
-  });
+async function loadSecureBlobIntoAnnotate(blob,label='Photo'){
+ const request=++annotateLoadSeq,epoch=window.FitSessionScope.revision();
+ $('#hint').textContent='Loading photo...';
+ const source=await window.FitImaging.decode(blob);if(request!==annotateLoadSeq||epoch!==window.FitSessionScope.revision())return false;
+ await displayBaseCanvas(source,epoch,request);
+ loaded=true;resetSavedProjectIdentity();historyBase=source;originalCropSource=source;currentCropRect={x:0,y:0,w:source.width,h:source.height};
+ resetPhotoAdjustments();$('#empty').style.display='none';img.style.display='block';objects=[];selected=null;temp=null;drag=null;history=[];
+ window.dispatchEvent(new Event('fit:photochanged'));setTool('select');$('#photoMeta').textContent=label+' \u00b7 '+source.width+'\u00d7'+source.height;
+ $('#hint').textContent='Photo ready';photoStatus('Photo ready. Crop / rotate may clear annotations after confirmation.');fitPreviewToStage();requestAnimationFrame(()=>{if(epoch===window.FitSessionScope.revision())fitPreviewToStage();});return true;
 }
-
+async function addSecureBlobToCombine(blob,label='Photo',sourcePath=''){
+ if(sourcePath&&(pendingCombineSources.has(sourcePath)||items.some(x=>x.sourcePath===sourcePath)))return false;
+ const epoch=window.FitSessionScope.revision();if(sourcePath)pendingCombineSources.add(sourcePath);
+ try{
+  const source=await window.FitImaging.decode(blob);if(epoch!==window.FitSessionScope.revision())return false;
+  if(sourcePath&&items.some(x=>x.sourcePath===sourcePath))return false;
+  saveCState();const it={id:uid(),source,img:source,thumb:thumbnail(source),name:label,x:0,y:0,w:200,h:200,ratio:source.width/source.height,sourcePath,crop:{x:0,y:0,w:source.width,h:source.height},rotation:0,brightness:100,contrast:100};
+  items.push(it);cSel={kind:'image',id:it.id};autoLayout(true);syncCAdjustControls();cPhotoStatus('Photo added. Adjustments apply to the selected target.');return true;
+ }finally{if(sourcePath)pendingCombineSources.delete(sourcePath);}
+}
 
 // V70: operations stay inside the editor closure. All modal nodes exist before boot.
 let photoBrightness=100,photoContrast=100; let originalCropSource=null; let currentCropRect=null;
@@ -2126,29 +2286,11 @@ function confirmPhotoChange(){
   return !objects.length||confirm('This photo operation clears the existing annotations on this photo. Save the annotated version first if needed. Continue?');
 }
 async function replaceBaseImageFromCanvas(canvas,label){
-  return new Promise((resolve,reject)=>{
-    canvas.toBlob(blob=>{
-      if(!blob){reject(new Error('The browser could not create the processed photo.'));return;}
-      const url=URL.createObjectURL(blob);
-      img.onload=()=>{
-        loaded=true;objects=[];selected=null;temp=null;drag=null;history=[];
-        resetPhotoAdjustments();$("#photoWrap").style.transform='';selectPhotoFrame(false);
-        fitPreviewToStage();requestAnimationFrame(()=>fitPreviewToStage());
-        $("#photoMeta").textContent=`${label} - ${img.naturalWidth} x ${img.naturalHeight}`;
-        $("#hint").textContent='Photo ready';setTool('select');render();
-        URL.revokeObjectURL(url);resolve();
-      };
-      img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('Could not decode the processed photo.'));};
-      img.src=url;
-    },'image/png');
-  });
+  await displayBaseCanvas(canvas);historyBase=null;loaded=true;objects=[];selected=null;temp=null;drag=null;
+  resetPhotoAdjustments();$("#photoWrap").style.transform='';selectPhotoFrame(false);fitPreviewToStage();
+  $("#photoMeta").textContent=label+' - '+img.naturalWidth+' x '+img.naturalHeight;setTool('select');render();
 }
-function currentFilteredCanvas(){
-  if(!loaded||!img.naturalWidth)throw new Error('Choose a photo first.');
-  const c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;
-  const x=c.getContext('2d');x.filter=`brightness(${photoBrightness}%) contrast(${photoContrast}%)`;
-  x.drawImage(img,0,0);x.filter='none';return c;
-}
+function currentFilteredCanvas(){if(!loaded||!img.naturalWidth)throw new Error('Choose a photo first.');return window.FitImaging.filtered(img,photoBrightness,photoContrast);}
 function exportAnnotatedCanvas(){
   const out=currentFilteredCanvas(),x=out.getContext('2d'),oldSelected=selected,oldTemp=temp;
   try{selected=null;temp=null;render();x.drawImage(cvs,0,0,out.width,out.height);}
@@ -2165,18 +2307,19 @@ function exportCombinedCanvas(){
 }
 $("#brightnessRange").oninput=e=>{photoBrightness=+e.target.value;applyPhotoFilter();};
 $("#contrastRange").oninput=e=>{photoContrast=+e.target.value;applyPhotoFilter();};
-$("#resetPhotoAdjustBtn").onclick=()=>{resetPhotoAdjustments();photoStatus('Brightness and contrast reset.');};
+$("#resetPhotoAdjustBtn").onclick=()=>{saveHistory();resetPhotoAdjustments();photoStatus('Brightness and contrast reset.');};
 $("#rotatePhotoBtn").onclick=async()=>{
   if(!loaded){photoStatus('Choose a photo first.',true);return;}
   if(!confirmPhotoChange())return;
   try{
-    const source=currentFilteredCanvas(),out=document.createElement('canvas');out.width=source.height;out.height=source.width;
+    saveHistory();const source=currentFilteredCanvas(),out=document.createElement('canvas');out.width=source.height;out.height=source.width;
     const x=out.getContext('2d');x.translate(out.width/2,out.height/2);x.rotate(Math.PI/2);x.drawImage(source,-source.width/2,-source.height/2);
     await replaceBaseImageFromCanvas(out,'Rotated photo');snapshotCropSource();photoStatus('Rotated 90 degrees clockwise.');
   }catch(e){photoStatus(e.message,true);}
 };
-let cropSource=null,cropStart=null,cropRect=null;
+let cropSource=null,cropStart=null,cropRect=null,cropTarget=null;
 const cropCanvas=$("#cropCanvas"),cropCtx=cropCanvas.getContext('2d');
+function fitCropCanvas(){const stage=$('#cropModal .cropStage'),sc=Math.min(Math.max(1,stage.clientWidth-4)/cropCanvas.width,Math.max(100,window.innerHeight-230)/cropCanvas.height,window.innerHeight*.62/cropCanvas.height,1);cropCanvas.style.width=Math.max(1,Math.floor(cropCanvas.width*sc))+'px';cropCanvas.style.height=Math.max(1,Math.floor(cropCanvas.height*sc))+'px';}
 function cropPoint(e){const r=cropCanvas.getBoundingClientRect();return{x:Math.max(0,Math.min(cropCanvas.width,(e.clientX-r.left)*cropCanvas.width/r.width)),y:Math.max(0,Math.min(cropCanvas.height,(e.clientY-r.top)*cropCanvas.height/r.height))};}
 function renderCrop(){
   if(!cropSource)return;
@@ -2190,28 +2333,36 @@ function renderCrop(){
 }
 $("#cropPhotoBtn").onclick=()=>{
   if(!loaded){photoStatus('Choose a photo first.',true);return;}
-  if(!confirmPhotoChange())return;
-  cropSource=originalCropSource||currentFilteredCanvas();cropCanvas.width=cropSource.width;cropCanvas.height=cropSource.height;cropStart=null;
+  cropTarget={kind:'annotate',epoch:window.FitSessionScope.revision()};$('#cropHelp').textContent='Drag on the original photo. Reopen Crop to expand the selection. Annotations are cleared only when you apply.';cropSource=originalCropSource||currentFilteredCanvas();cropCanvas.width=cropSource.width;cropCanvas.height=cropSource.height;cropStart=null;
   cropRect=currentCropRect?{...currentCropRect}:{x:0,y:0,w:cropSource.width,h:cropSource.height};
   $("#cropBox").style.display='block';$("#cropModal").style.display='flex';
-  const sc=Math.min((window.innerWidth-70)/cropCanvas.width,(window.innerHeight-200)/cropCanvas.height,window.innerHeight*.62/cropCanvas.height,1);
-  cropCanvas.style.width=Math.floor(cropCanvas.width*sc)+'px';cropCanvas.style.height=Math.floor(cropCanvas.height*sc)+'px';renderCrop();
+  fitCropCanvas();renderCrop();
 };
-$("#cropCancelBtn").onclick=()=>{$("#cropModal").style.display='none';cropStart=null;};
+$("#cropCancelBtn").onclick=()=>{$("#cropModal").style.display='none';cropStart=null;cropTarget=null;};
 cropCanvas.onpointerdown=e=>{e.preventDefault();cropStart=cropPoint(e);cropRect={x:cropStart.x,y:cropStart.y,w:0,h:0};cropCanvas.setPointerCapture(e.pointerId);renderCrop();};
 cropCanvas.onpointermove=e=>{if(!cropStart)return;const p=cropPoint(e);cropRect={x:Math.min(cropStart.x,p.x),y:Math.min(cropStart.y,p.y),w:Math.abs(p.x-cropStart.x),h:Math.abs(p.y-cropStart.y)};renderCrop();};
 cropCanvas.onpointerup=e=>{cropStart=null;if(cropCanvas.hasPointerCapture(e.pointerId))cropCanvas.releasePointerCapture(e.pointerId);};
 cropCanvas.onpointercancel=()=>cropStart=null;
-$("#cropApplyBtn").onclick=async()=>{
-  if(!cropRect||cropRect.w<10||cropRect.h<10){alert('Drag on the photo to select an area first.');return;}
-  try{
-    const c=document.createElement('canvas');c.width=Math.round(cropRect.w);c.height=Math.round(cropRect.h);
-    c.getContext('2d').drawImage(cropSource,cropRect.x,cropRect.y,cropRect.w,cropRect.h,0,0,c.width,c.height);
-    currentCropRect={x:cropRect.x,y:cropRect.y,w:cropRect.w,h:cropRect.h};
-    await replaceBaseImageFromCanvas(c,'Cropped photo');$("#cropModal").style.display='none';photoStatus('Crop applied. Reopen Crop to restore or expand the previous selection.');
-  }catch(e){photoStatus(e.message,true);}
+$('#cropApplyBtn').onclick=async()=>{
+ if(!cropRect||cropRect.w<10||cropRect.h<10){alert('Drag on the photo to select an area first.');return;}
+ const target=cropTarget;if(!target||target.epoch!==window.FitSessionScope.revision()){$('#cropModal').style.display='none';return;}
+ const button=$('#cropApplyBtn');button.disabled=true;
+ try{
+  const rect={x:Math.round(cropRect.x),y:Math.round(cropRect.y),w:Math.round(cropRect.w),h:Math.round(cropRect.h)};
+  if(target.kind==='annotate'){
+   if(!confirmPhotoChange())return;saveHistory();
+   const c=document.createElement('canvas');c.width=rect.w;c.height=rect.h;c.getContext('2d').drawImage(cropSource,rect.x,rect.y,rect.w,rect.h,0,0,c.width,c.height);
+   const b=photoBrightness,k=photoContrast;await replaceBaseImageFromCanvas(c,'Cropped photo');currentCropRect=rect;
+   photoBrightness=b;photoContrast=k;$('#brightnessRange').value=b;$('#contrastRange').value=k;applyPhotoFilter();photoStatus('Crop applied. Reopen Crop to expand the selection; Undo restores the previous state.');
+  }else if(target.kind==='combine-photo'){
+   const it=items.find(x=>x.id===target.id);if(!it)throw new Error('The selected photo is no longer on the sheet.');saveCState();it.crop=rect;updateItemVisual(it,true);cSel={kind:'image',id:it.id};renderThumbs();cRender();syncCAdjustControls();cPhotoStatus('Photo cropped. Reopen Crop to expand; other photos were not changed.');
+  }else{
+   saveCState();translateCombine(-rect.x,-rect.y);cc.width=rect.w;cc.height=rect.h;cSel=null;fitCollageCanvas();cPhotoStatus('Sheet cropped. All layers are retained; Undo restores the previous sheet boundaries.');
+  }
+  $('#cropModal').style.display='none';cropTarget=null;cropStart=null;
+ }catch(e){if(target.kind==='annotate')photoStatus(e.message,true);else cPhotoStatus(e.message,true);}
+ finally{button.disabled=false;}
 };
-
 
 // V75: preserve the complete editable document, not a transient blob URL.
 let savedProjectIdentity=null;
@@ -2238,6 +2389,7 @@ function decodedProjectImage(source){
   });
 }
 async function makeEditableProject(){
+   if(window.FitEditor.isCombineMode())return makeCombinedProject();
   if(!loaded||!img.naturalWidth)throw new Error('Choose a photo first.');
   // Finalise any live text before taking the snapshot.
   const active=document.querySelector('#photoWrap .liveTextEditor');
@@ -2247,7 +2399,7 @@ async function makeEditableProject(){
   small.width=Math.max(1,Math.round(flat.width*scale));small.height=Math.max(1,Math.round(flat.height*scale));
   const sx=small.getContext('2d');sx.fillStyle='#fff';sx.fillRect(0,0,small.width,small.height);sx.drawImage(flat,0,0,small.width,small.height);
   // Copy mutable values before any asynchronous encoding.
-  const record={version:3,kind:'annotate',id:savedProjectIdentity?.id||uid(),documentKey:editorDocumentKey,
+  const record={version:4,sessionId:window.FitSessionScope.current().id,sessionName:window.FitSessionScope.current().name,kind:'annotate',id:savedProjectIdentity?.id||uid(),documentKey:editorDocumentKey,
     name:($('#photoMeta')?.textContent||'Edited photo').split(' \u00b7 ')[0],
     objects:JSON.parse(JSON.stringify(objects)),brightness:photoBrightness,contrast:photoContrast,
     cropRect:currentCropRect?{...currentCropRect}:{x:0,y:0,w:original.width,h:original.height},
@@ -2258,19 +2410,14 @@ async function makeEditableProject(){
   return Object.assign(record,{baseBlob,originalBlob,exportBlob,thumbnailBlob});
 }
 function markEditableProjectSaved(record){
-  if(record.documentKey===editorDocumentKey)savedProjectIdentity={id:record.id,createdAt:record.createdAt};
+  if(record.kind==='combine'){if(record.documentKey===combineDocumentKey)combineSavedIdentity={id:record.id,createdAt:record.createdAt};return;}if(record.documentKey===editorDocumentKey)savedProjectIdentity={id:record.id,createdAt:record.createdAt};
 }
 async function loadEditableProject(p){
-  if(!p||!p.id)throw new Error('Invalid saved photo.');
+  if(!p||!p.id)throw new Error('Invalid saved photo.');if(p.kind==='combine')return loadCombinedProject(p);const request=++annotateLoadSeq,epoch=window.FitSessionScope.revision();
   const base=await decodedProjectImage(p.baseBlob||p.image);
   const original=p.originalBlob?await decodedProjectImage(p.originalBlob):base;
-  const url=URL.createObjectURL(await encodeProjectCanvas(projectCanvas(base)));
-  await new Promise((resolve,reject)=>{
-    img.onload=()=>{URL.revokeObjectURL(url);resolve();};
-    img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('Could not display saved photo.'));};
-    img.src=url;
-  });
-  loaded=true;$('#empty').style.display='none';img.style.display='block';
+  await displayBaseCanvas(projectCanvas(base),epoch,request);
+  if(request!==annotateLoadSeq||epoch!==window.FitSessionScope.revision())return false;historyBase=null;loaded=true;$('#empty').style.display='none';img.style.display='block';
   originalCropSource=projectCanvas(original);
   currentCropRect=p.cropRect?{...p.cropRect}:{x:0,y:0,w:original.width,h:original.height};
   objects=JSON.parse(JSON.stringify(Array.isArray(p.objects)?p.objects:[]));selected=null;temp=null;drag=null;history=[];
@@ -2279,15 +2426,13 @@ async function loadEditableProject(p){
   $('#brightnessRange').value=photoBrightness;$('#contrastRange').value=photoContrast;applyPhotoFilter();
   $('#photoMeta').textContent=(p.name||'Edited photo')+' \u00b7 '+img.naturalWidth+'\u00d7'+img.naturalHeight;
   $('#photoWrap').style.transform='';selectPhotoFrame(false);annotateTextEditing=false;
-  savedProjectIdentity={id:p.id,createdAt:p.createdAt||new Date().toISOString()};editorDocumentKey=uid();
-  mode('annotate');setTool('select');fitPreviewToStage();render();
+  savedProjectIdentity=p.sessionId===window.FitSessionScope.current().id?{id:p.id,createdAt:p.createdAt||new Date().toISOString()}:null;editorDocumentKey=uid();
+  window.dispatchEvent(new Event('fit:photochanged'));mode('annotate');setTool('select');fitPreviewToStage();render();
   await new Promise(r=>requestAnimationFrame(r));fitPreviewToStage();render();return true;
 }
 // Legacy V71-V74 exports are rendered off-screen: batch download never replaces the live editor.
 async function renderEditableProjectCanvas(p){
-  const base=await decodedProjectImage(p.baseBlob||p.image),out=projectCanvas(base),x=out.getContext('2d');
-  x.clearRect(0,0,out.width,out.height);x.filter=`brightness(${Number.isFinite(+p.brightness)?+p.brightness:100}%) contrast(${Number.isFinite(+p.contrast)?+p.contrast:100}%)`;
-  x.drawImage(base,0,0);x.filter='none';
+  const base=await decodedProjectImage(p.baseBlob||p.image),out=window.FitImaging.filtered(base,Number.isFinite(+p.brightness)?+p.brightness:100,Number.isFinite(+p.contrast)?+p.contrast:100),x=out.getContext('2d');
   for(const o of (p.objects||[])){
     x.save();x.strokeStyle=o.color||'#000000';x.fillStyle=o.color||'#000000';x.lineWidth=o.width||6;x.lineCap='round';x.lineJoin='round';
     if(o.type==='text'){x.font=`700 ${o.size||34}px Arial`;x.textBaseline='top';String(o.text||'').split('\n').forEach((v,i)=>x.fillText(v,o.x1,o.y1+i*(o.size||34)*1.2));}
@@ -2301,6 +2446,128 @@ async function renderEditableProjectCanvas(p){
   }
   return out;
 }
+
+// V82 photo adjustments use immutable source pixels and a separately editable sheet.
+function cPhotoStatus(text,error=false){const el=$('#cPhotoAdjustStatus');el.textContent=text;el.style.color=error?'#b42318':'#64748b';}
+function selectedCPhoto(){return cSel?.kind==='image'?items.find(x=>x.id===cSel.id):null;}
+function syncCAdjustControls(){
+ const sheet=$('#cAdjustTarget').value==='sheet',it=selectedCPhoto(),target=sheet?{brightness:sheetBrightness,contrast:sheetContrast}:it;
+ for(const id of ['cBrightnessRange','cContrastRange','cCropPhotoBtn','cRotatePhotoBtn','cResetPhotoAdjustBtn'])$('#'+id).disabled=!target;
+ $('#cBrightnessRange').value=target?.brightness??100;$('#cContrastRange').value=target?.contrast??100;
+ $('#cBrightnessVal').textContent=target?.brightness??100;$('#cContrastVal').textContent=target?.contrast??100;
+ if(!target)cPhotoStatus('Select a photo on the sheet, or choose Entire sheet.');
+}
+function rotatedCanvas(source,degrees){const d=((degrees%360)+360)%360,c=document.createElement('canvas');c.width=d===90||d===270?source.height:source.width;c.height=d===90||d===270?source.width:source.height;const x=c.getContext('2d');x.translate(c.width/2,c.height/2);x.rotate(d*Math.PI/180);x.drawImage(source,-source.width/2,-source.height/2);return c;}
+function updateItemVisual(it,resize=false){
+ const src=it.source||it.img,r=it.crop||{x:0,y:0,w:src.width,h:src.height},c=document.createElement('canvas');c.width=Math.max(1,Math.round(r.w));c.height=Math.max(1,Math.round(r.h));c.getContext('2d').drawImage(src,r.x,r.y,r.w,r.h,0,0,c.width,c.height);
+ const visual=window.FitImaging.filtered(rotatedCanvas(c,it.rotation||0),it.brightness??100,it.contrast??100);
+ const oldRatio=it.ratio;it.img=visual;it.thumb=thumbnail(visual);it.ratio=visual.width/visual.height;
+ if(resize&&oldRatio!==it.ratio){const centerX=it.x+it.w/2,centerY=it.y+it.h/2,area=Math.max(1,it.w*it.h);it.w=Math.sqrt(area*it.ratio);it.h=it.w/it.ratio;it.x=centerX-it.w/2;it.y=centerY-it.h/2;}
+ if(resize){const sc=Math.min(1,cc.width/it.w,cc.height/it.h);it.w*=sc;it.h*=sc;it.x=Math.max(0,Math.min(cc.width-it.w,it.x));it.y=Math.max(0,Math.min(cc.height-it.h,it.y));}
+}
+function translateCombine(dx,dy){items.forEach(it=>{it.x+=dx;it.y+=dy;});textItems.forEach(t=>{t.x+=dx;t.y+=dy;});cObjects.forEach(o=>{o.x1+=dx;o.x2+=dx;o.y1+=dy;o.y2+=dy;if(o.type==='curve'){o.cx+=dx;o.cy+=dy;}});}
+function fitCombinedContent(){
+ const bs=[...items.map(x=>({x:x.x,y:x.y,w:x.w,h:x.h})),...textItems.map(cTextBounds),...cObjects.map(cShapeBounds)];if(!bs.length)return;
+ saveCState();const minX=Math.min(...bs.map(b=>b.x)),minY=Math.min(...bs.map(b=>b.y)),maxX=Math.max(...bs.map(b=>b.x+b.w)),maxY=Math.max(...bs.map(b=>b.y+b.h)),pad=Math.max(12,Math.min(cc.width,cc.height)*.03),sc=Math.min((cc.width-pad*2)/Math.max(1,maxX-minX),(cc.height-pad*2)/Math.max(1,maxY-minY));
+ const dx=(cc.width-(maxX-minX)*sc)/2,dy=(cc.height-(maxY-minY)*sc)/2;
+ items.forEach(it=>{it.x=(it.x-minX)*sc+dx;it.y=(it.y-minY)*sc+dy;it.w*=sc;it.h*=sc;});
+ textItems.forEach(t=>{t.x=(t.x-minX)*sc+dx;t.y=(t.y-minY)*sc+dy;t.size*=sc;});
+ cObjects.forEach(o=>{o.x1=(o.x1-minX)*sc+dx;o.x2=(o.x2-minX)*sc+dx;o.y1=(o.y1-minY)*sc+dy;o.y2=(o.y2-minY)*sc+dy;o.width*=sc;if(o.type==='curve'){o.cx=(o.cx-minX)*sc+dx;o.cy=(o.cy-minY)*sc+dy;}});
+ cSel=null;fitCollageCanvas();cPhotoStatus('All content fitted to the sheet without changing its relative layout.');
+}
+$('#cAdjustTarget').onchange=()=>{syncCAdjustControls();cPhotoStatus($('#cAdjustTarget').value==='sheet'?'Adjusting the entire sheet. Annotation layers remain editable.':'Adjusting the selected photo only. Sheet annotations do not move with an individual photo.');};
+$('#cRotatePhotoBtn').onclick=()=>{
+ try{
+  if($('#cAdjustTarget').value==='sheet'){
+   if(!items.length&&!textItems.length&&!cObjects.length)throw new Error('Add something to the sheet first.');saveCState();const oldH=cc.height,w=cc.width;
+   items.forEach(it=>{const x=it.x,y=it.y,pw=it.w,ph=it.h;it.rotation=((it.rotation||0)+90)%360;updateItemVisual(it,false);it.x=oldH-y-ph;it.y=x;it.w=ph;it.h=pw;});
+   textItems.forEach(t=>{const x=t.x;t.x=oldH-t.y;t.y=x;t.rotation=((t.rotation||0)+90)%360;});
+   cObjects.forEach(o=>{const x1=o.x1,x2=o.x2;o.x1=oldH-o.y1;o.y1=x1;o.x2=oldH-o.y2;o.y2=x2;if(o.type==='curve'){const x=o.cx;o.cx=oldH-o.cy;o.cy=x;}});
+   cc.width=oldH;cc.height=w;cSel=null;fitCollageCanvas();cPhotoStatus('Entire sheet rotated 90 degrees. Photos, text and annotations remain editable.');
+  }else{const it=selectedCPhoto();if(!it)throw new Error('Select a photo first.');saveCState();it.rotation=((it.rotation||0)+90)%360;updateItemVisual(it,true);cRender();cPhotoStatus('Selected photo rotated. Other photos and sheet annotations were not changed.');}
+  renderThumbs();syncCAdjustControls();
+ }catch(e){cPhotoStatus(e.message,true);}
+};
+function openCombineCrop(){
+ const epoch=window.FitSessionScope.revision();
+ if($('#cAdjustTarget').value==='sheet'){
+  if(!items.length&&!textItems.length&&!cObjects.length){cPhotoStatus('Add something to the sheet first.',true);return;}
+  cropSource=exportCombinedCanvas();cropRect={x:0,y:0,w:cc.width,h:cc.height};cropTarget={kind:'combine-sheet',epoch};$('#cropHelp').textContent='Drag to crop the entire sheet. Layers are retained outside the crop; Undo restores the previous boundaries.';
+ }else{const it=selectedCPhoto();if(!it){cPhotoStatus('Select a photo first.',true);return;}cropSource=it.source||it.img;cropRect=it.crop?{...it.crop}:{x:0,y:0,w:cropSource.width,h:cropSource.height};cropTarget={kind:'combine-photo',id:it.id,epoch};$('#cropHelp').textContent='Choose an area on this photo\'s original source. Reopen Crop to expand it; rotation and tone adjustments will be reapplied.';}
+ cropStart=null;cropCanvas.width=cropSource.width;cropCanvas.height=cropSource.height;$('#cropModal').style.display='flex';
+ fitCropCanvas();renderCrop();
+}
+$('#cCropPhotoBtn').onclick=openCombineCrop;
+function changeCTone(key,value){if($('#cAdjustTarget').value==='sheet'){if(key==='brightness')sheetBrightness=value;else sheetContrast=value;}else{const it=selectedCPhoto();if(!it)return;it[key]=value;updateItemVisual(it,false);renderThumbs();}syncCAdjustControls();cRender();}
+$('#cBrightnessRange').oninput=e=>changeCTone('brightness',+e.target.value);$('#cContrastRange').oninput=e=>changeCTone('contrast',+e.target.value);
+$('#cResetPhotoAdjustBtn').onclick=()=>{saveCState();if($('#cAdjustTarget').value==='sheet'){sheetBrightness=100;sheetContrast=100;}else{const it=selectedCPhoto();if(!it)return;it.brightness=100;it.contrast=100;updateItemVisual(it,false);renderThumbs();}syncCAdjustControls();cRender();cPhotoStatus('Brightness and contrast reset. Crop / rotation are unchanged; use Undo to reverse an operation.');};
+$('#cZoomIn').onclick=()=>{combineZoom=Math.min(4,combineZoom*1.2);fitCollageCanvas();};
+$('#cZoomOut').onclick=()=>{combineZoom=Math.max(.4,combineZoom/1.2);fitCollageCanvas();};
+$('#cZoomLevel').onclick=$('#cZoomFit').onclick=()=>{combineZoom=1;fitCollageCanvas();};
+
+let combineSavedIdentity=null,combineDocumentKey=uid();
+async function makeCombinedProject(){
+ if(!items.length&&!textItems.length&&!cObjects.length)throw new Error('Add photos or annotations to the sheet first.');
+ const active=document.querySelector('#collageCanvasWrap .liveTextEditor');if(active){active.blur();await new Promise(r=>setTimeout(r,0));}
+ const scope=window.FitSessionScope.current(),now=new Date().toISOString(),flat=exportCombinedCanvas(),copyItems=items.map(it=>({...it,crop:it.crop?{...it.crop}:null}));
+ const record={version:4,kind:'combine',sessionId:scope.id,sessionName:scope.name,id:combineSavedIdentity?.id||uid(),documentKey:combineDocumentKey,name:'Combined photo sheet',createdAt:combineSavedIdentity?.createdAt||now,updatedAt:now,width:cc.width,height:cc.height,sheetBrightness,sheetContrast,textItems:JSON.parse(JSON.stringify(textItems)),cObjects:JSON.parse(JSON.stringify(cObjects)),layout:$('#layoutMode').value,items:[]};
+ const small=document.createElement('canvas'),sc=Math.min(1,280/Math.max(flat.width,flat.height));small.width=Math.max(1,Math.round(flat.width*sc));small.height=Math.max(1,Math.round(flat.height*sc));small.getContext('2d').drawImage(flat,0,0,small.width,small.height);
+ const [baseBlob,thumbnailBlob]=await Promise.all([encodeProjectCanvas(flat),encodeProjectCanvas(small,'image/jpeg',.86)]);record.baseBlob=baseBlob;record.exportBlob=baseBlob;record.thumbnailBlob=thumbnailBlob;
+ for(const it of copyItems){const sourceBlob=await encodeProjectCanvas(it.source||it.img);const {img,source,thumb,...metadata}=it;record.items.push({...metadata,sourceBlob});}
+ return record;
+}
+async function loadCombinedProject(p){
+ const epoch=window.FitSessionScope.revision(),key=uid();combineDocumentKey=key;const loadedItems=[];
+ for(const record of p.items||[]){const source=await window.FitImaging.decode(record.sourceBlob);if(epoch!==window.FitSessionScope.revision()||key!==combineDocumentKey)return false;const {sourceBlob,...metadata}=record,it={...metadata,source,img:source};updateItemVisual(it,false);loadedItems.push(it);}
+ if(epoch!==window.FitSessionScope.revision()||key!==combineDocumentKey)return false;
+ items=loadedItems;textItems=JSON.parse(JSON.stringify(p.textItems||[]));cObjects=JSON.parse(JSON.stringify(p.cObjects||[]));cc.width=p.width;cc.height=p.height;sheetBrightness=p.sheetBrightness??100;sheetContrast=p.sheetContrast??100;cHistory=[];cSel=null;cTemp=null;cDrag=null;
+ combineSavedIdentity=p.sessionId===window.FitSessionScope.current().id?{id:p.id,createdAt:p.createdAt}:null;$('#layoutMode').value=p.layout||'row';combineZoom=1;mode('combine');renderThumbs();syncCAdjustControls();fitCollageCanvas();return true;
+}
+
+// Session transitions invalidate pending decodes and remove only the live workspace.
+// Saved records are never deleted as a side effect of changing session.
+function clearWorkspace(){
+ annotateLoadSeq++;combineDocumentKey=uid();pendingCombineSources.clear();loaded=false;objects=[];selected=null;temp=null;drag=null;history=[];historyBase=null;
+ originalCropSource=null;currentCropRect=null;savedProjectIdentity=null;editorDocumentKey=uid();
+ img.onload=null;img.onerror=null;img.removeAttribute('src');img.style.display='none';img.style.filter='none';$('#empty').style.display='flex';
+ $('#photoWrap').style.removeProperty('width');$('#photoWrap').style.removeProperty('height');$('#photoWrap').style.transform='';cvs.width=0;cvs.height=0;cvs.style.width='0px';cvs.style.height='0px';
+ $('#photoMeta').textContent='No photo selected';$('#hint').textContent='Choose a photo to start';$('#photoInput').value='';$('#collageInput').value='';selectPhotoFrame(false);
+ annotateTextEditing=false;combineTextEditing=false;document.querySelectorAll('.liveTextEditor').forEach(e=>e.remove());
+ items=[];textItems=[];cObjects=[];cSel=null;cDrag=null;cTemp=null;cHistory=[];resizingCanvas=null;sheetBrightness=100;sheetContrast=100;combineZoom=1;combineSavedIdentity=null;cc.width=1400;cc.height=900;
+ cropSource=null;cropTarget=null;cropRect=null;cropStart=null;$('#cropModal').style.display='none';resetPhotoAdjustments();
+ keepListening=false;if(activeRecognition){try{activeRecognition.abort();}catch(_){}activeRecognition=null;}activeSpeechContext=null;
+ $('#voice').value='';$('#collageText').value='';$('#mic').textContent='Start speaking';$('#collageMic').textContent='Start speaking';
+ $('#cAdjustTarget').value='photo';setTool('select');setCTool('select');renderThumbs();syncCAdjustControls();cRender();window.dispatchEvent(new Event('fit:photochanged'));
+}
+window.addEventListener('fit:scopechange',clearWorkspace);
+$('#newBtn').onclick=()=>{if(confirm('Clear the current working photo and sheet? Saved edits and session originals will stay in the library.'))clearWorkspace();};
+$('#desktopCameraBtn').onclick=()=>window.FitCamera.open(async file=>{try{await loadSecureBlobIntoAnnotate(file,file.name);}catch(e){photoStatus(e.message,true);}});
+$('#combineCameraBtn').onclick=()=>window.FitCamera.open(async file=>{try{await addSecureBlobToCombine(file,file.name);}catch(e){cPhotoStatus(e.message,true);}});
+// One undo snapshot per slider / color interaction, before the private input handler runs.
+for(const [ids,save] of [[['color','lineWidth','fontSize','brightnessRange','contrastRange'],saveHistory],[['cAnnoColor','cLineWidth','cTextSize','cBrightnessRange','cContrastRange'],saveCState]]){
+ for(const id of ids){const el=$('#'+id);let taken=false;el.addEventListener('pointerdown',()=>taken=false);el.addEventListener('focus',()=>taken=false);el.addEventListener('keydown',()=>taken=false);el.addEventListener('input',()=>{if(!taken){save();taken=true;}},true);el.addEventListener('change',()=>taken=false);}
+}
+$('#shapeFill').addEventListener('change',saveHistory,true);$('#cShapeFill').addEventListener('change',saveCState,true);
+function editExistingText(item,isCombine){
+ if(isCombine?combineTextEditing:annotateTextEditing)return;
+ if(isCombine){combineTextEditing=true;saveCState();}else{annotateTextEditing=true;saveHistory();}
+ const saved={...item},canvas=isCombine?cc:cvs,wrap=isCombine?$('#collageCanvasWrap'):$('#photoWrap'),r=canvas.getBoundingClientRect(),wr=wrap.getBoundingClientRect();
+ const field=document.createElement('textarea');field.className='liveTextEditor';field.value=item.text;field.style.left=((isCombine?item.x:item.x1)*r.width/canvas.width+r.left-wr.left)+'px';field.style.top=((isCombine?item.y:item.y1)*r.height/canvas.height+r.top-wr.top)+'px';field.style.fontSize='14px';field.style.width='220px';field.style.minHeight='65px';wrap.append(field);let ended=false;
+ const draw=isCombine?cRender:render;
+ function end(keep=true){if(ended)return;ended=true;if(keep)item.text=field.value;else Object.assign(item,saved);field.remove();if(isCombine)combineTextEditing=false;else annotateTextEditing=false;draw();}
+ field.oninput=()=>{item.text=field.value;draw();};field.onblur=()=>end(true);field.onkeydown=e=>{if(e.key==='Escape'){e.preventDefault();end(false);}else if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();end(true);}};field.focus();field.select();
+}
+cvs.addEventListener('dblclick',e=>{const o=hit(point(e));if(o?.type==='text')editExistingText(o,false);});
+cc.addEventListener('dblclick',e=>{const hit=cHit(cPoint(e));if(hit?.kind==='text')editExistingText(hit.obj,true);});
+// Touch and pen reuse the already-tested mouse editing logic, with pointer capture.
+for(const canvas of [cvs,cc]){
+ let touch=null;
+ const send=(type,e)=>canvas.dispatchEvent(new MouseEvent(type,{bubbles:true,cancelable:true,clientX:e.clientX,clientY:e.clientY,button:0,buttons:type==='mouseup'?0:1}));
+ canvas.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'||e.isPrimary===false)return;e.preventDefault();touch=e.pointerId;try{canvas.setPointerCapture?.(e.pointerId);}catch(_){}send('mousedown',e);},{passive:false});
+ canvas.addEventListener('pointermove',e=>{if(touch!==e.pointerId)return;e.preventDefault();send('mousemove',e);},{passive:false});
+ for(const type of ['pointerup','pointercancel'])canvas.addEventListener(type,e=>{if(touch!==e.pointerId)return;e.preventDefault();send('mouseup',e);if(canvas.hasPointerCapture?.(e.pointerId))canvas.releasePointerCapture(e.pointerId);touch=null;},{passive:false});
+}
+cc.onmouseleave=()=>{if(cTemp){if(Math.hypot(cTemp.x2-cTemp.x1,cTemp.y2-cTemp.y1)>3){saveCState();cObjects.push(cTemp);cSel={kind:'shape',id:cTemp.id};syncCAdjustControls();}cTemp=null;setCTool('select');cRender();}cDrag=null;};
 
 window.FitEditor={
   isCombineMode:()=>window.getComputedStyle($("#collagePanel")).display!=="none",
@@ -2317,8 +2584,8 @@ window.FitEditor={
   loadEditableProject,
   markEditableProjectSaved,
   renderEditableProjectCanvas,
-  editorReady:true,
-  refit:fitPreviewToStage
+  editorReady:true,   clearWorkspace,hasWork:()=>loaded||items.length>0||textItems.length>0||cObjects.length>0,
+   refit:fitPreviewToStage
 };
 
 
@@ -2337,6 +2604,7 @@ function initAnnotatePhotoInteractions(){
     wrap.classList.toggle("photo-selected",photoSelected);
   }
 
+  window.addEventListener('fit:photochanged',()=>{offsetX=0;offsetY=0;moving=false;resizing=false;applyOffset();});
   function applyOffset(){
     wrap.style.transform=`translate(${offsetX}px,${offsetY}px)`;
   }
@@ -2419,16 +2687,20 @@ function initAnnotatePhotoInteractions(){
 
 window.addEventListener("resize",()=>{if(loaded)fitPreviewToStage();fitCollageCanvas()});
 initAnnotatePhotoInteractions();
-mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active - V81");window.FitPhotoBoot.editor=true;
+mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active - V82");window.FitPhotoBoot.editor=true;
 })();
-</script><script id="fit-local-library">/* V75 local editable library: independent of Supabase and its network availability. */
+</script><script id="fit-local-library">
 (()=>{
 'use strict';
 const q=s=>document.querySelector(s);
 if(new URLSearchParams(location.search).get('mode')==='mobile')return;
 const DB_NAME='FitPhotoStudioV74',STORE='editedProjects',LEGACY_KEY='fitPhotoEditedProjectsV71';
 let dbPromise=null,saveBusy=false,archiveBusy=false,loadBusy=false,renderSeq=0,statusTimer=null;
-let previewUrls=[];let gallerySort=null;
+let previewUrls=[];let gallerySort=null,legacyView=false,sortEpoch=0;
+const scope=()=>window.FitSessionScope.current(),epoch=()=>window.FitSessionScope.revision();
+function inScope(p,id=scope().id,legacy=false){return legacy?!p.sessionId:p.sessionId===id;}
+function resetGallery(){renderSeq++;clearTimeout(statusTimer);legacyView=false;previewUrls.forEach(u=>URL.revokeObjectURL(u));previewUrls=[];q('#editedPhotos').replaceChildren();q('#editedPhotoCount').textContent='0';q('#editedPhotosPlaceholder').style.display='block';q('#legacyPhotosBtn').classList.remove('active');q('#legacyPhotosBtn').textContent='Earlier unassigned photos';q('#legacyPhotosNote').hidden=true;q('#editedSessionLabel').textContent=scope().name+' - only this session';setStatus("Loading this session\'s saved edits...");for(const b of [q('#editDoneBtn'),q('#combineEditDoneBtn')]){b.textContent='Edit Done';b.dataset.saveState='ready';}void refreshGallery(null,true).catch(e=>setStatus(describeError(e),true));}
+
 function setStatus(message,error=false){
  const el=q('#editedPhotosStatus');if(el){el.textContent=message;el.style.color=error?'#b42318':'#067647';el.dataset.state=error?'error':'ready';}
 }
@@ -2476,9 +2748,9 @@ async function writeRecord(record){
  return saved;
 }
 function usable(p){return !!p&&typeof p.id==='string'&&(p.baseBlob instanceof Blob||(typeof p.image==='string'&&/^(data:image\/|blob:)/.test(p.image)));}
-async function allRecords(){
+async function allRecords(id=scope().id,legacy=legacyView){
  const rows=await readRecords();
- return (Array.isArray(rows)?rows:[]).filter(usable).sort((a,b)=>{
+ return (Array.isArray(rows)?rows:[]).filter(p=>usable(p)&&inScope(p,id,legacy)).sort((a,b)=>{
    const ai=Number.isFinite(a.sortIndex)?a.sortIndex:Number.MAX_SAFE_INTEGER;
    const bi=Number.isFinite(b.sortIndex)?b.sortIndex:Number.MAX_SAFE_INTEGER;
    return ai-bi || String(b.updatedAt||b.createdAt||'').localeCompare(String(a.updatedAt||a.createdAt||''));
@@ -2496,9 +2768,10 @@ async function migrateLegacy(){
  }
 }
 function editor(){if(!window.FitEditor?.editorReady)throw new Error('Editor did not finish loading. Check the page status and reload.');return window.FitEditor;}
-async function refreshGallery(highlightId){
- if(gallerySort?.isSorting())return allRecords();
- const seq=++renderSeq,rows=await allRecords();if(seq!==renderSeq||gallerySort?.isSorting())return rows;
+async function refreshGallery(highlightId,force=false){
+ const id=scope().id,view=legacyView,started=epoch();
+ if(!force&&gallerySort?.isSorting())return allRecords(id,view);
+ const seq=++renderSeq,rows=await allRecords(id,view);if(seq!==renderSeq||started!==epoch()||view!==legacyView||!force&&gallerySort?.isSorting())return rows;
  const box=q('#editedPhotos'),placeholder=q('#editedPhotosPlaceholder');if(!box)throw new Error('Edited Photos panel is missing.');
  const freshUrls=[],fragment=document.createDocumentFragment();
  for(const [index,record] of rows.entries()){
@@ -2508,19 +2781,25 @@ async function refreshGallery(highlightId){
   const source=record.thumbnailBlob||record.exportBlob||record.baseBlob||record.image;
   if(source instanceof Blob){image.src=URL.createObjectURL(source);freshUrls.push(image.src);}else image.src=source;
   image.onerror=()=>{b.classList.add('previewUnavailable');image.alt='Saved version: click to reopen';};
-  const badge=document.createElement('span');badge.className='editDoneBadge';badge.textContent='EDITED';
-  const caption=document.createElement('span');caption.className='badge';caption.textContent='Click to continue';
+  const badge=document.createElement('span');badge.className='editDoneBadge';badge.textContent=record.kind==='combine'?'SHEET':'EDITED';
+  const caption=document.createElement('span');caption.className='badge';caption.textContent=record.kind==='combine'?'Edit sheet':'Edit / add to sheet';
   b.append(image,badge,caption);
   b.draggable=false;
   b.onclick=async()=>{
    if(loadBusy||saveBusy){setStatus('Please wait for the current photo operation.');return;}
-   loadBusy=true;b.disabled=true;
+   const clickEpoch=epoch();loadBusy=true;b.disabled=true;
    try{
     setStatus('Opening saved editable version...');const p=await readRecords(record.id);if(!usable(p))throw new Error('This saved version is unavailable.');
-    await editor().loadEditableProject(p);
+    if(clickEpoch!==epoch())return;
+    if(p.sessionId&&p.sessionId!==scope().id)throw new Error('This photo belongs to another session.');
+    if(editor().isCombineMode()&&p.kind!=='combine'){
+      const blob=p.exportBlob instanceof Blob?p.exportBlob:await new Promise((res,rej)=>editor().renderEditableProjectCanvas(p).then(c=>c.toBlob(b=>b?res(b):rej(new Error('Could not render saved photo.')),'image/png')).catch(rej));
+      if(clickEpoch!==epoch())return;await editor().addCombineBlob(blob,p.name||'Edited photo','edited:'+p.id);
+    }else await editor().loadEditableProject(p);
+    if(clickEpoch!==epoch())return;
     box.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x.dataset.projectId===p.id));
-    setStatus('Opened saved version. Edit and click Edit Done to update it.');
-   }catch(e){setStatus('Open failed: '+describeError(e),true);}
+    setStatus(!p.sessionId?'Opened an unassigned older file. Edit Done saves a copy in the current session.':editor().isCombineMode()&&p.kind!=='combine'?'Edited photo added to Combine.':'Opened saved layers. Edit Done updates this version.');
+   }catch(e){if(clickEpoch===epoch())setStatus('Open failed: '+describeError(e),true);}
    finally{loadBusy=false;b.disabled=false;}
   };
   if(record.id===highlightId)b.classList.add('active','editedSavePulse');
@@ -2529,16 +2808,16 @@ async function refreshGallery(highlightId){
  box.replaceChildren(fragment);gallerySort?.decorate();previewUrls.forEach(u=>URL.revokeObjectURL(u));previewUrls=freshUrls;
  if(placeholder)placeholder.style.display=rows.length?'none':'block';
  if(q('#editedPhotoCount'))q('#editedPhotoCount').textContent=String(rows.length);
- setStatus(rows.length+' saved editable photo(s) on this browser.');
+ q('#editedSessionLabel').textContent=legacyView?'Earlier unassigned files - not associated with this session':scope().name+' - only this session';setStatus(rows.length+(legacyView?' unassigned older file(s).':' saved editable file(s) in this session, on this browser.'));
  return rows;
 }
 async function persistEditedOrder(order){
- const db=await openDb();
+ const started=epoch(),id=scope().id,view=legacyView;sortEpoch=started;const db=await openDb();
  // Fetch and write inside one transaction so a concurrent save cannot be overwritten.
  await new Promise((resolve,reject)=>{
   const tx=db.transaction(STORE,'readwrite'),store=tx.objectStore(STORE),req=store.getAll();
   req.onsuccess=()=>{
-   const rows=(req.result||[]).filter(usable),map=new Map(rows.map(x=>[x.id,x]));
+   if(started!==epoch()){tx.abort();return;}const rows=(req.result||[]).filter(p=>usable(p)&&inScope(p,id,view)),map=new Map(rows.map(x=>[x.id,x]));
    if(new Set(order).size!==order.length||order.some(id=>!map.has(id))){tx.abort();return;}
    const full=[...order,...rows.map(x=>x.id).filter(id=>!order.includes(id))];
    full.forEach((id,i)=>{const row=map.get(id);row.sortIndex=i;store.put(row);});
@@ -2547,40 +2826,30 @@ async function persistEditedOrder(order){
   tx.onerror=()=>reject(tx.error||new Error('Could not save photo order.'));
   tx.onabort=()=>reject(tx.error||new Error('The library changed while sorting. Please retry.'));
  });
- const saved=await allRecords();
+ const saved=await allRecords(id,view);
  if(order.some((id,i)=>saved[i]?.id!==id))throw new Error('The saved order could not be verified. Please retry.');
 }
 async function saveCurrent(){
  if(saveBusy||loadBusy||gallerySort?.isBusy())return;
- const button=q('#editDoneBtn');saveBusy=true;clearTimeout(statusTimer);
- button.disabled=true;button.setAttribute('aria-busy','true');button.textContent='Saving...';button.dataset.saveState='saving';
- setStatus('Saving the image and editable layers...');
+ const started=epoch(),session=scope();const button=q(editor().isCombineMode()?'#combineEditDoneBtn':'#editDoneBtn'),buttons=[q('#editDoneBtn'),q('#combineEditDoneBtn')];saveBusy=true;clearTimeout(statusTimer);
+ buttons.forEach(b=>{b.disabled=true;b.setAttribute('aria-busy','true');});button.textContent='Saving...';button.dataset.saveState='saving';setStatus('Saving image and editable layers in this session...');
  try{
-  const p=await editor().makeEditableProject();
-  const existing=await allRecords();
-  const previous=existing.find(x=>x.id===p.id);
+  const p=await editor().makeEditableProject();if(p.sessionId!==session.id||started!==epoch())throw new Error('Session changed before this snapshot was ready. Please save the current workspace again.');
+  const existing=await allRecords(session.id,false),previous=existing.find(x=>x.id===p.id);
   p.sortIndex=previous?(Number.isFinite(previous.sortIndex)?previous.sortIndex:existing.indexOf(previous)):(1+Math.max(-1,...existing.map((r,i)=>Number.isFinite(r.sortIndex)?r.sortIndex:i)));
-  await writeRecord(p); // A committed transaction and a read-back are required before success.
-  editor().markEditableProjectSaved(p);
-  const rows=await refreshGallery(p.id);
-  button.textContent='\u2713 Saved';button.dataset.saveState='saved';
-  setStatus('Saved \u2713 '+rows.length+' editable photo(s). Click the thumbnail to continue.');
-  // Scroll this column only; never move the preview or the whole application.
-  const panel=q('.photoLibrary'),section=q('#editedPhotosSection');
-  if(panel&&section){const pr=panel.getBoundingClientRect(),sr=section.getBoundingClientRect();if(sr.bottom>pr.bottom||sr.top<pr.top)panel.scrollTo({top:panel.scrollTop+sr.top-pr.top-12,behavior:'smooth'});}
-  statusTimer=setTimeout(()=>{if(!saveBusy)button.textContent='\u2713 Edit Done';},2000);
- }catch(e){
-  button.textContent='Retry Edit Done';button.dataset.saveState='error';setStatus('Save failed: '+describeError(e),true);console.warn('Edited photo save:',e);
- }finally{saveBusy=false;button.disabled=false;button.removeAttribute('aria-busy');}
+  await writeRecord(p);
+  // A save already committed under its captured session is retained, never re-labelled.
+  if(started!==epoch())return;editor().markEditableProjectSaved(p);legacyView=false;q('#legacyPhotosBtn').classList.remove('active');q('#legacyPhotosBtn').textContent='Earlier unassigned photos';q('#legacyPhotosNote').hidden=true;
+  const rows=await refreshGallery(p.id);if(started!==epoch())return;button.textContent='Saved';button.dataset.saveState='saved';setStatus('Saved. '+rows.length+' editable file(s) in '+session.name+'.');
+  const panel=q('.photoLibrary'),section=q('#editedPhotosSection');if(panel&&section){const pr=panel.getBoundingClientRect(),sr=section.getBoundingClientRect();if(sr.bottom>pr.bottom||sr.top<pr.top)panel.scrollTo({top:panel.scrollTop+sr.top-pr.top-12,behavior:'smooth'});}
+  statusTimer=setTimeout(()=>{if(!saveBusy&&started===epoch())button.textContent='Edit Done';},1800);
+ }catch(e){if(started===epoch()){button.textContent='Retry Edit Done';button.dataset.saveState='error';setStatus('Save failed: '+describeError(e),true);}}
+ finally{saveBusy=false;buttons.forEach(b=>{b.disabled=false;b.removeAttribute('aria-busy');});}
 }
-function archiveFilename(base){
- const answer=prompt('File name:',base);if(answer===null)return null;
- const name=(answer.trim()||base).replace(/[\\/:*?"<>|\x00-\x1f]/g,'-').replace(/\.zip$/i,'');return name+'.zip';
-}
-function deliverBlob(blob,filename){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);}
+function deliverBlob(blob,filename){window.FitDownload.show(blob,filename);}
 async function archive(which){
  if(archiveBusy||saveBusy||loadBusy||gallerySort?.isBusy())return;
- const name=archiveFilename(which==='all'?'fit-photo-library':which==='original'?'fit-original-photos':'fit-edited-photos');if(!name)return;
+ const session=scope(),started=epoch(),view=which==='edited'&&legacyView;const base=which==='all'?'fit-photo-library':which==='original'?'fit-original-photos':view?'fit-unassigned-edits':'fit-edited-photos';const name=base+'.zip';
  archiveBusy=true;const buttons=['#downloadAllOriginalBtn','#downloadAllEditedBtn','#downloadAllLibraryBtn'].map(q).filter(Boolean);buttons.forEach(b=>b.disabled=true);
  try{
   const files=[];
@@ -2589,7 +2858,7 @@ async function archive(which){
    else files.push(...await window.FitPhotoSync.getOriginalArchiveEntries());
   }
   if(which!=='original'){
-   const rows=await allRecords();
+   const rows=await allRecords(session.id,view);
    for(let i=0;i<rows.length;i++){
     setStatus(`Preparing edited photo ${i+1} / ${rows.length}...`);const p=rows[i];
     let blob=p.exportBlob;
@@ -2602,8 +2871,8 @@ async function archive(which){
   if(files.length>65535)throw new Error('Too many files for a single archive.');
   let total=0;const entries=[];
   for(const file of files){const bytes=new Uint8Array(await file.blob.arrayBuffer());total+=bytes.length;if(total>250*1024*1024)throw new Error('Archive exceeds 250 MB. Download Original and Edited separately.');entries.push({name:file.name,bytes});}
-  const zip=makePhotoZip(entries);deliverBlob(zip,name);setStatus('Archive ready: '+entries.length+' photo(s). Check your downloads.');
- }catch(e){setStatus('Download failed: '+describeError(e),true);}
+  if(started!==epoch())throw new Error('The session changed. Please retry this download.');const zip=makePhotoZip(entries);deliverBlob(zip,name);setStatus('Archive ready: '+entries.length+' file(s). Use Download in the file dialog.');
+ }catch(e){if(started===epoch())setStatus('Download failed: '+describeError(e),true);}
  finally{archiveBusy=false;buttons.forEach(b=>b.disabled=false);}
 }
 function makePhotoZip(entries){
@@ -2636,9 +2905,11 @@ function init(){
   onFeedback:message=>setStatus(message),onError:e=>setStatus(describeError(e),true)
  });
  const b=q('#editDoneBtn');if(!b)return;
- b.onclick=saveCurrent;b.dataset.saveState='ready';
+ b.onclick=saveCurrent;b.dataset.saveState='ready';q('#combineEditDoneBtn').onclick=saveCurrent;
  const status=q('#editedPhotosStatus');if(status){status.setAttribute('role','status');status.setAttribute('aria-live','polite');}
  const bind=(selector,fn)=>{const button=q(selector);if(button)button.onclick=fn;};
+ q('#legacyPhotosBtn').onclick=()=>{legacyView=!legacyView;q('#legacyPhotosBtn').classList.toggle('active',legacyView);q('#legacyPhotosBtn').textContent=legacyView?'Back to current session':'Earlier unassigned photos';q('#legacyPhotosNote').hidden=!legacyView;void refreshGallery(null,true).catch(e=>setStatus(describeError(e),true));};
+ window.addEventListener('fit:scopechange',resetGallery);q('#editedSessionLabel').textContent=scope().name+' - only this session';
  bind('#refreshEditedPhotosBtn',()=>refreshGallery().catch(e=>setStatus('Library: '+describeError(e),true)));
  bind('#downloadAllOriginalBtn',()=>archive('original'));bind('#downloadAllEditedBtn',()=>archive('edited'));bind('#downloadAllLibraryBtn',()=>archive('all'));
  // Failure to open IndexedDB never prevents the button from being bound.
@@ -2647,6 +2918,7 @@ function init(){
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
+
 </script><script id="fit-photo-sync">
 (() => {
 window.addEventListener("error",e=>{
@@ -2656,7 +2928,7 @@ window.addEventListener("error",e=>{
 
 if(!window.supabase?.createClient){
  const msg="Photo sync library could not load. Check your connection and refresh. Local photo editing is still available.";
- document.querySelector("#createSessionStatus").textContent=msg;
+ document.querySelector("#createSessionStatus").textContent=msg;if(new URLSearchParams(location.search).get("mode")==="mobile"){document.querySelector("#mobileUploadState").textContent=msg;document.querySelector("#mobileUploadState").style.color="#b42318";}
  document.querySelector("#createSessionBtn").onclick=()=>{document.querySelector("#createSessionStatus").textContent=msg;};
  return;
 }
@@ -2679,58 +2951,78 @@ async function signed(path){let r=await sb.storage.from(B).createSignedUrl(path,
 function murl(s,t){let u=new URL(location.href);u.search="";u.searchParams.set("mode","mobile");u.searchParams.set("session",s);u.searchParams.set("token",t);return u.toString()}
 
 if(mobile){
- document.body.classList.add("mobile-mode");q("#mobileSessionCode").textContent="Secure Fit Review";
- const inp=q("#mobilePhotoInput"),img=q("#mobilePreviewImg"),ph=q("#mobilePreviewPlaceholder"),st=q("#mobileUploadState"),done=q("#mobileDone");
- const currentMobileUrl=location.href;
- const prevUrl=localStorage.getItem("fitPhotoLastMobileUrl"),prevLabel=localStorage.getItem("fitPhotoLastMobileLabel")||"Previous session";
- if(prevUrl&&prevUrl!==currentMobileUrl){q("#mobilePreviousSession").style.display="block";q("#mobilePreviousLabel").textContent=prevLabel;q("#mobileContinueBtn").onclick=()=>location.href=prevUrl}
- let ready=false;
- (async()=>{
-   try{
-     await user();
-     const r=await sb.rpc("join_fit_session",{p_session_id:sid,p_token:tok});
-     if(r.error||!r.data)throw r.error||new Error("Session invalid or ended");
-     ready=true;
-     const label=localStorage.getItem("fitPhotoLastMobileLabel")||"Fit Review";
-     q("#mobileSessionCode").textContent=label;
-     st.textContent="Secure session connected";st.style.color="#067647";
-     localStorage.setItem("fitPhotoLastMobileUrl",currentMobileUrl);
-   }catch(e){
-     st.textContent="Connection failed: "+(e.message||e);
-     st.style.color="#b42318";
-     inp.disabled=true;
+ document.body.classList.add('mobile-mode');q('#mobileSessionCode').textContent=sid?'Session '+sid:'No session';
+ const inp=q('#mobilePhotoInput'),cameraInput=q('#mobileCameraInput'),preview=q('#mobilePreviewImg'),placeholder=q('#mobilePreviewPlaceholder'),status=q('#mobileUploadState'),done=q('#mobileDone');
+ const storage={get(k){try{return localStorage.getItem(k);}catch(_){return null;}},set(k,v){try{localStorage.setItem(k,v);}catch(_){}}};
+ const prevUrl=storage.get('fitPhotoLastMobileUrl'),prevLabel=storage.get('fitPhotoLastMobileLabel')||'Previous session';
+ try{const prev=prevUrl?new URL(prevUrl):null;if(prev&&prev.origin===location.origin&&prev.searchParams.get('mode')==='mobile'&&prev.searchParams.get('session')!==sid){q('#mobilePreviousSession').style.display='block';q('#mobilePreviousLabel').textContent=prevLabel;q('#mobileContinueBtn').onclick=()=>{if(!queue.some(j=>j.state==='queued'||j.state==='uploading'||j.state==='failed')||confirm('Leave this page? Unsaved original files and pending uploads on this phone will be lost.'))location.href=prev.href;};}}catch(_){}
+ let ready=false,joining=false,pumping=false,lastJob=null;const queue=[];
+ function controls(){inp.disabled=!ready;cameraInput.disabled=!ready;q('#mobileBrowserCameraBtn').disabled=!ready;q('#mobileSaveLastBtn').disabled=!lastJob;q('#mobileShareLastBtn').disabled=!lastJob;}
+ function summary(){
+  const uploaded=queue.filter(j=>j.state==='uploaded').length,failed=queue.filter(j=>j.state==='failed').length,waiting=queue.filter(j=>j.state==='queued'||j.state==='uploading').length;
+  if(!ready)return;
+  status.textContent=waiting?uploaded+' uploaded; '+waiting+' in progress'+(failed?'; '+failed+' failed':''):failed?uploaded+' uploaded; '+failed+' failed - use Retry below.':uploaded?uploaded+' photo(s) uploaded to the desktop session.':'Connected. Take a photo or choose images.';
+  status.style.color=failed?'#b42318':waiting?'#2563eb':'#067647';done.style.display=uploaded?'block':'none';done.textContent=uploaded+' photo(s) uploaded to this session.';
+ }
+ async function join(){
+  if(joining)return;joining=true;ready=false;controls();q('#mobileRetryJoin').hidden=true;status.textContent='Connecting to session...';status.style.color='#2563eb';
+  try{
+   if(!sid||!tok)throw new Error('This link is incomplete. Scan the current QR code on the desktop.');
+   await user();const r=await sb.rpc('join_fit_session',{p_session_id:sid,p_token:tok});
+   if(r.error||!r.data||r.data?.ok===false)throw new Error(r.error?.message||r.data?.message||'This session is invalid or has ended. Scan a new QR code.');
+   ready=true;const label=typeof r.data==='object'&&(r.data.session_name||r.data.name)||'Session '+sid;q('#mobileSessionCode').textContent=label;
+   storage.set('fitPhotoLastMobileUrl',location.href);storage.set('fitPhotoLastMobileLabel',label);summary();void pump();
+  }catch(e){status.textContent='Connection failed: '+(e.message||e);status.style.color='#b42318';q('#mobileRetryJoin').hidden=false;}
+  finally{joining=false;controls();}
+ }
+ function selectPreview(job){lastJob=job;if(job){preview.src=job.url;preview.style.display='block';placeholder.style.display='none';}else{preview.removeAttribute('src');preview.style.display='none';placeholder.style.display='block';}controls();}
+ function renderJob(job){
+  job.status.textContent=job.message||job.state;job.status.className='queueStatus '+(job.state==='uploaded'?'ok':job.state==='failed'?'err':'busy');
+  job.retry.hidden=job.state!=='failed';job.remove.disabled=job.state==='uploading';
+ }
+ function removeJob(job){const index=queue.indexOf(job);if(index<0||job.state==='uploading')return;queue.splice(index,1);job.row.remove();if(lastJob===job)selectPreview(queue[queue.length-1]||null);URL.revokeObjectURL(job.url);summary();}
+ function createJob(file){
+  const job={file,url:URL.createObjectURL(file),state:'queued',message:'Queued',path:null,blob:null,storageDone:false};
+  const row=document.createElement('div');row.className='queueItem';const im=document.createElement('img');im.src=job.url;im.alt='Selected original';im.onclick=()=>selectPreview(job);
+  const meta=document.createElement('div');meta.className='queueMeta';meta.textContent=(file.name||'Camera photo')+' ('+(file.size/1024/1024).toFixed(1)+' MB)';const state=document.createElement('span');meta.append(state);
+  const actions=document.createElement('div');actions.className='row';
+  const save=document.createElement('button');save.type='button';save.className='btn';save.textContent='Save Original';save.onclick=()=>window.FitDownload.show(file,file.name||'camera-original.jpg');
+  const retry=document.createElement('button');retry.type='button';retry.className='btn';retry.textContent='Retry Upload';retry.onclick=()=>{if(job.state!=='failed')return;job.state='queued';job.message='Queued for retry';renderJob(job);void pump();};
+  const remove=document.createElement('button');remove.type='button';remove.className='btn';remove.textContent='Remove';remove.onclick=()=>{if(job.state==='uploaded'||confirm('Remove this unsent photo from the queue? Save Original first to keep a copy.'))removeJob(job);};
+  actions.append(save,retry,remove);row.append(im,meta,actions);q('#uploadQueue').append(row);Object.assign(job,{row,status:state,retry,remove});queue.push(job);renderJob(job);selectPreview(job);return job;
+ }
+ function enqueue(files){
+  if(!ready){status.textContent='Connect to the session before adding photos.';return;}
+  let bytes=queue.reduce((n,j)=>n+j.file.size,0);
+  for(const file of files){if(queue.length>=100||bytes+file.size>150*1024*1024){status.textContent='The phone queue is full. Save originals, then remove completed photos before adding more.';status.style.color='#b42318';break;}createJob(file);bytes+=file.size;}
+  void pump();
+ }
+ async function pump(){
+  if(pumping||!ready)return;pumping=true;
+  try{
+   let job;while(ready&&(job=queue.find(j=>j.state==='queued'))){
+    job.state='uploading';job.message='Optimising...';renderJob(job);summary();
+    try{
+     if(!job.blob)job.blob=await window.FitImaging.optimise(job.file);
+     q('#mobileOptimiseStats').textContent='Latest upload: '+Math.round(job.file.size/1024)+' KB original / '+Math.round(job.blob.size/1024)+' KB optimised.';
+     if(!job.path)job.path=sid+'/'+Date.now()+'_'+hex(8)+'.jpg';
+     if(!job.storageDone){job.message='Uploading securely...';renderJob(job);const a=await sb.storage.from(B).upload(job.path,job.blob,{contentType:'image/jpeg',upsert:false});if(a.error&&String(a.error.statusCode||a.error.status)!=='409')throw a.error;job.storageDone=true;}
+     job.message='Registering with this session...';renderJob(job);
+     // Retry the same storage path; never create a second image after metadata failure.
+     const b=await sb.from(T).insert({session_id:sid,photo_path:job.path});if(b.error)throw b.error;
+     job.state='uploaded';job.message='Uploaded. Original remains available below.';
+    }catch(e){job.state='failed';job.message='Not uploaded: '+(e.message||e)+'. Save Original or Retry Upload.';}
+    renderJob(job);summary();
    }
- })();
- async function opt(f){let b=await createImageBitmap(f),sc=Math.min(1,1800/Math.max(b.width,b.height)),w=Math.round(b.width*sc),h=Math.round(b.height*sc),c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(b,0,0,w,h);return await new Promise((ok,no)=>c.toBlob(x=>x?ok(x):no(new Error("Compression failed")),"image/jpeg",.82))}
- inp.addEventListener("change",async e=>{
-   const files=[...(e.target.files||[])];
-   if(!files.length||!ready)return;
-   done.style.display="none";
-   st.style.color="#2563eb";
-   let success=0,failed=0;
-   for(let i=0;i<files.length;i++){
-     const f=files[i];
-     img.src=URL.createObjectURL(f);img.style.display="block";ph.style.display="none";
-     try{
-       st.textContent=`Optimising ${i+1}/${files.length}…`;
-       const blob=await opt(f),path=`${sid}/${Date.now()}_${i}_${hex(8)}.jpg`;
-       st.textContent=`Uploading ${i+1}/${files.length} securely…`;
-       const a=await sb.storage.from(B).upload(path,blob,{contentType:"image/jpeg"});if(a.error)throw a.error;
-       const b=await sb.from(T).insert({session_id:sid,photo_path:path});if(b.error)throw b.error;
-       success++;
-     }catch(err){failed++;console.error(err)}
-   }
-   inp.value="";
-   if(success){
-     st.textContent=failed?`${success} uploaded · ${failed} failed`:`${success} photo${success>1?"s":""} uploaded securely ✓`;
-     st.style.color=failed?"#b54708":"#067647";
-     done.textContent=`✓ ${success} photo${success>1?"s":""} uploaded to desktop session`;
-     done.style.display="block";
-   }else{
-     st.textContent="Upload failed";st.style.color="#b42318";
-   }
- });
- return;
+  }finally{pumping=false;summary();}
+ }
+ for(const input of [inp,cameraInput])input.addEventListener('change',e=>{const files=[...(e.target.files||[])];e.target.value='';if(files.length)enqueue(files);});
+ q('#mobileBrowserCameraBtn').onclick=()=>{if(ready)window.FitCamera.open(file=>enqueue([file]));};
+ q('#mobileRetryJoin').onclick=join;
+ q('#mobileSaveLastBtn').onclick=q('#mobileShareLastBtn').onclick=()=>{if(lastJob)window.FitDownload.show(lastJob.file,lastJob.file.name||'camera-original.jpg');};
+ window.addEventListener('beforeunload',e=>{if(queue.some(j=>j.state!=='uploaded')){e.preventDefault();e.returnValue='';}});
+ window.addEventListener('pagehide',()=>queue.forEach(j=>URL.revokeObjectURL(j.url)));
+ controls();void join();return;
 }
 
 let cs=null,ct=null,ch=null,seen=new Set(),sessionRows=new Map(),originalOrder=[];
@@ -2750,7 +3042,7 @@ const originalSort=window.FitLibrarySort.register('#livePhotos',{
  onError:e=>{const el=q('#originalSortStatus');if(el){el.textContent=e.message;el.style.color='#b42318';}}
 });
 async function add(row,pre=true){
- if(!row?.photo_path||seen.has(row.photo_path))return;
+ if(!row?.photo_path||!cs||row.session_id&&row.session_id!==cs||!row.photo_path.startsWith(cs+'/')||seen.has(row.photo_path))return;
  const startedIn=cs;seen.add(row.photo_path);
  try{
   const u=await signed(row.photo_path);
@@ -2766,7 +3058,7 @@ async function add(row,pre=true){
    try{
     const fu=await signed(row.photo_path),resp=await fetch(fu,{cache:'no-store'});
     if(!resp.ok)throw new Error('Could not download photo ('+resp.status+')');
-    const blob=await resp.blob();
+    const blob=await resp.blob();if(cs!==startedIn)return;
     if(!window.FitEditor?.editorReady)throw new Error('The editor has not finished loading.');
     if(window.FitEditor.isCombineMode()){
      await window.FitEditor.addCombineBlob(blob,row.photo_path.split('/').pop(),row.photo_path);
@@ -2785,25 +3077,20 @@ function sortOriginalDom(){
 }
 async function load(){let r=await sb.rpc("get_fit_session_photos",{p_session_id:cs});if(r.error)throw r.error;for(let x of r.data||[])await add(x,false)}
 let pollTimer=null;
+let refreshInFlight=null;
 async function refreshPhotos(){
- if(!cs)return;
- let r=await sb.rpc("get_fit_session_photos",{p_session_id:cs});
- if(r.error){
-   console.warn("Photo refresh:",r.error.message);
-   q("#livePhotosStatus").textContent="Sync check failed: "+r.error.message;
-   return;
- }
- for(let x of r.data||[])await add(x,true);
- if((r.data||[]).length===0){
-   q("#livePhotosStatus").textContent="Connected — waiting for phone photos…";
- } else {
-   q("#livePhotosStatus").textContent=(r.data||[]).length+" photo(s) found in this secure session";
- }
+ if(!cs||refreshInFlight===cs)return;const startedIn=cs;refreshInFlight=startedIn;
+ try{
+  const r=await sb.rpc('get_fit_session_photos',{p_session_id:startedIn});if(cs!==startedIn)return;if(r.error)throw r.error;
+  for(const x of r.data||[]){if(cs!==startedIn)return;await add(x,true);}
+  if(cs===startedIn)q('#livePhotosStatus').textContent=(r.data||[]).length?((r.data||[]).length+' photo(s) in this session'):'Connected - waiting for phone photos...';
+ }catch(e){if(cs===startedIn)q('#livePhotosStatus').textContent='Sync check failed: '+(e.message||e);}
+ finally{if(refreshInFlight===startedIn)refreshInFlight=null;}
 }
 function sub(){
  if(ch)sb.removeChannel(ch);
  ch=sb.channel("fit-"+cs)
-   .on("postgres_changes",{event:"INSERT",schema:"public",table:T,filter:"session_id=eq."+cs},x=>add(x.new,true))
+   .on("postgres_changes",{event:"INSERT",schema:"public",table:T,filter:"session_id=eq."+cs},x=>{void add(x.new,true).catch(e=>{q('#livePhotosStatus').textContent=e.message||String(e);});})
    .subscribe(x=>{
       if(x==="SUBSCRIBED")q("#syncStatus").textContent="Secure sync ready — scan QR";
    });
@@ -2841,13 +3128,16 @@ function renderRecentSessions(){
 }
 function escapeHtml(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 async function activateSession(s){
+ if(ch){try{sb.removeChannel(ch)}catch(_){}ch=null;}if(pollTimer){clearInterval(pollTimer);pollTimer=null;}
+ window.FitSessionScope.activate(s.session,s.name||('Session '+s.session));
  cs=s.session;ct=s.token;seen.clear();sessionRows.clear();
+ q('#livePhotosPlaceholder').style.display='block';q('#livePhotosStatus').textContent='Connecting to this session...';q('#originalSortStatus').textContent='';
  try{originalOrder=JSON.parse(localStorage.getItem(ORIGINAL_ORDER_KEY+"-"+cs)||"[]");if(!Array.isArray(originalOrder))originalOrder=[]}catch(_){originalOrder=[]}q("#livePhotos").innerHTML="";
  q("#qrPriority").hidden=false;q("#sessionArea").style.display="block";document.querySelector("aside.left").scrollTop=0;q("#sessionNameDisplay").textContent=s.name||("Session "+cs);q("#sessionCode").textContent="ID "+cs;q("#endSessionBtn").style.display="block";
  const mu=murl(cs,ct),qr=q("#qrImage");qr.src="https://quickchart.io/qr?size=150&text="+encodeURIComponent(mu);qr.style.display="block";
 
  q("#createSessionStatus").textContent=`Active: ${s.name||cs}`;q("#createSessionStatus").style.color="#067647";
- await load();sub();await refreshPhotos()
+ sub();await refreshPhotos();
 }
 let pendingReopenSession=null;
 function closeReopenPin(){
@@ -2913,8 +3203,6 @@ if(q("#protectedSessionToggle"))q("#protectedSessionToggle").onchange=e=>{
 const createBtn=q("#createSessionBtn");
 if(createBtn)createBtn.onclick=async()=>{
  let s=q("#createSessionStatus"),b=createBtn,isProtected=!!q("#protectedSessionToggle")?.checked;
- if(ch){try{sb.removeChannel(ch)}catch(_){}ch=null}
- if(pollTimer){clearInterval(pollTimer);pollTimer=null}
  const name=(q("#sessionNameInput").value||"").trim();
  const pin=(q("#sessionPinInput").value||"").trim();
  const pin2=(q("#sessionPinConfirmInput").value||"").trim();
@@ -2927,20 +3215,19 @@ if(createBtn)createBtn.onclick=async()=>{
 
  b.disabled=true;b.textContent="Creating…";s.textContent="Step 1/3: signing in securely…";s.style.color="#2563eb";
  try{
-   let u=await user();if(!u?.id)throw new Error("Anonymous sign-in returned no user");
-   cs=code();ct=hex();
+   let u=await user();if(!u?.id)throw new Error("Anonymous sign-in returned no user");    const nextSession=code(),nextToken=hex();
    s.textContent="Step 2/3: creating session…";
 
    let rec;
    if(isProtected){
-     const r=await sb.rpc("create_fit_session_pin",{p_session_id:cs,p_token:ct,p_session_name:name,p_pin:pin});
+     const r=await sb.rpc("create_fit_session_pin",{p_session_id:nextSession,p_token:nextToken,p_session_name:name,p_pin:pin});
      if(r.error||!r.data?.ok)throw new Error(r.error?.message||r.data?.message||"Could not create protected session");
-     rec={session:cs,token:ct,name,protected:true,active:true,createdAt:new Date().toISOString()};
+     rec={session:nextSession,token:nextToken,name,protected:true,active:true,createdAt:new Date().toISOString()};
      saveRecentSession(rec);
    }else{
-     const r=await sb.from(S).insert({session_id:cs,token_hash:ct,owner_id:u.id});
+     const r=await sb.from(S).insert({session_id:nextSession,token_hash:nextToken,owner_id:u.id});
      if(r.error)throw new Error("Database: "+r.error.message);
-     rec={session:cs,token:ct,name:"Quick Session",protected:false,active:true,createdAt:new Date().toISOString()};
+     rec={session:nextSession,token:nextToken,name:"Quick Session",protected:false,active:true,createdAt:new Date().toISOString()};
    }
 
    s.textContent="Step 3/3: preparing QR…";
@@ -2965,145 +3252,32 @@ window.FitPhotoSync={
    if(!res.ok)throw new Error('Could not read original photo '+(i+1)+'.');
    const safe=(paths[i].split('/').pop()||'photo.jpg').replace(/[\\/:*?"<>|\x00-\x1f]/g,'-');
    files.push({name:'original/'+String(i+1).padStart(3,'0')+'-'+safe,blob:await res.blob()});
-  }
-  return files;
+  }   if(cs!==sessionID)throw new Error('The session changed. Retry this download.');return files;
  }
 };
-q("#endSessionBtn").onclick=async()=>{if(!cs)return;let r=await sb.from(S).update({active:false,ended_at:new Date().toISOString()}).eq("session_id",cs);if(r.error)return q("#syncStatus").textContent=r.error.message;if(ch)sb.removeChannel(ch);if(pollTimer){clearInterval(pollTimer);pollTimer=null}updateRecentSession(cs,{active:false,endedAt:new Date().toISOString()});q("#qrPriority").hidden=true;q("#qrImage").removeAttribute("src");q("#syncStatus").textContent="Session ended - QR invalid";q("#endSessionBtn").style.display="none"};
+q("#endSessionBtn").onclick=async()=>{
+ if(!cs)return;const ending=cs,button=q('#endSessionBtn');button.disabled=true;
+ try{
+  const r=await sb.from(S).update({active:false,ended_at:new Date().toISOString()}).eq('session_id',ending);if(r.error)throw r.error;
+  updateRecentSession(ending,{active:false,endedAt:new Date().toISOString()});if(cs!==ending)return;
+  if(ch){sb.removeChannel(ch);ch=null;}if(pollTimer){clearInterval(pollTimer);pollTimer=null;}
+  cs=null;ct=null;seen.clear();sessionRows.clear();originalOrder=[];q('#livePhotos').replaceChildren();q('#livePhotosPlaceholder').style.display='block';
+  window.FitSessionScope.end();q('#qrPriority').hidden=true;q('#qrImage').removeAttribute('src');q('#syncStatus').textContent='Session ended - QR invalid';button.style.display='none';q('#livePhotosStatus').textContent='Create a session to receive phone photos.';q('#createSessionStatus').textContent='Session ended. Saved edits were retained under that session.';
+ }catch(e){q('#syncStatus').textContent='Could not end session: '+(e.message||e);}finally{button.disabled=false;}
+};
+
 })();
 
 
-document.addEventListener("DOMContentLoaded",()=>{
-  const fc=document.querySelector("#fitCanvasContent");
-  if(fc && typeof autoLayout==="function") fc.onclick=autoLayout;
-});
 
-document.addEventListener("DOMContentLoaded",()=>{
-  const fc=document.querySelector("#fitCanvasContent");
-  if(fc && typeof autoLayout==="function") fc.onclick=autoLayout;
-
-  const lc=document.querySelector("#layoutMode");
-  if(lc && typeof autoLayout==="function") lc.onchange=autoLayout;
-
-  const cc=document.querySelector("#cAnnoColor");
-  const tc=document.querySelector("#cTextColor");
-  if(cc && tc) cc.addEventListener("input",()=>{tc.value=cc.value});
-
-  const ct=document.querySelector("#cTextSize");
-  const ctv=document.querySelector("#cTextSizeVal");
-  if(ct && ctv) ct.addEventListener("input",e=>ctv.textContent=e.target.value);
-});
-
-document.addEventListener("DOMContentLoaded",()=>{
-  const ac=document.querySelector("#cAnnoColor");
-  const tc=document.querySelector("#cTextColor");
-  if(ac){
-    ac.value="#000000";
-    if(tc)tc.value="#000000";
-    ac.addEventListener("input",e=>{
-      if(tc)tc.value=e.target.value;
-      try{
-        if(typeof cSel!=="undefined" && cSel?.kind==="text"){
-          const t=textItems.find(x=>x.id===cSel.id);
-          if(t){t.color=e.target.value;cRender();}
-        }
-      }catch(_){}
-    });
-  }
-  const nc=document.querySelector("#color");
-  if(nc)nc.value="#000000";
-});
-
-function askFileName(defaultName,ext){
-  let name=prompt("File name:",defaultName);
-  if(name===null)return null;
-  name=(name||defaultName).trim();
-  if(!name)name=defaultName;
-  name=name.replace(/[\\/:*?"<>|]+/g,"-");
-  const lower=name.toLowerCase();
-  if(!lower.endsWith("."+ext.toLowerCase()))name=name.replace(/\.(png|jpe?g|zip)$/i,"")+"."+ext;
-  return name;
-}
-function downloadBlob(blob, filename){
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement("a");
-  a.href=url;a.download=filename;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url),1500);
-}
-function canvasToBlob(canvas,mime,quality=.94){
-  return new Promise((resolve,reject)=>{
-    try{
-      canvas.toBlob(b=>b?resolve(b):reject(new Error("Could not create image file")),mime,quality);
-    }catch(e){reject(e)}
-  });
-}
-async function exportAnnotatedBlob(){
- if(!window.FitEditor?.exportAnnotatedCanvas)throw new Error("The photo editor has not finished loading.");
- const c=window.FitEditor.exportAnnotatedCanvas(),fmt=document.querySelector("#format").value;
- const mime=fmt==="jpeg"?"image/jpeg":"image/png",ext=fmt==="jpeg"?"jpg":"png";
- return{blob:await canvasToBlob(prepareExportBackground(c,mime),mime,.94),ext,mime};
-}
-async function exportCombineBlob(){
- if(!window.FitEditor?.exportCombinedCanvas)throw new Error("The Combine editor has not finished loading.");
- const c=window.FitEditor.exportCombinedCanvas(),fmt=document.querySelector("#collageFormat").value;
- const mime=fmt==="jpeg"?"image/jpeg":"image/png",ext=fmt==="jpeg"?"jpg":"png";
- return{blob:await canvasToBlob(prepareExportBackground(c,mime),mime,.94),ext,mime};
-}
-function prepareExportBackground(c,mime){
- if(mime!=="image/jpeg")return c;
- const out=document.createElement("canvas");out.width=c.width;out.height=c.height;
- const x=out.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,out.width,out.height);x.drawImage(c,0,0);return out;
-}
-
-async function shareOrDownload(makeFile,baseName){
-  const {blob,ext,mime}=await makeFile();
-  const file=new File([blob],`${baseName}.${ext}`,{type:mime});
-  if(navigator.share && (!navigator.canShare || navigator.canShare({files:[file]}))){
-    try{
-      await navigator.share({files:[file],title:baseName});
-      return;
-    }catch(e){
-      if(e && e.name==="AbortError") return;
-      console.warn("Share failed, falling back to download",e);
-    }
-  }
-  downloadBlob(blob,`${baseName}.${ext}`);
-}
-
-document.addEventListener("DOMContentLoaded",()=>{
-  const saveA=document.querySelector("#saveBtn");
-  const shareA=document.querySelector("#shareBtn");
-  const saveC=document.querySelector("#saveCollage");
-  const shareC=document.querySelector("#shareCollage");
-
-  if(saveA) saveA.onclick=async()=>{
-    try{
-      const {blob,ext}=await exportAnnotatedBlob();
-      const filename=askFileName("fit-photo-annotated",ext);
-      if(!filename)return;
-      downloadBlob(blob,filename);
-    }catch(e){alert("Save failed: "+(e.message||e))}
-  };
-  if(shareA) shareA.onclick=async()=>{
-    try{await shareOrDownload(exportAnnotatedBlob,"fit-photo-annotated")}
-    catch(e){alert("Share failed: "+(e.message||e))}
-  };
-  if(saveC) saveC.onclick=async()=>{
-    try{
-      const {blob,ext}=await exportCombineBlob();
-      const filename=askFileName("fit-photo-combined",ext);
-      if(!filename)return;
-      downloadBlob(blob,filename);
-    }catch(e){alert("Save failed: "+(e.message||e))}
-  };
-  if(shareC) shareC.onclick=async()=>{
-    try{await shareOrDownload(exportCombineBlob,"fit-photo-combined")}
-    catch(e){alert("Share failed: "+(e.message||e))}
-  };
-});
+function canvasToBlob(canvas,mime,quality=.94){return new Promise((resolve,reject)=>{try{canvas.toBlob(b=>b?resolve(b):reject(new Error('The browser could not create the image file.')),mime,quality);}catch(e){reject(e);}});}
+function prepareExportBackground(c,mime){if(mime!=='image/jpeg')return c;const out=document.createElement('canvas');out.width=c.width;out.height=c.height;const x=out.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,out.width,out.height);x.drawImage(c,0,0);return out;}
+async function exportAnnotatedBlob(){if(!window.FitEditor?.exportAnnotatedCanvas)throw new Error('The photo editor has not finished loading.');const c=window.FitEditor.exportAnnotatedCanvas(),fmt=document.querySelector('#format').value,mime=fmt==='jpeg'?'image/jpeg':'image/png',ext=fmt==='jpeg'?'jpg':'png';return {blob:await canvasToBlob(prepareExportBackground(c,mime),mime,.94),ext,mime,filename:'fit-photo-annotated.'+ext};}
+async function exportCombineBlob(){if(!window.FitEditor?.exportCombinedCanvas)throw new Error('The Combine editor has not finished loading.');const c=window.FitEditor.exportCombinedCanvas(),fmt=document.querySelector('#collageFormat').value,mime=fmt==='jpeg'?'image/jpeg':'image/png',ext=fmt==='jpeg'?'jpg':'png';return {blob:await canvasToBlob(prepareExportBackground(c,mime),mime,.94),ext,mime,filename:'fit-photo-combined.'+ext};}
+// Encoding completes before the user presses a real Download / Share control.
+// The blob URL remains valid while the dialog is open and for 90s after closing.
+for(const id of ['saveBtn','shareBtn'])document.getElementById(id).onclick=()=>window.FitDownload.prepare(exportAnnotatedBlob,'fit-photo-annotated.png');
+for(const id of ['saveCollage','shareCollage'])document.getElementById(id).onclick=()=>window.FitDownload.prepare(exportCombineBlob,'fit-photo-combined.png');
 
 </script></body>
 </html>
