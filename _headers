@@ -1,4 +1,0 @@
-# Static-host headers: Netlify / Cloudflare Pages. Keep existing site security policy.
-/*
-  Cache-Control: no-store, no-cache, max-age=0, must-revalidate
-  Referrer-Policy: no-referrer
