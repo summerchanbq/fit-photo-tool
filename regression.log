@@ -1,0 +1,17 @@
+PASS touch_and_text_editing 1.41
+PASS camera_capture_mock 0.75
+PASS voice_and_translation_mock 1.05
+PASS race_archives_and_persistence 1.17
+PASS annotation_tools 3.89
+PASS single_adjustments 1.8
+PASS scoped_sessions 2.53
+PASS legacy_and_sort 1.7
+PASS combine_tools 3.76
+PASS combine_adjustments 5.1
+PASS combine_from_edited_and_sort 1.72
+PASS exports_and_zip 2.48
+PASS storage_and_decode_failures 2.06
+PASS race_guards 1.92
+PASS share_and_camera 1.13
+PASS responsive_layout 3.61
+TOTAL 195 passed 195 group errors 0

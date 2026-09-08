@@ -1,0 +1,7 @@
+PASS offline_ui
+PASS absent_or_delayed_component
+PASS validation_and_concurrency
+PASS pin_reopen
+PASS phone_entry_and_errors
+PASS rest_phone_desktop_integration
+TOTAL 89 passed 89 errors 0

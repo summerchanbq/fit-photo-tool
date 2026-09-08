@@ -1,0 +1,2158 @@
+{
+  "build": "V84-20260908-R1",
+  "count": 369,
+  "passed": 369,
+  "suites": [
+    {
+      "suite": "Preserved editor/library regression",
+      "assertions": 195
+    },
+    {
+      "suite": "Session form, PIN, failures and REST phone/desktop integration",
+      "assertions": 89
+    },
+    {
+      "suite": "First-party REST transport",
+      "assertions": 46
+    },
+    {
+      "suite": "Same-origin loader and retry",
+      "assertions": 7
+    },
+    {
+      "suite": "Source preservation, syntax, QR and native chooser",
+      "assertions": 32
+    }
+  ],
+  "results": [
+    {
+      "group": "touch_and_text_editing",
+      "test": "Touch annotation draws",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "touch_and_text_editing",
+      "test": "Single existing text double-click edit multiline",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "touch_and_text_editing",
+      "test": "Delete edited text",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "touch_and_text_editing",
+      "test": "Undo delete text",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "touch_and_text_editing",
+      "test": "Combine existing text double-click edit multiline",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "touch_and_text_editing",
+      "test": "Pen Combine drawing",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "touch_and_text_editing",
+      "test": "No uncaught JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "camera_capture_mock",
+      "test": "Camera captured frame imports to editor",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "camera_capture_mock",
+      "test": "Camera stops tracks after capture",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "camera_capture_mock",
+      "test": "Captured photo export has correct dimensions",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "camera_capture_mock",
+      "test": "Camera stops tracks after cancel",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "camera_capture_mock",
+      "test": "Session switch closes camera and tracks",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "camera_capture_mock",
+      "test": "No uncaught JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "voice_and_translation_mock",
+      "test": "Recording uses selected language",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "voice_and_translation_mock",
+      "test": "Speech results placed in correct field",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "voice_and_translation_mock",
+      "test": "Stop normalizes apparel terminology",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "voice_and_translation_mock",
+      "test": "Translation output uses intended target field",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "voice_and_translation_mock",
+      "test": "Translated comment added as editable annotation",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "voice_and_translation_mock",
+      "test": "Microphone rejection gives clear error",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "voice_and_translation_mock",
+      "test": "Combine recording context language",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "voice_and_translation_mock",
+      "test": "Combine voice comment remains editable",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "voice_and_translation_mock",
+      "test": "Unavailable translator preserves original and warns",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "voice_and_translation_mock",
+      "test": "No uncaught JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "race_archives_and_persistence",
+      "test": "Session change cancels in-flight archive delivery",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "race_archives_and_persistence",
+      "test": "Library rows restored after returning to scope",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "race_archives_and_persistence",
+      "test": "Saved-image async open cancelled after session switch",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "race_archives_and_persistence",
+      "test": "No uncaught JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "annotation_tools",
+      "test": "V84 engine boots",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "No-session End button hidden",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "Import native dimensions",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "arrow creates editable object",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "arrow delete",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "arrow undo restores",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "line creates editable object",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "line delete",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "line undo restores",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "dash creates editable object",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "dash delete",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "dash undo restores",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "circle creates editable object",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "circle delete",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "circle undo restores",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "rect creates editable object",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "rect delete",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "rect undo restores",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "curve creates editable object",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "curve delete",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "curve undo restores",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "Shape style and fill stored",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "Inline text committed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "Text font size changes",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "Multiline typed comment preserved",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "Zoom in",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "Zoom fit",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "New clears live state",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "Annotation moves on canvas",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "Same-file re-import resets document",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "annotation_tools",
+      "test": "No uncaught JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "single_adjustments",
+      "test": "PNG pixels match source",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "single_adjustments",
+      "test": "Brightness pixel math",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "single_adjustments",
+      "test": "Contrast pixel math",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "single_adjustments",
+      "test": "Tone reset original pixels",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "single_adjustments",
+      "test": "Rotate dimensions & confirmation",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "single_adjustments",
+      "test": "Clockwise rotation pixels",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "single_adjustments",
+      "test": "Undo rotation restores annotations and size",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "single_adjustments",
+      "test": "Crop native rectangle",
+      "passed": true,
+      "detail": "{'loaded': True, 'objects': [], 'history': 6, 'brightness': 110, 'contrast': 100, 'crop': {'x': 80, 'y': 60, 'w': 560, 'h': 420}, 'sourceWidth': 800, 'sourceHeight': 600, 'baseWidth': 560, 'baseHeight': 420, 'selected': None, 'items': [], 'texts': [], 'shapes': [], 'cSel': None, 'cHistory': 0, 'width': 1400, 'height': 900, 'sheetBrightness': 100, 'sheetContrast': 100, 'combineZoom': 1}"
+    },
+    {
+      "group": "single_adjustments",
+      "test": "Crop preserves brightness",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "single_adjustments",
+      "test": "Reopen crop uses full original",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "single_adjustments",
+      "test": "Crop undo restores all layers",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "single_adjustments",
+      "test": "Reopen saved layer and tone",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "single_adjustments",
+      "test": "Re-save updates not duplicates",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "single_adjustments",
+      "test": "No uncaught JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "scoped_sessions",
+      "test": "Local edits tagged local",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "scoped_sessions",
+      "test": "Session A excludes local edits",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "scoped_sessions",
+      "test": "Session B starts empty",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "scoped_sessions",
+      "test": "Two sessions have distinct records",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "scoped_sessions",
+      "test": "Incorrect PIN leaves active session unchanged",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "scoped_sessions",
+      "test": "Reopen A shows only A",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "scoped_sessions",
+      "test": "A annotations restored",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "scoped_sessions",
+      "test": "Invalid creation keeps old session",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "scoped_sessions",
+      "test": "Failed creation keeps active session",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "scoped_sessions",
+      "test": "End clears live workspace and originals",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "scoped_sessions",
+      "test": "End preserves all saved records",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "scoped_sessions",
+      "test": "End button hidden after ending",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "scoped_sessions",
+      "test": "No uncaught JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "legacy_and_sort",
+      "test": "Legacy not mixed into current gallery",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "legacy_and_sort",
+      "test": "Legacy recovery view explicit",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "legacy_and_sort",
+      "test": "Legacy save copies into active session",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "legacy_and_sort",
+      "test": "Legacy copy exits recovery view",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "legacy_and_sort",
+      "test": "Edited step reorder",
+      "passed": true,
+      "detail": "['u39g1rvlgxmts3j28g', 'ehk2qnrxo9wmts3j1xa', '6zuc6q0xnj7mts3j2ee']"
+    },
+    {
+      "group": "legacy_and_sort",
+      "test": "Edited reorder survives refresh",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "legacy_and_sort",
+      "test": "Edited pointer drag reorder",
+      "passed": true,
+      "detail": "['ehk2qnrxo9wmts3j1xa', '6zuc6q0xnj7mts3j2ee', 'u39g1rvlgxmts3j28g']"
+    },
+    {
+      "group": "legacy_and_sort",
+      "test": "No uncaught JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "combine_tools",
+      "test": "Two combine imports",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Combine arrow draw",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Combine arrow delete",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Combine arrow undo",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Combine line draw",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Combine line delete",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Combine line undo",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Combine dash draw",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Combine dash delete",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Combine dash undo",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Combine circle draw",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Combine circle delete",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Combine circle undo",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Combine rect draw",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Combine rect delete",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Combine rect undo",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Combine curve draw",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Combine curve delete",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Combine curve undo",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Combine annotation properties",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Combine inline text & resize font",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Combine multiline stores real newline",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Vertical layout",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Horizontal layout",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Fit to Canvas has live handler",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Fitted items stay on canvas",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Combine zoom in",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Combine zoom fit",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Canvas resize changes size",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "Canvas resize undo restores dimensions",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_tools",
+      "test": "No uncaught JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "combine_adjustments",
+      "test": "Selected photo rotation",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_adjustments",
+      "test": "Other photo unchanged",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_adjustments",
+      "test": "Rotated photo remains within sheet",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_adjustments",
+      "test": "Per photo brightness / contrast",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_adjustments",
+      "test": "Per-photo crop retains rotation and tone",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_adjustments",
+      "test": "Per-photo crop can re-expand original",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_adjustments",
+      "test": "Reset per-photo tone only",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_adjustments",
+      "test": "Sheet rotates dimensions and retains layers",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_adjustments",
+      "test": "Four sheet rotations return same pixels",
+      "passed": true,
+      "detail": "[0.0, 0.0, 0.0]"
+    },
+    {
+      "group": "combine_adjustments",
+      "test": "Entire-sheet crop dimensions",
+      "passed": true,
+      "detail": "(1190, 765)"
+    },
+    {
+      "group": "combine_adjustments",
+      "test": "Sheet crop keeps layers",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_adjustments",
+      "test": "Sheet crop undo dimensions",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_adjustments",
+      "test": "Combined sheet saved/reopened with editable sources",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_adjustments",
+      "test": "Combined layers saved/reopened",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_adjustments",
+      "test": "Saved sheet pixels identical",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_adjustments",
+      "test": "Combined re-save no duplicate",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_adjustments",
+      "test": "No uncaught JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "combine_from_edited_and_sort",
+      "test": "Edited photo adds to Combine without switching mode",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_from_edited_and_sort",
+      "test": "Duplicate edited source suppressed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_from_edited_and_sort",
+      "test": "Combine reorder",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_from_edited_and_sort",
+      "test": "Combine reorder undo",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_from_edited_and_sort",
+      "test": "Combine tile removal",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_from_edited_and_sort",
+      "test": "Combine removal undo",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "combine_from_edited_and_sort",
+      "test": "No uncaught JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "exports_and_zip",
+      "test": "Empty export actionable error",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "exports_and_zip",
+      "test": "JPG valid / correct dimensions",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "exports_and_zip",
+      "test": "JPG transparent areas white",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "exports_and_zip",
+      "test": "PNG valid / alpha retained",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "exports_and_zip",
+      "test": "Filename normalized with actual format",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "exports_and_zip",
+      "test": "Edited ZIP valid CRC",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "exports_and_zip",
+      "test": "Edited ZIP contains only saved current-session files",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "exports_and_zip",
+      "test": "ZIP PNGs decodable",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "exports_and_zip",
+      "test": "Empty session archive excludes previous edits",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "exports_and_zip",
+      "test": "No uncaught JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "storage_and_decode_failures",
+      "test": "Export independent of sync CDN",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "storage_and_decode_failures",
+      "test": "Edit Done independent of sync CDN",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "storage_and_decode_failures",
+      "test": "Quota error no false success",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "storage_and_decode_failures",
+      "test": "Quota error retry succeeds",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "storage_and_decode_failures",
+      "test": "Bad image shows decode error",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "storage_and_decode_failures",
+      "test": "Bad import preserves prior valid document",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "storage_and_decode_failures",
+      "test": "HTMLImage decode fallback works",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "storage_and_decode_failures",
+      "test": "Bad combine file does not block subsequent imports",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "storage_and_decode_failures",
+      "test": "No uncaught JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "race_guards",
+      "test": "Scope change during save does not leak edits",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "race_guards",
+      "test": "Cancelled save not reassigned",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "race_guards",
+      "test": "Late single import ignored after session change",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "race_guards",
+      "test": "Late combine import ignored after session change",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "race_guards",
+      "test": "No uncaught JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "share_and_camera",
+      "test": "Share prepared before native gesture",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "share_and_camera",
+      "test": "Native share called on new user click",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "share_and_camera",
+      "test": "Share cancel keeps file ready no forced download",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "share_and_camera",
+      "test": "Share denial keeps Download fallback",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "share_and_camera",
+      "test": "Non-secure camera explains requirements",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "share_and_camera",
+      "test": "Denied camera gives actionable error",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "share_and_camera",
+      "test": "No uncaught JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "responsive_layout",
+      "test": "1440px annotate preview remains in stage",
+      "passed": true,
+      "detail": "({'x': 536, 'y': 295, 'width': 565, 'height': 423}, {'x': 522, 'y': 123, 'width': 593, 'height': 767})"
+    },
+    {
+      "group": "responsive_layout",
+      "test": "1440px combine preview remains in stage",
+      "passed": true,
+      "detail": "({'x': 536, 'y': 301.5, 'width': 565, 'height': 363}, {'x': 522, 'y': 123, 'width': 593, 'height': 720})"
+    },
+    {
+      "group": "responsive_layout",
+      "test": "1440px sidebar scrollable and independent",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "responsive_layout",
+      "test": "No uncaught JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "responsive_layout",
+      "test": "1280px annotate preview remains in stage",
+      "passed": true,
+      "detail": "({'x': 536, 'y': 236, 'width': 405, 'height': 303}, {'x': 522, 'y': 123, 'width': 433, 'height': 529})"
+    },
+    {
+      "group": "responsive_layout",
+      "test": "1280px combine preview remains in stage",
+      "passed": true,
+      "detail": "({'x': 536, 'y': 234, 'width': 405, 'height': 260}, {'x': 522, 'y': 123, 'width': 433, 'height': 482})"
+    },
+    {
+      "group": "responsive_layout",
+      "test": "1280px sidebar scrollable and independent",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "responsive_layout",
+      "test": "No uncaught JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "responsive_layout",
+      "test": "1024px annotate preview remains in stage",
+      "passed": true,
+      "detail": "({'x': 370, 'y': 219, 'width': 407, 'height': 305}, {'x': 356, 'y': 117, 'width': 435, 'height': 509})"
+    },
+    {
+      "group": "responsive_layout",
+      "test": "1024px combine preview remains in stage",
+      "passed": true,
+      "detail": "({'x': 370, 'y': 217, 'width': 407, 'height': 262}, {'x': 356, 'y': 117, 'width': 435, 'height': 462})"
+    },
+    {
+      "group": "responsive_layout",
+      "test": "1024px sidebar scrollable and independent",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "responsive_layout",
+      "test": "No uncaught JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "responsive_layout",
+      "test": "800px annotate preview remains in stage",
+      "passed": true,
+      "detail": "({'x': 370, 'y': 330, 'width': 183, 'height': 137}, {'x': 356, 'y': 117, 'width': 211, 'height': 563})"
+    },
+    {
+      "group": "responsive_layout",
+      "test": "800px combine preview remains in stage",
+      "passed": true,
+      "detail": "({'x': 370, 'y': 316, 'width': 183, 'height': 118}, {'x': 356, 'y': 117, 'width': 211, 'height': 516})"
+    },
+    {
+      "group": "responsive_layout",
+      "test": "800px sidebar scrollable and independent",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "responsive_layout",
+      "test": "No uncaught JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "offline_ui",
+      "test": "Form initialized despite network failure",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "offline_ui",
+      "test": "Three fields show while disconnected",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "offline_ui",
+      "test": "Button matches checked mode",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "offline_ui",
+      "test": "Cached history displays without server",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "offline_ui",
+      "test": "Cached reopen enabled offline",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "offline_ui",
+      "test": "Offline history opens PIN immediately",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "offline_ui",
+      "test": "Cancel clears PIN",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "offline_ui",
+      "test": "Failure preserves name and PIN",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "offline_ui",
+      "test": "Failure does not replace scope",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "offline_ui",
+      "test": "Quick mode hides fields and updates button",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "offline_ui",
+      "test": "Mode switch retains entered values",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "offline_ui",
+      "test": "Restored checkbox state updates on pageshow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "offline_ui",
+      "test": "Restored protected checkbox shows fields",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "offline_ui",
+      "test": "Reconnect then create succeeds without reload",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "offline_ui",
+      "test": "Server received leading-zero six-digit PIN",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "offline_ui",
+      "test": "Completed create clears both PINs",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "offline_ui",
+      "test": "Auth never cleared during network outage",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "offline_ui",
+      "test": "No unhandled JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "absent_or_delayed_component",
+      "test": "Missing local component cannot hide form",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "absent_or_delayed_component",
+      "test": "Missing component cannot hide cached sessions",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "absent_or_delayed_component",
+      "test": "Missing component still opens PIN dialog",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "absent_or_delayed_component",
+      "test": "No unhandled JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "absent_or_delayed_component",
+      "test": "Form interactive while auth request pending",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "absent_or_delayed_component",
+      "test": "No unhandled JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "validation_and_concurrency",
+      "test": "Validation rejects name",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "validation_and_concurrency",
+      "test": "Invalid inputs never invoke create RPC",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "validation_and_concurrency",
+      "test": "Validation rejects 4",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "validation_and_concurrency",
+      "test": "Invalid inputs never invoke create RPC",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "validation_and_concurrency",
+      "test": "Validation rejects 4",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "validation_and_concurrency",
+      "test": "Invalid inputs never invoke create RPC",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "validation_and_concurrency",
+      "test": "Validation rejects match",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "validation_and_concurrency",
+      "test": "Invalid inputs never invoke create RPC",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "validation_and_concurrency",
+      "test": "Service failure preserves protected fields",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "validation_and_concurrency",
+      "test": "Service failure no phantom recent or active session",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "validation_and_concurrency",
+      "test": "Duplicate creation clicks create one remote session",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "validation_and_concurrency",
+      "test": "Create result saved with name and private token",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "validation_and_concurrency",
+      "test": "No plaintext PIN stored in recent sessions",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "validation_and_concurrency",
+      "test": "Failed second create keeps active session and QR",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "validation_and_concurrency",
+      "test": "Auth identity from backend retained",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "validation_and_concurrency",
+      "test": "No unhandled JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "pin_reopen",
+      "test": "Invalid reopen PIN blocked locally",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "pin_reopen",
+      "test": "No server validation request for malformed PIN",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "pin_reopen",
+      "test": "Wrong PIN cannot activate protected session",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "pin_reopen",
+      "test": "Correct PIN activates after server verification",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "pin_reopen",
+      "test": "Correct PIN passed unchanged in RPC",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "pin_reopen",
+      "test": "Scope switch hides prior edits",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "pin_reopen",
+      "test": "Cancel in-flight valid PIN never switches session",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "pin_reopen",
+      "test": "Reopen restores correct scoped edits",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "pin_reopen",
+      "test": "No unhandled JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "phone_entry_and_errors",
+      "test": "360 camera/library shown before connection",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "phone_entry_and_errors",
+      "test": "360 rear-camera single capture input",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "phone_entry_and_errors",
+      "test": "360 no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "phone_entry_and_errors",
+      "test": "360 offline original download prepared",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "phone_entry_and_errors",
+      "test": "360 original bytes unchanged",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "phone_entry_and_errors",
+      "test": "No unhandled JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "phone_entry_and_errors",
+      "test": "393 camera/library shown before connection",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "phone_entry_and_errors",
+      "test": "393 rear-camera single capture input",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "phone_entry_and_errors",
+      "test": "393 no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "phone_entry_and_errors",
+      "test": "393 offline original download prepared",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "phone_entry_and_errors",
+      "test": "393 original bytes unchanged",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "phone_entry_and_errors",
+      "test": "No unhandled JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "phone_entry_and_errors",
+      "test": "412 camera/library shown before connection",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "phone_entry_and_errors",
+      "test": "412 rear-camera single capture input",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "phone_entry_and_errors",
+      "test": "412 no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "phone_entry_and_errors",
+      "test": "412 offline original download prepared",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "phone_entry_and_errors",
+      "test": "412 original bytes unchanged",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "phone_entry_and_errors",
+      "test": "No unhandled JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "phone_entry_and_errors",
+      "test": "Missing private link keeps native inputs enabled",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "phone_entry_and_errors",
+      "test": "Missing link explains no upload",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "phone_entry_and_errors",
+      "test": "Unassigned photo waits for explicit session",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "phone_entry_and_errors",
+      "test": "No unhandled JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "rest_phone_desktop_integration",
+      "test": "All desktop server requests use first-party REST wire path",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "rest_phone_desktop_integration",
+      "test": "Local generated QR present",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "rest_phone_desktop_integration",
+      "test": "QR link routes V84 phone with private fragment",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "rest_phone_desktop_integration",
+      "test": "Phone actual optimisation/upload registers two photos",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "rest_phone_desktop_integration",
+      "test": "Desktop polling receives phone photos without SDK",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "rest_phone_desktop_integration",
+      "test": "Signed original decodes in editor",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "rest_phone_desktop_integration",
+      "test": "Repeated original add does not duplicate",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "rest_phone_desktop_integration",
+      "test": "Original order stored per session",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "rest_phone_desktop_integration",
+      "test": "ZIP CRC and three original/edited files",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "rest_phone_desktop_integration",
+      "test": "ZIP images independently decode",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "rest_phone_desktop_integration",
+      "test": "ZIP respects saved original order",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "rest_phone_desktop_integration",
+      "test": "Saved phone link updated to V84 without changing auth key",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "rest_phone_desktop_integration",
+      "test": "Diagnostics never expose private session or access token",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "rest_phone_desktop_integration",
+      "test": "Retry after committed metadata cannot duplicate photo",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "rest_phone_desktop_integration",
+      "test": "Large phone image actually downsized to 1800",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "rest_phone_desktop_integration",
+      "test": "Next session clears originals/edits/Combine",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "group": "rest_phone_desktop_integration",
+      "test": "No unhandled JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "rest_phone_desktop_integration",
+      "test": "No unhandled JavaScript errors",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "group": "existing_identity",
+      "test": "Preserves original owner",
+      "passed": true
+    },
+    {
+      "group": "existing_identity",
+      "test": "No HTTP or signup for valid session",
+      "passed": true
+    },
+    {
+      "group": "existing_identity",
+      "test": "Same PIN RPC and parameters",
+      "passed": true
+    },
+    {
+      "group": "existing_identity",
+      "test": "Bearer old user token; publishable key header",
+      "passed": true
+    },
+    {
+      "group": "existing_identity",
+      "test": "No PIN persisted to auth storage",
+      "passed": true
+    },
+    {
+      "group": "anonymous_concurrency",
+      "test": "Concurrent no-session read/create completes",
+      "passed": true
+    },
+    {
+      "group": "anonymous_concurrency",
+      "test": "Only one anonymous signup",
+      "passed": true
+    },
+    {
+      "group": "anonymous_concurrency",
+      "test": "Same SDK storage key retained",
+      "passed": true
+    },
+    {
+      "group": "expired_refresh",
+      "test": "Refresh before use",
+      "passed": true
+    },
+    {
+      "group": "expired_refresh",
+      "test": "No replacement anonymous owner",
+      "passed": true
+    },
+    {
+      "group": "expired_refresh",
+      "test": "Original refresh token used",
+      "passed": true
+    },
+    {
+      "group": "expired_refresh",
+      "test": "Refreshed session persisted",
+      "passed": true
+    },
+    {
+      "group": "failure_retains_identity",
+      "test": "network produces visible error",
+      "passed": true
+    },
+    {
+      "group": "failure_retains_identity",
+      "test": "network retains all existing credentials",
+      "passed": true
+    },
+    {
+      "group": "failure_retains_identity",
+      "test": "network never signs up a replacement user",
+      "passed": true
+    },
+    {
+      "group": "failure_retains_identity",
+      "test": "expired produces visible error",
+      "passed": true
+    },
+    {
+      "group": "failure_retains_identity",
+      "test": "expired retains all existing credentials",
+      "passed": true
+    },
+    {
+      "group": "failure_retains_identity",
+      "test": "expired never signs up a replacement user",
+      "passed": true
+    },
+    {
+      "group": "storage_failures",
+      "test": "In-memory identity reused after denied persistence",
+      "passed": true
+    },
+    {
+      "group": "storage_failures",
+      "test": "Warning dispatched once",
+      "passed": true
+    },
+    {
+      "group": "storage_failures",
+      "test": "Requests retain same volatile owner token",
+      "passed": true
+    },
+    {
+      "group": "storage_failures",
+      "test": "In-memory identity reused after denied persistence",
+      "passed": true
+    },
+    {
+      "group": "storage_failures",
+      "test": "Warning dispatched once",
+      "passed": true
+    },
+    {
+      "group": "storage_failures",
+      "test": "Requests retain same volatile owner token",
+      "passed": true
+    },
+    {
+      "group": "storage_failures",
+      "test": "Malformed saved auth is not silently deleted",
+      "passed": true
+    },
+    {
+      "group": "postgrest_queries",
+      "test": "GET correct table",
+      "passed": true
+    },
+    {
+      "group": "postgrest_queries",
+      "test": "Owner filter/query maintained",
+      "passed": true
+    },
+    {
+      "group": "postgrest_queries",
+      "test": "maybeSingle normalizes one row",
+      "passed": true
+    },
+    {
+      "group": "postgrest_queries",
+      "test": "Awaiting same insert twice only executes once",
+      "passed": true
+    },
+    {
+      "group": "postgrest_queries",
+      "test": "Mutation uses return=minimal",
+      "passed": true
+    },
+    {
+      "group": "postgrest_queries",
+      "test": "End session PATCH remains filtered",
+      "passed": true
+    },
+    {
+      "group": "postgrest_queries",
+      "test": "maybeSingle empty is not error",
+      "passed": true
+    },
+    {
+      "group": "postgrest_queries",
+      "test": "maybeSingle rejects ambiguous response",
+      "passed": true
+    },
+    {
+      "group": "signed_urls",
+      "test": "Signed URL normalized once",
+      "passed": true
+    },
+    {
+      "group": "signed_urls",
+      "test": "Escaped object path and expiry",
+      "passed": true
+    },
+    {
+      "group": "signed_urls",
+      "test": "Signed URL normalized once",
+      "passed": true
+    },
+    {
+      "group": "signed_urls",
+      "test": "Escaped object path and expiry",
+      "passed": true
+    },
+    {
+      "group": "signed_urls",
+      "test": "Signed URL normalized once",
+      "passed": true
+    },
+    {
+      "group": "signed_urls",
+      "test": "Escaped object path and expiry",
+      "passed": true
+    },
+    {
+      "group": "unauthorized_retry",
+      "test": "401 refresh and retry succeeds",
+      "passed": true
+    },
+    {
+      "group": "unauthorized_retry",
+      "test": "Second operation uses refreshed bearer",
+      "passed": true
+    },
+    {
+      "group": "unauthorized_retry",
+      "test": "Only one refresh",
+      "passed": true
+    },
+    {
+      "group": "unauthorized_retry",
+      "test": "403 never bypasses permission or retries signup",
+      "passed": true
+    },
+    {
+      "group": "malformed_and_timeouts",
+      "test": "Incomplete signup rejected",
+      "passed": true
+    },
+    {
+      "group": "malformed_and_timeouts",
+      "test": "Unexpected HTML not reported as success",
+      "passed": true
+    },
+    {
+      "group": "malformed_and_timeouts",
+      "test": "Timeout gives retryable error",
+      "passed": true
+    },
+    {
+      "group": "same_origin_loader",
+      "test": "Concurrent load shares one attempt",
+      "passed": true
+    },
+    {
+      "group": "same_origin_loader",
+      "test": "Loader requests only deployed same-origin path",
+      "passed": true
+    },
+    {
+      "group": "same_origin_loader",
+      "test": "Missing asset reports deploy full package",
+      "passed": true
+    },
+    {
+      "group": "same_origin_loader",
+      "test": "Failed script removed",
+      "passed": true
+    },
+    {
+      "group": "same_origin_loader",
+      "test": "Retry creates fresh request",
+      "passed": true
+    },
+    {
+      "group": "same_origin_loader",
+      "test": "Retry resolves to actual packaged factory",
+      "passed": true
+    },
+    {
+      "group": "same_origin_loader",
+      "test": "Loaded factory reused without more scripts",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "No desktop UI control ID removed",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "No duplicate desktop IDs",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "fit-editor-engine unchanged except version label",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "fit-local-library unchanged except version label",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "fit-library-sort unchanged except version label",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "Dedicated phone logic unchanged except build text and link version",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "Bundled QR bytes unchanged",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "index.html build badge correct",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "index.html no CDN scripts",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "index.html all script files present",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "index.html inline script 0 parses",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "index.html inline script 1 parses",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "index.html inline script 2 parses",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "index.html inline script 5 parses",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "index.html inline script 6 parses",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "index.html inline script 7 parses",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "index.html inline script 8 parses",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "capture.html build badge correct",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "capture.html no CDN scripts",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "capture.html all script files present",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "capture.html inline script 0 parses",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "sync-client.v84.js parses",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "desktop-boot.v84.js parses",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "qr.v84.js parses",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "capture.v84.js parses",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "Original local project DB/store names unchanged",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "Existing anonymous owner auth key retained",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "Actual generated QR independently decodes to exact private link",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "QR never contains a PIN",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "Phone Take Photo invokes native file chooser event",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "Phone library chooser accepts multiple files",
+      "passed": true
+    },
+    {
+      "group": "source_and_package_audit",
+      "test": "No uncaught error in chooser/QR audit",
+      "passed": true
+    }
+  ]
+}

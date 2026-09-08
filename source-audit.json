@@ -1,0 +1,28 @@
+{
+  "based_on": "V83-20260908-R1",
+  "build": "V84-20260908-R1",
+  "modules": {
+    "fit-editor-engine": {
+      "v83_sha256": "b0221ba413fd5dd5819d44dd4773e1a5a3a3035b2f8f0102a52d1c1b873b63a5",
+      "v84_sha256": "f11488c5eb0a2c899cd7526f5c27170f2f67677d6bbf4744362ca5557d1ab07d",
+      "identical_after_version_normalization": true
+    },
+    "fit-local-library": {
+      "v83_sha256": "aa81bdd19a4cbe8222747376374fc52b4d8a4ce54378ab00d5ee60aa4cf9fcc0",
+      "v84_sha256": "aa81bdd19a4cbe8222747376374fc52b4d8a4ce54378ab00d5ee60aa4cf9fcc0",
+      "identical_after_version_normalization": true
+    },
+    "fit-library-sort": {
+      "v83_sha256": "285fe9bc6b652ac2b21b2ae1fe1e751989bbdec042978665d4e46695e750a2c3",
+      "v84_sha256": "285fe9bc6b652ac2b21b2ae1fe1e751989bbdec042978665d4e46695e750a2c3",
+      "identical_after_version_normalization": true
+    }
+  },
+  "phone_changes_only": [
+    "V84 comment and build label",
+    "v84 phone URL build query"
+  ],
+  "retained_phone_auth_key": "fitPhotoCaptureAuthV83",
+  "desktop_auth_key": "sb-<same project reference>-auth-token",
+  "database_schema_changed": false
+}

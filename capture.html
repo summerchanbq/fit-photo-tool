@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="referrer" content="no-referrer"/>
+<meta name="fit-photo-build" content="V84-20260908-R1"/>
+<title>Fit Photo Capture V84</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#17212e;background:#f3f5f8;color-scheme:light}
+*{box-sizing:border-box}body{margin:0;padding:18px 14px 40px;padding-bottom:calc(28px + env(safe-area-inset-bottom))}[hidden]{display:none!important}
+main{max-width:540px;margin:auto}.card{background:#fff;border:1px solid #dde3eb;border-radius:18px;padding:18px;margin:12px 0}.brand{display:flex;align-items:center;gap:10px}.logo{width:40px;height:40px;display:grid;place-items:center;background:#17212e;color:#fff;border-radius:12px;font-size:24px;font-weight:750}h1{font-size:23px;letter-spacing:-.025em;line-height:1.2;margin:0}p{line-height:1.5;font-size:14px;margin:8px 0}.build{font-size:11px;color:#5e6a7a;letter-spacing:.03em;margin-top:4px}.session{font-size:13px;overflow-wrap:anywhere;color:#475569;margin-top:12px}.badge{font-size:11px;font-weight:700;color:#334155;background:#edf2f7;padding:4px 7px;border-radius:6px;display:inline-block}.status{padding:12px;border-radius:10px;background:#edf3fa;color:#26486e;margin:12px 0;font-size:14px;line-height:1.45;overflow-wrap:anywhere}.status[data-state=connected]{color:#076345;background:#e9f7f0}.status[data-state=error]{color:#923218;background:#fff0e8}.actions{display:grid;gap:10px}.capture,.btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:46px;border:1px solid #ccd5df;border-radius:12px;padding:12px;background:#fff;color:#17212e;font:600 15px system-ui;text-decoration:none;cursor:pointer;text-align:center}.capture{position:relative;overflow:hidden;min-height:60px;font-size:18px}.primary{background:#17212e;color:#fff;border-color:#17212e}.capture input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;display:block}.btn:disabled{opacity:.5}.capture:focus-within,.btn:focus-visible{outline:3px solid #669bef;outline-offset:3px}.help{font-size:12px;color:#627084;line-height:1.5}.row{display:flex;gap:8px}.row>*{flex:1;min-width:0}#previewBox{border:1px solid #e0e6ed;border-radius:12px;overflow:hidden;text-align:center;background:#f9fafb;margin:14px 0}#mobilePreviewImg{width:100%;max-height:50vh;object-fit:contain;display:block}#mobilePreviewPlaceholder{padding:34px 10px;display:block;color:#758399;font-size:13px}.queueItem{border:1px solid #dde3eb;border-radius:12px;padding:10px;margin-top:10px;display:grid;grid-template-columns:48px minmax(0,1fr);gap:9px}.queueItem img{width:48px;height:48px;border-radius:7px;object-fit:cover}.queueItem .row{grid-column:1/-1}.queueMeta{font-size:12px;overflow-wrap:anywhere}.queueStatus{display:block;margin-top:4px;color:#586a81}.queueStatus.ok{color:#08714c}.queueStatus.err{color:#b42318}.queueItem .btn{padding:8px 5px;font-size:12px;min-height:38px}details{margin:12px 0}summary{cursor:pointer;font-size:13px;font-weight:650;padding:7px 0}textarea,input[type=text]{width:100%;padding:10px;border-radius:8px;border:1px solid #cad4df;font:14px system-ui;resize:vertical}label.field{font-size:13px;display:block;margin:10px 0 6px}.notice{border-left:3px solid #cf8518;padding:4px 0 4px 10px;color:#805711;font-size:13px;line-height:1.5}.modal{position:fixed;inset:0;z-index:20;background:#101827a8;padding:14px;display:flex;align-items:center;justify-content:center}.modalCard{background:#fff;border-radius:16px;padding:18px;width:100%;max-width:600px;max-height:94vh;overflow:auto}.modalCard h2{font-size:19px;margin:0}.modalHead{display:flex;align-items:center;justify-content:space-between;gap:10px}.modalHead .btn{width:auto;min-height:36px;padding:8px 12px}#cameraVideo{width:100%;max-height:58vh;background:#111;border-radius:10px;margin-top:12px}#downloadPreviewImage{display:block;width:100%;max-height:42vh;object-fit:contain;margin:12px 0}#downloadReadyActions .row{flex-wrap:wrap}#diagnostics{white-space:pre-wrap;font-size:12px;overflow-wrap:anywhere}.muted{color:#617084}h2{font-size:15px;margin:0 0 6px}#mobileUploadState{font-size:13px;margin:12px 0;line-height:1.5}#mobileDone{font-size:13px;color:#08714c;margin:10px 0}#mobileOptimiseStats{font-size:11px;color:#69778a}
+@media(max-width:360px){body{padding:10px}.card{padding:14px}h1{font-size:21px}.row{flex-wrap:wrap}#downloadReadyActions .row{flex-direction:column}}
+</style>
+</head>
+<body>
+<main id="mobileCaptureScreen">
+<div class="brand"><div class="logo">F</div><div><h1>Fit Photo Capture</h1><div class="build" id="captureBuild">V84-20260908-R1 &middot; Android + iPhone</div></div></div>
+<div class="card">
+<span class="badge">PHONE CAPTURE</span><div class="session">Session <strong id="mobileSessionCode">Not connected</strong></div>
+<div class="status" id="connectionStatus" role="status" aria-live="polite">Starting capture page...</div>
+<noscript><p class="notice">JavaScript is disabled in this browser. Open this link in your approved browser with JavaScript enabled. Your desktop session link is required to upload photos.</p></noscript>
+<div class="actions" id="mobilePhotoActions">
+<label class="capture primary" id="mobileCameraLabel">Take Photo<input type="file" id="mobileCameraInput" accept="image/*" capture="environment" aria-label="Take a photo with the phone camera"/></label>
+<label class="capture" id="mobileLibraryLabel">Choose Photos<input type="file" id="mobilePhotoInput" accept="image/*" multiple aria-label="Choose photos from your phone"/></label>
+<button class="btn" id="mobileBrowserCameraBtn" type="button">Use Browser Camera</button>
+</div>
+<p class="help">Take Photo opens the phone camera where supported. Use Browser Camera is a separate option. You can capture and save originals while the session reconnects; uploads only start after connection succeeds.</p>
+<p class="notice" id="embeddedNotice" hidden>This may be an in-app browser. Camera and file saving can be restricted here. Use the app menu to open this private link in your approved phone browser.</p>
+<div class="row"><button class="btn" id="mobileRetryJoin" type="button">Reconnect</button><button class="btn" id="copyLinkBtn" type="button">Copy Phone Link</button></div>
+<details id="joinHelp"><summary>Link missing or unable to connect?</summary>
+<p class="help">On the computer, click Copy Phone Link for the current session. Paste the complete private link below. Do not share it publicly.</p>
+<label class="field" for="joinLinkInput">Complete phone link</label><textarea id="joinLinkInput" rows="3" autocomplete="off" spellcheck="false" placeholder="Paste the phone link from the desktop"></textarea><button class="btn" id="joinLinkBtn" type="button" style="margin-top:8px">Connect to This Session</button>
+<p class="help" id="joinLinkError" role="status"></p>
+<textarea id="copyLinkFallback" rows="3" readonly hidden aria-label="Copy this complete private phone link"></textarea>
+</details>
+</div>
+<div class="card">
+<h2>Latest photo</h2><div id="previewBox"><span id="mobilePreviewPlaceholder">Your photo appears here</span><img id="mobilePreviewImg" alt="Latest original photo" hidden/></div>
+<div class="row"><button class="btn" id="mobileSaveLastBtn" type="button" disabled>Save Last Original</button><button class="btn" id="mobileShareLastBtn" type="button" disabled>Share Last Original</button></div>
+<div id="inputError" class="notice" role="alert" hidden></div>
+<div id="mobileUploadState" role="status" aria-live="polite">No photos added.</div><div id="mobileOptimiseStats"></div><div id="mobileDone" hidden></div><div id="uploadQueue"></div>
+<p class="help">Keep this page open until uploads finish. Originals in this page are temporary, not an offline backup. Save Original before refreshing, changing browser or leaving.</p>
+</div>
+<details class="card"><summary>Connection diagnostics</summary><pre id="diagnostics"></pre><button class="btn" id="copyDiagnosticsBtn" type="button">Copy Diagnostics</button><p class="help">Diagnostics exclude photos, private links and access tokens.</p></details>
+</main>
+<div class="modal" id="cameraDialog" hidden role="dialog" aria-modal="true" aria-labelledby="cameraTitle"><div class="modalCard"><div class="modalHead"><h2 id="cameraTitle">Take Photo</h2><button class="btn" id="cameraCloseBtn" type="button">Close</button></div><video id="cameraVideo" autoplay muted playsinline></video><p id="cameraStatus" role="status" aria-live="polite"></p><button class="btn primary" id="cameraCaptureBtn" type="button" disabled>Capture</button></div></div>
+<div class="modal" id="downloadDialog" hidden role="dialog" aria-modal="true" aria-labelledby="downloadTitle"><div class="modalCard"><div class="modalHead"><h2 id="downloadTitle">Save / Share Original</h2><button class="btn" id="downloadCloseBtn" type="button">Close</button></div><p id="downloadProgressText" role="status" aria-live="polite"></p><label class="field" for="downloadFilename">File name</label><input type="text" id="downloadFilename"/><img id="downloadPreviewImage" alt="Original file preview" hidden/><div id="downloadReadyActions"><div class="row"><a class="btn primary" id="readyDownloadLink" download>Download</a><a class="btn" id="openPreviewLink" target="_blank" rel="noopener noreferrer">Open Preview</a><button class="btn" id="readyShareBtn" type="button">Share / Save</button></div></div><p class="help">Check the browser Downloads / Files. A download request does not prove the device saved the file. In-app or managed browsers may block saving.</p></div></div>
+<script>window.FitCaptureReady=false;setTimeout(function(){if(!window.FitCaptureReady){var s=document.getElementById('connectionStatus');s.setAttribute('data-state','error');s.textContent='The capture script did not start. Deploy the complete V84 ZIP including the assets folder, then open this page in an updated approved browser.';}},5000);</script>
+<script src="assets/capture.v84.js"></script>
+</body></html>

@@ -1,0 +1,16 @@
+{
+  "app": "Fit Photo Studio",
+  "version": 84,
+  "build": "V84-20260908-R1",
+  "based_on": "V83-20260908-R1",
+  "database_schema_changed": false,
+  "checksums_sha256": {
+    "index.html": "9249a06aeed49711fa4788c09c4bd9d370505eceda8be978b07f0099c3a3f3cc",
+    "capture.html": "884e0189bac75a25dff41a809426af016c0cc8f211dbc8606ae9fc06557ba8a5",
+    "_headers": "ced9392ff03c393b417681ee11b9511fde68692ec4b1e4edfd482c37ca90448d",
+    "assets/capture.v84.js": "af3d9ed21e71aedef0aca3719421b1991a59eb84c54bf1cd7f1ebf023da25337",
+    "assets/desktop-boot.v84.js": "a6ce534f1cf79ac355b73cd18d9ed62aba27a6a4f6dcf64a44409048d6a55ebd",
+    "assets/qr.v84.js": "88cbc44ee4095e7c8752e2188d304bb39aa147fe434ca54151ffb7bdaf892ced",
+    "assets/sync-client.v84.js": "2cbeee07d0a948310a3444f233e327106eb1d68b9fdcec15d9bc4fa14a9aafec"
+  }
+}
