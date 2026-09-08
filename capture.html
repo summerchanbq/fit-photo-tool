@@ -4,8 +4,8 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
 <meta name="referrer" content="no-referrer"/>
-<meta name="fit-photo-build" content="V83-20260908-R1"/>
-<title>Fit Photo Capture V83</title>
+<meta name="fit-photo-build" content="V84-20260908-R1"/>
+<title>Fit Photo Capture V84</title>
 <style>
 :root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#17212e;background:#f3f5f8;color-scheme:light}
 *{box-sizing:border-box}body{margin:0;padding:18px 14px 40px;padding-bottom:calc(28px + env(safe-area-inset-bottom))}[hidden]{display:none!important}
@@ -15,7 +15,7 @@ main{max-width:540px;margin:auto}.card{background:#fff;border:1px solid #dde3eb;
 </head>
 <body>
 <main id="mobileCaptureScreen">
-<div class="brand"><div class="logo">F</div><div><h1>Fit Photo Capture</h1><div class="build" id="captureBuild">V83-20260908-R1 &middot; Android + iPhone</div></div></div>
+<div class="brand"><div class="logo">F</div><div><h1>Fit Photo Capture</h1><div class="build" id="captureBuild">V84-20260908-R1 &middot; Android + iPhone</div></div></div>
 <div class="card">
 <span class="badge">PHONE CAPTURE</span><div class="session">Session <strong id="mobileSessionCode">Not connected</strong></div>
 <div class="status" id="connectionStatus" role="status" aria-live="polite">Starting capture page...</div>
@@ -46,6 +46,6 @@ main{max-width:540px;margin:auto}.card{background:#fff;border:1px solid #dde3eb;
 </main>
 <div class="modal" id="cameraDialog" hidden role="dialog" aria-modal="true" aria-labelledby="cameraTitle"><div class="modalCard"><div class="modalHead"><h2 id="cameraTitle">Take Photo</h2><button class="btn" id="cameraCloseBtn" type="button">Close</button></div><video id="cameraVideo" autoplay muted playsinline></video><p id="cameraStatus" role="status" aria-live="polite"></p><button class="btn primary" id="cameraCaptureBtn" type="button" disabled>Capture</button></div></div>
 <div class="modal" id="downloadDialog" hidden role="dialog" aria-modal="true" aria-labelledby="downloadTitle"><div class="modalCard"><div class="modalHead"><h2 id="downloadTitle">Save / Share Original</h2><button class="btn" id="downloadCloseBtn" type="button">Close</button></div><p id="downloadProgressText" role="status" aria-live="polite"></p><label class="field" for="downloadFilename">File name</label><input type="text" id="downloadFilename"/><img id="downloadPreviewImage" alt="Original file preview" hidden/><div id="downloadReadyActions"><div class="row"><a class="btn primary" id="readyDownloadLink" download>Download</a><a class="btn" id="openPreviewLink" target="_blank" rel="noopener noreferrer">Open Preview</a><button class="btn" id="readyShareBtn" type="button">Share / Save</button></div></div><p class="help">Check the browser Downloads / Files. A download request does not prove the device saved the file. In-app or managed browsers may block saving.</p></div></div>
-<script>window.FitCaptureReady=false;setTimeout(function(){if(!window.FitCaptureReady){var s=document.getElementById('connectionStatus');s.setAttribute('data-state','error');s.textContent='The capture script did not start. Deploy the complete V83 ZIP including the assets folder, then open this page in an updated approved browser.';}},5000);</script>
-<script src="assets/capture.v83.js"></script>
+<script>window.FitCaptureReady=false;setTimeout(function(){if(!window.FitCaptureReady){var s=document.getElementById('connectionStatus');s.setAttribute('data-state','error');s.textContent='The capture script did not start. Deploy the complete V84 ZIP including the assets folder, then open this page in an updated approved browser.';}},5000);</script>
+<script src="assets/capture.v84.js"></script>
 </body></html>
