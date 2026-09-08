@@ -2,10 +2,20 @@
 
 <html lang="en">
 <head>
+<meta name="referrer" content="no-referrer"/>
+<meta name="fit-photo-build" content="V83-20260908-R1"/>
+<script id="fit-v83-route">
+(function(){
+ var raw=(location.search+'&'+location.hash.replace(/^#\??/,'')).replace(/&amp;/gi,'&');
+ var capture=/(?:[?&])mode=mobile(?:&|$)/i.test(raw)||/(?:[?&])session=[^&]+/i.test(raw)&&/(?:[?&])token=[^&]+/i.test(raw);
+ window.FitPhotoBuild='V83-20260908-R1';
+ if(capture){var base=location.href.split('#')[0].split('?')[0].replace(/[^/]*$/,'');location.replace(base+'capture.html'+(location.search||'?v=83-20260908-r1')+location.hash);}
+})();
+</script>
 <meta charset="utf-8"/>
 <meta name="referrer" content="no-referrer"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>Fit Photo Studio V82</title>
+<title>Fit Photo Studio V83</title>
 <style>
 :root{
   --bg:#f3f5f7;--panel:#ffffff;--ink:#15171a;--muted:#707782;--line:#dce1e6;
@@ -580,7 +590,7 @@ input[type="color"]{width:42px!important;height:32px!important}
 }
 
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>window.FitPhotoBoot={editor:false};window.addEventListener('error',function(e){if(!window.FitEditor){var t=document.querySelector('#hint');if(t)t.textContent='Editor startup error: '+e.message;}});</script><style id="v70-workspace-fixes">/* V70 final layout layer. Fixed-height workspace, independently scrollable columns. */
 [hidden]{display:none!important}
 .app{height:calc(100vh - 66px);height:calc(100dvh - 66px);min-height:0;align-items:stretch}
@@ -711,9 +721,9 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 .photoLibrary .livePhoto .badge{pointer-events:none!important}
 .libraryDragHint{font-size:8px;color:#64748b;margin:2px 0 5px}
 </style>
-<meta content="Fit Photo Studio V82" property="og:title"/>
-<meta content="Fit Photo Studio V82" name="twitter:title"/>
-<meta content="Fit Photo Studio V82" property="og:site_name"/>
+<meta content="Fit Photo Studio V83" property="og:title"/>
+<meta content="Fit Photo Studio V83" name="twitter:title"/>
+<meta content="Fit Photo Studio V83" property="og:site_name"/>
 <style id="v80-reorder-final">
 .photoLibrary .livePhoto{cursor:grab!important;touch-action:none!important}
 .photoLibrary .livePhoto:active{cursor:grabbing!important}
@@ -929,13 +939,20 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 @media(max-width:800px){body:not(.mobile-mode){overflow-x:auto}.app{min-width:790px}header{min-width:790px}body.mobile-mode header{min-width:0}.v82Modal .row{display:flex;flex-direction:column}.v82Backdrop{padding:10px}}
 
 #endSessionBtn[style*="display:none"],#endSessionBtn[style*="display: none"]{display:none!important}
+</style><style id="v83-qr-style">
+#qrPriority #qrImage{width:170px!important;height:170px!important;max-width:100%!important;cursor:zoom-in;padding:0!important;image-rendering:pixelated}
+#phoneLinkStatus{font-size:9px!important;overflow-wrap:anywhere;margin:4px 0}
+#phoneLinkText{margin-top:5px;min-width:0;font-size:10px!important}
+@media(max-height:760px){#qrPriority #qrImage{width:148px!important;height:148px!important}}
+#largeQRDialog .qrCard{max-width:480px;width:94vw;padding:20px;background:white;border-radius:16px;text-align:center}
+#largeQRImage{width:100%;height:auto;image-rendering:pixelated}
 </style></head>
 <body>
-<script>if(new URLSearchParams(location.search).get("mode")==="mobile")document.body.classList.add("mobile-mode");</script>
+
 <header>
 <div class="brand">
 <div class="logo">F</div>
-<div><h1>Fit Photo Studio</h1><small><strong>V82</strong> · Session-scoped Library · Full Combine Editor</small></div>
+<div><h1>Fit Photo Studio</h1><small><strong>V83-20260908-R1</strong> · Session-scoped Library · Full Combine Editor</small></div>
 </div>
 <div class="topActions">
 <button class="btn" id="newBtn">New</button>
@@ -949,6 +966,9 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="sessionCode" id="sessionNameDisplay">—</div>
 <div class="note" id="sessionCode" style="font-size:8px;color:#94a3b8;margin-top:3px">—</div>
 <img alt="Scan with your phone to join this session" id="qrImage" style="display:none"/>
+<div class="note" id="phoneLinkStatus">V83 phone page</div>
+<button class="btn" id="copyPhoneLinkBtn" type="button" style="width:100%">Copy Phone Link</button>
+<input id="phoneLinkText" type="text" readonly hidden aria-label="Private phone session link"/>
 <div class="syncStatus" id="syncStatus">Waiting for phone…</div>
 </div>
 </div>
@@ -1116,7 +1136,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="section">
 <div class="sectionTitleRow">
 <h2>ANNOTATION STYLE</h2>
-<span class="versionPill">V82</span>
+<span class="versionPill">V83</span>
 </div>
 <div class="prop">
 <label>Color <small><span id="colorText">#000000</span></small></label>
@@ -1139,7 +1159,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 </div>
 </div>
 <div class="section" id="photoAdjustSection">
-<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V82</span></div>
+<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V83</span></div>
 <div class="compactPair">
 <button class="btn" id="cropPhotoBtn">Crop</button>
 <button class="btn" id="rotatePhotoBtn">↻ Rotate 90°</button>
@@ -1198,7 +1218,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <div class="section">
 <div class="sectionTitleRow">
 <h2>ANNOTATION STYLE</h2>
-<span class="versionPill">V82</span>
+<span class="versionPill">V83</span>
 </div>
 <div class="prop">
 <label>Color <small><span id="cAnnoColorText">#000000</span></small></label>
@@ -1222,7 +1242,7 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 </div>
 </div>
 <div class="section" id="combinePhotoAdjustSection">
-<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V82</span></div>
+<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V83</span></div>
 <div class="prop"><label for="cAdjustTarget">Apply to</label><select id="cAdjustTarget"><option value="photo">Selected photo</option><option value="sheet">Entire sheet</option></select></div>
 <div class="compactPair"><button class="btn" id="cCropPhotoBtn">Crop</button><button class="btn" id="cRotatePhotoBtn">↻ Rotate 90°</button></div>
 <div class="prop" style="margin-top:7px"><label>Brightness <small><span id="cBrightnessVal">100</span>%</small></label><input id="cBrightnessRange" type="range" min="40" max="180" value="100"/></div>
@@ -1333,6 +1353,8 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 <video id="cameraVideo" autoplay muted playsinline></video><p id="cameraStatus" role="status" aria-live="polite"></p><button class="btn primary" id="cameraCaptureBtn" type="button" disabled>Capture</button>
 </div></div>
 
+<script src="assets/qr.v83.js"></script>
+<script src="assets/desktop-boot.v83.js"></script>
 <script id="fit-v82-common">
 /* V82 shared services. No backend schema changes, no external image processing. */
 (()=>{
@@ -2687,7 +2709,7 @@ function initAnnotatePhotoInteractions(){
 
 window.addEventListener("resize",()=>{if(loaded)fitPreviewToStage();fitCollageCanvas()});
 initAnnotatePhotoInteractions();
-mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active - V82");window.FitPhotoBoot.editor=true;
+mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active - V83-20260908-R1");window.FitPhotoBoot.editor=true;
 })();
 </script><script id="fit-local-library">
 (()=>{
@@ -2920,16 +2942,19 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 
 </script><script id="fit-photo-sync">
-(() => {
+(async function bootFitSync() {
 window.addEventListener("error",e=>{
   const s=document.querySelector("#createSessionStatus");
   if(s){s.textContent="Tool error: "+(e.message||"Unknown error");s.style.color="#b42318"}
 });
 
 if(!window.supabase?.createClient){
+ try{await window.FitLoadSync();}catch(e){document.querySelector('#createSessionStatus').textContent=e.message;}
+}
+if(!window.supabase?.createClient){
  const msg="Photo sync library could not load. Check your connection and refresh. Local photo editing is still available.";
  document.querySelector("#createSessionStatus").textContent=msg;if(new URLSearchParams(location.search).get("mode")==="mobile"){document.querySelector("#mobileUploadState").textContent=msg;document.querySelector("#mobileUploadState").style.color="#b42318";}
- document.querySelector("#createSessionBtn").onclick=()=>{document.querySelector("#createSessionStatus").textContent=msg;};
+ document.querySelector("#createSessionBtn").onclick=async()=>{const b=document.querySelector("#createSessionBtn");b.disabled=true;document.querySelector("#createSessionStatus").textContent="Retrying sync connection...";try{await bootFitSync();}finally{b.disabled=false;}if(window.FitPhotoSync?.getOriginalArchiveEntries)b.click();};
  return;
 }
 const U="https://qrtfvatqrtliluwtkkxg.supabase.co",K="sb_publishable_tSBEuKB56T01zCJZxIadtw_MD7t6S6N",sb=window.supabase.createClient(U,K,{auth:{persistSession:true,autoRefreshToken:true}});
@@ -2948,82 +2973,8 @@ async function user(){
  return r.data.user;
 }
 async function signed(path){let r=await sb.storage.from(B).createSignedUrl(path,300);if(r.error)throw r.error;return r.data.signedUrl}
-function murl(s,t){let u=new URL(location.href);u.search="";u.searchParams.set("mode","mobile");u.searchParams.set("session",s);u.searchParams.set("token",t);return u.toString()}
+function murl(s,t){const u=new URL('capture.html',location.href);u.search='?v=83-20260908-r1';u.hash='session='+encodeURIComponent(s)+'&token='+encodeURIComponent(t);return u.toString();}
 
-if(mobile){
- document.body.classList.add('mobile-mode');q('#mobileSessionCode').textContent=sid?'Session '+sid:'No session';
- const inp=q('#mobilePhotoInput'),cameraInput=q('#mobileCameraInput'),preview=q('#mobilePreviewImg'),placeholder=q('#mobilePreviewPlaceholder'),status=q('#mobileUploadState'),done=q('#mobileDone');
- const storage={get(k){try{return localStorage.getItem(k);}catch(_){return null;}},set(k,v){try{localStorage.setItem(k,v);}catch(_){}}};
- const prevUrl=storage.get('fitPhotoLastMobileUrl'),prevLabel=storage.get('fitPhotoLastMobileLabel')||'Previous session';
- try{const prev=prevUrl?new URL(prevUrl):null;if(prev&&prev.origin===location.origin&&prev.searchParams.get('mode')==='mobile'&&prev.searchParams.get('session')!==sid){q('#mobilePreviousSession').style.display='block';q('#mobilePreviousLabel').textContent=prevLabel;q('#mobileContinueBtn').onclick=()=>{if(!queue.some(j=>j.state==='queued'||j.state==='uploading'||j.state==='failed')||confirm('Leave this page? Unsaved original files and pending uploads on this phone will be lost.'))location.href=prev.href;};}}catch(_){}
- let ready=false,joining=false,pumping=false,lastJob=null;const queue=[];
- function controls(){inp.disabled=!ready;cameraInput.disabled=!ready;q('#mobileBrowserCameraBtn').disabled=!ready;q('#mobileSaveLastBtn').disabled=!lastJob;q('#mobileShareLastBtn').disabled=!lastJob;}
- function summary(){
-  const uploaded=queue.filter(j=>j.state==='uploaded').length,failed=queue.filter(j=>j.state==='failed').length,waiting=queue.filter(j=>j.state==='queued'||j.state==='uploading').length;
-  if(!ready)return;
-  status.textContent=waiting?uploaded+' uploaded; '+waiting+' in progress'+(failed?'; '+failed+' failed':''):failed?uploaded+' uploaded; '+failed+' failed - use Retry below.':uploaded?uploaded+' photo(s) uploaded to the desktop session.':'Connected. Take a photo or choose images.';
-  status.style.color=failed?'#b42318':waiting?'#2563eb':'#067647';done.style.display=uploaded?'block':'none';done.textContent=uploaded+' photo(s) uploaded to this session.';
- }
- async function join(){
-  if(joining)return;joining=true;ready=false;controls();q('#mobileRetryJoin').hidden=true;status.textContent='Connecting to session...';status.style.color='#2563eb';
-  try{
-   if(!sid||!tok)throw new Error('This link is incomplete. Scan the current QR code on the desktop.');
-   await user();const r=await sb.rpc('join_fit_session',{p_session_id:sid,p_token:tok});
-   if(r.error||!r.data||r.data?.ok===false)throw new Error(r.error?.message||r.data?.message||'This session is invalid or has ended. Scan a new QR code.');
-   ready=true;const label=typeof r.data==='object'&&(r.data.session_name||r.data.name)||'Session '+sid;q('#mobileSessionCode').textContent=label;
-   storage.set('fitPhotoLastMobileUrl',location.href);storage.set('fitPhotoLastMobileLabel',label);summary();void pump();
-  }catch(e){status.textContent='Connection failed: '+(e.message||e);status.style.color='#b42318';q('#mobileRetryJoin').hidden=false;}
-  finally{joining=false;controls();}
- }
- function selectPreview(job){lastJob=job;if(job){preview.src=job.url;preview.style.display='block';placeholder.style.display='none';}else{preview.removeAttribute('src');preview.style.display='none';placeholder.style.display='block';}controls();}
- function renderJob(job){
-  job.status.textContent=job.message||job.state;job.status.className='queueStatus '+(job.state==='uploaded'?'ok':job.state==='failed'?'err':'busy');
-  job.retry.hidden=job.state!=='failed';job.remove.disabled=job.state==='uploading';
- }
- function removeJob(job){const index=queue.indexOf(job);if(index<0||job.state==='uploading')return;queue.splice(index,1);job.row.remove();if(lastJob===job)selectPreview(queue[queue.length-1]||null);URL.revokeObjectURL(job.url);summary();}
- function createJob(file){
-  const job={file,url:URL.createObjectURL(file),state:'queued',message:'Queued',path:null,blob:null,storageDone:false};
-  const row=document.createElement('div');row.className='queueItem';const im=document.createElement('img');im.src=job.url;im.alt='Selected original';im.onclick=()=>selectPreview(job);
-  const meta=document.createElement('div');meta.className='queueMeta';meta.textContent=(file.name||'Camera photo')+' ('+(file.size/1024/1024).toFixed(1)+' MB)';const state=document.createElement('span');meta.append(state);
-  const actions=document.createElement('div');actions.className='row';
-  const save=document.createElement('button');save.type='button';save.className='btn';save.textContent='Save Original';save.onclick=()=>window.FitDownload.show(file,file.name||'camera-original.jpg');
-  const retry=document.createElement('button');retry.type='button';retry.className='btn';retry.textContent='Retry Upload';retry.onclick=()=>{if(job.state!=='failed')return;job.state='queued';job.message='Queued for retry';renderJob(job);void pump();};
-  const remove=document.createElement('button');remove.type='button';remove.className='btn';remove.textContent='Remove';remove.onclick=()=>{if(job.state==='uploaded'||confirm('Remove this unsent photo from the queue? Save Original first to keep a copy.'))removeJob(job);};
-  actions.append(save,retry,remove);row.append(im,meta,actions);q('#uploadQueue').append(row);Object.assign(job,{row,status:state,retry,remove});queue.push(job);renderJob(job);selectPreview(job);return job;
- }
- function enqueue(files){
-  if(!ready){status.textContent='Connect to the session before adding photos.';return;}
-  let bytes=queue.reduce((n,j)=>n+j.file.size,0);
-  for(const file of files){if(queue.length>=100||bytes+file.size>150*1024*1024){status.textContent='The phone queue is full. Save originals, then remove completed photos before adding more.';status.style.color='#b42318';break;}createJob(file);bytes+=file.size;}
-  void pump();
- }
- async function pump(){
-  if(pumping||!ready)return;pumping=true;
-  try{
-   let job;while(ready&&(job=queue.find(j=>j.state==='queued'))){
-    job.state='uploading';job.message='Optimising...';renderJob(job);summary();
-    try{
-     if(!job.blob)job.blob=await window.FitImaging.optimise(job.file);
-     q('#mobileOptimiseStats').textContent='Latest upload: '+Math.round(job.file.size/1024)+' KB original / '+Math.round(job.blob.size/1024)+' KB optimised.';
-     if(!job.path)job.path=sid+'/'+Date.now()+'_'+hex(8)+'.jpg';
-     if(!job.storageDone){job.message='Uploading securely...';renderJob(job);const a=await sb.storage.from(B).upload(job.path,job.blob,{contentType:'image/jpeg',upsert:false});if(a.error&&String(a.error.statusCode||a.error.status)!=='409')throw a.error;job.storageDone=true;}
-     job.message='Registering with this session...';renderJob(job);
-     // Retry the same storage path; never create a second image after metadata failure.
-     const b=await sb.from(T).insert({session_id:sid,photo_path:job.path});if(b.error)throw b.error;
-     job.state='uploaded';job.message='Uploaded. Original remains available below.';
-    }catch(e){job.state='failed';job.message='Not uploaded: '+(e.message||e)+'. Save Original or Retry Upload.';}
-    renderJob(job);summary();
-   }
-  }finally{pumping=false;summary();}
- }
- for(const input of [inp,cameraInput])input.addEventListener('change',e=>{const files=[...(e.target.files||[])];e.target.value='';if(files.length)enqueue(files);});
- q('#mobileBrowserCameraBtn').onclick=()=>{if(ready)window.FitCamera.open(file=>enqueue([file]));};
- q('#mobileRetryJoin').onclick=join;
- q('#mobileSaveLastBtn').onclick=q('#mobileShareLastBtn').onclick=()=>{if(lastJob)window.FitDownload.show(lastJob.file,lastJob.file.name||'camera-original.jpg');};
- window.addEventListener('beforeunload',e=>{if(queue.some(j=>j.state!=='uploaded')){e.preventDefault();e.returnValue='';}});
- window.addEventListener('pagehide',()=>queue.forEach(j=>URL.revokeObjectURL(j.url)));
- controls();void join();return;
-}
 
 let cs=null,ct=null,ch=null,seen=new Set(),sessionRows=new Map(),originalOrder=[];
 const ORIGINAL_ORDER_KEY="fitPhotoOriginalOrderV77";
@@ -3134,7 +3085,11 @@ async function activateSession(s){
  q('#livePhotosPlaceholder').style.display='block';q('#livePhotosStatus').textContent='Connecting to this session...';q('#originalSortStatus').textContent='';
  try{originalOrder=JSON.parse(localStorage.getItem(ORIGINAL_ORDER_KEY+"-"+cs)||"[]");if(!Array.isArray(originalOrder))originalOrder=[]}catch(_){originalOrder=[]}q("#livePhotos").innerHTML="";
  q("#qrPriority").hidden=false;q("#sessionArea").style.display="block";document.querySelector("aside.left").scrollTop=0;q("#sessionNameDisplay").textContent=s.name||("Session "+cs);q("#sessionCode").textContent="ID "+cs;q("#endSessionBtn").style.display="block";
- const mu=murl(cs,ct),qr=q("#qrImage");qr.src="https://quickchart.io/qr?size=150&text="+encodeURIComponent(mu);qr.style.display="block";
+ const mu=murl(cs,ct),qr=q('#qrImage');window.FitPhoneLink=mu;
+  q('#phoneLinkText').value=mu;q('#phoneLinkStatus').textContent='V83 phone page. Tap QR to enlarge.';
+  try{qr.src=window.FitQR.image(mu);qr.style.display='block';qr.onclick=()=>window.FitShowQR(qr.src);}catch(e){qr.style.display='none';q('#phoneLinkStatus').textContent='QR unavailable. Use Copy Phone Link, or deploy the full V83 assets folder.';}
+  q('#copyPhoneLinkBtn').onclick=()=>window.FitCopyPhoneLink(mu);
+  if(!/^https:/.test(mu)&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1')q('#phoneLinkStatus').textContent='Deploy to an HTTPS website first. A local file address cannot be opened from another phone.';
 
  q("#createSessionStatus").textContent=`Active: ${s.name||cs}`;q("#createSessionStatus").style.color="#067647";
  sub();await refreshPhotos();
@@ -3279,5 +3234,7 @@ async function exportCombineBlob(){if(!window.FitEditor?.exportCombinedCanvas)th
 for(const id of ['saveBtn','shareBtn'])document.getElementById(id).onclick=()=>window.FitDownload.prepare(exportAnnotatedBlob,'fit-photo-annotated.png');
 for(const id of ['saveCollage','shareCollage'])document.getElementById(id).onclick=()=>window.FitDownload.prepare(exportCombineBlob,'fit-photo-combined.png');
 
-</script></body>
+</script><div class="v82Backdrop" id="largeQRDialog" hidden role="dialog" aria-modal="true" aria-label="Phone QR code">
+<div class="qrCard"><h3>Scan to open Fit Photo Capture</h3><img id="largeQRImage" alt="Private session QR code"/><p>V83-20260908-R1 - Android and iPhone</p><button class="btn" onclick="document.getElementById('largeQRDialog').hidden=true">Close</button></div></div>
+</body>
 </html>
