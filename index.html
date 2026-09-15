@@ -3,20 +3,19 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta name="referrer" content="no-referrer"/>
+<meta content="no-referrer" name="referrer"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>Fit Photo Studio V85</title>
+<title>Fit Photo Studio V86</title>
 <script id="fit-single-boot">
 (function(){
- window.FitPhotoBuild='V85-20260908-SINGLE';
+ window.FitPhotoBuild='V86-20260915-SINGLE';
  var parts=location.search+'&'+location.hash.replace(/^#/,'&');
  window.FitMobile=/(?:^|[?&])mode=(?:mobile|capture)(?:&|$)/i.test(parts)||(/(?:^|[?&])session=/.test(parts)&&/(?:^|[?&])token=/.test(parts));
  if(window.FitMobile)document.documentElement.classList.add('fit-mobile');
  window.FitPhotoBoot={editor:false};
 })();
 </script>
-<meta name="fit-photo-build" content="V85-20260908-SINGLE"/>
-
+<meta content="V86-20260915-SINGLE" name="fit-photo-build"/>
 <style>
 :root{
   --bg:#f3f5f7;--panel:#ffffff;--ink:#15171a;--muted:#707782;--line:#dce1e6;
@@ -591,7 +590,6 @@ input[type="color"]{width:42px!important;height:32px!important}
 }
 
 </style>
-
 <script>window.FitPhotoBoot={editor:false};window.addEventListener('error',function(e){if(!window.FitEditor){var t=document.querySelector('#hint');if(t)t.textContent='Editor startup error: '+e.message;}});</script><style id="v70-workspace-fixes">/* V70 final layout layer. Fixed-height workspace, independently scrollable columns. */
 [hidden]{display:none!important}
 .app{height:calc(100vh - 66px);height:calc(100dvh - 66px);min-height:0;align-items:stretch}
@@ -722,9 +720,9 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 .photoLibrary .livePhoto .badge{pointer-events:none!important}
 .libraryDragHint{font-size:8px;color:#64748b;margin:2px 0 5px}
 </style>
-<meta content="Fit Photo Studio V85" property="og:title"/>
-<meta content="Fit Photo Studio V85" name="twitter:title"/>
-<meta content="Fit Photo Studio V85" property="og:site_name"/>
+<meta content="Fit Photo Studio V86" property="og:title"/>
+<meta content="Fit Photo Studio V86" name="twitter:title"/>
+<meta content="Fit Photo Studio V86" property="og:site_name"/>
 <style id="v80-reorder-final">
 .photoLibrary .livePhoto{cursor:grab!important;touch-action:none!important}
 .photoLibrary .livePhoto:active{cursor:grabbing!important}
@@ -997,13 +995,27 @@ html.fit-mobile .v82Modal input{font-size:16px!important}
 #combineLibrarySection[hidden],#mobileCaptureScreen [hidden],.v82Backdrop[hidden],.v82Modal [hidden]{display:none!important}
 @media(max-width:360px){html.fit-mobile #mobileCaptureScreen{padding:10px}#mobileCaptureScreen .card{padding:13px}#mobileCaptureScreen h1{font-size:21px!important}}
 </style>
-</head>
+<style id="v86-document-controls">
+/* Canvas paper is independent from photos; controls live outside the exported bitmap. */
+#previewImg{display:none!important}#photoWrap.photo-selected{outline:none!important}
+#photoWrap,#collageCanvasWrap{overflow:visible!important;position:relative!important}
+#photoResizeHandle{transform:translate(-50%,-50%);cursor:nwse-resize;z-index:65!important}
+#annotatePanel .stage,#collagePanel .stage{padding:24px!important;overflow:auto!important;align-items:flex-start!important;justify-content:flex-start!important}
+.v86CanvasHandle{position:absolute!important;z-index:60!important;width:12px!important;height:12px!important;min-width:12px!important;min-height:12px!important;padding:0!important;border:2px solid #bd6407!important;background:#fff4df!important;border-radius:2px!important;touch-action:none;transform:translate(-50%,-50%)}
+.v86CanvasHandle.edge-n{top:0;left:50%;cursor:ns-resize}.v86CanvasHandle.edge-s{top:100%;left:50%;cursor:ns-resize}.v86CanvasHandle.edge-e{left:100%;top:50%;cursor:ew-resize}.v86CanvasHandle.edge-w{left:0;top:50%;cursor:ew-resize}
+.v86CanvasHandle.edge-nw{left:0;top:0;cursor:nwse-resize}.v86CanvasHandle.edge-ne{left:100%;top:0;cursor:nesw-resize}.v86CanvasHandle.edge-sw{left:0;top:100%;cursor:nesw-resize}.v86CanvasHandle.edge-se{left:100%;top:100%;cursor:nwse-resize}
+.v86CurveHandles{position:absolute;inset:0;pointer-events:none;overflow:visible;z-index:72}
+.v86CurveHandle{position:absolute;pointer-events:auto;touch-action:none;transform:translate(-50%,-50%);width:15px;height:15px;min-width:15px;min-height:15px;background:#fff;border:2px solid #7c3aed;border-radius:50%;padding:0;cursor:grab;line-height:12px;font:9px Arial!important}
+.v86CurveHandle.control1,.v86CurveHandle.control2{background:#8b5cf6}.v86CurveHandle.bend{background:#fef3c7;border-radius:2px;transform:translate(-50%,-50%) rotate(45deg)}.v86CurveHandle.rotate{width:20px;height:20px;line-height:16px;background:#fff}
+.v86CurveHelp{margin-top:8px;line-height:1.45!important}.v86CanvasPanel input{width:100%;height:32px}.v86CanvasPanel .btn{padding:0 4px!important}
+.v86GapLabel{display:flex;align-items:center;gap:4px}.v86GapLabel input{width:53px;min-width:0;border:1px solid #dce1e6;border-radius:7px;height:30px}
+</style><style>#mobileCaptureScreen .transferQualityBox{border:1px solid #cddded;background:#f5f9ff;border-radius:12px;padding:12px;margin:12px 0}#mobileCaptureScreen .transferQualityBox label{display:block;font-size:14px!important;font-weight:700;margin-bottom:6px}#mobileCaptureScreen .transferQualityBox select{width:100%;font-size:14px!important;padding:10px}#mobileCaptureScreen .transferQualityBox p{font-size:12px!important;line-height:1.5;margin:8px 0 0}#mobileOptimiseStats{font-size:12px!important;line-height:1.5;overflow-wrap:anywhere}</style></head>
 <body>
 <script>if(window.FitMobile)document.body.classList.add("mobile-mode");</script>
 <header>
 <div class="brand">
 <div class="logo">F</div>
-<div><h1>Fit Photo Studio</h1><small><strong>V85-20260908-SINGLE</strong> · Session-scoped Library · Full Combine Editor</small></div>
+<div><h1>Fit Photo Studio</h1><small><strong>V86-20260915-SINGLE</strong> · Session-scoped Library · Full Combine Editor</small></div>
 </div>
 <div class="topActions">
 <button class="btn" id="newBtn">New</button>
@@ -1016,11 +1028,11 @@ html.fit-mobile .v82Modal input{font-size:16px!important}
 <div class="note">Session</div>
 <div class="sessionCode" id="sessionNameDisplay">—</div>
 <div class="note" id="sessionCode" style="font-size:8px;color:#94a3b8;margin-top:3px">—</div>
-<img alt="Scan with your phone to join this session" id="qrImage" title="Click to enlarge QR" style="display:none;cursor:zoom-in" tabindex="0" role="button"/>
+<img alt="Scan with your phone to join this session" id="qrImage" role="button" style="display:none;cursor:zoom-in" tabindex="0" title="Click to enlarge QR"/>
 <div class="syncStatus" id="syncStatus">Waiting for phone...</div>
-<button class="btn" id="copyPhoneLinkBtn" type="button" style="width:100%;margin-top:5px">Copy Phone Link</button>
+<button class="btn" id="copyPhoneLinkBtn" style="width:100%;margin-top:5px" type="button">Copy Phone Link</button>
 <div class="note" id="phoneLinkStatus" role="status"></div>
-<textarea id="phoneLinkText" rows="3" readonly hidden aria-label="Private phone link"></textarea>
+<textarea aria-label="Private phone link" hidden="" id="phoneLinkText" readonly="" rows="3"></textarea>
 </div>
 </div>
 <div class="section">
@@ -1071,8 +1083,8 @@ html.fit-mobile .v82Modal input{font-size:16px!important}
 </div>
 <button class="btn primary" id="createSessionBtn" style="width:100%">Create Quick Session</button>
 <div class="syncStatus" id="createSessionStatus" style="margin-top:7px"></div>
-<div id="sessionStorageWarning" class="note" role="status" hidden></div>
-<button class="btn" id="retryDesktopConnection" type="button" style="width:100%;margin-top:7px">Retry Connection</button>
+<div class="note" hidden="" id="sessionStorageWarning" role="status"></div>
+<button class="btn" id="retryDesktopConnection" style="width:100%;margin-top:7px" type="button">Retry Connection</button>
 <button class="btn" id="endSessionBtn" style="width:100%;margin-top:7px;display:none;color:#b42318">End Session</button>
 </div>
 <div id="recentSessionsBlock" style="margin-top:12px">
@@ -1105,10 +1117,10 @@ html.fit-mobile .v82Modal input{font-size:16px!important}
 <div class="syncStatus" id="editedPhotosStatus">0 editable photo(s)</div>
 <div class="note" id="editedSessionLabel">Local workspace</div>
 <button class="btn" id="legacyPhotosBtn" style="width:100%;margin-top:5px" type="button">Earlier unassigned photos</button>
-<div class="note" id="legacyPhotosNote" hidden>These older files have no session ID. Opening one does not assign it. Edit Done saves a copy in the current session.</div>
+<div class="note" hidden="" id="legacyPhotosNote">These older files have no session ID. Opening one does not assign it. Edit Done saves a copy in the current session.</div>
 <button class="btn" id="refreshEditedPhotosBtn" style="width:100%;margin-top:6px" type="button">Refresh Saved Photos</button></div>
 <!-- Nonvisual backing nodes retained for the existing Combine editor. -->
-<div id="combineLibrarySection" hidden aria-hidden="true"><div id="thumbList"></div><span id="combineSortStatus"></span><div id="combineLibraryEmpty"></div></div>
+<div aria-hidden="true" hidden="" id="combineLibrarySection"><div id="thumbList"></div><span id="combineSortStatus"></span><div id="combineLibraryEmpty"></div></div>
 </aside>
 <main class="panel center">
 <div id="annotatePanel" style="display:flex;flex-direction:column;height:100%">
@@ -1137,9 +1149,9 @@ html.fit-mobile .v82Modal input{font-size:16px!important}
 <button class="tool" data-tool="dash">┄ Dashed</button>
 <button class="tool" data-tool="circle">○ Circle</button>
 <button class="tool" data-tool="rect">□ Rectangle</button>
-<button class="tool" data-tool="curve">⌒ Curve</button>
+<button class="tool" data-tool="curve">Free curve</button>
 <button class="tool" data-tool="text">T Text</button>
-</div>
+<button class="tool" data-tool="freehand">Free draw</button></div>
 <div class="zoomBar" id="annotateZoomBar">
 <button class="btn" id="zoomOut" title="Zoom out">−</button>
 <button class="btn zoomReadout" id="zoomLevel" title="Reset to 100%">100%</button>
@@ -1150,7 +1162,7 @@ html.fit-mobile .v82Modal input{font-size:16px!important}
 <div id="collagePanel">
 <div class="canvasHead">
 <b>Combined Photo Sheet</b>
-<button class="btn editDoneHeaderBtn" id="combineEditDoneBtn" type="button" title="Save the entire editable sheet in this session">✓ Edit Done</button>
+<button class="btn editDoneHeaderBtn" id="combineEditDoneBtn" title="Save the entire editable sheet in this session" type="button">✓ Edit Done</button>
 </div>
 <div class="stage">
 <div class="collageCanvasWrap" id="collageCanvasWrap" style="position:relative">
@@ -1167,26 +1179,26 @@ html.fit-mobile .v82Modal input{font-size:16px!important}
 <button class="ctool" data-ctool="dash">┄ Dashed</button>
 <button class="ctool" data-ctool="circle">○ Circle</button>
 <button class="ctool" data-ctool="rect">□ Rectangle</button>
-<button class="ctool" data-ctool="curve">⌒ Curve</button>
+<button class="ctool" data-ctool="curve">Free curve</button>
 <button class="ctool" data-ctool="text">T Text</button>
-</div>
+<button class="ctool" data-ctool="freehand">Free draw</button></div>
 <div class="zoomBar" id="combineZoomBar"><button class="btn" id="cZoomOut">−</button><button class="btn zoomReadout" id="cZoomLevel">100%</button><button class="btn" id="cZoomIn">+</button><button class="btn" id="cZoomFit">Fit</button></div>
 <div class="combineLayoutStrip">
 <select id="layoutMode" title="Layout">
 <option selected="" value="row">Horizontal</option>
 <option value="column">Vertical</option>
-</select>
+</select><label class="v86GapLabel">Gap (px) <input aria-label="Gap between photos" id="cLayoutGap" min="0" step="1" type="number" value="0"/></label>
 <button class="btn" id="autoLayout">Auto Arrange</button>
-<button class="btn" id="fitCanvasContent">Fit to Canvas</button>
+<button class="btn" id="fitCanvasContent">Fit content to canvas</button>
 </div>
 </div>
 </main>
 <aside class="panel right">
 <div id="annotateControls">
-<div class="section">
+<div class="section v86CanvasPanel"><div class="sectionTitleRow"><h2>CANVAS SIZE</h2><span class="note" id="aCanvasDimensions"></span></div><div class="canvasSizeGrid"><label>Width (px)<input aria-label="Canvas width" id="aCanvasWidth" inputmode="numeric" min="1" step="1" type="number"/></label><label>Height (px)<input aria-label="Canvas height" id="aCanvasHeight" inputmode="numeric" min="1" step="1" type="number"/></label></div><div class="compactPair" style="margin-top:7px"><button class="btn" id="aCanvasApply">Apply size</button><button class="btn" id="aCanvasTrim">Trim canvas</button></div><div class="note" id="aCanvasStatus" style="margin-top:6px">Drag an orange edge or enter dimensions. Photos stay the same size. Anything outside the canvas is hidden, not deleted.</div><div class="note v86CurveHelp">Curve: drag the purple controls in any direction, the diamond to bend, R to rotate. Drag the line to move it. Free draw follows your mouse / finger.</div></div><div class="section">
 <div class="sectionTitleRow">
 <h2>ANNOTATION STYLE</h2>
-<span class="versionPill">V85</span>
+<span class="versionPill">V86</span>
 </div>
 <div class="prop">
 <label>Color <small><span id="colorText">#000000</span></small></label>
@@ -1209,7 +1221,7 @@ html.fit-mobile .v82Modal input{font-size:16px!important}
 </div>
 </div>
 <div class="section" id="photoAdjustSection">
-<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V85</span></div>
+<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V86</span></div>
 <div class="compactPair">
 <button class="btn" id="cropPhotoBtn">Crop</button>
 <button class="btn" id="rotatePhotoBtn">↻ Rotate 90°</button>
@@ -1265,10 +1277,10 @@ html.fit-mobile .v82Modal input{font-size:16px!important}
 </div>
 </div>
 <div id="collageControls" style="display:none">
-<div class="section">
+<div class="section v86CanvasPanel"><div class="sectionTitleRow"><h2>CANVAS SIZE</h2><span class="note" id="cCanvasDimensions"></span></div><div class="canvasSizeGrid"><label>Width (px)<input aria-label="Canvas width" id="cCanvasWidth" inputmode="numeric" min="1" step="1" type="number"/></label><label>Height (px)<input aria-label="Canvas height" id="cCanvasHeight" inputmode="numeric" min="1" step="1" type="number"/></label></div><div class="compactPair" style="margin-top:7px"><button class="btn" id="cCanvasApply">Apply size</button><button class="btn" id="cCanvasTrim">Trim canvas</button></div><div class="note" id="cCanvasStatus" style="margin-top:6px">Drag an orange edge or enter dimensions. Photos stay the same size. Anything outside the canvas is hidden, not deleted.</div><div class="note v86CurveHelp">Curve: drag the purple controls in any direction, the diamond to bend, R to rotate. Drag the line to move it. Free draw follows your mouse / finger.</div></div><div class="section">
 <div class="sectionTitleRow">
 <h2>ANNOTATION STYLE</h2>
-<span class="versionPill">V85</span>
+<span class="versionPill">V86</span>
 </div>
 <div class="prop">
 <label>Color <small><span id="cAnnoColorText">#000000</span></small></label>
@@ -1292,11 +1304,11 @@ html.fit-mobile .v82Modal input{font-size:16px!important}
 </div>
 </div>
 <div class="section" id="combinePhotoAdjustSection">
-<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V85</span></div>
+<div class="sectionTitleRow"><h2>PHOTO ADJUSTMENT</h2><span class="versionPill">V86</span></div>
 <div class="prop"><label for="cAdjustTarget">Apply to</label><select id="cAdjustTarget"><option value="photo">Selected photo</option><option value="sheet">Entire sheet</option></select></div>
 <div class="compactPair"><button class="btn" id="cCropPhotoBtn">Crop</button><button class="btn" id="cRotatePhotoBtn">↻ Rotate 90°</button></div>
-<div class="prop" style="margin-top:7px"><label>Brightness <small><span id="cBrightnessVal">100</span>%</small></label><input id="cBrightnessRange" type="range" min="40" max="180" value="100"/></div>
-<div class="prop"><label>Contrast <small><span id="cContrastVal">100</span>%</small></label><input id="cContrastRange" type="range" min="40" max="180" value="100"/></div>
+<div class="prop" style="margin-top:7px"><label>Brightness <small><span id="cBrightnessVal">100</span>%</small></label><input id="cBrightnessRange" max="180" min="40" type="range" value="100"/></div>
+<div class="prop"><label>Contrast <small><span id="cContrastVal">100</span>%</small></label><input id="cContrastRange" max="180" min="40" type="range" value="100"/></div>
 <button class="btn" id="cResetPhotoAdjustBtn" style="width:100%">Reset</button>
 <div class="note" id="cPhotoAdjustStatus" style="margin-top:5px">Select a photo on the sheet, or choose Entire sheet. Reset affects brightness / contrast only.</div>
 </div>
@@ -1362,12 +1374,12 @@ html.fit-mobile .v82Modal input{font-size:16px!important}
 </div>
 </div>
 <main class="mobileCaptureScreen" id="mobileCaptureScreen">
-<div class="brand"><div class="logo">F</div><div><h1>Fit Photo Capture</h1><div class="build" id="captureBuild">V85-20260908-SINGLE | Phone Capture</div></div></div>
+<div class="brand"><div class="logo">F</div><div><h1>Fit Photo Capture</h1><div class="build" id="captureBuild">V86-20260915-SINGLE | Phone Capture</div></div></div>
 <div class="card">
 <span class="badge">PHONE CAPTURE</span><div class="session">Session <strong id="mobileSessionCode">Not connected</strong></div>
 <div aria-live="polite" class="status" id="connectionStatus" role="status">Starting capture page...</div>
 <noscript><p class="notice">JavaScript is disabled in this browser. Open this link in your approved browser with JavaScript enabled. Your desktop session link is required to upload photos.</p></noscript>
-<div class="actions" id="mobilePhotoActions">
+<div class="transferQualityBox"><label for="mobileTransferQuality">Upload detail</label><select id="mobileTransferQuality"><option selected="" value="high">High detail - up to 4096 px (default)</option><option value="full">Full dimensions - larger files</option><option value="fast">Smaller file - up to 1800 px</option></select><p id="transferQualityHint">JPEG quality 96. PNG stays PNG. The actual dimensions and file sizes appear after processing. Applies to newly added photos.</p></div><div class="actions" id="mobilePhotoActions">
 <label class="capture primary" id="mobileCameraLabel">Take Photo<input accept="image/*" aria-label="Take a photo with the phone camera" capture="environment" id="mobileCameraInput" type="file"/></label>
 <label class="capture" id="mobileLibraryLabel">Choose Photos<input accept="image/*" aria-label="Choose photos from your phone" id="mobilePhotoInput" multiple="" type="file"/></label>
 <button class="btn" id="mobileBrowserCameraBtn" type="button">Use Browser Camera</button>
@@ -1391,21 +1403,20 @@ html.fit-mobile .v82Modal input{font-size:16px!important}
 </div>
 <details class="card"><summary>Connection diagnostics</summary><pre id="diagnostics"></pre><button class="btn" id="copyDiagnosticsBtn" type="button">Copy Diagnostics</button><p class="help">Diagnostics exclude photos, private links and access tokens.</p></details>
 </main>
-<div class="v82Backdrop" id="downloadDialog" hidden role="dialog" aria-modal="true" aria-labelledby="downloadTitle">
+<div aria-labelledby="downloadTitle" aria-modal="true" class="v82Backdrop" hidden="" id="downloadDialog" role="dialog">
 <div class="v82Modal">
 <div class="sectionTitleRow"><h3 id="downloadTitle">Save / Share File</h3><button class="btn" id="downloadCloseBtn" type="button">Close</button></div>
-<p id="downloadProgressText" role="status" aria-live="polite">Preparing file...</p>
-<label for="downloadFilename">File name</label><input type="text" id="downloadFilename" autocomplete="off"/>
-<img id="downloadPreviewImage" alt="Prepared export preview" hidden/>
-<div id="downloadReadyActions" hidden><div class="row" style="margin-top:12px"><a class="btn primary" id="readyDownloadLink" download>Download</a><a class="btn" id="openPreviewLink" target="_blank" rel="noopener noreferrer">Open Preview</a><button class="btn" id="readyShareBtn" type="button">Share / Save to Files</button></div></div>
+<p aria-live="polite" id="downloadProgressText" role="status">Preparing file...</p>
+<label for="downloadFilename">File name</label><input autocomplete="off" id="downloadFilename" type="text"/>
+<img alt="Prepared export preview" hidden="" id="downloadPreviewImage"/>
+<div hidden="" id="downloadReadyActions"><div class="row" style="margin-top:12px"><a class="btn primary" download="" id="readyDownloadLink">Download</a><a class="btn" id="openPreviewLink" rel="noopener noreferrer" target="_blank">Open Preview</a><button class="btn" id="readyShareBtn" type="button">Share / Save to Files</button></div></div>
 <p class="note">Use this Download button after the file is ready. On a phone, Open Preview also lets you save the image using your browser. Files do not automatically appear in the Photos app. Embedded or managed browsers may block saving; open the same page directly in an approved browser.</p>
 </div></div>
-<div class="v82Backdrop" id="cameraDialog" hidden role="dialog" aria-modal="true" aria-labelledby="cameraTitle">
+<div aria-labelledby="cameraTitle" aria-modal="true" class="v82Backdrop" hidden="" id="cameraDialog" role="dialog">
 <div class="v82Modal"><div class="sectionTitleRow"><h3 id="cameraTitle">Take Photo</h3><button class="btn" id="cameraCloseBtn" type="button">Close</button></div>
-<video id="cameraVideo" autoplay muted playsinline></video><p id="cameraStatus" role="status" aria-live="polite"></p><button class="btn primary" id="cameraCaptureBtn" type="button" disabled>Capture</button>
+<video autoplay="" id="cameraVideo" muted="" playsinline=""></video><p aria-live="polite" id="cameraStatus" role="status"></p><button class="btn primary" disabled="" id="cameraCaptureBtn" type="button">Capture</button>
 </div></div>
-
-<div class="v82Backdrop" id="largeQRDialog" hidden role="dialog" aria-modal="true" aria-labelledby="largeQRTitle"><div class="v82Modal"><div class="sectionTitleRow"><h3 id="largeQRTitle">Scan to take photos</h3><button class="btn" id="largeQRClose" type="button">Close</button></div><img id="largeQRImage" alt="Private session QR" style="display:block;width:min(480px,100%);margin:10px auto"/><p>Keep this private. Anyone with this link can join the photo session.</p></div></div>
+<div aria-labelledby="largeQRTitle" aria-modal="true" class="v82Backdrop" hidden="" id="largeQRDialog" role="dialog"><div class="v82Modal"><div class="sectionTitleRow"><h3 id="largeQRTitle">Scan to take photos</h3><button class="btn" id="largeQRClose" type="button">Close</button></div><img alt="Private session QR" id="largeQRImage" style="display:block;width:min(480px,100%);margin:10px auto"/><p>Keep this private. Anyone with this link can join the photo session.</p></div></div>
 <script id="fit-sync-transport">
 /* Fit Photo V85: small, first-party REST transport for the existing Supabase contracts.
  * Not the Supabase SDK. No CDN, schema changes, admin keys or RLS bypass.
@@ -3028,14 +3039,44 @@ window.FitCopyPhoneLink=function(text){
 };
 })();
 </script>
-<script id="fit-phone-capture">
+<script id="fit-transfer-quality">/* Shared V86 transfer processing. No external image services. Quality is an encoder
+ * setting, not a promised file-size ratio. New queue jobs snapshot their preset. */
+(function(){
+'use strict';
+var profiles={high:{name:'High detail',edge:4096,quality:.96},full:{name:'Full dimensions',edge:0,quality:.98},fast:{name:'Smaller file',edge:1800,quality:.82}};
+function profile(name){return profiles[name]||profiles.high;}
+function draw(source,name,mime){
+ var p=profile(name),w=source.naturalWidth||source.width,h=source.naturalHeight||source.height;if(!w||!h)throw new Error('The photo has no readable pixels.');var scale=p.edge?Math.min(1,p.edge/Math.max(w,h)):1,nw=Math.max(1,Math.round(w*scale)),nh=Math.max(1,Math.round(h*scale));
+ if(nw>32767||nh>32767||nw*nh>64000000)throw new Error('Full dimensions exceed the safe image size. Select High detail and add this photo again. The original is still available.');
+ var c=document.createElement('canvas');c.width=nw;c.height=nh;var x=c.getContext('2d');if(!x)throw new Error('Not enough memory to prepare this photo. Save Original and retry.');
+ if(mime!=='image/png'){x.fillStyle='#fff';x.fillRect(0,0,nw,nh);}x.imageSmoothingEnabled=true;x.imageSmoothingQuality='high';x.drawImage(source,0,0,nw,nh);return {canvas:c,sourceWidth:w,sourceHeight:h,width:nw,height:nh,quality:mime==='image/png'?null:p.quality,preset:name,mime:mime};
+}
+function encode(c,mime,quality){return new Promise(function(resolve,reject){var finished=false,timer=setTimeout(function(){end(new Error('Image encoding timed out. Save Original and retry.'));},30000);function end(err,b){if(finished)return;finished=true;clearTimeout(timer);if(err)reject(err);else resolve(b);}try{c.toBlob(function(b){if(b&&b.size)end(null,b);else end(new Error('The browser could not encode the image. Save Original and retry.'));},mime,quality);}catch(e){end(e);}});}
+async function prepare(file,name){
+ name=profiles[name]?name:'high';if(!(file instanceof Blob)||!file.size)throw new Error('This image is empty.');if(file.size>100*1024*1024)throw new Error('This image exceeds 100 MB. Choose a smaller original.');
+ var png=file.type==='image/png';try{var head=new Uint8Array(await file.slice(0,8).arrayBuffer());png=head[0]===137&&head[1]===80&&head[2]===78&&head[3]===71;}catch(e){}
+ var mime=png?'image/png':'image/jpeg',result=null;
+ if(typeof window.createImageBitmap==='function'){
+  try{var bitmap=await new Promise(function(resolve,reject){var ended=false,timer=setTimeout(function(){ended=true;reject(new Error('Bitmap decoder did not respond.'));},8000);Promise.resolve().then(function(){return createImageBitmap(file);}).then(function(b){if(ended){if(b.close)b.close();return;}ended=true;clearTimeout(timer);resolve(b);},function(e){if(ended)return;ended=true;clearTimeout(timer);reject(e);});});try{result=draw(bitmap,name,mime);}finally{if(bitmap.close)bitmap.close();}}catch(e){if(/exceed the safe/.test(e.message))throw e;}
+ }
+ if(!result)result=await new Promise(function(resolve,reject){
+  var im=new Image(),url=URL.createObjectURL(file),ended=false,reader=null,second=false,timer=setTimeout(function(){end(new Error('Image decoding timed out. Save Original and try JPG/PNG.'));},20000);
+  function end(err){if(ended)return;ended=true;clearTimeout(timer);try{if(reader&&reader.readyState===1)reader.abort();if(err)reject(err);else resolve(draw(im,name,mime));}catch(e){reject(e);}finally{URL.revokeObjectURL(url);im.onload=null;im.onerror=null;}}
+  im.onload=function(){end();};im.onerror=function(){if(second){end(new Error('This browser cannot read the image. Use JPG/PNG, or convert HEIC with the photo app.'));return;}second=true;reader=new FileReader();reader.onerror=function(){end(new Error('The phone did not provide readable image data.'));};reader.onload=function(){if(!ended)im.src=reader.result;};try{reader.readAsDataURL(file);}catch(e){end(e);}};im.src=url;
+ });
+ var c=result.canvas;try{result.blob=await encode(c,mime,profile(name).quality);result.mime=result.blob.type;result.extension=result.mime==='image/png'?'png':'jpg';result.originalBytes=file.size;result.uploadBytes=result.blob.size;return result;}finally{delete result.canvas;c.width=0;c.height=0;}
+}
+function describe(r){return r.sourceWidth+' x '+r.sourceHeight+' -> '+r.width+' x '+r.height+' px | '+(r.mime==='image/png'?'PNG lossless encoding':'JPEG quality '+Math.round(r.quality*100))+' | '+(r.originalBytes/1024/1024).toFixed(2)+' -> '+(r.uploadBytes/1024/1024).toFixed(2)+' MB';}
+window.FitTransfer=Object.freeze({prepare:prepare,describe:describe,profile:function(name){return Object.assign({},profile(name));}});
+})();
+</script><script id="fit-phone-capture">
 /* Fit Photo V85 phone capture. No third-party JavaScript, no desktop editor dependencies.
  * Existing Supabase auth/RPC/storage contracts only; no RLS bypass or schema changes.
  * Uses ES2017 syntax; deliberately avoids optional chaining, :has and replaceChildren.
  */
 (function(){
 'use strict';if(!window.FitMobile)return;
-var BUILD='V85-20260908-SINGLE',API='https://qrtfvatqrtliluwtkkxg.supabase.co',KEY='sb_publishable_tSBEuKB56T01zCJZxIadtw_MD7t6S6N';
+var BUILD='V86-20260915-SINGLE',API='https://qrtfvatqrtliluwtkkxg.supabase.co',KEY='sb_publishable_tSBEuKB56T01zCJZxIadtw_MD7t6S6N';
 var AUTH_KEY='fitPhotoCaptureAuthV83',q=function(id){return document.getElementById(id);};
 var queue=[],ready=false,joining=false,pumping=false,lastJob=null,sessionId='',sessionToken='',lastError='',connectionState='starting',joinSequence=0;
 var auth=null,authPromise=null,storageAvailable=true;
@@ -3051,7 +3092,7 @@ function parseLink(raw){
  if(!/^[a-zA-Z0-9_-]{4,80}$/.test(sid)||!/^[a-zA-Z0-9_-]{8,256}$/.test(token))throw new Error('The session or private token is missing. Scan the current QR or paste Copy Phone Link from the desktop.');
  return {id:sid,token:token};
 }
-function privateURL(){var url=new URL(location.href);url.search='?mode=mobile&v=85-20260908-single';url.hash=sessionId&&sessionToken?'session='+encodeURIComponent(sessionId)+'&token='+encodeURIComponent(sessionToken):'';return url.href;}
+function privateURL(){var url=new URL(location.href);url.search='?mode=mobile&v=86-20260915-single';url.hash=sessionId&&sessionToken?'session='+encodeURIComponent(sessionId)+'&token='+encodeURIComponent(sessionToken):'';return url.href;}
 function diagnostics(){var policy=document.permissionsPolicy||document.featurePolicy,allowed='unknown';try{if(policy&&policy.allowsFeature)allowed=String(policy.allowsFeature('camera'));}catch(e){}var text=[BUILD,'Session link: '+(sessionId&&sessionToken?'present':'missing'),'Connection: '+connectionState,'HTTPS / secure context: '+String(window.isSecureContext),'Browser camera API: '+String(!!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia)),'Camera policy: '+allowed,'Local storage available: '+String(storageAvailable),'Online hint: '+String(navigator.onLine),'Queued photos: '+queue.filter(function(j){return j.state!=='uploaded';}).length,'Browser: '+navigator.userAgent];if(lastError)text.push('Last error: '+lastError);q('diagnostics').textContent=text.join('\n');return text.join('\n');}
 function errorText(e){var message=e&&e.message?e.message:String(e);if(sessionToken)message=message.split(sessionToken).join('[private token]');if(auth&&auth.access_token)message=message.split(auth.access_token).join('[access token]');if(auth&&auth.refresh_token)message=message.split(auth.refresh_token).join('[refresh token]');return message.slice(0,650);}
 function connection(state,message){connectionState=state;q('connectionStatus').setAttribute('data-state',state);q('connectionStatus').textContent=message;diagnostics();}
@@ -3115,7 +3156,7 @@ function renderJob(job){job.status.textContent=job.message;job.status.className=
 function removeJob(job){if(job.state==='uploading')return;var i=queue.indexOf(job);if(i<0)return;queue.splice(i,1);job.row.parentNode.removeChild(job.row);URL.revokeObjectURL(job.url);if(lastJob===job)select(queue[queue.length-1]||null);summary();}
 function button(text,action){var b=document.createElement('button');b.type='button';b.className='btn';b.textContent=text;b.onclick=action;return b;}
 function addJob(file){
- var job={file:file,url:URL.createObjectURL(file),session:sessionId,state:'queued',message:ready?'Queued':'Waiting for connection - not uploaded',storageDone:false,metadataAttempted:false,path:null,blob:null};
+ var job={quality:q('mobileTransferQuality').value,transfer:null,file:file,url:URL.createObjectURL(file),session:sessionId,state:'queued',message:ready?'Queued':'Waiting for connection - not uploaded',storageDone:false,metadataAttempted:false,path:null,blob:null};
  var row=document.createElement('div');row.className='queueItem';var im=document.createElement('img');im.src=job.url;im.alt='Original photo';im.onclick=function(){select(job);};var meta=document.createElement('div');meta.className='queueMeta';meta.textContent=(file.name||'Camera photo')+' ('+(file.size/1024/1024).toFixed(1)+' MB)';var status=document.createElement('span');meta.appendChild(status);var actions=document.createElement('div');actions.className='row';
  var save=button('Save Original',function(){showDownload(file,file.name||'camera-original.jpg');});
  var retry=button('Retry Upload',function(){if(job.state!=='failed')return;job.state='queued';job.message='Queued for retry';renderJob(job);if(!ready)void join();else void pump();});
@@ -3131,24 +3172,7 @@ function enqueue(files){
   addJob(file);total+=file.size;
  });summary();if(rejected.length){q('inputError').hidden=false;q('inputError').textContent=rejected.join(' ');}else q('inputError').hidden=true;if(ready)void pump();
 }
-function imageCanvas(source,max){var w=source.naturalWidth||source.width,h=source.naturalHeight||source.height;if(!w||!h)throw new Error('Photo has no readable pixels.');var sc=Math.min(1,max/Math.max(w,h)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(w*sc));c.height=Math.max(1,Math.round(h*sc));var x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(source,0,0,c.width,c.height);return c;}
-function blobFromCanvas(c,quality){return new Promise(function(resolve,reject){var finished=false,timer=setTimeout(function(){end(new Error('Photo encoding timed out. Save Original and retry with a smaller photo.'));},12000);function end(err,b){if(finished)return;finished=true;clearTimeout(timer);if(err)reject(err);else resolve(b);}try{c.toBlob(function(b){if(b&&b.size)end(null,b);else end(new Error('Photo encoding failed. Save Original and choose JPG/PNG.'));},'image/jpeg',quality);}catch(e){end(e);}});}
-async function optimise(file){
- var canvas=null;
- if(typeof window.createImageBitmap==='function'){
-  try{var bitmap=await new Promise(function(resolve,reject){var finished=false;var timer=setTimeout(function(){finished=true;reject(new Error('Bitmap decoder did not respond.'));},8000);Promise.resolve().then(function(){return createImageBitmap(file);}).then(function(b){if(finished){if(b.close)b.close();return;}finished=true;clearTimeout(timer);resolve(b);},function(e){if(finished)return;finished=true;clearTimeout(timer);reject(e);});});try{canvas=imageCanvas(bitmap,1800);}finally{if(bitmap.close)bitmap.close();}}catch(e){}
- }
- if(!canvas)canvas=await new Promise(function(resolve,reject){
-  var im=new Image(),url=URL.createObjectURL(file),ended=false,reader=null,second=false;
-  var timer=setTimeout(function(){end(new Error('Image decoding timed out. Save Original and try JPG/PNG.'));},20000);
-  function end(err){if(ended)return;ended=true;clearTimeout(timer);try{if(reader&&reader.readyState===1)reader.abort();if(err)reject(err);else resolve(imageCanvas(im,1800));}catch(e){reject(e);}finally{URL.revokeObjectURL(url);im.onload=null;im.onerror=null;}}
-  im.onload=function(){end();};im.onerror=function(){
-   if(second){end(new Error('This browser cannot decode the image. Use JPG/PNG or convert HEIC using the device photo app.'));return;}
-   second=true;reader=new FileReader();reader.onerror=function(){end(new Error('The phone did not provide readable image data. Choose the saved photo from Files.'));};reader.onload=function(){if(!ended)im.src=reader.result;};try{reader.readAsDataURL(file);}catch(e){end(e);}
-  };im.src=url;
- });
- return blobFromCanvas(canvas,.82);
-}
+function blobFromCanvas(c,quality){return new Promise(function(resolve,reject){c.toBlob(function(b){if(b&&b.size)resolve(b);else reject(new Error('The camera image could not be encoded.'));},'image/jpeg',quality);});}
 function randomHex(){var a=new Uint8Array(12);if(!window.crypto||!crypto.getRandomValues)throw new Error('Secure random generation unavailable. Use a supported HTTPS browser.');crypto.getRandomValues(a);return Array.prototype.map.call(a,function(v){return ('0'+v.toString(16)).slice(-2);}).join('');}
 async function alreadyRegistered(job){var rows=await api('/rest/v1/rpc/get_fit_session_photos',{p_session_id:job.session});return Array.isArray(rows)&&rows.some(function(row){return row.photo_path===job.path;});}
 async function pump(){
@@ -3159,12 +3183,12 @@ async function pump(){
    if(!job.session||job.session!==sessionId){job.state='failed';job.message='Not uploaded: this photo belongs to a different or unassigned session. Save Original and add it to the intended session explicitly.';renderJob(job);continue;}
    job.state='uploading';job.message='Optimising...';renderJob(job);summary();
    try{
-    if(!job.blob)job.blob=await optimise(job.file);
-    q('mobileOptimiseStats').textContent='Latest: '+Math.round(job.file.size/1024)+' KB original / '+Math.round(job.blob.size/1024)+' KB upload.';
-    if(!job.path)job.path=job.session+'/'+Date.now()+'_'+randomHex()+'.jpg';
+    if(!job.blob){job.transfer=await window.FitTransfer.prepare(job.file,job.quality);job.blob=job.transfer.blob;}
+    q('mobileOptimiseStats').textContent='Latest upload: '+window.FitTransfer.describe(job.transfer);
+    if(!job.path)job.path=job.session+'/'+Date.now()+'_'+randomHex()+'.'+job.transfer.extension;
     if(!job.storageDone){
      job.message='Uploading securely...';renderJob(job);
-     try{await api('/storage/v1/object/fit-photos/'+job.path,job.blob,{mime:'image/jpeg',timeout:45000,headers:{'x-upsert':'false','cache-control':'3600'}});}
+     try{await api('/storage/v1/object/fit-photos/'+job.path,job.blob,{mime:job.transfer.mime,timeout:90000,headers:{'x-upsert':'false','cache-control':'3600'}});}
      catch(e){if(!((e.status===400||e.status===409)&&/already exists|asset exists|duplicate/i.test(e.message)))throw e;}
      job.storageDone=true;
     }
@@ -3172,7 +3196,7 @@ async function pump(){
     var registered=false;
     if(job.metadataAttempted){try{registered=await alreadyRegistered(job);}catch(e){throw new Error('Could not verify the previous upload. Reconnect and retry to avoid duplicate photos.');}}
     if(!registered){job.metadataAttempted=true;await api('/rest/v1/fit_photos',{session_id:job.session,photo_path:job.path},{headers:{Prefer:'return=minimal'}});}
-    job.state='uploaded';job.message='Uploaded. Original remains available below.';
+    job.state='uploaded';job.message='Uploaded. '+window.FitTransfer.describe(job.transfer)+'. Original remains available below.';
    }catch(e){job.state='failed';job.message='Not uploaded: '+errorText(e)+' Save Original or Retry Upload.';lastError=errorText(e);if(e.status===401||e.status===403){ready=false;connection('error','Upload access was rejected. Reconnect to the current session; originals remain available.');}}
    renderJob(job);summary();
   }
@@ -3213,14 +3237,14 @@ async function openCamera(){
  var timer=setTimeout(function(){if(seq===cameraSequence){cameraSequence++;stop(stream);stream=null;q('cameraVideo').srcObject=null;q('cameraStatus').textContent='Camera permission or preview is pending. Allow access, then close and retry.';}},20000);
  try{
   var s;
-  try{s=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1440}}});}
+  try{s=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:'environment'},width:{ideal:4096},height:{ideal:3072}}});}
   catch(e){if(e.name!=='OverconstrainedError')throw e;s=await navigator.mediaDevices.getUserMedia({audio:false,video:true});}
   if(seq!==cameraSequence){clearTimeout(timer);stop(s);return;}stream=s;var v=q('cameraVideo');v.srcObject=s;await v.play();clearTimeout(timer);if(seq!==cameraSequence)return;q('cameraCaptureBtn').disabled=false;q('cameraStatus').textContent='Position the sample, then tap Capture.';
  }catch(e){clearTimeout(timer);if(seq===cameraSequence){stop(stream);stream=null;q('cameraStatus').textContent=cameraError(e);lastError=cameraError(e);diagnostics();}}
 }
 q('mobileBrowserCameraBtn').onclick=function(){void openCamera();};q('cameraCloseBtn').onclick=closeCamera;
 q('cameraCaptureBtn').onclick=async function(){if(cameraBusy||!stream)return;var v=q('cameraVideo');if(!v.videoWidth){q('cameraStatus').textContent='Camera is not ready yet.';return;}cameraBusy=true;q('cameraCaptureBtn').disabled=true;var seq=cameraSequence;
- try{var c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);var b=await blobFromCanvas(c,.94);if(seq!==cameraSequence)return;closeCamera();enqueue([new File([b],'camera-'+Date.now()+'.jpg',{type:'image/jpeg'})]);}catch(e){q('cameraStatus').textContent=cameraError(e);}finally{cameraBusy=false;if(stream)q('cameraCaptureBtn').disabled=false;}
+ try{var c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);var b=await blobFromCanvas(c,.98);if(seq!==cameraSequence)return;closeCamera();enqueue([new File([b],'camera-'+Date.now()+'.jpg',{type:'image/jpeg'})]);}catch(e){q('cameraStatus').textContent=cameraError(e);}finally{cameraBusy=false;if(stream)q('cameraCaptureBtn').disabled=false;}
 };
 window.addEventListener('beforeunload',function(e){if(queue.some(function(j){return j.state!=='uploaded';})){e.preventDefault();e.returnValue='';}});
 window.addEventListener('pagehide',function(e){closeCamera();if(!e.persisted){queue.forEach(function(j){URL.revokeObjectURL(j.url);});if(downloadURL)URL.revokeObjectURL(downloadURL);retired.forEach(function(u){URL.revokeObjectURL(u);});}});
@@ -3229,7 +3253,7 @@ window.addEventListener('online',function(){if(!ready&&!joining)void join();});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(!q('cameraDialog').hidden)closeCamera();else closeDownload();}});
 q('embeddedNotice').hidden=!(/; wv\)|\bwv\b|MicroMessenger|FBAN|FBAV|Instagram|Line\/|Teams\//i.test(navigator.userAgent));
 try{var parsed=parseLink(location.href);sessionId=parsed.id;sessionToken=parsed.token;q('mobileSessionCode').textContent=sessionId;}catch(e){lastError=errorText(e);}
-window.FitCaptureReady=true;
+q('mobileTransferQuality').onchange=function(){var labels={high:'New photos: up to 4096 px, JPEG quality 96. PNG stays PNG.',full:'New photos: full source dimensions, JPEG quality 98. PNG stays PNG. Larger files take longer.',fast:'New photos: up to 1800 px, JPEG quality 82. Lower detail for a slower connection.'};q('transferQualityHint').textContent=labels[this.value]+' Existing queue jobs keep their original setting.';};window.FitCaptureReady=true;
 // Read-only diagnostics; no token or photo bytes exposed here.
 window.FitCapture=Object.freeze({build:BUILD,diagnostics:diagnostics,status:function(){return {ready:ready,joining:joining,pumping:pumping,connection:connectionState,queued:queue.length,uploaded:queue.filter(function(j){return j.state==='uploaded';}).length};}});
 q('captureBuild').textContent=BUILD+' | Phone Capture';void join();
@@ -3271,7 +3295,7 @@ function filtered(source,brightness=100,contrast=100){
  for(let i=0;i<d.length;i+=4){d[i]=lut[d[i]];d[i+1]=lut[d[i+1]];d[i+2]=lut[d[i+2]];}
  x.putImageData(im,0,0);return c;
 }
-async function optimise(file){const src=await decode(file),sc=Math.min(1,1800/Math.max(src.width,src.height)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(src.width*sc));c.height=Math.max(1,Math.round(src.height*sc));const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(src,0,0,c.width,c.height);return new Promise((res,rej)=>c.toBlob(b=>b?res(b):rej(new Error('The browser could not encode this image.')),'image/jpeg',.82));}
+async function optimise(file){return (await window.FitTransfer.prepare(file,'high')).blob;}
 window.FitImaging=Object.freeze({decode,filtered,cloneCanvas,optimise});
 
 let downloadSeq=0,downloadURL=null,downloadBlob=null,defaultFilename='fit-photo.png',downloadFocus=null;
@@ -3317,7 +3341,7 @@ window.FitCamera=Object.freeze({
   closeCamera();cameraFocus=document.activeElement;const seq=++cameraSeq;cameraCallback=callback;q('#cameraDialog').hidden=false;q('#cameraStatus').textContent='Requesting camera permission...';q('#cameraCloseBtn').focus();
   if(!window.isSecureContext||!navigator.mediaDevices?.getUserMedia){q('#cameraStatus').textContent='Browser camera needs a supported HTTPS page and camera permission. Use Take Photo on your phone or Choose Photos.';return;}
   let timer=setTimeout(()=>{if(seq===cameraSeq){cameraSeq++;q('#cameraStatus').textContent='Camera permission is still pending. Allow access, then close and retry.';}},20000);
-  try{const s=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1440}},audio:false});clearTimeout(timer);if(seq!==cameraSeq){stopStream(s);return;}stream=s;const video=q('#cameraVideo');video.srcObject=s;await video.play();if(seq!==cameraSeq)return;q('#cameraCaptureBtn').disabled=false;q('#cameraStatus').textContent='Position the photo, then select Capture.';}
+  try{const s=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:4096},height:{ideal:3072}},audio:false});clearTimeout(timer);if(seq!==cameraSeq){stopStream(s);return;}stream=s;const video=q('#cameraVideo');video.srcObject=s;await video.play();if(seq!==cameraSeq)return;q('#cameraCaptureBtn').disabled=false;q('#cameraStatus').textContent='Position the photo, then select Capture.';}
   catch(e){clearTimeout(timer);if(seq===cameraSeq){stopStream(stream);stream=null;q('#cameraStatus').textContent=cameraMessage(e);}}
  },close:closeCamera
 });
@@ -3325,7 +3349,7 @@ q('#cameraCloseBtn').onclick=closeCamera;
 q('#cameraCaptureBtn').onclick=async()=>{
  if(cameraBusy||!stream)return;const video=q('#cameraVideo');if(!video.videoWidth){q('#cameraStatus').textContent='Camera is not ready yet.';return;}
  cameraBusy=true;q('#cameraCaptureBtn').disabled=true;const callback=cameraCallback,seq=cameraSeq;
- try{const c=document.createElement('canvas');c.width=video.videoWidth;c.height=video.videoHeight;c.getContext('2d').drawImage(video,0,0);const b=await new Promise((res,rej)=>c.toBlob(b=>b?res(b):rej(new Error('Could not capture this frame.')),'image/jpeg',.94));if(seq!==cameraSeq)return;closeCamera();await callback(new File([b],'camera-'+Date.now()+'.jpg',{type:'image/jpeg'}));}
+ try{const c=document.createElement('canvas');c.width=video.videoWidth;c.height=video.videoHeight;c.getContext('2d').drawImage(video,0,0);const b=await new Promise((res,rej)=>c.toBlob(b=>b?res(b):rej(new Error('Could not capture this frame.')),'image/jpeg',.98));if(seq!==cameraSeq)return;closeCamera();await callback(new File([b],'camera-'+Date.now()+'.jpg',{type:'image/jpeg'}));}
  catch(e){q('#cameraStatus').textContent=cameraMessage(e);}finally{cameraBusy=false;if(stream)q('#cameraCaptureBtn').disabled=false;}
 };
 window.addEventListener('fit:scopechange',()=>{closeCamera();closeDownload();});
@@ -3345,95 +3369,147 @@ const debug=t=>$("#debug").textContent="Debug: "+t;
 const img=$("#previewImg"), cvs=$("#overlay"), ctx=cvs.getContext("2d");
 let loaded=false,objects=[],selected=null,tool="select",temp=null,drag=null,history=[];let annotateTextEditing=false;let annotateZoom=1;let annotateBaseW=0;let annotateBaseH=0;let photoSelected=false;let photoMove=null;let photoResize=null;
 
+// V86: document boundaries, image placement and display zoom are independent.
+let aCanvas=null,aPhoto=null,aBaseScale=1,aVisualCache=null;
+let cCanvasOrigin={x:0,y:0},cBaseScale=null;
+const MAX_CANVAS_PIXELS=64000000,MAX_CANVAS_EDGE=32767;
+function validCanvasSize(w,h){
+ w=Number(w);h=Number(h);
+ if(!Number.isSafeInteger(w)||!Number.isSafeInteger(h)||w<1||h<1)throw new Error('Enter whole-pixel width and height, at least 1 px.');
+ if(w>MAX_CANVAS_EDGE||h>MAX_CANVAS_EDGE||w*h>MAX_CANVAS_PIXELS)throw new Error('This canvas is too large to edit safely. Use at most 64 million pixels and 32767 px per side. No photo was resized.');
+ return {w,h};
+}
+function ensureAGeometry(){if(!aCanvas&&loaded){aCanvas={x:0,y:0,w:img.naturalWidth,h:img.naturalHeight};aPhoto={x:0,y:0,w:img.naturalWidth,h:img.naturalHeight};}}
+function resetAGeometry(){aCanvas={x:0,y:0,w:img.naturalWidth,h:img.naturalHeight};aPhoto={x:0,y:0,w:img.naturalWidth,h:img.naturalHeight};aVisualCache=null;}
+function documentViewport(combine){if(combine)return{x:cCanvasOrigin.x,y:cCanvasOrigin.y,w:cc.width,h:cc.height};ensureAGeometry();return aCanvas?{...aCanvas}:null;}
+function documentScale(combine){const canvas=combine?cc:cvs;const r=canvas.getBoundingClientRect();return r.width/Math.max(1,canvas.width)||1;}
+function worldPoint(e,combine){const canvas=combine?cc:cvs,r=canvas.getBoundingClientRect(),v=documentViewport(combine)||{x:0,y:0};return{x:v.x+(e.clientX-r.left)*canvas.width/Math.max(1,r.width),y:v.y+(e.clientY-r.top)*canvas.height/Math.max(1,r.height)};}
+function inAPhoto(p){return !!aPhoto&&p.x>=aPhoto.x&&p.x<=aPhoto.x+aPhoto.w&&p.y>=aPhoto.y&&p.y<=aPhoto.y+aPhoto.h;}
+function resetBoardPosition(combine){const w=$(combine?'#collageCanvasWrap':'#photoWrap');w.style.removeProperty('margin-left');w.style.removeProperty('margin-top');w.style.setProperty('margin','auto','important');}
+function canvasStatus(combine,text,error=false){const el=$(combine?'#cCanvasStatus':'#aCanvasStatus');if(el){el.textContent=text;el.style.color=error?'#b42318':'#64748b';}}
+function syncCanvasWidgets(combine){
+ const v=documentViewport(combine),prefix=combine?'c':'a';
+ for(const [suffix,value] of [['CanvasWidth',v?.w||''],['CanvasHeight',v?.h||'']]){const el=$('#'+prefix+suffix);if(el&&document.activeElement!==el)el.value=value;}
+ const wrapper=$(combine?'#collageCanvasWrap':'#photoWrap');wrapper.querySelectorAll('.v86CanvasHandle').forEach(el=>el.hidden=!combine&&!loaded);
+ const info=$('#'+prefix+'CanvasDimensions');if(info)info.textContent=v?v.w+' x '+v.h+' px':'Choose a photo first';
+}
+function setCanvasViewport(combine,v,save=true,refit=false){
+ if(!combine&&!loaded)throw new Error('Choose a photo first.');const size=validCanvasSize(v.w,v.h);
+ if(!Number.isFinite(v.x)||!Number.isFinite(v.y))throw new Error('Invalid canvas position.');
+ if(save)(combine?saveCState:saveHistory)();
+ if(combine){cCanvasOrigin={x:v.x,y:v.y};cc.width=size.w;cc.height=size.h;fitCollageCanvas(refit);}
+ else{aCanvas={x:v.x,y:v.y,w:size.w,h:size.h};if(refit)fitPreviewToStage();else applyAnnotateZoom();}
+ syncCanvasWidgets(combine);canvasStatus(combine,'Canvas changed. Photo sizes and annotation sizes are unchanged.');
+}
+function curvePoints(o){
+ if([o.cp1x,o.cp1y,o.cp2x,o.cp2y].every(Number.isFinite))return[{x:o.x1,y:o.y1},{x:o.cp1x,y:o.cp1y},{x:o.cp2x,y:o.cp2y},{x:o.x2,y:o.y2}];
+ const qx=Number.isFinite(o.cx)?o.cx:(o.x1+o.x2)/2,qy=Number.isFinite(o.cy)?o.cy:(o.y1+o.y2)/2;
+ return[{x:o.x1,y:o.y1},{x:o.x1+(qx-o.x1)*2/3,y:o.y1+(qy-o.y1)*2/3},{x:o.x2+(qx-o.x2)*2/3,y:o.y2+(qy-o.y2)*2/3},{x:o.x2,y:o.y2}];
+}
+function ensureCubic(o){const p=curvePoints(o);o.cp1x=p[1].x;o.cp1y=p[1].y;o.cp2x=p[2].x;o.cp2y=p[2].y;delete o.cx;delete o.cy;return o;}
+function seedCurve(o,p){const dx=p.x-o.x1,dy=p.y-o.y1,L=Math.max(1,Math.hypot(dx,dy)),bow=L*.22;o.x2=p.x;o.y2=p.y;o.cp1x=o.x1+dx/3-dy/L*bow;o.cp1y=o.y1+dy/3+dx/L*bow;o.cp2x=o.x1+dx*2/3-dy/L*bow;o.cp2y=o.y1+dy*2/3+dx/L*bow;delete o.cx;delete o.cy;}
+function cubicAt(o,t){const p=curvePoints(o),u=1-t;return{x:u*u*u*p[0].x+3*u*u*t*p[1].x+3*u*t*t*p[2].x+t*t*t*p[3].x,y:u*u*u*p[0].y+3*u*u*t*p[1].y+3*u*t*t*p[2].y+t*t*t*p[3].y};}
+function roots(a,b,c){if(Math.abs(a)<1e-10)return Math.abs(b)<1e-10?[]:[-c/b];const d=b*b-4*a*c;if(d<0)return[];return[(-b+Math.sqrt(d))/(2*a),(-b-Math.sqrt(d))/(2*a)];}
+function curveBounds(o){const p=curvePoints(o),ts=[0,1];for(const k of ['x','y']){const [a,b,c,d]=p.map(v=>v[k]);ts.push(...roots(-a+3*b-3*c+d,2*(a-2*b+c),b-a).filter(t=>t>0&&t<1));}return pointsBounds(ts.map(t=>cubicAt(o,t)));}
+function pointsBounds(ps){if(!ps.length)return{x:0,y:0,w:0,h:0};const x=Math.min(...ps.map(p=>p.x)),y=Math.min(...ps.map(p=>p.y));return{x,y,w:Math.max(...ps.map(p=>p.x))-x,h:Math.max(...ps.map(p=>p.y))-y};}
+function pathBounds(o){return o.type==='curve'?curveBounds(o):pointsBounds(o.points||[{x:o.x1,y:o.y1},{x:o.x2,y:o.y2}]);}
+function traceCurve(x,o){const p=curvePoints(o);x.moveTo(p[0].x,p[0].y);x.bezierCurveTo(p[1].x,p[1].y,p[2].x,p[2].y,p[3].x,p[3].y);}
+function traceFreehand(x,o){const ps=o.points||[];if(!ps.length)return;x.moveTo(ps[0].x,ps[0].y);if(ps.length===1){x.lineTo(ps[0].x+.01,ps[0].y);return;}for(let i=1;i<ps.length-1;i++){const a=ps[i],b=ps[i+1];x.quadraticCurveTo(a.x,a.y,(a.x+b.x)/2,(a.y+b.y)/2);}const last=ps[ps.length-1];x.lineTo(last.x,last.y);}
+function traceFlexible(x,o){if(o.type==='curve')traceCurve(x,o);else traceFreehand(x,o);}
+function transformShape(o,fn){
+ for(const [kx,ky] of [['x1','y1'],['x2','y2'],['cp1x','cp1y'],['cp2x','cp2y'],['cx','cy']])if(Number.isFinite(o[kx])&&Number.isFinite(o[ky])){const p=fn(o[kx],o[ky]);o[kx]=p.x;o[ky]=p.y;}
+ if(o.points)o.points=o.points.map(p=>fn(p.x,p.y));
+}
+function curveHandlePoints(o,scale){const ps=curvePoints(o),b=curveBounds(o),mid=cubicAt(o,.5);return[{part:'start',...ps[0]},{part:'control1',...ps[1]},{part:'control2',...ps[2]},{part:'end',...ps[3]},{part:'bend',...mid},{part:'rotate',x:(ps[0].x+ps[3].x)/2,y:b.y-36/scale}];}
+function curvePartAt(o,p,combine){const scale=documentScale(combine),near=curveHandlePoints(o,scale).map(h=>({...h,d:Math.hypot(h.x-p.x,h.y-p.y)})).filter(h=>h.d<=12/scale).sort((a,b)=>a.d-b.d);return near[0]?.part||null;}
+function moveCurve(o,source,start,p,part){
+ const s=ensureCubic(JSON.parse(JSON.stringify(source))),dx=p.x-start.x,dy=p.y-start.y;Object.assign(o,s);
+ if(part==='rotate'){const mx=(s.x1+s.x2)/2,my=(s.y1+s.y2)/2,da=Math.atan2(p.y-my,p.x-mx)-Math.atan2(start.y-my,start.x-mx),cs=Math.cos(da),sn=Math.sin(da);transformShape(o,(x,y)=>({x:mx+(x-mx)*cs-(y-my)*sn,y:my+(x-mx)*sn+(y-my)*cs}));}
+ else if(part==='control1'){o.cp1x+=dx;o.cp1y+=dy;}
+ else if(part==='control2'){o.cp2x+=dx;o.cp2y+=dy;}
+ else if(part==='bend'){o.cp1x+=dx*4/3;o.cp1y+=dy*4/3;o.cp2x+=dx*4/3;o.cp2y+=dy*4/3;}
+ else if(part==='start'){o.x1+=dx;o.y1+=dy;o.cp1x+=dx;o.cp1y+=dy;}
+ else if(part==='end'){o.x2+=dx;o.y2+=dy;o.cp2x+=dx;o.cp2y+=dy;}
+ else transformShape(o,(x,y)=>({x:x+dx,y:y+dy}));
+}
+function distanceToFlexible(p,o){if(o.type==='freehand'){const ps=o.points||[];let d=Infinity;for(let i=1;i<ps.length;i++)d=Math.min(d,distanceToSegment(p,ps[i-1],ps[i]));return d;}let d=Infinity,last=cubicAt(o,0);for(let i=1;i<=80;i++){const next=cubicAt(o,i/80);d=Math.min(d,distanceToSegment(p,last,next));last=next;}return d;}
+function drawCurveGuides(x,o,combine){const p=curvePoints(o),sc=documentScale(combine);x.save();x.strokeStyle='#8b5cf6';x.lineWidth=1/sc;x.setLineDash([5/sc,4/sc]);x.beginPath();x.moveTo(p[0].x,p[0].y);x.lineTo(p[1].x,p[1].y);x.moveTo(p[3].x,p[3].y);x.lineTo(p[2].x,p[2].y);x.stroke();x.restore();}
+function syncCurveHandles(combine){
+ const wrap=$(combine?'#collageCanvasWrap':'#photoWrap');let layer=wrap.querySelector('.v86CurveHandles');
+ if(!layer){layer=document.createElement('div');layer.className='v86CurveHandles';wrap.append(layer);}
+ const o=combine?(cSel?.kind==='shape'?cObjects.find(x=>x.id===cSel.id):null):objects.find(x=>x.id===selected);
+ if(!o||o.type!=='curve'||(!combine&&!loaded)){layer.hidden=true;return;}layer.hidden=false;
+ const v=documentViewport(combine),scale=documentScale(combine),labels={start:'Start point',end:'End point',control1:'Control 1 - drag in any direction',control2:'Control 2 - drag in any direction',bend:'Bend centre - keep both ends fixed',rotate:'Rotate curve'};
+ for(const h of curveHandlePoints(o,scale)){
+  let b=layer.querySelector('[data-curve-part="'+h.part+'"]');if(!b){b=document.createElement('button');b.type='button';b.className='v86CurveHandle '+h.part;b.dataset.curvePart=h.part;b.setAttribute('aria-label',labels[h.part]);b.title=labels[h.part];b.textContent=h.part==='rotate'?'R':'';layer.append(b);bindCurveHandle(b,combine);}
+  b.dataset.curveId=o.id;b.style.left=((h.x-v.x)*scale)+'px';b.style.top=((h.y-v.y)*scale)+'px';
+ }
+}
+function bindCurveHandle(b,combine){let action=null;
+ b.onpointerdown=e=>{if(e.button!==0||e.isPrimary===false)return;e.preventDefault();e.stopPropagation();const o=(combine?cObjects:objects).find(o=>o.id===b.dataset.curveId);if(!o)return;(combine?saveCState:saveHistory)();action={id:o.id,original:JSON.parse(JSON.stringify(o)),start:worldPoint(e,combine),pointer:e.pointerId};b.setPointerCapture(e.pointerId);};
+ b.onpointermove=e=>{if(!action||e.pointerId!==action.pointer)return;e.preventDefault();const o=(combine?cObjects:objects).find(o=>o.id===action.id);if(!o){action=null;return;}moveCurve(o,action.original,action.start,worldPoint(e,combine),b.dataset.curvePart);(combine?cRender:render)();};
+ const finish=(e,cancel)=>{if(!action||e.pointerId!==action.pointer)return;if(cancel){const o=(combine?cObjects:objects).find(o=>o.id===action.id);if(o){Object.keys(o).forEach(k=>delete o[k]);Object.assign(o,action.original);}(combine?cRender:render)();}action=null;if(b.hasPointerCapture(e.pointerId))b.releasePointerCapture(e.pointerId);};
+ b.onpointerup=e=>finish(e,false);b.onpointercancel=e=>finish(e,true);
+}
+function shapeInkBounds(o,combine){let b=combine?cShapeBounds(o):bounds(o);if(o.type==='text')return b;const pad=(o.width||1)/2;if(o.type==='arrow'){const a=Math.atan2(o.y2-o.y1,o.x2-o.x1),L=combine?Math.max(18,(o.width||1)*4):24+(o.width||1)*2;b=pointsBounds([{x:o.x1,y:o.y1},{x:o.x2,y:o.y2},{x:o.x2-L*Math.cos(a-Math.PI/6),y:o.y2-L*Math.sin(a-Math.PI/6)},{x:o.x2-L*Math.cos(a+Math.PI/6),y:o.y2-L*Math.sin(a+Math.PI/6)}]);}return{x:b.x-pad,y:b.y-pad,w:b.w+pad*2,h:b.h+pad*2};}
+function trimCanvas(combine){
+ if(!combine&&!loaded)return;const bs=combine?[...items.map(it=>({x:it.x,y:it.y,w:it.w,h:it.h})),...textItems.map(cTextBounds),...cObjects.map(o=>shapeInkBounds(o,true))]:[{...aPhoto},...objects.map(o=>shapeInkBounds(o,false))];
+ if(!bs.length){canvasStatus(combine,'Add a photo or annotation first.',true);return;}
+ const x=Math.floor(Math.min(...bs.map(b=>b.x))),y=Math.floor(Math.min(...bs.map(b=>b.y))),right=Math.ceil(Math.max(...bs.map(b=>b.x+b.w))),bottom=Math.ceil(Math.max(...bs.map(b=>b.y+b.h)));
+ try{setCanvasViewport(combine,{x,y,w:Math.max(1,right-x),h:Math.max(1,bottom-y)},true,false);canvasStatus(combine,'Canvas hugs the content with no added margin. White pixels inside a photo are unchanged; use Crop to remove them.');}catch(e){canvasStatus(combine,e.message,true);}
+}
+function bindCanvasHandle(el,combine,edge){let action=null;
+ el.onpointerdown=e=>{if(e.button!==0||e.isPrimary===false||(!combine&&!loaded))return;e.preventDefault();e.stopPropagation();const wrap=$(combine?'#collageCanvasWrap':'#photoWrap'),stage=wrap.parentElement,r=wrap.getBoundingClientRect(),sr=stage.getBoundingClientRect(),cs=getComputedStyle(stage),v=documentViewport(combine);action={pointer:e.pointerId,startX:e.clientX,startY:e.clientY,v,scale:r.width/v.w,wrap,left:r.left-sr.left+stage.scrollLeft-parseFloat(cs.paddingLeft),top:r.top-sr.top+stage.scrollTop-parseFloat(cs.paddingTop),saved:false};el.setPointerCapture(e.pointerId);};
+ el.onpointermove=e=>{if(!action||action.pointer!==e.pointerId)return;e.preventDefault();const s=action,dx=Math.round((e.clientX-s.startX)/s.scale),dy=Math.round((e.clientY-s.startY)/s.scale),v={...s.v};
+  if(edge.includes('e'))v.w=Math.max(1,s.v.w+dx);if(edge.includes('s'))v.h=Math.max(1,s.v.h+dy);
+  if(edge.includes('w')){const shift=Math.min(dx,s.v.w-1);v.x=s.v.x+shift;v.w=s.v.w-shift;}
+  if(edge.includes('n')){const shift=Math.min(dy,s.v.h-1);v.y=s.v.y+shift;v.h=s.v.h-shift;}
+  try{validCanvasSize(v.w,v.h);if(!s.saved){(combine?saveCState:saveHistory)();s.saved=true;}s.wrap.style.setProperty('margin','0','important');s.wrap.style.setProperty('margin-left',s.left+(v.x-s.v.x)*s.scale+'px','important');s.wrap.style.setProperty('margin-top',s.top+(v.y-s.v.y)*s.scale+'px','important');setCanvasViewport(combine,v,false,false);}catch(err){canvasStatus(combine,err.message,true);}
+ };
+ const finish=(e,cancel)=>{if(!action||action.pointer!==e.pointerId)return;const s=action;action=null;if(cancel&&s.saved){setCanvasViewport(combine,s.v,false,false);(combine?cHistory:history).pop();resetBoardPosition(combine);}if(el.hasPointerCapture(e.pointerId))el.releasePointerCapture(e.pointerId);};
+ el.onpointerup=e=>finish(e,false);el.onpointercancel=e=>finish(e,true);
+}
+function initCanvasControls(){
+ for(const combine of [false,true]){
+  const prefix=combine?'c':'a',wrap=$(combine?'#collageCanvasWrap':'#photoWrap');
+  for(const edge of ['n','s','e','w','ne','nw','se','sw']){let el=edge==='se'&&combine?$('#canvasResizeHandle'):null;if(!el){el=document.createElement('button');el.type='button';wrap.append(el);}el.className='v86CanvasHandle edge-'+edge;el.setAttribute('style','');el.dataset.canvasEdge=edge;el.setAttribute('aria-label','Resize canvas '+edge+' without resizing photos');el.title='Canvas boundary only - drag '+edge;bindCanvasHandle(el,combine,edge);}
+  const apply=()=>{try{const v=documentViewport(combine);if(!v)throw new Error('Choose a photo first.');setCanvasViewport(combine,{...v,w:Number($('#'+prefix+'CanvasWidth').value),h:Number($('#'+prefix+'CanvasHeight').value)},true,false);}catch(e){canvasStatus(combine,e.message,true);}};
+  $('#'+prefix+'CanvasApply').onclick=apply;$('#'+prefix+'CanvasTrim').onclick=()=>trimCanvas(combine);
+  for(const suffix of ['CanvasWidth','CanvasHeight'])$('#'+prefix+suffix).onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();apply();}};
+  syncCanvasWidgets(combine);
+ }
+}
+
 function uid(){return Math.random().toString(36).slice(2)+Date.now().toString(36)}
 function color(){return $("#color").value}
 function lineW(){return +$("#lineWidth").value}
 function fontS(){return +$("#fontSize").value}
 let historyBase=null;
-function annotationSnapshot(){if(!loaded)return null;if(!historyBase)historyBase=projectCanvas(img);return {base:historyBase,original:originalCropSource,crop:currentCropRect?{...currentCropRect}:null,objects:JSON.parse(JSON.stringify(objects)),brightness:photoBrightness,contrast:photoContrast};}
+function annotationSnapshot(){if(!loaded)return null;if(!historyBase)historyBase=projectCanvas(img);return {base:historyBase,original:originalCropSource,crop:currentCropRect?{...currentCropRect}:null,objects:JSON.parse(JSON.stringify(objects)),brightness:photoBrightness,contrast:photoContrast,canvas:{...aCanvas},photo:{...aPhoto},viewScale:aBaseScale,zoom:annotateZoom};}
 function saveHistory(){const s=annotationSnapshot();if(s){history.push(s);if(history.length>40)history.shift();}}
-async function undoAnnotation(){const s=history.pop();if(!s)return;const rev=window.FitSessionScope.revision();await displayBaseCanvas(s.base);if(rev!==window.FitSessionScope.revision())return;historyBase=s.base;originalCropSource=s.original;currentCropRect=s.crop;objects=s.objects;photoBrightness=s.brightness;photoContrast=s.contrast;selected=null;temp=null;drag=null;$("#brightnessRange").value=photoBrightness;$("#contrastRange").value=photoContrast;applyPhotoFilter();fitPreviewToStage();render();photoStatus('Undone.');}
+async function undoAnnotation(){const s=history.pop();if(!s)return;const rev=window.FitSessionScope.revision();await displayBaseCanvas(s.base);if(rev!==window.FitSessionScope.revision())return;historyBase=s.base;originalCropSource=s.original;currentCropRect=s.crop;objects=s.objects;photoBrightness=s.brightness;photoContrast=s.contrast;aCanvas={...s.canvas};aPhoto={...s.photo};aBaseScale=s.viewScale;annotateZoom=s.zoom;selected=null;temp=null;drag=null;$('#brightnessRange').value=photoBrightness;$('#contrastRange').value=photoContrast;applyPhotoFilter();applyAnnotateZoom();photoStatus('Undone.');}
 
-function point(e,c=cvs){const r=c.getBoundingClientRect();return{x:(e.clientX-r.left)*c.width/r.width,y:(e.clientY-r.top)*c.height/r.height}}
-
+function point(e,c=cvs){return worldPoint(e,c===cc);}
 function fitPreviewToStage(){
-  const stage=$("#annotatePanel .stage"),wrap=$("#photoWrap");
-  if(!loaded||!stage||!img.naturalWidth||!img.naturalHeight)return;
-  const maxW=Math.max(180,stage.clientWidth-28);
-  const maxH=Math.max(180,stage.clientHeight-28);
-  const scale=Math.min(maxW/img.naturalWidth,maxH/img.naturalHeight,1);
-  annotateBaseW=Math.max(1,Math.floor(img.naturalWidth*scale));
-  annotateBaseH=Math.max(1,Math.floor(img.naturalHeight*scale));
-  annotateZoom=1;
-  applyAnnotateZoom();
-  requestAnimationFrame(()=>{
-    stage.scrollLeft=0;
-    stage.scrollTop=0;
-  });
+ if(!loaded)return;ensureAGeometry();const stage=$('#annotatePanel .stage');
+ aBaseScale=Math.min(Math.max(1,stage.clientWidth-56)/aCanvas.w,Math.max(1,stage.clientHeight-56)/aCanvas.h,1);annotateZoom=1;resetBoardPosition(false);applyAnnotateZoom();stage.scrollLeft=0;stage.scrollTop=0;
 }
-
-
 function applyAnnotateZoom(){
-  if(!loaded||!annotateBaseW||!annotateBaseH)return;
-  annotateZoom=Math.max(.4,Math.min(4,annotateZoom));
-  const dw=Math.max(60,Math.round(annotateBaseW*annotateZoom));
-  const dh=Math.max(60,Math.round(annotateBaseH*annotateZoom));
-  const wrap=$("#photoWrap");
-
-  img.style.setProperty("width",dw+"px","important");
-  img.style.setProperty("height",dh+"px","important");
-  img.style.setProperty("max-width","none","important");
-  img.style.setProperty("max-height","none","important");
-
-  wrap.style.setProperty("width",dw+"px","important");
-  wrap.style.setProperty("height",dh+"px","important");
-  wrap.style.setProperty("max-width","none","important");
-  wrap.style.setProperty("max-height","none","important");
-
-  if(cvs.width!==img.naturalWidth)cvs.width=img.naturalWidth;
-  if(cvs.height!==img.naturalHeight)cvs.height=img.naturalHeight;
-  cvs.style.setProperty("width",dw+"px","important");
-  cvs.style.setProperty("height",dh+"px","important");
-  cvs.style.left="0px";cvs.style.top="0px";
-
-  const z=$("#zoomLevel");
-  if(z)z.textContent=Math.round(annotateZoom*100)+"%";
-  render();
+ if(!loaded)return;ensureAGeometry();annotateZoom=Math.max(.05,Math.min(16,annotateZoom));const scale=aBaseScale*annotateZoom,dw=aCanvas.w*scale,dh=aCanvas.h*scale,wrap=$('#photoWrap');
+ wrap.style.setProperty('width',dw+'px','important');wrap.style.setProperty('height',dh+'px','important');
+ if(cvs.width!==aCanvas.w)cvs.width=aCanvas.w;if(cvs.height!==aCanvas.h)cvs.height=aCanvas.h;
+ cvs.style.setProperty('width',dw+'px','important');cvs.style.setProperty('height',dh+'px','important');
+ $('#zoomLevel').textContent=Math.round(annotateZoom*100)+'%';syncCanvasWidgets(false);render();
 }
-function setAnnotateZoom(z,keepCenter=true){
-  if(!loaded)return;
-  const stage=$("#annotatePanel .stage"),wrap=$("#photoWrap");
-  let centerX=0,centerY=0;
-  if(keepCenter&&stage){
-    centerX=(stage.scrollLeft+stage.clientWidth/2)/Math.max(1,wrap.offsetWidth);
-    centerY=(stage.scrollTop+stage.clientHeight/2)/Math.max(1,wrap.offsetHeight);
-  }
-  annotateZoom=z;
-  applyAnnotateZoom();
-  if(keepCenter&&stage){
-    requestAnimationFrame(()=>{
-      stage.scrollLeft=Math.max(0,centerX*wrap.offsetWidth-stage.clientWidth/2);
-      stage.scrollTop=Math.max(0,centerY*wrap.offsetHeight-stage.clientHeight/2);
-    });
-  }
-}
-function syncOverlay(){
-  cvs.width=img.naturalWidth;cvs.height=img.naturalHeight;
-  requestAnimationFrame(()=>{
-    const ir=img.getBoundingClientRect(),wr=$("#photoWrap").getBoundingClientRect();
-    cvs.style.left=(ir.left-wr.left)+"px";cvs.style.top=(ir.top-wr.top)+"px";
-    cvs.style.width=ir.width+"px";cvs.style.height=ir.height+"px";
-    render();
-  });
-}
+function setAnnotateZoom(z){if(!loaded)return;annotateZoom=z;resetBoardPosition(false);applyAnnotateZoom();}
+function syncOverlay(){applyAnnotateZoom();}
+
 function bounds(o){
-  if(o.type==="text"){ctx.save();ctx.font=`700 ${o.size}px Arial`;const ls=o.text.split("\n"),w=Math.max(30,...ls.map(x=>ctx.measureText(x).width));ctx.restore();return{x:o.x1,y:o.y1,w,h:ls.length*o.size*1.2}}
-  if(o.type==="curve"){
-    const xs=[o.x1,o.x2,o.cx],ys=[o.y1,o.y2,o.cy],x=Math.min(...xs),y=Math.min(...ys);
-    return{x,y,w:Math.max(4,Math.max(...xs)-x),h:Math.max(4,Math.max(...ys)-y)}
-  }
-  return{x:Math.min(o.x1,o.x2),y:Math.min(o.y1,o.y2),w:Math.max(4,Math.abs(o.x2-o.x1)),h:Math.max(4,Math.abs(o.y2-o.y1))}
+ if(o.type==='text'){ctx.save();ctx.font=`700 ${o.size}px Arial`;const ls=o.text.split('\n'),w=Math.max(1,...ls.map(x=>ctx.measureText(x).width));ctx.restore();return{x:o.x1,y:o.y1,w,h:ls.length*o.size*1.2};}
+ if(o.type==='curve'||o.type==='freehand')return pathBounds(o);
+ return{x:Math.min(o.x1,o.x2),y:Math.min(o.y1,o.y2),w:Math.abs(o.x2-o.x1),h:Math.abs(o.y2-o.y1)};
 }
+
 function drawArrow(o){
   ctx.save();ctx.strokeStyle=o.color;ctx.fillStyle=o.color;ctx.lineWidth=o.width;ctx.lineCap="round";
   ctx.beginPath();ctx.moveTo(o.x1,o.y1);ctx.lineTo(o.x2,o.y2);ctx.stroke();
@@ -3447,19 +3523,29 @@ function draw(o,sel=false){
   else if(o.type==="line"||o.type==="dash"){ctx.setLineDash(o.type==="dash"?adaptiveDash(o.width||lineW()):[]);ctx.beginPath();ctx.moveTo(o.x1,o.y1);ctx.lineTo(o.x2,o.y2);ctx.stroke()}
   else if(o.type==="circle"){ctx.beginPath();ctx.ellipse((o.x1+o.x2)/2,(o.y1+o.y2)/2,Math.abs(o.x2-o.x1)/2,Math.abs(o.y2-o.y1)/2,0,0,Math.PI*2);o.fill?ctx.fill():ctx.stroke()}
   else if(o.type==="rect"){if(o.fill)ctx.fillRect(o.x1,o.y1,o.x2-o.x1,o.y2-o.y1);else ctx.strokeRect(o.x1,o.y1,o.x2-o.x1,o.y2-o.y1)}
-  else if(o.type==="curve"){ctx.beginPath();ctx.moveTo(o.x1,o.y1);ctx.quadraticCurveTo(o.cx,o.cy,o.x2,o.y2);ctx.stroke()}
+  else if(o.type==="curve"||o.type==="freehand"){ctx.beginPath();traceFlexible(ctx,o);ctx.stroke()}
   else if(o.type==="text"){ctx.font=`700 ${o.size}px Arial`;ctx.textBaseline="top";o.text.split("\n").forEach((t,i)=>ctx.fillText(t,o.x1,o.y1+i*o.size*1.2))}
   ctx.restore();
-  if(sel){const b=bounds(o);ctx.save();ctx.strokeStyle="#2563eb";ctx.lineWidth=3;ctx.setLineDash([9,6]);ctx.strokeRect(b.x-10,b.y-10,b.w+20,b.h+20);ctx.setLineDash([]);ctx.fillStyle="#fff";ctx.strokeStyle="#2563eb";ctx.lineWidth=3;[[b.x-10,b.y-10],[b.x+b.w+10,b.y+b.h+10]].forEach(([x,y])=>{ctx.beginPath();ctx.arc(x,y,11,0,Math.PI*2);ctx.fill();ctx.stroke()});ctx.restore()}if(sel&&o.type==="curve"){ctx.save();ctx.strokeStyle="#2563eb";ctx.lineWidth=2;ctx.setLineDash([5,5]);ctx.beginPath();ctx.moveTo(o.x1,o.y1);ctx.lineTo(o.cx,o.cy);ctx.lineTo(o.x2,o.y2);ctx.stroke();ctx.setLineDash([]);[[o.x1,o.y1],[o.cx,o.cy],[o.x2,o.y2]].forEach(([x,y],i)=>{ctx.beginPath();ctx.fillStyle=i===1?"#2563eb":"#fff";ctx.strokeStyle="#2563eb";ctx.arc(x,y,i===1?10:8,0,Math.PI*2);ctx.fill();ctx.stroke()});const mx=(o.x1+o.x2)/2,my=(o.y1+o.y2)/2,ang=Math.atan2(o.y2-o.y1,o.x2-o.x1),rx=mx-Math.sin(ang)*48,ry=my+Math.cos(ang)*48;ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(mx,my);ctx.lineTo(rx,ry);ctx.stroke();ctx.setLineDash([]);ctx.beginPath();ctx.fillStyle="#fff";ctx.arc(rx,ry,10,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.restore()}
+  if(sel&&o.type==='curve')drawCurveGuides(ctx,o,false);
+  else if(sel){const b=bounds(o),sc=documentScale(false);ctx.save();ctx.strokeStyle='#2563eb';ctx.lineWidth=1.5/sc;ctx.setLineDash([5/sc,4/sc]);ctx.strokeRect(b.x,b.y,b.w,b.h);ctx.setLineDash([]);ctx.fillStyle='#fff';ctx.fillRect(b.x+b.w-5/sc,b.y+b.h-5/sc,10/sc,10/sc);ctx.strokeRect(b.x+b.w-5/sc,b.y+b.h-5/sc,10/sc,10/sc);ctx.restore();}
 }
-function render(){ctx.clearRect(0,0,cvs.width,cvs.height);objects.forEach(o=>draw(o,o.id===selected));if(temp)draw(temp)}
+
+function render(guides=true){
+ ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,cvs.width,cvs.height);
+ if(!loaded){syncCurveHandles(false);return;}ensureAGeometry();
+ if(!aVisualCache)aVisualCache=currentFilteredCanvas();
+ ctx.save();ctx.fillStyle='#fff';ctx.fillRect(0,0,cvs.width,cvs.height);ctx.translate(-aCanvas.x,-aCanvas.y);ctx.drawImage(aVisualCache,aPhoto.x,aPhoto.y,aPhoto.w,aPhoto.h);
+ objects.forEach(o=>draw(o,guides&&o.id===selected));if(guides&&temp)draw(temp);
+ if(guides&&photoSelected){const sc=documentScale(false);ctx.strokeStyle='#2563eb';ctx.lineWidth=1.5/sc;ctx.setLineDash([]);ctx.strokeRect(aPhoto.x,aPhoto.y,aPhoto.w,aPhoto.h);}
+ ctx.restore();
+ if(guides){syncCurveHandles(false);const h=$('#photoResizeHandle'),sc=documentScale(false);h.style.left=((aPhoto.x+aPhoto.w-aCanvas.x)*sc-13)+'px';h.style.top=((aPhoto.y+aPhoto.h-aCanvas.y)*sc-13)+'px';h.style.right='auto';h.style.bottom='auto';h.style.display=photoSelected?'block':'none';}
+}
 function hit(p){
- const sel=objects.find(x=>x.id===selected);
- if(sel?.type==="curve"){
-  const mx=(sel.x1+sel.x2)/2,my=(sel.y1+sel.y2)/2,a=Math.atan2(sel.y2-sel.y1,sel.x2-sel.x1);
-  if([[sel.x1,sel.y1],[sel.x2,sel.y2],[sel.cx,sel.cy],[mx-Math.sin(a)*48,my+Math.cos(a)*48]].some(([x,y])=>Math.hypot(p.x-x,p.y-y)<28))return sel;
- }
- for(let i=objects.length-1;i>=0;i--){const o=objects[i],b=bounds(o),pad=26;if(p.x>b.x-pad&&p.x<b.x+b.w+pad&&p.y>b.y-pad&&p.y<b.y+b.h+pad)return o}return null}
+ const sel=objects.find(x=>x.id===selected);if(sel?.type==='curve'&&curvePartAt(sel,p,false))return sel;
+ const pad=10/documentScale(false);
+ for(let i=objects.length-1;i>=0;i--){const o=objects[i],b=bounds(o);if(o.type==='curve'||o.type==='freehand'){if(distanceToFlexible(p,o)<=Math.max(pad,(o.width||1)/2))return o;}else if(p.x>b.x-pad&&p.x<b.x+b.w+pad&&p.y>b.y-pad&&p.y<b.y+b.h+pad)return o;}return null;
+}
+
 function setTool(t){tool=t;if(t!=="select")selectPhotoFrame(false);$$(".tool").forEach(b=>b.classList.toggle("active",b.dataset.tool===t));$("#hint").textContent=t==="select"?"Select photo or annotation to move / resize":"Draw "+t+" directly on the photo"}
 
 $("#photoInput").addEventListener("change",async e=>{
@@ -3493,8 +3579,8 @@ function createInlineTextEditor(p){
   input.type="text";
   input.className="liveTextEditor";
   input.placeholder="Type comment and press Enter";
-  input.style.left=((p.x/cvs.width)*rect.width+rect.left-wrect.left)+"px";
-  input.style.top=((p.y/cvs.height)*rect.height+rect.top-wrect.top)+"px";
+  input.style.left=(((p.x-aCanvas.x)/cvs.width)*rect.width+rect.left-wrect.left)+"px";
+  input.style.top=(((p.y-aCanvas.y)/cvs.height)*rect.height+rect.top-wrect.top)+"px";
   input.style.fontSize=Math.max(14,Math.min(34,fontS()*.7))+"px";
   input.style.color=color();
   wrap.appendChild(input);
@@ -3537,49 +3623,43 @@ function createInlineTextEditor(p){
   setTimeout(()=>input.focus(),0);
 }
 
-cvs.addEventListener("mousedown",e=>{if(annotateTextEditing)return;
-  if(!loaded)return;e.preventDefault();const p=point(e);
-  if(tool==="select"){
-    const o=hit(p);selected=o?.id||null;
-    if(!o){selectPhotoFrame(true);render();return;}
-    selectPhotoFrame(false);
-    if(o){saveHistory();const b=bounds(o);let resize=Math.abs(p.x-(b.x+b.w))<40&&Math.abs(p.y-(b.y+b.h))<40,curvePart=null;
-      if(o.type==="curve"){const near=(x,y)=>Math.hypot(p.x-x,p.y-y)<28,mx=(o.x1+o.x2)/2,my=(o.y1+o.y2)/2,ang=Math.atan2(o.y2-o.y1,o.x2-o.x1),rx=mx-Math.sin(ang)*48,ry=my+Math.cos(ang)*48;if(near(rx,ry))curvePart="rotate";else if(near(o.cx,o.cy))curvePart="control";else if(near(o.x1,o.y1))curvePart="start";else if(near(o.x2,o.y2))curvePart="end";resize=false}
-      drag={id:o.id,start:p,orig:JSON.parse(JSON.stringify(o)),resize,curvePart};
-      if(o.color){$("#color").value=o.color;$("#colorText").textContent=o.color.toUpperCase()}
-      if(o.type==="text"){$("#fontSize").value=o.size;$("#fontVal").textContent=Math.round(o.size)}
-      else{$("#lineWidth").value=o.width;$("#lineVal").textContent=Math.round(o.width)}
-      if($("#shapeFill"))$("#shapeFill").checked=!!o.fill
-    }render();return;
-  }
-  if(tool==="text"){
-    createInlineTextEditor(p);
-    return;
-  }
-  saveHistory();temp={id:uid(),type:tool,x1:p.x,y1:p.y,x2:p.x,y2:p.y,color:color(),width:lineW(),fill:$("#shapeFill")?.checked||false};
-  if(tool==="curve"){temp.cx=p.x;temp.cy=p.y}
+function advancePath(o,p,combine){
+ if(o.type==='curve')seedCurve(o,p);
+ else if(o.type==='freehand'){const last=o.points[o.points.length-1];if(Math.hypot(p.x-last.x,p.y-last.y)>=1.5/documentScale(combine)){o.points.push({...p});if(o.points.length>4096)o.points=o.points.filter((v,i)=>i%2===0||i===o.points.length-1);}o.x2=p.x;o.y2=p.y;}
+ else{o.x2=p.x;o.y2=p.y;}
+}
+function newPath(t,p,color,width,fill){const o={id:uid(),type:t,x1:p.x,y1:p.y,x2:p.x,y2:p.y,color,width,fill};if(t==='curve')seedCurve(o,p);if(t==='freehand')o.points=[{...p}];return o;}
+function moveGenericShape(o,source,dx,dy,resize){
+ Object.assign(o,JSON.parse(JSON.stringify(source)));
+ if(resize&&o.type==='freehand'){const b=pathBounds(source),sx=Math.max(.01,(b.w+dx)/Math.max(1,b.w)),sy=Math.max(.01,(b.h+dy)/Math.max(1,b.h));transformShape(o,(x,y)=>({x:b.x+(x-b.x)*sx,y:b.y+(y-b.y)*sy}));}
+ else if(resize){o.x2=source.x2+dx;o.y2=source.y2+dy;}
+ else transformShape(o,(x,y)=>({x:x+dx,y:y+dy}));
+}
+cvs.addEventListener('mousedown',e=>{
+ if(annotateTextEditing||!loaded)return;e.preventDefault();const p=point(e);
+ if(tool==='select'){
+  const o=hit(p);selected=o?.id||null;if(!o){selectPhotoFrame(inAPhoto(p));render();return;}selectPhotoFrame(false);saveHistory();const b=bounds(o),resize=o.type!=='curve'&&Math.hypot(p.x-b.x-b.w,p.y-b.y-b.h)<12/documentScale(false);
+  drag={id:o.id,start:p,orig:JSON.parse(JSON.stringify(o)),resize,curvePart:o.type==='curve'?curvePartAt(o,p,false):null};
+  if(o.color){$('#color').value=o.color;$('#colorText').textContent=o.color.toUpperCase();}if(o.type==='text'){$('#fontSize').value=o.size;$('#fontVal').textContent=Math.round(o.size);}else{$('#lineWidth').value=o.width;$('#lineVal').textContent=Math.round(o.width);}$('#shapeFill').checked=!!o.fill;render();return;
+ }
+ if(tool==='text'){createInlineTextEditor(p);return;}
+ saveHistory();temp=newPath(tool,p,color(),lineW(),$('#shapeFill').checked);
 });
-cvs.addEventListener("mousemove",e=>{
-  if(!temp&&!drag)return;const p=point(e);
-  if(temp){temp.x2=p.x;temp.y2=p.y;if(temp.type==="curve"){const mx=(temp.x1+p.x)/2,my=(temp.y1+p.y)/2,dx=p.x-temp.x1,dy=p.y-temp.y1,L=Math.max(1,Math.hypot(dx,dy));temp.cx=mx-dy/L*Math.min(80,L*.25);temp.cy=my+dx/L*Math.min(80,L*.25)}render();return}
-  const o=objects.find(x=>x.id===drag.id),s=drag.orig,dx=p.x-drag.start.x,dy=p.y-drag.start.y;
-  if(o.type==="curve"){
-    if(drag.curvePart==="rotate"){const mx=(s.x1+s.x2)/2,my=(s.y1+s.y2)/2,a0=Math.atan2(drag.start.y-my,drag.start.x-mx),a1=Math.atan2(p.y-my,p.x-mx),da=a1-a0,cs=Math.cos(da),sn=Math.sin(da),rot=(x,y)=>({x:mx+(x-mx)*cs-(y-my)*sn,y:my+(x-mx)*sn+(y-my)*cs}),a=rot(s.x1,s.y1),bb=rot(s.x2,s.y2),c=rot(s.cx,s.cy);o.x1=a.x;o.y1=a.y;o.x2=bb.x;o.y2=bb.y;o.cx=c.x;o.cy=c.y}else if(drag.curvePart==="control"){o.cx=s.cx+dx;o.cy=s.cy+dy}
-    else if(drag.curvePart==="start"){o.x1=s.x1+dx;o.y1=s.y1+dy}
-    else if(drag.curvePart==="end"){o.x2=s.x2+dx;o.y2=s.y2+dy}
-    else{o.x1=s.x1+dx;o.y1=s.y1+dy;o.x2=s.x2+dx;o.y2=s.y2+dy;o.cx=s.cx+dx;o.cy=s.cy+dy}
-  }else if(drag.resize){if(o.type==="text")o.size=Math.max(10,s.size+dx/4);else{o.x2=s.x2+dx;o.y2=s.y2+dy}}
-  else if(o.type==="text"){o.x1=s.x1+dx;o.y1=s.y1+dy}
-  else{o.x1=s.x1+dx;o.y1=s.y1+dy;o.x2=s.x2+dx;o.y2=s.y2+dy}
-  render()
+cvs.addEventListener('mousemove',e=>{
+ if(!temp&&!drag)return;const p=point(e);if(temp){advancePath(temp,p,false);render();return;}
+ const o=objects.find(x=>x.id===drag.id);if(!o){drag=null;return;}const source=drag.orig,dx=p.x-drag.start.x,dy=p.y-drag.start.y;
+ if(o.type==='curve')moveCurve(o,source,drag.start,p,drag.curvePart);
+ else if(o.type==='text'){o.x1=source.x1+(drag.resize?0:dx);o.y1=source.y1+(drag.resize?0:dy);if(drag.resize)o.size=Math.max(1,source.size+dx/4);}
+ else moveGenericShape(o,source,dx,dy,drag.resize);render();
 });
-["mouseup","mouseleave"].forEach(n=>cvs.addEventListener(n,()=>{if(temp){objects.push(temp);selected=temp.id;temp=null;setTool("select");render()}drag=null}));
+cvs.addEventListener('mouseup',()=>{if(temp){objects.push(temp);selected=temp.id;temp=null;setTool('select');}drag=null;render();});
+
 $$(".tool").forEach(b=>b.onclick=()=>{
   if(!b.dataset.tool)return;
   setTool(b.dataset.tool);
   if(b.dataset.tool==="text"){
     if(!loaded){$("#hint").textContent="Choose a photo first";return;}
-    createInlineTextEditor({x:cvs.width/2,y:cvs.height/2});
+    createInlineTextEditor({x:aCanvas.x+cvs.width/2,y:aCanvas.y+cvs.height/2});
   }
 });
 $("#color").oninput=e=>{const o=objects.find(x=>x.id===selected);$("#colorText").textContent=e.target.value.toUpperCase();if(o){o.color=e.target.value;render()}};
@@ -3927,7 +4007,7 @@ $("#addVoice").onclick=()=>{
   const t=$("#voice").value.trim();
   if(!t||!loaded)return;
   saveHistory();
-  const o={id:uid(),type:"text",x1:cvs.width*.07,y1:cvs.height*.07,text:t,color:color(),size:fontS()};
+  const o={id:uid(),type:"text",x1:aCanvas.x+cvs.width*.07,y1:aCanvas.y+cvs.height*.07,text:t,color:color(),size:fontS()};
   objects.push(o);selected=o.id;render();
 };
 
@@ -3936,13 +4016,15 @@ const cc=$("#collageCanvas"),cx=cc.getContext("2d");
 let items=[],textItems=[],cObjects=[],cSel=null,cDrag=null,cTool="select",cTemp=null,cHistory=[],resizingCanvas=null;let combineTextEditing=false;
 let snapLockX=null,snapLockY=null;
 
-function cPoint(e){const r=cc.getBoundingClientRect();return{x:(e.clientX-r.left)*cc.width/r.width,y:(e.clientY-r.top)*cc.height/r.height}}
-function cDash(w){const sw=Math.max(1,+w||1);return[Math.max(8,sw*3.4),Math.max(8,sw*2.4)]}
-function cShapeBounds(o){if(o.type==="curve"){const xs=[o.x1,o.x2,o.cx],ys=[o.y1,o.y2,o.cy],x=Math.min(...xs),y=Math.min(...ys);return{x,y,w:Math.max(2,Math.max(...xs)-x),h:Math.max(2,Math.max(...ys)-y)}}return{x:Math.min(o.x1,o.x2),y:Math.min(o.y1,o.y2),w:Math.max(2,Math.abs(o.x2-o.x1)),h:Math.max(2,Math.abs(o.y2-o.y1))}}
+function cPoint(e){return worldPoint(e,true);}
+function cDash(w){const sw=Math.max(1,+w||1);return[Math.max(8,sw*3.4),Math.max(8,sw*2.4)];}
+function cShapeBounds(o){if(o.type==='curve'||o.type==='freehand')return pathBounds(o);return{x:Math.min(o.x1,o.x2),y:Math.min(o.y1,o.y2),w:Math.abs(o.x2-o.x1),h:Math.abs(o.y2-o.y1)};}
+
 function cTextBounds(t){const b=cTextLocalBounds(t),a=(t.rotation||0)*Math.PI/180,cs=Math.cos(a),sn=Math.sin(a),p=[[0,0],[b.w,0],[0,b.h],[b.w,b.h]].map(([x,y])=>({x:t.x+x*cs-y*sn,y:t.y+x*sn+y*cs}));const x=Math.min(...p.map(p=>p.x)),y=Math.min(...p.map(p=>p.y));return{x,y,w:Math.max(...p.map(p=>p.x))-x,h:Math.max(...p.map(p=>p.y))-y};}
 function distanceToSegment(p,a,b){const vx=b.x-a.x,vy=b.y-a.y,wx=p.x-a.x,wy=p.y-a.y,c1=vx*wx+vy*wy;if(c1<=0)return Math.hypot(p.x-a.x,p.y-a.y);const c2=vx*vx+vy*vy;if(c2<=c1)return Math.hypot(p.x-b.x,p.y-b.y);const t=c1/c2,px=a.x+t*vx,py=a.y+t*vy;return Math.hypot(p.x-px,p.y-py)}
-function saveCState(){cHistory.push({items:items.map(x=>({...x,crop:x.crop?{...x.crop}:null})),textItems:textItems.map(x=>({...x})),cObjects:cObjects.map(x=>({...x})),width:cc.width,height:cc.height,brightness:sheetBrightness,contrast:sheetContrast});if(cHistory.length>40)cHistory.shift()}
-function undoC(){const s=cHistory.pop();if(!s)return;items=s.items.map(x=>({...x}));textItems=s.textItems.map(x=>({...x}));cObjects=s.cObjects.map(x=>({...x}));cc.width=s.width;cc.height=s.height;sheetBrightness=s.brightness;sheetContrast=s.contrast;cSel=null;cTemp=null;cDrag=null;renderThumbs();fitCollageCanvas();syncCAdjustControls();}
+function saveCState(){cHistory.push({items:items.map(x=>({...x,crop:x.crop?{...x.crop}:null})),textItems:JSON.parse(JSON.stringify(textItems)),cObjects:JSON.parse(JSON.stringify(cObjects)),width:cc.width,height:cc.height,origin:{...cCanvasOrigin},baseScale:cBaseScale,zoom:combineZoom,brightness:sheetBrightness,contrast:sheetContrast});if(cHistory.length>40)cHistory.shift();}
+function undoC(){const s=cHistory.pop();if(!s)return;items=s.items;textItems=s.textItems;cObjects=s.cObjects;cc.width=s.width;cc.height=s.height;cCanvasOrigin={...s.origin};cBaseScale=s.baseScale;combineZoom=s.zoom;sheetBrightness=s.brightness;sheetContrast=s.contrast;cSel=null;cTemp=null;cDrag=null;renderThumbs();fitCollageCanvas();syncCAdjustControls();}
+
 function setCTool(t){cTool=t;document.querySelectorAll("[data-ctool]").forEach(b=>b.classList.toggle("active",b.dataset.ctool===t));$("#collageCanvas").style.cursor=t==="select"?"default":t==="text"?"text":"crosshair"}
 
 function drawCShape(o,selectedShape=false){
@@ -3951,38 +4033,38 @@ function drawCShape(o,selectedShape=false){
  else if(o.type==="arrow"){cx.beginPath();cx.moveTo(o.x1,o.y1);cx.lineTo(o.x2,o.y2);cx.stroke();const a=Math.atan2(o.y2-o.y1,o.x2-o.x1),h=Math.max(18,o.width*4);cx.beginPath();cx.moveTo(o.x2,o.y2);cx.lineTo(o.x2-h*Math.cos(a-Math.PI/6),o.y2-h*Math.sin(a-Math.PI/6));cx.lineTo(o.x2-h*Math.cos(a+Math.PI/6),o.y2-h*Math.sin(a+Math.PI/6));cx.closePath();cx.fill()}
  else if(o.type==="circle"){const b=cShapeBounds(o);cx.beginPath();cx.ellipse(b.x+b.w/2,b.y+b.h/2,b.w/2,b.h/2,0,0,Math.PI*2);o.fill?cx.fill():cx.stroke()}
  else if(o.type==="rect"){const b=cShapeBounds(o);if(o.fill)cx.fillRect(b.x,b.y,b.w,b.h);else cx.strokeRect(b.x,b.y,b.w,b.h)}
- else if(o.type==="curve"){cx.beginPath();cx.moveTo(o.x1,o.y1);cx.quadraticCurveTo(o.cx,o.cy,o.x2,o.y2);cx.stroke()}
+ else if(o.type==="curve"||o.type==="freehand"){cx.beginPath();traceFlexible(cx,o);cx.stroke()}
  cx.restore();
- if(selectedShape){const b=cShapeBounds(o);cx.save();cx.strokeStyle="#2563eb";cx.lineWidth=2;cx.setLineDash([8,6]);cx.strokeRect(b.x-8,b.y-8,b.w+16,b.h+16);cx.setLineDash([]);cx.fillStyle="#fff";cx.strokeStyle="#2563eb";cx.lineWidth=3;cx.beginPath();cx.arc(b.x+b.w+8,b.y+b.h+8,10,0,Math.PI*2);cx.fill();cx.stroke();cx.restore()}if(selectedShape&&o.type==="curve"){cx.save();cx.strokeStyle="#2563eb";cx.lineWidth=2;cx.setLineDash([5,5]);cx.beginPath();cx.moveTo(o.x1,o.y1);cx.lineTo(o.cx,o.cy);cx.lineTo(o.x2,o.y2);cx.stroke();cx.setLineDash([]);[[o.x1,o.y1],[o.cx,o.cy],[o.x2,o.y2]].forEach(([x,y],i)=>{cx.beginPath();cx.fillStyle=i===1?"#2563eb":"#fff";cx.strokeStyle="#2563eb";cx.arc(x,y,i===1?10:8,0,Math.PI*2);cx.fill();cx.stroke()});const mx=(o.x1+o.x2)/2,my=(o.y1+o.y2)/2,ang=Math.atan2(o.y2-o.y1,o.x2-o.x1),rx=mx-Math.sin(ang)*48,ry=my+Math.cos(ang)*48;cx.setLineDash([4,4]);cx.beginPath();cx.moveTo(mx,my);cx.lineTo(rx,ry);cx.stroke();cx.setLineDash([]);cx.beginPath();cx.fillStyle="#fff";cx.arc(rx,ry,10,0,Math.PI*2);cx.fill();cx.stroke();cx.restore()}
+ if(selectedShape&&o.type==='curve')drawCurveGuides(cx,o,true);
+ else if(selectedShape){const b=cShapeBounds(o),sc=documentScale(true);cx.save();cx.strokeStyle='#2563eb';cx.lineWidth=1.5/sc;cx.setLineDash([5/sc,4/sc]);cx.strokeRect(b.x,b.y,b.w,b.h);cx.setLineDash([]);cx.fillStyle='#fff';cx.fillRect(b.x+b.w-5/sc,b.y+b.h-5/sc,10/sc,10/sc);cx.strokeRect(b.x+b.w-5/sc,b.y+b.h-5/sc,10/sc,10/sc);cx.restore();}
 }
 let sheetBrightness=100,sheetContrast=100,combineZoom=1;
 const photoLayer=document.createElement('canvas');
 function cTextLocalBounds(t){cx.save();cx.font=`700 ${t.size}px Arial`;const lines=String(t.text||'').split('\n'),w=Math.max(30,...lines.map(x=>cx.measureText(x).width));cx.restore();return{w,h:lines.length*t.size*1.25};}
 function cDrawText(t){cx.save();cx.translate(t.x,t.y);cx.rotate((t.rotation||0)*Math.PI/180);cx.fillStyle=t.color;cx.font=`700 ${t.size}px Arial`;cx.textBaseline='top';String(t.text||'').split('\n').forEach((line,i)=>cx.fillText(line,0,i*t.size*1.25));cx.restore();}
-function cRender(){
- cx.save();cx.setTransform(1,0,0,1,0,0);cx.clearRect(0,0,cc.width,cc.height);cx.fillStyle='#fff';cx.fillRect(0,0,cc.width,cc.height);
- if(sheetBrightness===100&&sheetContrast===100){items.forEach(it=>cx.drawImage(it.img,it.x,it.y,it.w,it.h));}
- else{
-  if(photoLayer.width!==cc.width)photoLayer.width=cc.width;if(photoLayer.height!==cc.height)photoLayer.height=cc.height;
-  const px=photoLayer.getContext('2d');px.clearRect(0,0,photoLayer.width,photoLayer.height);
-  items.forEach(it=>px.drawImage(it.img,it.x,it.y,it.w,it.h));
-  cx.drawImage(window.FitImaging.filtered(photoLayer,sheetBrightness,sheetContrast),0,0);
- }
- items.forEach(it=>{if(cSel?.kind==='image'&&it.id===cSel.id){cx.save();cx.strokeStyle='#2563eb';cx.lineWidth=4;cx.setLineDash([]);cx.strokeRect(it.x,it.y,it.w,it.h);cx.fillStyle='#fff';cx.beginPath();cx.arc(it.x+it.w,it.y+it.h,14,0,Math.PI*2);cx.fill();cx.stroke();cx.restore();}});
- cObjects.forEach(o=>drawCShape(o,cSel?.kind==='shape'&&o.id===cSel.id));if(cTemp)drawCShape(cTemp,false);
- textItems.forEach(t=>{cDrawText(t);if(cSel?.kind==='text'&&t.id===cSel.id){const b=cTextBounds(t);cx.save();cx.strokeStyle='#2563eb';cx.lineWidth=2;cx.setLineDash([8,6]);cx.strokeRect(b.x-8,b.y-8,b.w+16,b.h+16);cx.setLineDash([]);cx.fillStyle='#fff';cx.beginPath();cx.arc(b.x+b.w+8,b.y+b.h+8,10,0,Math.PI*2);cx.fill();cx.stroke();cx.restore();}});
- cx.restore();
+function cRender(guides=true){
+ cx.save();cx.setTransform(1,0,0,1,0,0);cx.clearRect(0,0,cc.width,cc.height);cx.fillStyle='#fff';cx.fillRect(0,0,cc.width,cc.height);cx.translate(-cCanvasOrigin.x,-cCanvasOrigin.y);
+ if(sheetBrightness===100&&sheetContrast===100)items.forEach(it=>cx.drawImage(it.img,it.x,it.y,it.w,it.h));
+ else{if(photoLayer.width!==cc.width)photoLayer.width=cc.width;if(photoLayer.height!==cc.height)photoLayer.height=cc.height;const px=photoLayer.getContext('2d');px.setTransform(1,0,0,1,0,0);px.clearRect(0,0,cc.width,cc.height);px.save();px.translate(-cCanvasOrigin.x,-cCanvasOrigin.y);items.forEach(it=>px.drawImage(it.img,it.x,it.y,it.w,it.h));px.restore();cx.drawImage(window.FitImaging.filtered(photoLayer,sheetBrightness,sheetContrast),cCanvasOrigin.x,cCanvasOrigin.y);}
+ if(guides)items.forEach(it=>{if(cSel?.kind==='image'&&it.id===cSel.id){const sc=documentScale(true);cx.save();cx.strokeStyle='#2563eb';cx.lineWidth=1.5/sc;cx.strokeRect(it.x,it.y,it.w,it.h);cx.fillStyle='#fff';cx.fillRect(it.x+it.w-19/sc,it.y+it.h-19/sc,12/sc,12/sc);cx.strokeRect(it.x+it.w-19/sc,it.y+it.h-19/sc,12/sc,12/sc);cx.restore();}});
+ cObjects.forEach(o=>drawCShape(o,guides&&cSel?.kind==='shape'&&o.id===cSel.id));if(guides&&cTemp)drawCShape(cTemp);
+ textItems.forEach(t=>{cDrawText(t);if(guides&&cSel?.kind==='text'&&t.id===cSel.id){const b=cTextBounds(t),sc=documentScale(true);cx.save();cx.strokeStyle='#2563eb';cx.lineWidth=1.5/sc;cx.setLineDash([5/sc,4/sc]);cx.strokeRect(b.x,b.y,b.w,b.h);cx.restore();}});
+ cx.restore();if(guides)syncCurveHandles(true);
 }
-function fitCollageCanvas(){
- const stage=$('#collagePanel .stage'),wrap=$('#collageCanvasWrap');if(!stage||!wrap)return;
- const r=stage.getBoundingClientRect(),sc=Math.min(Math.max(100,r.width-28)/cc.width,Math.max(100,r.height-28)/cc.height,1);
- const dw=Math.max(1,Math.round(cc.width*sc*combineZoom)),dh=Math.max(1,Math.round(cc.height*sc*combineZoom));
- cc.style.width=dw+'px';cc.style.height=dh+'px';wrap.style.width=dw+'px';wrap.style.height=dh+'px';
- $('#cZoomLevel').textContent=Math.round(combineZoom*100)+'%';cRender();
+function fitCollageCanvas(refit=false){
+ const stage=$('#collagePanel .stage'),wrap=$('#collageCanvasWrap');if(!stage||!wrap)return;const r=stage.getBoundingClientRect();
+ if(refit||!cBaseScale){cBaseScale=Math.min(Math.max(1,r.width-56)/cc.width,Math.max(1,r.height-56)/cc.height,1);resetBoardPosition(true);}
+ const dw=cc.width*cBaseScale*combineZoom,dh=cc.height*cBaseScale*combineZoom;cc.style.setProperty('width',dw+'px','important');cc.style.setProperty('height',dh+'px','important');wrap.style.setProperty('width',dw+'px','important');wrap.style.setProperty('height',dh+'px','important');$('#cZoomLevel').textContent=Math.round(combineZoom*100)+'%';syncCanvasWidgets(true);cRender();
+}
+function translateCombine(dx,dy){items.forEach(it=>{it.x+=dx;it.y+=dy;});textItems.forEach(t=>{t.x+=dx;t.y+=dy;});cObjects.forEach(o=>transformShape(o,(x,y)=>({x:x+dx,y:y+dy})));}
+function centerCollageContent(){const bs=[...items,...textItems.map(cTextBounds),...cObjects.map(cShapeBounds)];if(!bs.length)return;const b=pointsBounds(bs.flatMap(b=>[{x:b.x,y:b.y},{x:b.x+b.w,y:b.y+b.h}]));translateCombine(cCanvasOrigin.x+(cc.width-b.w)/2-b.x,cCanvasOrigin.y+(cc.height-b.h)/2-b.y);}
+function autoLayout(skipHistory=false){
+ if(!items.length){fitCollageCanvas(true);return;}const vertical=$('#layoutMode').value==='column',gap=Math.max(0,Number($('#cLayoutGap')?.value)||0),next=[];let cursor=0;
+ for(const it of items){next.push({it,x:vertical?0:cursor,y:vertical?cursor:0});cursor+=(vertical?it.h:it.w)+gap;}
+ const all=[...next.map(p=>({x:p.x,y:p.y,w:p.it.w,h:p.it.h})),...textItems.map(cTextBounds),...cObjects.map(o=>shapeInkBounds(o,true))];const x=Math.floor(Math.min(...all.map(b=>b.x))),y=Math.floor(Math.min(...all.map(b=>b.y))),w=Math.max(1,Math.ceil(Math.max(...all.map(b=>b.x+b.w)))-x),h=Math.max(1,Math.ceil(Math.max(...all.map(b=>b.y+b.h)))-y);
+ try{validCanvasSize(w,h);}catch(e){cPhotoStatus(e.message,true);return false;}if(skipHistory!==true)saveCState();next.forEach(p=>{p.it.x=p.x;p.it.y=p.y;});cCanvasOrigin={x,y};cc.width=w;cc.height=h;combineZoom=1;renderThumbs();fitCollageCanvas(true);canvasStatus(true,'Arranged at the existing photo sizes. No outer border added.');return true;
 }
 
-function centerCollageContent(){const bs=[];items.forEach(x=>bs.push({x:x.x,y:x.y,r:x.x+x.w,b:x.y+x.h}));textItems.forEach(t=>{const b=cTextBounds(t);bs.push({x:b.x,y:b.y,r:b.x+b.w,b:b.y+b.h})});cObjects.forEach(o=>{const b=cShapeBounds(o);bs.push({x:b.x,y:b.y,r:b.x+b.w,b:b.y+b.h})});if(!bs.length)return;const minX=Math.min(...bs.map(x=>x.x)),maxX=Math.max(...bs.map(x=>x.r)),minY=Math.min(...bs.map(x=>x.y)),maxY=Math.max(...bs.map(x=>x.b)),dx=cc.width/2-(minX+maxX)/2,dy=cc.height/2-(minY+maxY)/2;items.forEach(x=>{x.x+=dx;x.y+=dy});textItems.forEach(x=>{x.x+=dx;x.y+=dy});cObjects.forEach(x=>{x.x1+=dx;x.x2+=dx;x.y1+=dy;x.y2+=dy;if(x.type==="curve"){x.cx+=dx;x.cy+=dy}})}
-function autoLayout(skipHistory=false){const n=items.length;if(!n){fitCollageCanvas();return}if(skipHistory!==true)saveCState();const mode=$("#layoutMode").value,pad=Math.max(24,cc.width*.025),gap=Math.max(14,cc.width*.015),cols=mode==="column"?1:n,rows=mode==="column"?n:1,cw=(cc.width-pad*2-gap*(cols-1))/cols,ch=(cc.height-pad*2-gap*(rows-1))/rows;items.forEach((it,i)=>{let w,h;if(it.ratio>cw/ch){w=cw;h=w/it.ratio}else{h=ch;w=h*it.ratio}it.x=pad+(i%cols)*(cw+gap)+(cw-w)/2;it.y=pad+Math.floor(i/cols)*(ch+gap)+(ch-h)/2;it.w=w;it.h=h});centerCollageContent();renderThumbs();fitCollageCanvas()}
 let combineGallerySort=window.FitLibrarySort.register('#thumbList',{
  selector:'.thumb[data-item-id]',getId:el=>el.dataset.itemId,
  onCommit(order){
@@ -4012,17 +4094,15 @@ function reorder(id,d){
  const a=items.findIndex(x=>x.id===id),b=a+d;if(a<0||b<0||b>=items.length)return;
  saveCState();[items[a],items[b]]=[items[b],items[a]];autoLayout(true);
 }
-function distanceToCurve(p,o){let best=1e9,prev={x:o.x1,y:o.y1};for(let j=1;j<=24;j++){const t=j/24,u=1-t,cur={x:u*u*o.x1+2*u*t*o.cx+t*t*o.x2,y:u*u*o.y1+2*u*t*o.cy+t*t*o.y2};best=Math.min(best,distanceToSegment(p,prev,cur));prev=cur}return best}
+function distanceToCurve(p,o){return distanceToFlexible(p,o);}
 function cHit(p){
- if(cSel?.kind==="shape"){
-  const o=cObjects.find(x=>x.id===cSel.id);
-  if(o?.type==="curve"){
-   const mx=(o.x1+o.x2)/2,my=(o.y1+o.y2)/2,a=Math.atan2(o.y2-o.y1,o.x2-o.x1);
-   const pts=[[o.x1,o.y1],[o.x2,o.y2],[o.cx,o.cy],[mx-Math.sin(a)*48,my+Math.cos(a)*48]];
-   if(pts.some(([x,y])=>Math.hypot(p.x-x,p.y-y)<28))return{kind:"shape",obj:o,bounds:cShapeBounds(o)};
-  }
- }
- for(let i=textItems.length-1;i>=0;i--){const t=textItems[i],b=cTextBounds(t);if(p.x>b.x-12&&p.x<b.x+b.w+12&&p.y>b.y-12&&p.y<b.y+b.h+12)return{kind:"text",obj:t,bounds:b}}for(let i=cObjects.length-1;i>=0;i--){const o=cObjects[i],b=cShapeBounds(o),tol=Math.max(10,o.width*1.5);if(o.type==="curve"?distanceToCurve(p,o)<=tol:(o.type==="line"||o.type==="dash"||o.type==="arrow")?distanceToSegment(p,{x:o.x1,y:o.y1},{x:o.x2,y:o.y2})<=tol:(p.x>b.x-tol&&p.x<b.x+b.w+tol&&p.y>b.y-tol&&p.y<b.y+b.h+tol))return{kind:"shape",obj:o,bounds:b}}for(let i=items.length-1;i>=0;i--){const o=items[i];if(p.x>o.x&&p.x<o.x+o.w&&p.y>o.y&&p.y<o.y+o.h)return{kind:"image",obj:o,bounds:{x:o.x,y:o.y,w:o.w,h:o.h}}}return null}
+ if(cSel?.kind==='shape'){const o=cObjects.find(x=>x.id===cSel.id);if(o?.type==='curve'&&curvePartAt(o,p,true))return{kind:'shape',obj:o,bounds:cShapeBounds(o)};}
+ const pad=10/documentScale(true);
+ for(let i=textItems.length-1;i>=0;i--){const t=textItems[i],b=cTextBounds(t);if(p.x>b.x-pad&&p.x<b.x+b.w+pad&&p.y>b.y-pad&&p.y<b.y+b.h+pad)return{kind:'text',obj:t,bounds:b};}
+ for(let i=cObjects.length-1;i>=0;i--){const o=cObjects[i],b=cShapeBounds(o),tol=Math.max(pad,o.width/2);if(['curve','freehand'].includes(o.type)?distanceToFlexible(p,o)<=tol:['line','dash','arrow'].includes(o.type)?distanceToSegment(p,{x:o.x1,y:o.y1},{x:o.x2,y:o.y2})<=tol:p.x>b.x-tol&&p.x<b.x+b.w+tol&&p.y>b.y-tol&&p.y<b.y+b.h+tol)return{kind:'shape',obj:o,bounds:b};}
+ for(let i=items.length-1;i>=0;i--){const o=items[i],sc=documentScale(true);if(p.x>=o.x-pad&&p.x<=o.x+o.w+pad&&p.y>=o.y-pad&&p.y<=o.y+o.h+pad)return{kind:'image',obj:o,bounds:{x:o.x,y:o.y,w:o.w,h:o.h}};}return null;
+}
+
 function createCInlineText(p){
   if(combineTextEditing)return;
   combineTextEditing=true;
@@ -4036,8 +4116,8 @@ function createCInlineText(p){
   input.type="text";
   input.className="liveTextEditor";
   input.placeholder="Type comment and press Enter";
-  input.style.left=((p.x/cc.width)*rect.width+rect.left-wrect.left)+"px";
-  input.style.top=((p.y/cc.height)*rect.height+rect.top-wrect.top)+"px";
+  input.style.left=(((p.x-cCanvasOrigin.x)/cc.width)*rect.width+rect.left-wrect.left)+"px";
+  input.style.top=(((p.y-cCanvasOrigin.y)/cc.height)*rect.height+rect.top-wrect.top)+"px";
   input.style.fontSize=Math.max(14,Math.min(34,(+$("#cTextSize").value)*.7))+"px";
   input.style.color=$("#cAnnoColor").value;
   wrap.appendChild(input);
@@ -4084,27 +4164,38 @@ $("#collageInput").onchange=async e=>{const files=[...(e.target.files||[])];e.ta
 document.querySelectorAll("[data-ctool]").forEach(b=>b.onclick=()=>{
   setCTool(b.dataset.ctool);
   if(b.dataset.ctool==="text"){
-    createCInlineText({x:cc.width/2,y:cc.height/2});
+    createCInlineText({x:cCanvasOrigin.x+cc.width/2,y:cCanvasOrigin.y+cc.height/2});
   }
 });
-cc.onmousedown=e=>{if(combineTextEditing)return;const p=cPoint(e);snapLockX=null;snapLockY=null;if(["arrow","line","dash","circle","rect","curve"].includes(cTool)){cTemp={id:uid(),type:cTool,x1:p.x,y1:p.y,x2:p.x,y2:p.y,color:$("#cAnnoColor").value,width:+$("#cLineWidth").value,fill:$("#cShapeFill")?.checked||false};if(cTool==="curve"){cTemp.cx=p.x;cTemp.cy=p.y}return}if(cTool==="text"){createCInlineText(p);return}const hit=cHit(p);cSel=hit?{kind:hit.kind,id:hit.obj.id}:null;syncCAdjustControls();if(!hit){cRender();return}saveCState();const b=hit.bounds;let resize=Math.hypot(p.x-(b.x+b.w+8),p.y-(b.y+b.h+8))<35,curvePart=null;if(hit.kind==="shape"&&hit.obj.type==="curve"){const o=hit.obj,near=(x,y)=>Math.hypot(p.x-x,p.y-y)<28,mx=(o.x1+o.x2)/2,my=(o.y1+o.y2)/2,ang=Math.atan2(o.y2-o.y1,o.x2-o.x1),rx=mx-Math.sin(ang)*48,ry=my+Math.cos(ang)*48;if(near(rx,ry))curvePart="rotate";else if(near(o.cx,o.cy))curvePart="control";else if(near(o.x1,o.y1))curvePart="start";else if(near(o.x2,o.y2))curvePart="end";resize=false}cDrag={kind:hit.kind,id:hit.obj.id,start:p,orig:{...hit.obj},resize,curvePart};if(hit.kind==="shape"){$("#cAnnoColor").value=hit.obj.color;$("#cAnnoColorText").textContent=hit.obj.color.toUpperCase();$("#cLineWidth").value=hit.obj.width;$("#cLineWidthVal").textContent=Math.round(hit.obj.width);$("#cShapeFill").checked=!!hit.obj.fill}if(hit.kind==="text"){$("#collageText").value=hit.obj.text;$("#cTextSize").value=hit.obj.size;$("#cTextSizeVal").textContent=Math.round(hit.obj.size);$("#cTextColor").value=hit.obj.color}cRender()};
-cc.onmousemove=e=>{const p=cPoint(e);if(cTemp){cTemp.x2=p.x;cTemp.y2=p.y;if(cTemp.type==="curve"){const mx=(cTemp.x1+p.x)/2,my=(cTemp.y1+p.y)/2,dx=p.x-cTemp.x1,dy=p.y-cTemp.y1,L=Math.max(1,Math.hypot(dx,dy));cTemp.cx=mx-dy/L*Math.min(80,L*.25);cTemp.cy=my+dx/L*Math.min(80,L*.25)}cRender();return}if(!cDrag)return;const dx=p.x-cDrag.start.x,dy=p.y-cDrag.start.y;if(cDrag.kind==="image"){const o=items.find(x=>x.id===cDrag.id),s=cDrag.orig;if(cDrag.resize){const sc=Math.max(.12,Math.max((s.w+dx)/s.w,(s.h+dy)/s.h));o.w=Math.max(70,s.w*sc);o.h=o.w/o.ratio}else{o.x=s.x+dx;o.y=s.y+dy}}else if(cDrag.kind==="text"){const o=textItems.find(x=>x.id===cDrag.id),s=cDrag.orig;if(cDrag.resize)o.size=Math.max(10,s.size+dx/4);else{o.x=s.x+dx;o.y=s.y+dy}}else{const o=cObjects.find(x=>x.id===cDrag.id),s=cDrag.orig;if(o.type==="curve"){if(cDrag.curvePart==="rotate"){const mx=(s.x1+s.x2)/2,my=(s.y1+s.y2)/2,a0=Math.atan2(cDrag.start.y-my,cDrag.start.x-mx),a1=Math.atan2(p.y-my,p.x-mx),da=a1-a0,cs=Math.cos(da),sn=Math.sin(da),rot=(x,y)=>({x:mx+(x-mx)*cs-(y-my)*sn,y:my+(x-mx)*sn+(y-my)*cs}),a=rot(s.x1,s.y1),bb=rot(s.x2,s.y2),c=rot(s.cx,s.cy);o.x1=a.x;o.y1=a.y;o.x2=bb.x;o.y2=bb.y;o.cx=c.x;o.cy=c.y}else if(cDrag.curvePart==="control"){o.cx=s.cx+dx;o.cy=s.cy+dy}else if(cDrag.curvePart==="start"){o.x1=s.x1+dx;o.y1=s.y1+dy}else if(cDrag.curvePart==="end"){o.x2=s.x2+dx;o.y2=s.y2+dy}else{o.x1=s.x1+dx;o.x2=s.x2+dx;o.y1=s.y1+dy;o.y2=s.y2+dy;o.cx=s.cx+dx;o.cy=s.cy+dy}}else if(cDrag.resize){o.x2=s.x2+dx;o.y2=s.y2+dy}else{o.x1=s.x1+dx;o.x2=s.x2+dx;o.y1=s.y1+dy;o.y2=s.y2+dy}}cRender()};
-cc.onmouseup=e=>{if(cTemp){const p=cPoint(e);cTemp.x2=p.x;cTemp.y2=p.y;if(Math.hypot(cTemp.x2-cTemp.x1,cTemp.y2-cTemp.y1)>3){saveCState();cObjects.push(cTemp);cSel={kind:'shape',id:cTemp.id};syncCAdjustControls();}cTemp=null;setCTool("select");cRender()}cDrag=null};
-cc.onmouseleave=()=>{cDrag=null};
+cc.onmousedown=e=>{
+ if(combineTextEditing)return;e.preventDefault();const p=cPoint(e);if(['arrow','line','dash','circle','rect','curve','freehand'].includes(cTool)){cSel=null;cTemp=newPath(cTool,p,$('#cAnnoColor').value,+$('#cLineWidth').value,$('#cShapeFill').checked);return;}
+ if(cTool==='text'){createCInlineText(p);return;}const found=cHit(p);cSel=found?{kind:found.kind,id:found.obj.id}:null;syncCAdjustControls();if(!found){cRender();return;}saveCState();const b=found.bounds;
+ cDrag={kind:found.kind,id:found.obj.id,start:p,orig:found.kind==='image'?{...found.obj}:JSON.parse(JSON.stringify(found.obj)),resize:found.obj.type!=='curve'&&Math.hypot(p.x-b.x-b.w+(found.kind==='image'?13/documentScale(true):0),p.y-b.y-b.h+(found.kind==='image'?13/documentScale(true):0))<14/documentScale(true),curvePart:found.obj.type==='curve'?curvePartAt(found.obj,p,true):null};
+ if(found.kind==='shape'){$('#cAnnoColor').value=found.obj.color;$('#cAnnoColorText').textContent=found.obj.color.toUpperCase();$('#cLineWidth').value=found.obj.width;$('#cLineWidthVal').textContent=found.obj.width;$('#cShapeFill').checked=!!found.obj.fill;}
+ if(found.kind==='text'){$('#collageText').value=found.obj.text;$('#cTextSize').value=found.obj.size;$('#cTextSizeVal').textContent=found.obj.size;$('#cAnnoColor').value=found.obj.color;}cRender();
+};
+cc.onmousemove=e=>{
+ const p=cPoint(e);if(cTemp){advancePath(cTemp,p,true);cRender();return;}if(!cDrag)return;
+ const d=cDrag,source=d.orig,dx=p.x-d.start.x,dy=p.y-d.start.y;
+ if(d.kind==='image'){const o=items.find(x=>x.id===d.id);if(!o)return;if(d.resize){const sc=Math.max(.001,Math.max((source.w+dx)/source.w,(source.h+dy)/source.h));o.w=Math.max(1,source.w*sc);o.h=o.w/o.ratio;}else{o.x=source.x+dx;o.y=source.y+dy;}}
+ else if(d.kind==='text'){const o=textItems.find(x=>x.id===d.id);if(!o)return;if(d.resize)o.size=Math.max(1,source.size+dx/4);else{o.x=source.x+dx;o.y=source.y+dy;}}
+ else{const o=cObjects.find(x=>x.id===d.id);if(!o)return;if(o.type==='curve')moveCurve(o,source,d.start,p,d.curvePart);else moveGenericShape(o,source,dx,dy,d.resize);}cRender();
+};
+cc.onmouseup=()=>{if(cTemp){saveCState();cObjects.push(cTemp);cSel={kind:'shape',id:cTemp.id};cTemp=null;setCTool('select');syncCAdjustControls();}cDrag=null;cRender();};
+cc.onmouseleave=()=>{};
+
 $("#cAnnoColor").oninput=e=>{const o=cSel?.kind==="shape"?cObjects.find(x=>x.id===cSel.id):cSel?.kind==="text"?textItems.find(x=>x.id===cSel.id):null;$("#cAnnoColorText").textContent=e.target.value.toUpperCase();$("#cTextColor").value=e.target.value;if(o){o.color=e.target.value;cRender()}};
 $("#cLineWidth").oninput=e=>{const o=cSel?.kind==="shape"?cObjects.find(x=>x.id===cSel.id):null;$("#cLineWidthVal").textContent=e.target.value;if(o){o.width=+e.target.value;cRender()}};
 $("#cShapeFill").onchange=e=>{const o=cSel?.kind==="shape"?cObjects.find(x=>x.id===cSel.id):null;if(o&&(o.type==="circle"||o.type==="rect")){o.fill=e.target.checked;cRender()}};
 $("#cUndo").onclick=undoC;$("#deleteCollageObject").onclick=deleteCSelected;
 $("#autoLayout").onclick=autoLayout;$("#layoutMode").onchange=autoLayout;$("#fitCanvasContent").onclick=fitCombinedContent;
-$("#addCollageText").onclick=()=>{const tx=$("#collageText").value.trim();if(!tx)return;saveCState();const t={id:uid(),text:tx,x:cc.width*.08,y:cc.height*.08,size:+$("#cTextSize").value,color:$("#cAnnoColor").value};textItems.push(t);cSel={kind:"text",id:t.id};cRender()};
+$("#addCollageText").onclick=()=>{const tx=$("#collageText").value.trim();if(!tx)return;saveCState();const t={id:uid(),text:tx,x:cCanvasOrigin.x+cc.width*.08,y:cCanvasOrigin.y+cc.height*.08,size:+$("#cTextSize").value,color:$("#cAnnoColor").value};textItems.push(t);cSel={kind:"text",id:t.id};cRender()};
 $("#cTextSize").oninput=e=>{$("#cTextSizeVal").textContent=e.target.value;const t=cSel?.kind==="text"?textItems.find(x=>x.id===cSel.id):null;if(t){t.size=+e.target.value;cRender()}};
 $("#cTextColor").oninput=e=>{const t=cSel?.kind==="text"?textItems.find(x=>x.id===cSel.id):null;if(t){t.color=e.target.value;cRender()}};
 $("#collageText").oninput=e=>{const t=cSel?.kind==="text"?textItems.find(x=>x.id===cSel.id):null;if(t){t.text=e.target.value;cRender()}};
 $("#translateCollageText").onclick=async()=>{$("#collageText").value=await translateBrowserText($("#collageText").value,$("#collageLang").value,$("#collageVoiceStatus"),"#collageProgress");const t=cSel?.kind==="text"?textItems.find(x=>x.id===cSel.id):null;if(t){t.text=$("#collageText").value;cRender()}};
 
-$("#canvasResizeHandle").onmousedown=e=>{e.preventDefault();const r=cc.getBoundingClientRect();saveCState();resizingCanvas={x:e.clientX,y:e.clientY,w:cc.width,h:cc.height,screenW:r.width,screenH:r.height,items:items.map(x=>({...x})),texts:textItems.map(x=>({...x})),shapes:cObjects.map(x=>({...x}))}};
-window.addEventListener("mousemove",e=>{if(!resizingCanvas)return;const sx=Math.max(.4,(resizingCanvas.screenW+(e.clientX-resizingCanvas.x))/resizingCanvas.screenW),sy=Math.max(.4,(resizingCanvas.screenH+(e.clientY-resizingCanvas.y))/resizingCanvas.screenH),nw=Math.round(Math.max(600,Math.min(4000,resizingCanvas.w*sx))),nh=Math.round(Math.max(400,Math.min(3000,resizingCanvas.h*sy))),scale=Math.min(nw/resizingCanvas.w,nh/resizingCanvas.h);cc.width=nw;cc.height=nh;resizingCanvas.items.forEach(s=>{const o=items.find(x=>x.id===s.id);if(o){o.x=s.x*scale;o.y=s.y*scale;o.w=s.w*scale;o.h=s.h*scale}});resizingCanvas.texts.forEach(s=>{const o=textItems.find(x=>x.id===s.id);if(o){o.x=s.x*scale;o.y=s.y*scale;o.size=s.size*scale}});resizingCanvas.shapes.forEach(s=>{const o=cObjects.find(x=>x.id===s.id);if(o){o.x1=s.x1*scale;o.x2=s.x2*scale;o.y1=s.y1*scale;o.y2=s.y2*scale;o.width=Math.max(1,s.width*scale);if(o.type==="curve"){o.cx=s.cx*scale;o.cy=s.cy*scale}}});centerCollageContent();fitCollageCanvas()});
-window.addEventListener("mouseup",()=>{resizingCanvas=null});
+
 function mode(m){
   const a=m==="annotate";
   $("#annotateTab").classList.toggle("active",a);$("#combineTab").classList.toggle("active",!a);
@@ -4112,7 +4203,7 @@ function mode(m){
   $("#annotatePanel").style.display=a?"flex":"none";$("#collagePanel").style.display=a?"none":"flex";
   $("#annotateControls").style.display=a?"block":"none";$("#collageControls").style.display=a?"none":"block";
   const right=document.querySelector("aside.right");if(right)right.scrollTop=0;
-  if(!a){requestAnimationFrame(()=>{fitCollageCanvas();cRender()})}else if(loaded){requestAnimationFrame(fitPreviewToStage)}
+  if(!a){requestAnimationFrame(()=>{fitCollageCanvas(true);cRender();})}else if(loaded){requestAnimationFrame(fitPreviewToStage)}
 }
 $("#annotateTab").onclick=()=>mode("annotate");$("#combineTab").onclick=()=>mode("combine");
 $("#newBtn").onclick=()=>{if(confirm("Start a new project?"))location.reload()};
@@ -4152,9 +4243,9 @@ async function displayBaseCanvas(canvas,epoch=window.FitSessionScope.revision(),
 async function loadSecureBlobIntoAnnotate(blob,label='Photo'){
  const request=++annotateLoadSeq,epoch=window.FitSessionScope.revision();
  $('#hint').textContent='Loading photo...';
- const source=await window.FitImaging.decode(blob);if(request!==annotateLoadSeq||epoch!==window.FitSessionScope.revision())return false;
+ const source=await window.FitImaging.decode(blob);validCanvasSize(source.width,source.height);if(request!==annotateLoadSeq||epoch!==window.FitSessionScope.revision())return false;
  await displayBaseCanvas(source,epoch,request);
- loaded=true;resetSavedProjectIdentity();historyBase=source;originalCropSource=source;currentCropRect={x:0,y:0,w:source.width,h:source.height};
+ loaded=true;resetAGeometry();resetSavedProjectIdentity();historyBase=source;originalCropSource=source;currentCropRect={x:0,y:0,w:source.width,h:source.height};
  resetPhotoAdjustments();$('#empty').style.display='none';img.style.display='block';objects=[];selected=null;temp=null;drag=null;history=[];
  window.dispatchEvent(new Event('fit:photochanged'));setTool('select');$('#photoMeta').textContent=label+' \u00b7 '+source.width+'\u00d7'+source.height;
  $('#hint').textContent='Photo ready';photoStatus('Photo ready. Crop / rotate may clear annotations after confirmation.');fitPreviewToStage();requestAnimationFrame(()=>{if(epoch===window.FitSessionScope.revision())fitPreviewToStage();});return true;
@@ -4163,10 +4254,10 @@ async function addSecureBlobToCombine(blob,label='Photo',sourcePath=''){
  if(sourcePath&&(pendingCombineSources.has(sourcePath)||items.some(x=>x.sourcePath===sourcePath)))return false;
  const epoch=window.FitSessionScope.revision();if(sourcePath)pendingCombineSources.add(sourcePath);
  try{
-  const source=await window.FitImaging.decode(blob);if(epoch!==window.FitSessionScope.revision())return false;
+  const source=await window.FitImaging.decode(blob);validCanvasSize(source.width,source.height);if(epoch!==window.FitSessionScope.revision())return false;
   if(sourcePath&&items.some(x=>x.sourcePath===sourcePath))return false;
-  saveCState();const it={id:uid(),source,img:source,thumb:thumbnail(source),name:label,x:0,y:0,w:200,h:200,ratio:source.width/source.height,sourcePath,crop:{x:0,y:0,w:source.width,h:source.height},rotation:0,brightness:100,contrast:100};
-  items.push(it);cSel={kind:'image',id:it.id};autoLayout(true);syncCAdjustControls();cPhotoStatus('Photo added. Adjustments apply to the selected target.');return true;
+  saveCState();const it={id:uid(),source,img:source,thumb:thumbnail(source),name:label,x:0,y:0,w:source.width,h:source.height,ratio:source.width/source.height,sourcePath,crop:{x:0,y:0,w:source.width,h:source.height},rotation:0,brightness:100,contrast:100};
+  items.push(it);cSel={kind:'image',id:it.id};if(autoLayout(true)===false){items.pop();cHistory.pop();cSel=null;throw new Error('Combined native-resolution photos exceed the safe canvas size. Resize existing photos or use a smaller source before adding.');}syncCAdjustControls();cPhotoStatus('Photo added. Adjustments apply to the selected target.');return true;
  }finally{if(sourcePath)pendingCombineSources.delete(sourcePath);}
 }
 
@@ -4181,9 +4272,10 @@ function imageDataUrl(){
   const c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;c.getContext('2d').drawImage(img,0,0);return c.toDataURL('image/jpeg',0.9);
 }
 function applyPhotoFilter(){
+  aVisualCache=null;
   img.style.filter=`brightness(${photoBrightness}%) contrast(${photoContrast}%)`;
   $("#brightnessVal").textContent=Math.round(photoBrightness);
-  $("#contrastVal").textContent=Math.round(photoContrast);
+  $("#contrastVal").textContent=Math.round(photoContrast);if(loaded)render();
 }
 function resetPhotoAdjustments(){photoBrightness=100;photoContrast=100;$("#brightnessRange").value=100;$("#contrastRange").value=100;applyPhotoFilter();}
 function confirmPhotoChange(){
@@ -4191,24 +4283,14 @@ function confirmPhotoChange(){
 }
 async function replaceBaseImageFromCanvas(canvas,label){
   await displayBaseCanvas(canvas);historyBase=null;loaded=true;objects=[];selected=null;temp=null;drag=null;
-  resetPhotoAdjustments();$("#photoWrap").style.transform='';selectPhotoFrame(false);fitPreviewToStage();
+  resetAGeometry();resetPhotoAdjustments();$('#photoWrap').style.transform='';selectPhotoFrame(false);fitPreviewToStage();
   $("#photoMeta").textContent=label+' - '+img.naturalWidth+' x '+img.naturalHeight;setTool('select');render();
 }
 function currentFilteredCanvas(){if(!loaded||!img.naturalWidth)throw new Error('Choose a photo first.');return window.FitImaging.filtered(img,photoBrightness,photoContrast);}
-function exportAnnotatedCanvas(){
-  const out=currentFilteredCanvas(),x=out.getContext('2d'),oldSelected=selected,oldTemp=temp;
-  try{selected=null;temp=null;render();x.drawImage(cvs,0,0,out.width,out.height);}
-  finally{selected=oldSelected;temp=oldTemp;render();}
-  return out;
-}
-function exportCombinedCanvas(){
-  if(!items.length&&!textItems.length&&!cObjects.length)throw new Error('Add photos or annotations to Combine first.');
-  const out=document.createElement('canvas');out.width=cc.width;out.height=cc.height;
-  const oldSel=cSel,oldTemp=cTemp;
-  try{cSel=null;cTemp=null;cRender();out.getContext('2d').drawImage(cc,0,0);}
-  finally{cSel=oldSel;cTemp=oldTemp;cRender();}
-  return out;
-}
+function exportAnnotatedCanvas(){if(!loaded)throw new Error('Choose a photo first.');const out=document.createElement('canvas');out.width=aCanvas.w;out.height=aCanvas.h;try{render(false);out.getContext('2d').drawImage(cvs,0,0);}finally{render();}return out;}
+function exportCombinedCanvas(){if(!items.length&&!textItems.length&&!cObjects.length)throw new Error('Add photos or annotations first.');const out=document.createElement('canvas');out.width=cc.width;out.height=cc.height;try{cRender(false);out.getContext('2d').drawImage(cc,0,0);}finally{cRender();}return out;}
+
+
 $("#brightnessRange").oninput=e=>{photoBrightness=+e.target.value;applyPhotoFilter();};
 $("#contrastRange").oninput=e=>{photoContrast=+e.target.value;applyPhotoFilter();};
 $("#resetPhotoAdjustBtn").onclick=()=>{saveHistory();resetPhotoAdjustments();photoStatus('Brightness and contrast reset.');};
@@ -4261,7 +4343,7 @@ $('#cropApplyBtn').onclick=async()=>{
   }else if(target.kind==='combine-photo'){
    const it=items.find(x=>x.id===target.id);if(!it)throw new Error('The selected photo is no longer on the sheet.');saveCState();it.crop=rect;updateItemVisual(it,true);cSel={kind:'image',id:it.id};renderThumbs();cRender();syncCAdjustControls();cPhotoStatus('Photo cropped. Reopen Crop to expand; other photos were not changed.');
   }else{
-   saveCState();translateCombine(-rect.x,-rect.y);cc.width=rect.w;cc.height=rect.h;cSel=null;fitCollageCanvas();cPhotoStatus('Sheet cropped. All layers are retained; Undo restores the previous sheet boundaries.');
+   saveCState();cCanvasOrigin={x:cCanvasOrigin.x+rect.x,y:cCanvasOrigin.y+rect.y};cc.width=rect.w;cc.height=rect.h;cSel=null;fitCollageCanvas(true);cPhotoStatus('Sheet cropped. All layers are retained; Undo restores the previous sheet boundaries.');
   }
   $('#cropModal').style.display='none';cropTarget=null;cropStart=null;
  }catch(e){if(target.kind==='annotate')photoStatus(e.message,true);else cPhotoStatus(e.message,true);}
@@ -4303,11 +4385,11 @@ async function makeEditableProject(){
   small.width=Math.max(1,Math.round(flat.width*scale));small.height=Math.max(1,Math.round(flat.height*scale));
   const sx=small.getContext('2d');sx.fillStyle='#fff';sx.fillRect(0,0,small.width,small.height);sx.drawImage(flat,0,0,small.width,small.height);
   // Copy mutable values before any asynchronous encoding.
-  const record={version:4,sessionId:window.FitSessionScope.current().id,sessionName:window.FitSessionScope.current().name,kind:'annotate',id:savedProjectIdentity?.id||uid(),documentKey:editorDocumentKey,
+  const record={version:5,canvasViewport:{...aCanvas},photoPlacement:{...aPhoto},sessionId:window.FitSessionScope.current().id,sessionName:window.FitSessionScope.current().name,kind:'annotate',id:savedProjectIdentity?.id||uid(),documentKey:editorDocumentKey,
     name:($('#photoMeta')?.textContent||'Edited photo').split(' \u00b7 ')[0],
     objects:JSON.parse(JSON.stringify(objects)),brightness:photoBrightness,contrast:photoContrast,
     cropRect:currentCropRect?{...currentCropRect}:{x:0,y:0,w:original.width,h:original.height},
-    originalWidth:original.width,originalHeight:original.height,width:base.width,height:base.height,
+    originalWidth:original.width,originalHeight:original.height,width:aCanvas.w,height:aCanvas.h,
     createdAt:savedProjectIdentity?.createdAt||now,updatedAt:now};
   const [baseBlob,originalBlob,exportBlob,thumbnailBlob]=await Promise.all([
     encodeProjectCanvas(base),encodeProjectCanvas(original),encodeProjectCanvas(flat),encodeProjectCanvas(small,'image/jpeg',.86)]);
@@ -4321,7 +4403,7 @@ async function loadEditableProject(p){
   const base=await decodedProjectImage(p.baseBlob||p.image);
   const original=p.originalBlob?await decodedProjectImage(p.originalBlob):base;
   await displayBaseCanvas(projectCanvas(base),epoch,request);
-  if(request!==annotateLoadSeq||epoch!==window.FitSessionScope.revision())return false;historyBase=null;loaded=true;$('#empty').style.display='none';img.style.display='block';
+  if(request!==annotateLoadSeq||epoch!==window.FitSessionScope.revision())return false;historyBase=null;loaded=true;resetAGeometry();if(p.canvasViewport){validCanvasSize(p.canvasViewport.w,p.canvasViewport.h);aCanvas={...p.canvasViewport};}if(p.photoPlacement)aPhoto={...p.photoPlacement};$('#empty').style.display='none';img.style.display='block';
   originalCropSource=projectCanvas(original);
   currentCropRect=p.cropRect?{...p.cropRect}:{x:0,y:0,w:original.width,h:original.height};
   objects=JSON.parse(JSON.stringify(Array.isArray(p.objects)?p.objects:[]));selected=null;temp=null;drag=null;history=[];
@@ -4336,20 +4418,17 @@ async function loadEditableProject(p){
 }
 // Legacy V71-V74 exports are rendered off-screen: batch download never replaces the live editor.
 async function renderEditableProjectCanvas(p){
-  const base=await decodedProjectImage(p.baseBlob||p.image),out=window.FitImaging.filtered(base,Number.isFinite(+p.brightness)?+p.brightness:100,Number.isFinite(+p.contrast)?+p.contrast:100),x=out.getContext('2d');
-  for(const o of (p.objects||[])){
-    x.save();x.strokeStyle=o.color||'#000000';x.fillStyle=o.color||'#000000';x.lineWidth=o.width||6;x.lineCap='round';x.lineJoin='round';
-    if(o.type==='text'){x.font=`700 ${o.size||34}px Arial`;x.textBaseline='top';String(o.text||'').split('\n').forEach((v,i)=>x.fillText(v,o.x1,o.y1+i*(o.size||34)*1.2));}
-    else if(o.type==='line'||o.type==='dash'||o.type==='arrow'){
-      x.setLineDash(o.type==='dash'?adaptiveDash(o.width||6):[]);x.beginPath();x.moveTo(o.x1,o.y1);x.lineTo(o.x2,o.y2);x.stroke();
-      if(o.type==='arrow'){const a=Math.atan2(o.y2-o.y1,o.x2-o.x1),L=24+(o.width||6)*2;x.beginPath();x.moveTo(o.x2,o.y2);x.lineTo(o.x2-L*Math.cos(a-Math.PI/6),o.y2-L*Math.sin(a-Math.PI/6));x.lineTo(o.x2-L*Math.cos(a+Math.PI/6),o.y2-L*Math.sin(a+Math.PI/6));x.closePath();x.fill();}
-    }else if(o.type==='circle'){x.beginPath();x.ellipse((o.x1+o.x2)/2,(o.y1+o.y2)/2,Math.abs(o.x2-o.x1)/2,Math.abs(o.y2-o.y1)/2,0,0,Math.PI*2);o.fill?x.fill():x.stroke();}
-    else if(o.type==='rect'){o.fill?x.fillRect(o.x1,o.y1,o.x2-o.x1,o.y2-o.y1):x.strokeRect(o.x1,o.y1,o.x2-o.x1,o.y2-o.y1);}
-    else if(o.type==='curve'){x.beginPath();x.moveTo(o.x1,o.y1);x.quadraticCurveTo(o.cx,o.cy,o.x2,o.y2);x.stroke();}
-    x.restore();
-  }
-  return out;
+ const base=await decodedProjectImage(p.baseBlob||p.image);if(p.kind==='combine')return projectCanvas(base);
+ const v=p.canvasViewport||{x:0,y:0,w:base.width,h:base.height},photo=p.photoPlacement||{x:0,y:0,w:base.width,h:base.height};validCanvasSize(v.w,v.h);
+ const out=document.createElement('canvas');out.width=v.w;out.height=v.h;const x=out.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,v.w,v.h);x.translate(-v.x,-v.y);x.drawImage(window.FitImaging.filtered(base,p.brightness??100,p.contrast??100),photo.x,photo.y,photo.w,photo.h);
+ for(const o of p.objects||[]){x.save();x.strokeStyle=o.color||'#000';x.fillStyle=o.color||'#000';x.lineWidth=o.width||6;x.lineCap='round';x.lineJoin='round';
+ if(o.type==='text'){x.font=`700 ${o.size||34}px Arial`;x.textBaseline='top';String(o.text||'').split('\n').forEach((t,i)=>x.fillText(t,o.x1,o.y1+i*(o.size||34)*1.2));}
+ else if(['curve','freehand'].includes(o.type)){x.beginPath();traceFlexible(x,o);x.stroke();}
+ else if(['line','dash','arrow'].includes(o.type)){if(o.type==='dash')x.setLineDash(adaptiveDash(o.width));x.beginPath();x.moveTo(o.x1,o.y1);x.lineTo(o.x2,o.y2);x.stroke();if(o.type==='arrow'){const a=Math.atan2(o.y2-o.y1,o.x2-o.x1),L=24+(o.width||6)*2;x.beginPath();x.moveTo(o.x2,o.y2);x.lineTo(o.x2-L*Math.cos(a-Math.PI/6),o.y2-L*Math.sin(a-Math.PI/6));x.lineTo(o.x2-L*Math.cos(a+Math.PI/6),o.y2-L*Math.sin(a+Math.PI/6));x.closePath();x.fill();}}
+ else if(o.type==='rect'){o.fill?x.fillRect(o.x1,o.y1,o.x2-o.x1,o.y2-o.y1):x.strokeRect(o.x1,o.y1,o.x2-o.x1,o.y2-o.y1);}
+ else if(o.type==='circle'){x.beginPath();x.ellipse((o.x1+o.x2)/2,(o.y1+o.y2)/2,Math.abs(o.x2-o.x1)/2,Math.abs(o.y2-o.y1)/2,0,0,Math.PI*2);o.fill?x.fill():x.stroke();}x.restore();}return out;
 }
+
 
 // V82 photo adjustments use immutable source pixels and a separately editable sheet.
 function cPhotoStatus(text,error=false){const el=$('#cPhotoAdjustStatus');el.textContent=text;el.style.color=error?'#b42318':'#64748b';}
@@ -4367,27 +4446,22 @@ function updateItemVisual(it,resize=false){
  const visual=window.FitImaging.filtered(rotatedCanvas(c,it.rotation||0),it.brightness??100,it.contrast??100);
  const oldRatio=it.ratio;it.img=visual;it.thumb=thumbnail(visual);it.ratio=visual.width/visual.height;
  if(resize&&oldRatio!==it.ratio){const centerX=it.x+it.w/2,centerY=it.y+it.h/2,area=Math.max(1,it.w*it.h);it.w=Math.sqrt(area*it.ratio);it.h=it.w/it.ratio;it.x=centerX-it.w/2;it.y=centerY-it.h/2;}
- if(resize){const sc=Math.min(1,cc.width/it.w,cc.height/it.h);it.w*=sc;it.h*=sc;it.x=Math.max(0,Math.min(cc.width-it.w,it.x));it.y=Math.max(0,Math.min(cc.height-it.h,it.y));}
+
 }
-function translateCombine(dx,dy){items.forEach(it=>{it.x+=dx;it.y+=dy;});textItems.forEach(t=>{t.x+=dx;t.y+=dy;});cObjects.forEach(o=>{o.x1+=dx;o.x2+=dx;o.y1+=dy;o.y2+=dy;if(o.type==='curve'){o.cx+=dx;o.cy+=dy;}});}
 function fitCombinedContent(){
- const bs=[...items.map(x=>({x:x.x,y:x.y,w:x.w,h:x.h})),...textItems.map(cTextBounds),...cObjects.map(cShapeBounds)];if(!bs.length)return;
- saveCState();const minX=Math.min(...bs.map(b=>b.x)),minY=Math.min(...bs.map(b=>b.y)),maxX=Math.max(...bs.map(b=>b.x+b.w)),maxY=Math.max(...bs.map(b=>b.y+b.h)),pad=Math.max(12,Math.min(cc.width,cc.height)*.03),sc=Math.min((cc.width-pad*2)/Math.max(1,maxX-minX),(cc.height-pad*2)/Math.max(1,maxY-minY));
- const dx=(cc.width-(maxX-minX)*sc)/2,dy=(cc.height-(maxY-minY)*sc)/2;
- items.forEach(it=>{it.x=(it.x-minX)*sc+dx;it.y=(it.y-minY)*sc+dy;it.w*=sc;it.h*=sc;});
- textItems.forEach(t=>{t.x=(t.x-minX)*sc+dx;t.y=(t.y-minY)*sc+dy;t.size*=sc;});
- cObjects.forEach(o=>{o.x1=(o.x1-minX)*sc+dx;o.x2=(o.x2-minX)*sc+dx;o.y1=(o.y1-minY)*sc+dy;o.y2=(o.y2-minY)*sc+dy;o.width*=sc;if(o.type==='curve'){o.cx=(o.cx-minX)*sc+dx;o.cy=(o.cy-minY)*sc+dy;}});
- cSel=null;fitCollageCanvas();cPhotoStatus('All content fitted to the sheet without changing its relative layout.');
+ const bs=[...items,...textItems.map(cTextBounds),...cObjects.map(o=>shapeInkBounds(o,true))];if(!bs.length)return;saveCState();const b=pointsBounds(bs.flatMap(b=>[{x:b.x,y:b.y},{x:b.x+b.w,y:b.y+b.h}])),sc=Math.min(cc.width/Math.max(1,b.w),cc.height/Math.max(1,b.h)),dx=cCanvasOrigin.x+(cc.width-b.w*sc)/2,dy=cCanvasOrigin.y+(cc.height-b.h*sc)/2;
+ items.forEach(it=>{it.x=(it.x-b.x)*sc+dx;it.y=(it.y-b.y)*sc+dy;it.w*=sc;it.h*=sc;});textItems.forEach(t=>{t.x=(t.x-b.x)*sc+dx;t.y=(t.y-b.y)*sc+dy;t.size*=sc;});cObjects.forEach(o=>{transformShape(o,(x,y)=>({x:(x-b.x)*sc+dx,y:(y-b.y)*sc+dy}));o.width*=sc;});cSel=null;cRender();cPhotoStatus('Content resized to fit the canvas. Use Trim canvas to change only the boundary.');
 }
+
 $('#cAdjustTarget').onchange=()=>{syncCAdjustControls();cPhotoStatus($('#cAdjustTarget').value==='sheet'?'Adjusting the entire sheet. Annotation layers remain editable.':'Adjusting the selected photo only. Sheet annotations do not move with an individual photo.');};
 $('#cRotatePhotoBtn').onclick=()=>{
  try{
   if($('#cAdjustTarget').value==='sheet'){
-   if(!items.length&&!textItems.length&&!cObjects.length)throw new Error('Add something to the sheet first.');saveCState();const oldH=cc.height,w=cc.width;
+   if(!items.length&&!textItems.length&&!cObjects.length)throw new Error('Add something to the sheet first.');saveCState();const oldH=cc.height,w=cc.width;translateCombine(-cCanvasOrigin.x,-cCanvasOrigin.y);cCanvasOrigin={x:0,y:0};
    items.forEach(it=>{const x=it.x,y=it.y,pw=it.w,ph=it.h;it.rotation=((it.rotation||0)+90)%360;updateItemVisual(it,false);it.x=oldH-y-ph;it.y=x;it.w=ph;it.h=pw;});
    textItems.forEach(t=>{const x=t.x;t.x=oldH-t.y;t.y=x;t.rotation=((t.rotation||0)+90)%360;});
-   cObjects.forEach(o=>{const x1=o.x1,x2=o.x2;o.x1=oldH-o.y1;o.y1=x1;o.x2=oldH-o.y2;o.y2=x2;if(o.type==='curve'){const x=o.cx;o.cx=oldH-o.cy;o.cy=x;}});
-   cc.width=oldH;cc.height=w;cSel=null;fitCollageCanvas();cPhotoStatus('Entire sheet rotated 90 degrees. Photos, text and annotations remain editable.');
+   cObjects.forEach(o=>transformShape(o,(x,y)=>({x:oldH-y,y:x})));
+   cc.width=oldH;cc.height=w;cSel=null;fitCollageCanvas(true);cPhotoStatus('Entire sheet rotated 90 degrees. Photos, text and annotations remain editable.');
   }else{const it=selectedCPhoto();if(!it)throw new Error('Select a photo first.');saveCState();it.rotation=((it.rotation||0)+90)%360;updateItemVisual(it,true);cRender();cPhotoStatus('Selected photo rotated. Other photos and sheet annotations were not changed.');}
   renderThumbs();syncCAdjustControls();
  }catch(e){cPhotoStatus(e.message,true);}
@@ -4407,14 +4481,14 @@ $('#cBrightnessRange').oninput=e=>changeCTone('brightness',+e.target.value);$('#
 $('#cResetPhotoAdjustBtn').onclick=()=>{saveCState();if($('#cAdjustTarget').value==='sheet'){sheetBrightness=100;sheetContrast=100;}else{const it=selectedCPhoto();if(!it)return;it.brightness=100;it.contrast=100;updateItemVisual(it,false);renderThumbs();}syncCAdjustControls();cRender();cPhotoStatus('Brightness and contrast reset. Crop / rotation are unchanged; use Undo to reverse an operation.');};
 $('#cZoomIn').onclick=()=>{combineZoom=Math.min(4,combineZoom*1.2);fitCollageCanvas();};
 $('#cZoomOut').onclick=()=>{combineZoom=Math.max(.4,combineZoom/1.2);fitCollageCanvas();};
-$('#cZoomLevel').onclick=$('#cZoomFit').onclick=()=>{combineZoom=1;fitCollageCanvas();};
+$('#cZoomLevel').onclick=$('#cZoomFit').onclick=()=>{combineZoom=1;fitCollageCanvas(true);};
 
 let combineSavedIdentity=null,combineDocumentKey=uid();
 async function makeCombinedProject(){
  if(!items.length&&!textItems.length&&!cObjects.length)throw new Error('Add photos or annotations to the sheet first.');
  const active=document.querySelector('#collageCanvasWrap .liveTextEditor');if(active){active.blur();await new Promise(r=>setTimeout(r,0));}
  const scope=window.FitSessionScope.current(),now=new Date().toISOString(),flat=exportCombinedCanvas(),copyItems=items.map(it=>({...it,crop:it.crop?{...it.crop}:null}));
- const record={version:4,kind:'combine',sessionId:scope.id,sessionName:scope.name,id:combineSavedIdentity?.id||uid(),documentKey:combineDocumentKey,name:'Combined photo sheet',createdAt:combineSavedIdentity?.createdAt||now,updatedAt:now,width:cc.width,height:cc.height,sheetBrightness,sheetContrast,textItems:JSON.parse(JSON.stringify(textItems)),cObjects:JSON.parse(JSON.stringify(cObjects)),layout:$('#layoutMode').value,items:[]};
+ const record={version:5,canvasOrigin:{...cCanvasOrigin},kind:'combine',sessionId:scope.id,sessionName:scope.name,id:combineSavedIdentity?.id||uid(),documentKey:combineDocumentKey,name:'Combined photo sheet',createdAt:combineSavedIdentity?.createdAt||now,updatedAt:now,width:cc.width,height:cc.height,sheetBrightness,sheetContrast,textItems:JSON.parse(JSON.stringify(textItems)),cObjects:JSON.parse(JSON.stringify(cObjects)),layout:$('#layoutMode').value,items:[]};
  const small=document.createElement('canvas'),sc=Math.min(1,280/Math.max(flat.width,flat.height));small.width=Math.max(1,Math.round(flat.width*sc));small.height=Math.max(1,Math.round(flat.height*sc));small.getContext('2d').drawImage(flat,0,0,small.width,small.height);
  const [baseBlob,thumbnailBlob]=await Promise.all([encodeProjectCanvas(flat),encodeProjectCanvas(small,'image/jpeg',.86)]);record.baseBlob=baseBlob;record.exportBlob=baseBlob;record.thumbnailBlob=thumbnailBlob;
  for(const it of copyItems){const sourceBlob=await encodeProjectCanvas(it.source||it.img);const {img,source,thumb,...metadata}=it;record.items.push({...metadata,sourceBlob});}
@@ -4424,14 +4498,14 @@ async function loadCombinedProject(p){
  const epoch=window.FitSessionScope.revision(),key=uid();combineDocumentKey=key;const loadedItems=[];
  for(const record of p.items||[]){const source=await window.FitImaging.decode(record.sourceBlob);if(epoch!==window.FitSessionScope.revision()||key!==combineDocumentKey)return false;const {sourceBlob,...metadata}=record,it={...metadata,source,img:source};updateItemVisual(it,false);loadedItems.push(it);}
  if(epoch!==window.FitSessionScope.revision()||key!==combineDocumentKey)return false;
- items=loadedItems;textItems=JSON.parse(JSON.stringify(p.textItems||[]));cObjects=JSON.parse(JSON.stringify(p.cObjects||[]));cc.width=p.width;cc.height=p.height;sheetBrightness=p.sheetBrightness??100;sheetContrast=p.sheetContrast??100;cHistory=[];cSel=null;cTemp=null;cDrag=null;
+ items=loadedItems;textItems=JSON.parse(JSON.stringify(p.textItems||[]));cObjects=JSON.parse(JSON.stringify(p.cObjects||[]));validCanvasSize(p.width,p.height);cc.width=p.width;cc.height=p.height;cCanvasOrigin={...(p.canvasOrigin||{x:0,y:0})};cBaseScale=null;sheetBrightness=p.sheetBrightness??100;sheetContrast=p.sheetContrast??100;cHistory=[];cSel=null;cTemp=null;cDrag=null;
  combineSavedIdentity=p.sessionId===window.FitSessionScope.current().id?{id:p.id,createdAt:p.createdAt}:null;$('#layoutMode').value=p.layout||'row';combineZoom=1;mode('combine');renderThumbs();syncCAdjustControls();fitCollageCanvas();return true;
 }
 
 // Session transitions invalidate pending decodes and remove only the live workspace.
 // Saved records are never deleted as a side effect of changing session.
 function clearWorkspace(){
- annotateLoadSeq++;combineDocumentKey=uid();pendingCombineSources.clear();loaded=false;objects=[];selected=null;temp=null;drag=null;history=[];historyBase=null;
+ aCanvas=null;aPhoto=null;aVisualCache=null;aBaseScale=1;cCanvasOrigin={x:0,y:0};cBaseScale=null;resetBoardPosition(false);resetBoardPosition(true);annotateLoadSeq++;combineDocumentKey=uid();pendingCombineSources.clear();loaded=false;objects=[];selected=null;temp=null;drag=null;history=[];historyBase=null;
  originalCropSource=null;currentCropRect=null;savedProjectIdentity=null;editorDocumentKey=uid();
  img.onload=null;img.onerror=null;img.removeAttribute('src');img.style.display='none';img.style.filter='none';$('#empty').style.display='flex';
  $('#photoWrap').style.removeProperty('width');$('#photoWrap').style.removeProperty('height');$('#photoWrap').style.transform='';cvs.width=0;cvs.height=0;cvs.style.width='0px';cvs.style.height='0px';
@@ -4441,7 +4515,7 @@ function clearWorkspace(){
  cropSource=null;cropTarget=null;cropRect=null;cropStart=null;$('#cropModal').style.display='none';resetPhotoAdjustments();
  keepListening=false;if(activeRecognition){try{activeRecognition.abort();}catch(_){}activeRecognition=null;}activeSpeechContext=null;
  $('#voice').value='';$('#collageText').value='';$('#mic').textContent='Start speaking';$('#collageMic').textContent='Start speaking';
- $('#cAdjustTarget').value='photo';setTool('select');setCTool('select');renderThumbs();syncCAdjustControls();cRender();window.dispatchEvent(new Event('fit:photochanged'));
+ $('#cAdjustTarget').value='photo';setTool('select');setCTool('select');renderThumbs();syncCAdjustControls();syncCanvasWidgets(false);fitCollageCanvas(true);syncCurveHandles(false);window.dispatchEvent(new Event('fit:photochanged'));
 }
 window.addEventListener('fit:scopechange',clearWorkspace);
 $('#newBtn').onclick=()=>{if(confirm('Clear the current working photo and sheet? Saved edits and session originals will stay in the library.'))clearWorkspace();};
@@ -4456,7 +4530,7 @@ function editExistingText(item,isCombine){
  if(isCombine?combineTextEditing:annotateTextEditing)return;
  if(isCombine){combineTextEditing=true;saveCState();}else{annotateTextEditing=true;saveHistory();}
  const saved={...item},canvas=isCombine?cc:cvs,wrap=isCombine?$('#collageCanvasWrap'):$('#photoWrap'),r=canvas.getBoundingClientRect(),wr=wrap.getBoundingClientRect();
- const field=document.createElement('textarea');field.className='liveTextEditor';field.value=item.text;field.style.left=((isCombine?item.x:item.x1)*r.width/canvas.width+r.left-wr.left)+'px';field.style.top=((isCombine?item.y:item.y1)*r.height/canvas.height+r.top-wr.top)+'px';field.style.fontSize='14px';field.style.width='220px';field.style.minHeight='65px';wrap.append(field);let ended=false;
+ const field=document.createElement('textarea');field.className='liveTextEditor';field.value=item.text;field.style.left=(((isCombine?item.x-cCanvasOrigin.x:item.x1-aCanvas.x))*r.width/canvas.width+r.left-wr.left)+'px';field.style.top=(((isCombine?item.y-cCanvasOrigin.y:item.y1-aCanvas.y))*r.height/canvas.height+r.top-wr.top)+'px';field.style.fontSize='14px';field.style.width='220px';field.style.minHeight='65px';wrap.append(field);let ended=false;
  const draw=isCombine?cRender:render;
  function end(keep=true){if(ended)return;ended=true;if(keep)item.text=field.value;else Object.assign(item,saved);field.remove();if(isCombine)combineTextEditing=false;else annotateTextEditing=false;draw();}
  field.oninput=()=>{item.text=field.value;draw();};field.onblur=()=>end(true);field.onkeydown=e=>{if(e.key==='Escape'){e.preventDefault();end(false);}else if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();end(true);}};field.focus();field.select();
@@ -4467,13 +4541,14 @@ cc.addEventListener('dblclick',e=>{const hit=cHit(cPoint(e));if(hit?.kind==='tex
 for(const canvas of [cvs,cc]){
  let touch=null;
  const send=(type,e)=>canvas.dispatchEvent(new MouseEvent(type,{bubbles:true,cancelable:true,clientX:e.clientX,clientY:e.clientY,button:0,buttons:type==='mouseup'?0:1}));
- canvas.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'||e.isPrimary===false)return;e.preventDefault();touch=e.pointerId;try{canvas.setPointerCapture?.(e.pointerId);}catch(_){}send('mousedown',e);},{passive:false});
+ canvas.addEventListener('pointerdown',e=>{if(e.isPrimary===false)return;if(e.pointerType==='mouse'){try{canvas.setPointerCapture(e.pointerId);}catch(_){}return;}e.preventDefault();touch=e.pointerId;try{canvas.setPointerCapture?.(e.pointerId);}catch(_){}send('mousedown',e);},{passive:false});
  canvas.addEventListener('pointermove',e=>{if(touch!==e.pointerId)return;e.preventDefault();send('mousemove',e);},{passive:false});
- for(const type of ['pointerup','pointercancel'])canvas.addEventListener(type,e=>{if(touch!==e.pointerId)return;e.preventDefault();send('mouseup',e);if(canvas.hasPointerCapture?.(e.pointerId))canvas.releasePointerCapture(e.pointerId);touch=null;},{passive:false});
+ for(const type of ['pointerup','pointercancel'])canvas.addEventListener(type,e=>{if(e.pointerType==='mouse'){if(canvas.hasPointerCapture?.(e.pointerId))canvas.releasePointerCapture(e.pointerId);return;}if(touch!==e.pointerId)return;e.preventDefault();send('mouseup',e);if(canvas.hasPointerCapture?.(e.pointerId))canvas.releasePointerCapture(e.pointerId);touch=null;},{passive:false});
 }
-cc.onmouseleave=()=>{if(cTemp){if(Math.hypot(cTemp.x2-cTemp.x1,cTemp.y2-cTemp.y1)>3){saveCState();cObjects.push(cTemp);cSel={kind:'shape',id:cTemp.id};syncCAdjustControls();}cTemp=null;setCTool('select');cRender();}cDrag=null;};
+cc.onmouseleave=()=>{};
 
 window.FitEditor={
+  canvasState:(combine=false)=>({viewport:documentViewport(combine),photo:combine?null:aPhoto?{...aPhoto}:null,scale:documentScale(combine)}),
   isCombineMode:()=>window.getComputedStyle($("#collagePanel")).display!=="none",
   loadAnnotateBlob:loadSecureBlobIntoAnnotate,
   addCombineBlob:addSecureBlobToCombine,
@@ -4494,104 +4569,22 @@ window.FitEditor={
 
 
 function initAnnotatePhotoInteractions(){
-  const wrap=$("#photoWrap");
-  const stage=$("#annotatePanel .stage");
-  const handle=$("#photoResizeHandle");
-  if(!wrap||!stage||!handle)return;
-
-  let moving=false,resizing=false;
-  let startX=0,startY=0,startOffsetX=0,startOffsetY=0,startW=0,startH=0;
-  let offsetX=0,offsetY=0;
-
-  function selectPhoto(on=true){
-    photoSelected=!!on;
-    wrap.classList.toggle("photo-selected",photoSelected);
-  }
-
-  window.addEventListener('fit:photochanged',()=>{offsetX=0;offsetY=0;moving=false;resizing=false;applyOffset();});
-  function applyOffset(){
-    wrap.style.transform=`translate(${offsetX}px,${offsetY}px)`;
-  }
-
-  // Capture blank-image clicks before the normal annotation handler.
-  cvs.addEventListener("mousedown",e=>{
-    if(!loaded||tool!=="select"||annotateTextEditing)return;
-    const p=point(e);
-    const obj=hit(p);
-    if(obj)return; // annotations retain priority
-    e.preventDefault();
-    e.stopPropagation();
-    selected=null;render();
-    selectPhoto(true);
-    moving=true;
-    startX=e.clientX;startY=e.clientY;
-    startOffsetX=offsetX;startOffsetY=offsetY;
-  },true);
-
-  handle.addEventListener("mousedown",e=>{
-    if(!loaded)return;
-    e.preventDefault();e.stopPropagation();
-    selectPhoto(true);
-    resizing=true;
-    startX=e.clientX;startY=e.clientY;
-    const wr=wrap.getBoundingClientRect();
-    startW=wr.width;startH=wr.height;
-  });
-
-  window.addEventListener("mousemove",e=>{
-    if(moving){
-      offsetX=startOffsetX+(e.clientX-startX);
-      offsetY=startOffsetY+(e.clientY-startY);
-      applyOffset();
-    }
-    if(resizing){
-      const dx=e.clientX-startX;
-      const dy=e.clientY-startY;
-      const sx=(startW+dx)/Math.max(1,startW);
-      const sy=(startH+dy)/Math.max(1,startH);
-      const scale=Math.max(.2,Math.max(sx,sy));
-      const newW=Math.max(100,startW*scale);
-      annotateBaseW=newW/annotateZoom;
-      annotateBaseH=annotateBaseW*(img.naturalHeight/img.naturalWidth);
-      applyAnnotateZoom();
-    }
-  });
-
-  window.addEventListener("mouseup",()=>{
-    moving=false;
-    resizing=false;
-  });
-
-  stage.addEventListener("mousedown",e=>{
-    if(e.target===stage)selectPhoto(false);
-  });
-
-  const zin=$("#zoomIn"),zout=$("#zoomOut"),zfit=$("#zoomFit"),zlevel=$("#zoomLevel");
-  if(zin)zin.onclick=()=>setAnnotateZoom(annotateZoom*1.2,true);
-  if(zout)zout.onclick=()=>setAnnotateZoom(annotateZoom/1.2,true);
-  if(zlevel)zlevel.onclick=()=>setAnnotateZoom(1,true);
-  if(zfit)zfit.onclick=()=>{
-    offsetX=0;offsetY=0;applyOffset();
-    selectPhoto(false);
-    fitPreviewToStage();
-  };
-
-  stage.addEventListener("wheel",e=>{
-    if(!loaded||!(e.ctrlKey||e.metaKey))return;
-    e.preventDefault();
-    setAnnotateZoom(annotateZoom*(e.deltaY<0?1.12:1/1.12),true);
-  },{passive:false});
-
-  // Expose diagnostics / controls for future debugging.
-  window.FitEditor.zoomIn=()=>setAnnotateZoom(annotateZoom*1.2,true);
-  window.FitEditor.zoomOut=()=>setAnnotateZoom(annotateZoom/1.2,true);
-  window.FitEditor.zoomFit=()=>fitPreviewToStage();
-  window.FitEditor.zoomLevel=()=>annotateZoom;
+ let action=null;const handle=$('#photoResizeHandle');
+ cvs.addEventListener('mousedown',e=>{if(!loaded||tool!=='select'||annotateTextEditing)return;const p=point(e);if(hit(p)||!inAPhoto(p))return;e.preventDefault();selected=null;selectPhotoFrame(true);saveHistory();action={start:p,photo:{...aPhoto},resize:false};render();},true);
+ handle.onpointerdown=e=>{if(!loaded)return;e.preventDefault();e.stopPropagation();saveHistory();action={start:worldPoint(e,false),photo:{...aPhoto},resize:true,pointer:e.pointerId};handle.setPointerCapture(e.pointerId);};
+ function update(e){if(!action)return;const p=worldPoint(e,false),dx=p.x-action.start.x,dy=p.y-action.start.y,s=action.photo;if(action.resize){const sc=Math.max(.001,Math.max((s.w+dx)/s.w,(s.h+dy)/s.h));aPhoto={...s,w:Math.max(1,s.w*sc),h:Math.max(1,s.h*sc)};}else{aPhoto={...s,x:s.x+dx,y:s.y+dy};}render();}
+ window.addEventListener('mousemove',e=>{if(action&&!action.resize)update(e);});handle.onpointermove=update;
+ window.addEventListener('mouseup',()=>{if(action&&!action.resize)action=null;});handle.onpointerup=e=>{action=null;if(handle.hasPointerCapture(e.pointerId))handle.releasePointerCapture(e.pointerId);};handle.onpointercancel=e=>{if(action){aPhoto={...action.photo};history.pop();action=null;render();}if(handle.hasPointerCapture(e.pointerId))handle.releasePointerCapture(e.pointerId);};
+ window.addEventListener('fit:photochanged',()=>{action=null;});
+ $('#annotatePanel .stage').addEventListener('mousedown',e=>{if(e.target===$('#annotatePanel .stage')){selectPhotoFrame(false);render();}});
+ $('#zoomIn').onclick=()=>setAnnotateZoom(annotateZoom*1.2);$('#zoomOut').onclick=()=>setAnnotateZoom(annotateZoom/1.2);$('#zoomLevel').onclick=()=>setAnnotateZoom(1);$('#zoomFit').onclick=fitPreviewToStage;
+ $('#annotatePanel .stage').addEventListener('wheel',e=>{if(!loaded||!(e.ctrlKey||e.metaKey))return;e.preventDefault();setAnnotateZoom(annotateZoom*(e.deltaY<0?1.12:1/1.12));},{passive:false});
+ window.FitEditor.zoomIn=()=>setAnnotateZoom(annotateZoom*1.2);window.FitEditor.zoomOut=()=>setAnnotateZoom(annotateZoom/1.2);window.FitEditor.zoomFit=fitPreviewToStage;window.FitEditor.zoomLevel=()=>annotateZoom;
 }
 
 window.addEventListener("resize",()=>{if(loaded)fitPreviewToStage();fitCollageCanvas()});
-initAnnotatePhotoInteractions();
-mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active - V85");window.FitPhotoBoot.editor=true;
+initAnnotatePhotoInteractions();initCanvasControls();
+mode("annotate");setCTool("select");cRender();setTool("select");debug("JavaScript active - V86");window.FitPhotoBoot.editor=true;
 })();
 </script><script id="fit-local-library">
 (()=>{
@@ -4843,7 +4836,7 @@ async function user(){
  const r=await sb.auth.signInAnonymously();if(r.error)throw r.error;return r.data.user;
 }
 async function signed(path){let r=await sb.storage.from(B).createSignedUrl(path,300);if(r.error)throw r.error;return r.data.signedUrl}
-function murl(s,t){let u=new URL(location.href);u.search='';u.hash='';u.searchParams.set('mode','mobile');u.searchParams.set('v','85-20260908-single');u.hash='session='+encodeURIComponent(s)+'&token='+encodeURIComponent(t);return u.toString();}
+function murl(s,t){let u=new URL(location.href);u.search='';u.hash='';u.searchParams.set('mode','mobile');u.searchParams.set('v','86-20260915-single');u.hash='session='+encodeURIComponent(s)+'&token='+encodeURIComponent(t);return u.toString();}
 
 let cs=null,ct=null,ch=null,seen=new Set(),sessionRows=new Map(),originalOrder=[];
 const ORIGINAL_ORDER_KEY="fitPhotoOriginalOrderV77";
@@ -5088,8 +5081,8 @@ q("#endSessionBtn").onclick=async()=>{
 if(!window.FitMobile){
 function canvasToBlob(canvas,mime,quality=.94){return new Promise((resolve,reject)=>{try{canvas.toBlob(b=>b?resolve(b):reject(new Error('The browser could not create the image file.')),mime,quality);}catch(e){reject(e);}});}
 function prepareExportBackground(c,mime){if(mime!=='image/jpeg')return c;const out=document.createElement('canvas');out.width=c.width;out.height=c.height;const x=out.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,out.width,out.height);x.drawImage(c,0,0);return out;}
-async function exportAnnotatedBlob(){if(!window.FitEditor?.exportAnnotatedCanvas)throw new Error('The photo editor has not finished loading.');const c=window.FitEditor.exportAnnotatedCanvas(),fmt=document.querySelector('#format').value,mime=fmt==='jpeg'?'image/jpeg':'image/png',ext=fmt==='jpeg'?'jpg':'png';return {blob:await canvasToBlob(prepareExportBackground(c,mime),mime,.94),ext,mime,filename:'fit-photo-annotated.'+ext};}
-async function exportCombineBlob(){if(!window.FitEditor?.exportCombinedCanvas)throw new Error('The Combine editor has not finished loading.');const c=window.FitEditor.exportCombinedCanvas(),fmt=document.querySelector('#collageFormat').value,mime=fmt==='jpeg'?'image/jpeg':'image/png',ext=fmt==='jpeg'?'jpg':'png';return {blob:await canvasToBlob(prepareExportBackground(c,mime),mime,.94),ext,mime,filename:'fit-photo-combined.'+ext};}
+async function exportAnnotatedBlob(){if(!window.FitEditor?.exportAnnotatedCanvas)throw new Error('The photo editor has not finished loading.');const c=window.FitEditor.exportAnnotatedCanvas(),fmt=document.querySelector('#format').value,mime=fmt==='jpeg'?'image/jpeg':'image/png',ext=fmt==='jpeg'?'jpg':'png';return {blob:await canvasToBlob(prepareExportBackground(c,mime),mime,.98),ext,mime,filename:'fit-photo-annotated.'+ext};}
+async function exportCombineBlob(){if(!window.FitEditor?.exportCombinedCanvas)throw new Error('The Combine editor has not finished loading.');const c=window.FitEditor.exportCombinedCanvas(),fmt=document.querySelector('#collageFormat').value,mime=fmt==='jpeg'?'image/jpeg':'image/png',ext=fmt==='jpeg'?'jpg':'png';return {blob:await canvasToBlob(prepareExportBackground(c,mime),mime,.98),ext,mime,filename:'fit-photo-combined.'+ext};}
 // Encoding completes before the user presses a real Download / Share control.
 // The blob URL remains valid while the dialog is open and for 90s after closing.
 for(const id of ['saveBtn','shareBtn'])document.getElementById(id).onclick=()=>window.FitDownload.prepare(exportAnnotatedBlob,'fit-photo-annotated.png');
