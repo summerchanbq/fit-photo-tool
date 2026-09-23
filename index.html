@@ -8,14 +8,14 @@
 <title>Fit Photo Studio V87</title>
 <script id="fit-single-boot">
 (function(){
- window.FitPhotoBuild='V88-20260923-QUALITY';
+ window.FitPhotoBuild='V89-20260923-CLEANUP';
  var parts=location.search+'&'+location.hash.replace(/^#/,'&');
  window.FitMobile=/(?:^|[?&])mode=(?:mobile|capture)(?:&|$)/i.test(parts)||(/(?:^|[?&])session=/.test(parts)&&/(?:^|[?&])token=/.test(parts));
  if(window.FitMobile)document.documentElement.classList.add('fit-mobile');
  window.FitPhotoBoot={editor:false};
 })();
 </script>
-<meta name="fit-photo-build" content="V88-20260923-QUALITY"/>
+<meta name="fit-photo-build" content="V89-20260923-CLEANUP"/>
 
 <style>
 :root{
@@ -1005,7 +1005,7 @@ html.fit-mobile .v82Modal input{font-size:16px!important}
 <header>
 <div class="brand">
 <div class="logo">F</div>
-<div><h1>Fit Photo Studio</h1><small><strong>V88-20260923-QUALITY</strong> · Session-scoped Library · Full Combine Editor</small></div>
+<div><h1>Fit Photo Studio</h1><small><strong>V89-20260923-CLEANUP</strong> · Session-scoped Library · Full Combine Editor</small></div>
 </div>
 <div class="topActions">
 <button class="btn" id="newBtn">New</button>
@@ -1081,6 +1081,13 @@ html.fit-mobile .v82Modal input{font-size:16px!important}
 <div id="recentSessionsBlock" style="margin-top:12px">
 <div class="sectionTitleRow"><h2>Recent Sessions</h2><button class="btn" id="refreshRecentSessionsBtn" style="height:28px!important;min-height:28px!important;padding:0 7px!important">Refresh</button></div><div class="note" style="margin-bottom:6px">Reusable/protected sessions are restored after refresh.</div>
 <div class="recentSessions" id="recentSessions"><div class="note">No recent sessions yet.</div></div>
+</div>
+<div class="section" id="storageCleanupSection" style="margin-top:12px">
+<div class="sectionTitleRow"><h2>CLOUD STORAGE</h2><span class="versionPill">7 DAYS</span></div>
+<div class="note" style="margin-bottom:6px">Original phone uploads are temporary. Preview photos older than 7 days before deleting them from Supabase.</div>
+<button class="btn" id="previewStorageCleanupBtn" type="button" style="width:100%">Check photos older than 7 days</button>
+<button class="btn" id="runStorageCleanupBtn" type="button" style="width:100%;margin-top:6px;color:#b42318;border-color:#f1b7b2" hidden>Delete old cloud photos</button>
+<div class="syncStatus" id="storageCleanupStatus" style="margin-top:7px">Nothing deleted yet.</div>
 </div>
 </div>
 <div class="howto">
@@ -1365,7 +1372,7 @@ html.fit-mobile .v82Modal input{font-size:16px!important}
 </div>
 </div>
 <main class="mobileCaptureScreen" id="mobileCaptureScreen">
-<div class="brand"><div class="logo">F</div><div><h1>Fit Photo Capture</h1><div class="build" id="captureBuild">V88-20260923-QUALITY | Phone Capture</div></div></div>
+<div class="brand"><div class="logo">F</div><div><h1>Fit Photo Capture</h1><div class="build" id="captureBuild">V89-20260923-CLEANUP | Phone Capture</div></div></div>
 <div class="card">
 <span class="badge">PHONE CAPTURE</span><div class="session">Session <strong id="mobileSessionCode">Not connected</strong></div>
 <div aria-live="polite" class="status" id="connectionStatus" role="status">Starting capture page...</div>
@@ -3046,7 +3053,7 @@ window.FitCopyPhoneLink=function(text){
  */
 (function(){
 'use strict';if(!window.FitMobile)return;
-var BUILD='V88-20260923-QUALITY',API='https://qrtfvatqrtliluwtkkxg.supabase.co',KEY='sb_publishable_tSBEuKB56T01zCJZxIadtw_MD7t6S6N';
+var BUILD='V89-20260923-CLEANUP',API='https://qrtfvatqrtliluwtkkxg.supabase.co',KEY='sb_publishable_tSBEuKB56T01zCJZxIadtw_MD7t6S6N';
 var AUTH_KEY='fitPhotoCaptureAuthV83',q=function(id){return document.getElementById(id);};
 var queue=[],ready=false,joining=false,pumping=false,lastJob=null,sessionId='',sessionToken='',lastError='',connectionState='starting',joinSequence=0;
 var auth=null,authPromise=null,storageAvailable=true;
@@ -5121,6 +5128,36 @@ if(createBtn)createBtn.onclick=async()=>{
 q("#refreshLivePhotosBtn").onclick=async()=>{q("#livePhotosStatus").textContent="Checking secure session…";await refreshPhotos()};
 // Local Edited Photos is handled by an independent module. This adapter only reads originals.
 window.FitPhotoSync={
+ scanOldStorage:async(days=7)=>{
+  const cutoff=Date.now()-days*86400000,files=[];
+  async function walk(prefix=''){
+   let offset=0;
+   while(true){
+    const r=await sb.storage.from(B).list(prefix,{limit:1000,offset,sortBy:{column:'name',order:'asc'}});
+    if(r.error)throw r.error;
+    const rows=r.data||[];
+    for(const x of rows){
+     const path=prefix?prefix+'/'+x.name:x.name;
+     const folder=x.id==null && !x.metadata;
+     if(folder){await walk(path);continue;}
+     const stamp=x.created_at||x.updated_at||x.last_accessed_at;
+     const time=stamp?Date.parse(stamp):NaN;
+     if(Number.isFinite(time)&&time<cutoff){files.push({path,size:Number(x.metadata?.size)||0,created_at:stamp});}
+    }
+    if(rows.length<1000)break;offset+=rows.length;
+   }
+  }
+  await walk('');
+  return {days,cutoff:new Date(cutoff).toISOString(),files,count:files.length,bytes:files.reduce((n,x)=>n+x.size,0)};
+ },
+ deleteStoragePaths:async(paths)=>{
+  const unique=[...new Set((paths||[]).filter(Boolean))],removed=[];
+  for(let i=0;i<unique.length;i+=100){
+   const batch=unique.slice(i,i+100),r=await sb.storage.from(B).remove(batch);
+   if(r.error)throw r.error;removed.push(...batch);
+  }
+  return removed.length;
+ },
  getOriginalArchiveEntries:async()=>{
   const sessionID=cs;if(!sessionID)return [];
   const r=await sb.rpc('get_fit_session_photos',{p_session_id:sessionID});if(r.error)throw r.error;
@@ -5151,6 +5188,37 @@ q("#endSessionBtn").onclick=async()=>{
 
 
 if(!window.FitMobile){
+// V89 manual 7-day cloud cleanup. Preview first; deletion always requires explicit confirmation.
+(()=>{
+ const q=s=>document.querySelector(s),preview=q('#previewStorageCleanupBtn'),run=q('#runStorageCleanupBtn'),status=q('#storageCleanupStatus');
+ if(!preview||!run||!status)return;
+ let plan=null,busy=false;
+ const fmt=b=>b>=1024**3?(b/1024**3).toFixed(2)+' GB':b>=1024**2?(b/1024**2).toFixed(1)+' MB':(b/1024).toFixed(0)+' KB';
+ async function scan(){
+  if(busy)return;busy=true;preview.disabled=true;run.hidden=true;plan=null;status.style.color='#2563eb';status.textContent='Checking cloud photos older than 7 days...';
+  try{
+   if(!window.FitPhotoSync?.scanOldStorage)throw new Error('Photo sync is not ready. Refresh the page and try again.');
+   plan=await window.FitPhotoSync.scanOldStorage(7);
+   if(!plan.count){status.style.color='#067647';status.textContent='No cloud photos older than 7 days were found.';return;}
+   status.style.color='#9a3412';status.textContent=plan.count+' photo(s) older than 7 days · about '+fmt(plan.bytes)+'. Review complete; nothing has been deleted.';run.hidden=false;run.textContent='Delete '+plan.count+' old cloud photo(s)';
+  }catch(e){status.style.color='#b42318';status.textContent='Could not check storage: '+(e.message||e)+'. No files were deleted.';}
+  finally{busy=false;preview.disabled=false;}
+ }
+ async function remove(){
+  if(busy||!plan?.count)return;
+  const message='Delete '+plan.count+' original cloud photo(s) older than 7 days (about '+fmt(plan.bytes)+')?\n\nThis permanently removes the Supabase originals and cannot be undone. Recent photos (7 days or newer) are not included. Local Edited Photos are not deleted.';
+  if(!confirm(message))return;
+  busy=true;preview.disabled=true;run.disabled=true;status.style.color='#2563eb';status.textContent='Deleting old cloud photos in batches...';
+  try{
+   const n=await window.FitPhotoSync.deleteStoragePaths(plan.files.map(x=>x.path));
+   status.style.color='#067647';status.textContent='Deleted '+n+' old cloud photo(s). Rechecking storage...';plan=null;run.hidden=true;
+   try{await scan();}catch(_){}
+  }catch(e){status.style.color='#b42318';status.textContent='Delete stopped: '+(e.message||e)+'. Some earlier batches may already have been removed. Click Check again before retrying.';plan=null;run.hidden=true;}
+  finally{busy=false;preview.disabled=false;run.disabled=false;}
+ }
+ preview.onclick=scan;run.onclick=remove;
+})();
+
 function canvasToBlob(canvas,mime,quality=.94){return new Promise((resolve,reject)=>{try{canvas.toBlob(b=>b?resolve(b):reject(new Error('The browser could not create the image file.')),mime,quality);}catch(e){reject(e);}});}
 function prepareExportBackground(c,mime){if(mime!=='image/jpeg')return c;const out=document.createElement('canvas');out.width=c.width;out.height=c.height;const x=out.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,out.width,out.height);x.drawImage(c,0,0);return out;}
 async function exportAnnotatedBlob(){if(!window.FitEditor?.exportAnnotatedCanvas)throw new Error('The photo editor has not finished loading.');const c=window.FitEditor.exportAnnotatedCanvas(),fmt=document.querySelector('#format').value,mime=fmt==='jpeg'?'image/jpeg':'image/png',ext=fmt==='jpeg'?'jpg':'png';return {blob:await canvasToBlob(prepareExportBackground(c,mime),mime,.94),ext,mime,filename:'fit-photo-annotated.'+ext};}
