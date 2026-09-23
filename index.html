@@ -8,14 +8,14 @@
 <title>Fit Photo Studio V87</title>
 <script id="fit-single-boot">
 (function(){
- window.FitPhotoBuild='V87-20260923-AUTOEND';
+ window.FitPhotoBuild='V88-20260923-QUALITY';
  var parts=location.search+'&'+location.hash.replace(/^#/,'&');
  window.FitMobile=/(?:^|[?&])mode=(?:mobile|capture)(?:&|$)/i.test(parts)||(/(?:^|[?&])session=/.test(parts)&&/(?:^|[?&])token=/.test(parts));
  if(window.FitMobile)document.documentElement.classList.add('fit-mobile');
  window.FitPhotoBoot={editor:false};
 })();
 </script>
-<meta name="fit-photo-build" content="V87-20260923-AUTOEND"/>
+<meta name="fit-photo-build" content="V88-20260923-QUALITY"/>
 
 <style>
 :root{
@@ -1005,7 +1005,7 @@ html.fit-mobile .v82Modal input{font-size:16px!important}
 <header>
 <div class="brand">
 <div class="logo">F</div>
-<div><h1>Fit Photo Studio</h1><small><strong>V87-20260923-AUTOEND</strong> · Session-scoped Library · Full Combine Editor</small></div>
+<div><h1>Fit Photo Studio</h1><small><strong>V88-20260923-QUALITY</strong> · Session-scoped Library · Full Combine Editor</small></div>
 </div>
 <div class="topActions">
 <button class="btn" id="newBtn">New</button>
@@ -1365,11 +1365,19 @@ html.fit-mobile .v82Modal input{font-size:16px!important}
 </div>
 </div>
 <main class="mobileCaptureScreen" id="mobileCaptureScreen">
-<div class="brand"><div class="logo">F</div><div><h1>Fit Photo Capture</h1><div class="build" id="captureBuild">V87-20260923-AUTOEND | Phone Capture</div></div></div>
+<div class="brand"><div class="logo">F</div><div><h1>Fit Photo Capture</h1><div class="build" id="captureBuild">V88-20260923-QUALITY | Phone Capture</div></div></div>
 <div class="card">
 <span class="badge">PHONE CAPTURE</span><div class="session">Session <strong id="mobileSessionCode">Not connected</strong></div>
 <div aria-live="polite" class="status" id="connectionStatus" role="status">Starting capture page...</div>
 <noscript><p class="notice">JavaScript is disabled in this browser. Open this link in your approved browser with JavaScript enabled. Your desktop session link is required to upload photos.</p></noscript>
+<div class="qualityBox" style="margin:12px 0;padding:10px;border:1px solid #dce1e6;border-radius:12px;background:#f8fafc">
+<label class="field" for="mobilePhotoQuality" style="margin-top:0">Photo Quality</label>
+<select id="mobilePhotoQuality" style="width:100%;min-height:42px;border:1px solid #cbd5e1;border-radius:10px;padding:8px;background:#fff">
+<option value="standard" selected>Standard (Recommended) — 2000px / 0.88</option>
+<option value="high">High Quality — 4096px / 0.96</option>
+</select>
+<p class="help" style="margin:6px 0 0">Standard is recommended for normal Fit Session review and uses less cloud storage. Choose High Quality only when extra detail is needed.</p>
+</div>
 <div class="actions" id="mobilePhotoActions">
 <label class="capture primary" id="mobileCameraLabel">Take Photo<input accept="image/*" aria-label="Take a photo with the phone camera" capture="environment" id="mobileCameraInput" type="file"/></label>
 <label class="capture" id="mobileLibraryLabel">Choose Photos<input accept="image/*" aria-label="Choose photos from your phone" id="mobilePhotoInput" multiple="" type="file"/></label>
@@ -3038,7 +3046,7 @@ window.FitCopyPhoneLink=function(text){
  */
 (function(){
 'use strict';if(!window.FitMobile)return;
-var BUILD='V87-20260923-AUTOEND',API='https://qrtfvatqrtliluwtkkxg.supabase.co',KEY='sb_publishable_tSBEuKB56T01zCJZxIadtw_MD7t6S6N';
+var BUILD='V88-20260923-QUALITY',API='https://qrtfvatqrtliluwtkkxg.supabase.co',KEY='sb_publishable_tSBEuKB56T01zCJZxIadtw_MD7t6S6N';
 var AUTH_KEY='fitPhotoCaptureAuthV83',q=function(id){return document.getElementById(id);};
 var queue=[],ready=false,joining=false,pumping=false,lastJob=null,sessionId='',sessionToken='',lastError='',connectionState='starting',joinSequence=0;
 var auth=null,authPromise=null,storageAvailable=true;
@@ -3118,7 +3126,8 @@ function renderJob(job){job.status.textContent=job.message;job.status.className=
 function removeJob(job){if(job.state==='uploading')return;var i=queue.indexOf(job);if(i<0)return;queue.splice(i,1);job.row.parentNode.removeChild(job.row);URL.revokeObjectURL(job.url);if(lastJob===job)select(queue[queue.length-1]||null);summary();}
 function button(text,action){var b=document.createElement('button');b.type='button';b.className='btn';b.textContent=text;b.onclick=action;return b;}
 function addJob(file){
- var job={file:file,url:URL.createObjectURL(file),session:sessionId,state:'queued',message:ready?'Queued':'Waiting for connection - not uploaded',storageDone:false,metadataAttempted:false,path:null,blob:null};
+ var quality=(q('mobilePhotoQuality')&&q('mobilePhotoQuality').value)||'standard';
+ var job={file:file,url:URL.createObjectURL(file),session:sessionId,quality:quality,state:'queued',message:ready?'Queued':'Waiting for connection - not uploaded',storageDone:false,metadataAttempted:false,path:null,blob:null};
  var row=document.createElement('div');row.className='queueItem';var im=document.createElement('img');im.src=job.url;im.alt='Original photo';im.onclick=function(){select(job);};var meta=document.createElement('div');meta.className='queueMeta';meta.textContent=(file.name||'Camera photo')+' ('+(file.size/1024/1024).toFixed(1)+' MB)';var status=document.createElement('span');meta.appendChild(status);var actions=document.createElement('div');actions.className='row';
  var save=button('Save Original',function(){showDownload(file,file.name||'camera-original.jpg');});
  var retry=button('Retry Upload',function(){if(job.state!=='failed')return;job.state='queued';job.message='Queued for retry';renderJob(job);if(!ready)void join();else void pump();});
@@ -3136,21 +3145,21 @@ function enqueue(files){
 }
 function imageCanvas(source,max){var w=source.naturalWidth||source.width,h=source.naturalHeight||source.height;if(!w||!h)throw new Error('Photo has no readable pixels.');var sc=Math.min(1,max/Math.max(w,h)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(w*sc));c.height=Math.max(1,Math.round(h*sc));var x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(source,0,0,c.width,c.height);return c;}
 function blobFromCanvas(c,quality){return new Promise(function(resolve,reject){var finished=false,timer=setTimeout(function(){end(new Error('Photo encoding timed out. Save Original and retry with a smaller photo.'));},12000);function end(err,b){if(finished)return;finished=true;clearTimeout(timer);if(err)reject(err);else resolve(b);}try{c.toBlob(function(b){if(b&&b.size)end(null,b);else end(new Error('Photo encoding failed. Save Original and choose JPG/PNG.'));},'image/jpeg',quality);}catch(e){end(e);}});}
-async function optimise(file){
- var canvas=null;
+async function optimise(file,qualityMode){
+ var high=qualityMode==='high',maxPx=high?4096:2000,jpegQuality=high?.96:.88,canvas=null;
  if(typeof window.createImageBitmap==='function'){
-  try{var bitmap=await new Promise(function(resolve,reject){var finished=false;var timer=setTimeout(function(){finished=true;reject(new Error('Bitmap decoder did not respond.'));},8000);Promise.resolve().then(function(){return createImageBitmap(file);}).then(function(b){if(finished){if(b.close)b.close();return;}finished=true;clearTimeout(timer);resolve(b);},function(e){if(finished)return;finished=true;clearTimeout(timer);reject(e);});});try{canvas=imageCanvas(bitmap,1800);}finally{if(bitmap.close)bitmap.close();}}catch(e){}
+  try{var bitmap=await new Promise(function(resolve,reject){var finished=false;var timer=setTimeout(function(){finished=true;reject(new Error('Bitmap decoder did not respond.'));},8000);Promise.resolve().then(function(){return createImageBitmap(file);}).then(function(b){if(finished){if(b.close)b.close();return;}finished=true;clearTimeout(timer);resolve(b);},function(e){if(finished)return;finished=true;clearTimeout(timer);reject(e);});});try{canvas=imageCanvas(bitmap,maxPx);}finally{if(bitmap.close)bitmap.close();}}catch(e){}
  }
  if(!canvas)canvas=await new Promise(function(resolve,reject){
   var im=new Image(),url=URL.createObjectURL(file),ended=false,reader=null,second=false;
   var timer=setTimeout(function(){end(new Error('Image decoding timed out. Save Original and try JPG/PNG.'));},20000);
-  function end(err){if(ended)return;ended=true;clearTimeout(timer);try{if(reader&&reader.readyState===1)reader.abort();if(err)reject(err);else resolve(imageCanvas(im,1800));}catch(e){reject(e);}finally{URL.revokeObjectURL(url);im.onload=null;im.onerror=null;}}
+  function end(err){if(ended)return;ended=true;clearTimeout(timer);try{if(reader&&reader.readyState===1)reader.abort();if(err)reject(err);else resolve(imageCanvas(im,maxPx));}catch(e){reject(e);}finally{URL.revokeObjectURL(url);im.onload=null;im.onerror=null;}}
   im.onload=function(){end();};im.onerror=function(){
    if(second){end(new Error('This browser cannot decode the image. Use JPG/PNG or convert HEIC using the device photo app.'));return;}
    second=true;reader=new FileReader();reader.onerror=function(){end(new Error('The phone did not provide readable image data. Choose the saved photo from Files.'));};reader.onload=function(){if(!ended)im.src=reader.result;};try{reader.readAsDataURL(file);}catch(e){end(e);}
   };im.src=url;
  });
- return blobFromCanvas(canvas,.82);
+ return blobFromCanvas(canvas,jpegQuality);
 }
 function randomHex(){var a=new Uint8Array(12);if(!window.crypto||!crypto.getRandomValues)throw new Error('Secure random generation unavailable. Use a supported HTTPS browser.');crypto.getRandomValues(a);return Array.prototype.map.call(a,function(v){return ('0'+v.toString(16)).slice(-2);}).join('');}
 async function alreadyRegistered(job){var rows=await api('/rest/v1/rpc/get_fit_session_photos',{p_session_id:job.session});return Array.isArray(rows)&&rows.some(function(row){return row.photo_path===job.path;});}
@@ -3162,8 +3171,8 @@ async function pump(){
    if(!job.session||job.session!==sessionId){job.state='failed';job.message='Not uploaded: this photo belongs to a different or unassigned session. Save Original and add it to the intended session explicitly.';renderJob(job);continue;}
    job.state='uploading';job.message='Optimising...';renderJob(job);summary();
    try{
-    if(!job.blob)job.blob=await optimise(job.file);
-    q('mobileOptimiseStats').textContent='Latest: '+Math.round(job.file.size/1024)+' KB original / '+Math.round(job.blob.size/1024)+' KB upload.';
+    if(!job.blob)job.blob=await optimise(job.file,job.quality);
+    q('mobileOptimiseStats').textContent='Latest ('+(job.quality==='high'?'High Quality':'Standard')+'): '+Math.round(job.file.size/1024)+' KB original / '+Math.round(job.blob.size/1024)+' KB upload.';
     if(!job.path)job.path=job.session+'/'+Date.now()+'_'+randomHex()+'.jpg';
     if(!job.storageDone){
      job.message='Uploading securely...';renderJob(job);
