@@ -8,14 +8,14 @@
 <title>Fit Photo Studio V93</title>
 <script id="fit-single-boot">
 (function(){
- window.FitPhotoBuild='V93-20261012-BACKUP';
+ window.FitPhotoBuild='V94-20261012-RETENTION';
  var parts=location.search+'&'+location.hash.replace(/^#/,'&');
  window.FitMobile=/(?:^|[?&])mode=(?:mobile|capture)(?:&|$)/i.test(parts)||(/(?:^|[?&])session=/.test(parts)&&/(?:^|[?&])token=/.test(parts));
  if(window.FitMobile)document.documentElement.classList.add('fit-mobile');
  window.FitPhotoBoot={editor:false};
 })();
 </script>
-<meta name="fit-photo-build" content="V93-20261012-BACKUP"/>
+<meta name="fit-photo-build" content="V94-20261012-RETENTION"/>
 
 <style>
 :root{
@@ -1008,7 +1008,7 @@ html.fit-mobile .v82Modal input{font-size:16px!important}
 <header>
 <div class="brand">
 <div class="logo">F</div>
-<div><h1>Fit Photo Studio</h1><small><strong>V93-20261012-BACKUP</strong> · Session-scoped Library · Full Combine Editor</small></div>
+<div><h1>Fit Photo Studio</h1><small><strong>V94-20261012-RETENTION</strong> · Session-scoped Library · Full Combine Editor</small></div>
 </div>
 <div class="topActions">
 <button class="btn" id="newBtn">New</button>
@@ -1368,7 +1368,7 @@ html.fit-mobile .v82Modal input{font-size:16px!important}
 </div>
 </div>
 <main class="mobileCaptureScreen" id="mobileCaptureScreen">
-<div class="brand"><div class="logo">F</div><div><h1>Fit Photo Capture</h1><div class="build" id="captureBuild">V93-20261012-BACKUP | Phone Capture</div></div></div>
+<div class="brand"><div class="logo">F</div><div><h1>Fit Photo Capture</h1><div class="build" id="captureBuild">V94-20261012-RETENTION | Phone Capture</div></div></div>
 <div class="card">
 <span class="badge">PHONE CAPTURE</span><div class="session">Session <strong id="mobileSessionCode">Not connected</strong></div>
 <div aria-live="polite" class="status" id="connectionStatus" role="status">Starting capture page...</div>
@@ -1376,10 +1376,11 @@ html.fit-mobile .v82Modal input{font-size:16px!important}
 <div class="qualityBox" style="margin:12px 0;padding:10px;border:1px solid #dce1e6;border-radius:12px;background:#f8fafc">
 <label class="field" for="mobilePhotoQuality" style="margin-top:0">Photo Quality</label>
 <select id="mobilePhotoQuality" style="width:100%;min-height:42px;border:1px solid #cbd5e1;border-radius:10px;padding:8px;background:#fff">
-<option value="standard" selected>Standard (Recommended) — 2000px / 0.88</option>
+<option value="compact" selected>Compact (Recommended) — 1600px / 0.82</option>
+<option value="standard">Standard — 2000px / 0.88</option>
 <option value="high">High Quality — 4096px / 0.96</option>
 </select>
-<p class="help" style="margin:6px 0 0">Standard is recommended for normal Fit Session review and uses less cloud storage. Choose High Quality only when extra detail is needed.</p>
+<p class="help" style="margin:6px 0 0">Compact is the default for everyday Fit Session photos. Select Standard or High Quality for finer details.</p>
 </div>
 <div class="actions" id="mobilePhotoActions">
 <label class="capture primary" id="mobileCameraLabel">Take Photo<input accept="image/*" aria-label="Take a photo with the phone camera" capture="environment" id="mobileCameraInput" type="file"/></label>
@@ -3056,7 +3057,7 @@ window.FitCopyPhoneLink=function(text){
  */
 (function(){
 'use strict';if(!window.FitMobile)return;
-var BUILD='V93-20261012-BACKUP',API='https://jlbejehigafqdbowppko.supabase.co',KEY='sb_publishable_7cgLtB7vM-mhK_c6XZHdGA_6l5lD-84';
+var BUILD='V94-20261012-RETENTION',API='https://jlbejehigafqdbowppko.supabase.co',KEY='sb_publishable_7cgLtB7vM-mhK_c6XZHdGA_6l5lD-84';
 var AUTH_KEY='fitPhotoCaptureAuthV83',q=function(id){return document.getElementById(id);};
 var queue=[],ready=false,joining=false,pumping=false,lastJob=null,sessionId='',sessionToken='',lastError='',connectionState='starting',joinSequence=0;
 var auth=null,authPromise=null,storageAvailable=true;
@@ -3156,7 +3157,7 @@ function enqueue(files){
 function imageCanvas(source,max){var w=source.naturalWidth||source.width,h=source.naturalHeight||source.height;if(!w||!h)throw new Error('Photo has no readable pixels.');var sc=Math.min(1,max/Math.max(w,h)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(w*sc));c.height=Math.max(1,Math.round(h*sc));var x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(source,0,0,c.width,c.height);return c;}
 function blobFromCanvas(c,quality){return new Promise(function(resolve,reject){var finished=false,timer=setTimeout(function(){end(new Error('Photo encoding timed out. Save Original and retry with a smaller photo.'));},12000);function end(err,b){if(finished)return;finished=true;clearTimeout(timer);if(err)reject(err);else resolve(b);}try{c.toBlob(function(b){if(b&&b.size)end(null,b);else end(new Error('Photo encoding failed. Save Original and choose JPG/PNG.'));},'image/jpeg',quality);}catch(e){end(e);}});}
 async function optimise(file,qualityMode){
- var high=qualityMode==='high',maxPx=high?4096:2000,jpegQuality=high?.96:.88,canvas=null;
+ var high=qualityMode==='high',compact=qualityMode==='compact',maxPx=high?4096:(compact?1600:2000),jpegQuality=high?.96:(compact?.82:.88),canvas=null;
  if(typeof window.createImageBitmap==='function'){
   try{var bitmap=await new Promise(function(resolve,reject){var finished=false;var timer=setTimeout(function(){finished=true;reject(new Error('Bitmap decoder did not respond.'));},8000);Promise.resolve().then(function(){return createImageBitmap(file);}).then(function(b){if(finished){if(b.close)b.close();return;}finished=true;clearTimeout(timer);resolve(b);},function(e){if(finished)return;finished=true;clearTimeout(timer);reject(e);});});try{canvas=imageCanvas(bitmap,maxPx);}finally{if(bitmap.close)bitmap.close();}}catch(e){}
  }
@@ -3182,7 +3183,7 @@ async function pump(){
    job.state='uploading';job.message='Optimising...';renderJob(job);summary();
    try{
     if(!job.blob)job.blob=await optimise(job.file,job.quality);
-    q('mobileOptimiseStats').textContent='Latest ('+(job.quality==='high'?'High Quality':'Standard')+'): '+Math.round(job.file.size/1024)+' KB original / '+Math.round(job.blob.size/1024)+' KB upload.';
+    q('mobileOptimiseStats').textContent='Latest ('+(job.quality==='high'?'High Quality':(job.quality==='compact'?'Compact':'Standard'))+'): '+Math.round(job.file.size/1024)+' KB original / '+Math.round(job.blob.size/1024)+' KB upload.';
     if(!job.path)job.path=job.session+'/'+Date.now()+'_'+randomHex()+'.jpg';
     if(!job.storageDone){
      job.message='Uploading securely...';renderJob(job);
