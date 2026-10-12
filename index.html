@@ -5,17 +5,17 @@
 <meta charset="utf-8"/>
 <meta name="referrer" content="no-referrer"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>Fit Photo Studio V92</title>
+<title>Fit Photo Studio V93</title>
 <script id="fit-single-boot">
 (function(){
- window.FitPhotoBuild='V92-20261012-JWT-FIX';
+ window.FitPhotoBuild='V93-20261012-BACKUP';
  var parts=location.search+'&'+location.hash.replace(/^#/,'&');
  window.FitMobile=/(?:^|[?&])mode=(?:mobile|capture)(?:&|$)/i.test(parts)||(/(?:^|[?&])session=/.test(parts)&&/(?:^|[?&])token=/.test(parts));
  if(window.FitMobile)document.documentElement.classList.add('fit-mobile');
  window.FitPhotoBoot={editor:false};
 })();
 </script>
-<meta name="fit-photo-build" content="V92-20261012-JWT-FIX"/>
+<meta name="fit-photo-build" content="V93-20261012-BACKUP"/>
 
 <style>
 :root{
@@ -722,9 +722,9 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 .photoLibrary .livePhoto .badge{pointer-events:none!important}
 .libraryDragHint{font-size:8px;color:#64748b;margin:2px 0 5px}
 </style>
-<meta content="Fit Photo Studio V92" property="og:title"/>
-<meta content="Fit Photo Studio V92" name="twitter:title"/>
-<meta content="Fit Photo Studio V92" property="og:site_name"/>
+<meta content="Fit Photo Studio V93" property="og:title"/>
+<meta content="Fit Photo Studio V93" name="twitter:title"/>
+<meta content="Fit Photo Studio V93" property="og:site_name"/>
 <style id="v80-reorder-final">
 .photoLibrary .livePhoto{cursor:grab!important;touch-action:none!important}
 .photoLibrary .livePhoto:active{cursor:grabbing!important}
@@ -1008,7 +1008,7 @@ html.fit-mobile .v82Modal input{font-size:16px!important}
 <header>
 <div class="brand">
 <div class="logo">F</div>
-<div><h1>Fit Photo Studio</h1><small><strong>V92-20261012-JWT-FIX</strong> · Session-scoped Library · Full Combine Editor</small></div>
+<div><h1>Fit Photo Studio</h1><small><strong>V93-20261012-BACKUP</strong> · Session-scoped Library · Full Combine Editor</small></div>
 </div>
 <div class="topActions">
 <button class="btn" id="newBtn">New</button>
@@ -1368,7 +1368,7 @@ html.fit-mobile .v82Modal input{font-size:16px!important}
 </div>
 </div>
 <main class="mobileCaptureScreen" id="mobileCaptureScreen">
-<div class="brand"><div class="logo">F</div><div><h1>Fit Photo Capture</h1><div class="build" id="captureBuild">V92-20261012-JWT-FIX | Phone Capture</div></div></div>
+<div class="brand"><div class="logo">F</div><div><h1>Fit Photo Capture</h1><div class="build" id="captureBuild">V93-20261012-BACKUP | Phone Capture</div></div></div>
 <div class="card">
 <span class="badge">PHONE CAPTURE</span><div class="session">Session <strong id="mobileSessionCode">Not connected</strong></div>
 <div aria-live="polite" class="status" id="connectionStatus" role="status">Starting capture page...</div>
@@ -3056,7 +3056,7 @@ window.FitCopyPhoneLink=function(text){
  */
 (function(){
 'use strict';if(!window.FitMobile)return;
-var BUILD='V92-20261012-JWT-FIX',API='https://qrtfvatqrtliluwtkkxg.supabase.co',KEY='sb_publishable_tSBEuKB56T01zCJZxIadtw_MD7t6S6N';
+var BUILD='V93-20261012-BACKUP',API='https://jlbejehigafqdbowppko.supabase.co',KEY='sb_publishable_7cgLtB7vM-mhK_c6XZHdGA_6l5lD-84';
 var AUTH_KEY='fitPhotoCaptureAuthV83',q=function(id){return document.getElementById(id);};
 var queue=[],ready=false,joining=false,pumping=false,lastJob=null,sessionId='',sessionToken='',lastError='',connectionState='starting',joinSequence=0;
 var auth=null,authPromise=null,storageAvailable=true;
@@ -4857,7 +4857,7 @@ window.addEventListener("error",e=>{
   if(s){s.textContent="Tool error: "+(e.message||"Unknown error");s.style.color="#b42318"}
 });
 
-const U="https://qrtfvatqrtliluwtkkxg.supabase.co",K="sb_publishable_tSBEuKB56T01zCJZxIadtw_MD7t6S6N",sb=window.FitCreateSyncClient(U,K);
+const U="https://jlbejehigafqdbowppko.supabase.co",K="sb_publishable_7cgLtB7vM-mhK_c6XZHdGA_6l5lD-84",sb=window.FitCreateSyncClient(U,K);
 const q=s=>document.querySelector(s), B="fit-photos", T="fit_photos", S="fit_sessions";
 const p=new URLSearchParams(location.search), mobile=p.get("mode")==="mobile", sid=p.get("session"), tok=p.get("token");
 function hex(n=24){const a=new Uint8Array(n);crypto.getRandomValues(a);return [...a].map(x=>x.toString(16).padStart(2,"0")).join("")}
