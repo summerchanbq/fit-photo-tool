@@ -5,17 +5,17 @@
 <meta charset="utf-8"/>
 <meta name="referrer" content="no-referrer"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>Fit Photo Studio V91</title>
+<title>Fit Photo Studio V92</title>
 <script id="fit-single-boot">
 (function(){
- window.FitPhotoBuild='V91-20261012-MULTILINE';
+ window.FitPhotoBuild='V92-20261012-JWT-FIX';
  var parts=location.search+'&'+location.hash.replace(/^#/,'&');
  window.FitMobile=/(?:^|[?&])mode=(?:mobile|capture)(?:&|$)/i.test(parts)||(/(?:^|[?&])session=/.test(parts)&&/(?:^|[?&])token=/.test(parts));
  if(window.FitMobile)document.documentElement.classList.add('fit-mobile');
  window.FitPhotoBoot={editor:false};
 })();
 </script>
-<meta name="fit-photo-build" content="V91-20261012-MULTILINE"/>
+<meta name="fit-photo-build" content="V92-20261012-JWT-FIX"/>
 
 <style>
 :root{
@@ -722,9 +722,9 @@ aside.right{padding-bottom:22px!important;scrollbar-gutter:stable;overscroll-beh
 .photoLibrary .livePhoto .badge{pointer-events:none!important}
 .libraryDragHint{font-size:8px;color:#64748b;margin:2px 0 5px}
 </style>
-<meta content="Fit Photo Studio V91" property="og:title"/>
-<meta content="Fit Photo Studio V91" name="twitter:title"/>
-<meta content="Fit Photo Studio V91" property="og:site_name"/>
+<meta content="Fit Photo Studio V92" property="og:title"/>
+<meta content="Fit Photo Studio V92" name="twitter:title"/>
+<meta content="Fit Photo Studio V92" property="og:site_name"/>
 <style id="v80-reorder-final">
 .photoLibrary .livePhoto{cursor:grab!important;touch-action:none!important}
 .photoLibrary .livePhoto:active{cursor:grabbing!important}
@@ -1008,7 +1008,7 @@ html.fit-mobile .v82Modal input{font-size:16px!important}
 <header>
 <div class="brand">
 <div class="logo">F</div>
-<div><h1>Fit Photo Studio</h1><small><strong>V91-20261012-MULTILINE</strong> · Session-scoped Library · Full Combine Editor</small></div>
+<div><h1>Fit Photo Studio</h1><small><strong>V92-20261012-JWT-FIX</strong> · Session-scoped Library · Full Combine Editor</small></div>
 </div>
 <div class="topActions">
 <button class="btn" id="newBtn">New</button>
@@ -1368,7 +1368,7 @@ html.fit-mobile .v82Modal input{font-size:16px!important}
 </div>
 </div>
 <main class="mobileCaptureScreen" id="mobileCaptureScreen">
-<div class="brand"><div class="logo">F</div><div><h1>Fit Photo Capture</h1><div class="build" id="captureBuild">V91-20261012-MULTILINE | Phone Capture</div></div></div>
+<div class="brand"><div class="logo">F</div><div><h1>Fit Photo Capture</h1><div class="build" id="captureBuild">V92-20261012-JWT-FIX | Phone Capture</div></div></div>
 <div class="card">
 <span class="badge">PHONE CAPTURE</span><div class="session">Session <strong id="mobileSessionCode">Not connected</strong></div>
 <div aria-live="polite" class="status" id="connectionStatus" role="status">Starting capture page...</div>
@@ -1495,7 +1495,14 @@ window.FitCreateSyncClient=function(api,key){
  async function authenticated(path,method,body,headers){
   var s=await authWork(true);
   try{return await request(path,method,body,s.access_token,headers);}
-  catch(e){if(e.status!==401)throw e;s=await authWork(true,s.access_token);return request(path,method,body,s.access_token,headers);}
+  catch(e){
+   var jwtClockError=/jwt.{0,80}(issued.{0,20}(future|ahead)|future)|issued at future|invalid.*iat/i.test(String(e.message||''));
+   if(e.status!==401&&!jwtClockError)throw e;
+   try{s=await authWork(true,s.access_token);}
+   catch(refreshError){if(jwtClockError)throw error('Supabase rejected the sign-in time and could not refresh the token. Check device clock and Supabase service time; existing saved photos were not changed. '+refreshError.message,refreshError.status,'jwt_clock');throw refreshError;}
+   try{return await request(path,method,body,s.access_token,headers);}
+   catch(retryError){if(/jwt.{0,80}(issued.{0,20}(future|ahead)|future)|issued at future/i.test(String(retryError.message||'')))throw error('Supabase still rejects the refreshed token as issued in the future. This is a clock mismatch between the authentication service and database, not a photo editor error. Please check Supabase service time or contact Supabase support. Existing data is safe.',retryError.status,'jwt_clock');throw retryError;}
+  }
  }
  async function result(fn){try{return {data:await fn(),error:null};}catch(e){return {data:null,error:e};}}
  function Query(table){this.table=table;this.params=new URLSearchParams();this.method='GET';this.body=undefined;this.single=false;this.promise=null;}
@@ -3049,7 +3056,7 @@ window.FitCopyPhoneLink=function(text){
  */
 (function(){
 'use strict';if(!window.FitMobile)return;
-var BUILD='V91-20261012-MULTILINE',API='https://qrtfvatqrtliluwtkkxg.supabase.co',KEY='sb_publishable_tSBEuKB56T01zCJZxIadtw_MD7t6S6N';
+var BUILD='V92-20261012-JWT-FIX',API='https://qrtfvatqrtliluwtkkxg.supabase.co',KEY='sb_publishable_tSBEuKB56T01zCJZxIadtw_MD7t6S6N';
 var AUTH_KEY='fitPhotoCaptureAuthV83',q=function(id){return document.getElementById(id);};
 var queue=[],ready=false,joining=false,pumping=false,lastJob=null,sessionId='',sessionToken='',lastError='',connectionState='starting',joinSequence=0;
 var auth=null,authPromise=null,storageAvailable=true;
